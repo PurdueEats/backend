@@ -1,7 +1,7 @@
 # CS307
 
-## Project
-To be determined
+## PurdueEats
+With the onset of COVID-19, Boilermakers have and continue to experience long wait times at Purdue's dining facilities and struggle to make good dietary decisions. PurdueEats aims to utilize machine learning (ML) model(s) to understand a student’s eating habits and provide them with a personalized dining experience at Purdue's dining facilities. PurdueEats is tailored towards user-specific dietary needs and provides more relevant and timely information to users compared to existing applications.
 
 ## Members
 * [Eric Thompson](https://github.com/thomp721)
