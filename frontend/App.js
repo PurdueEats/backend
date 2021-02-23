@@ -1,5 +1,11 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
+
+const styles = StyleSheet.create({
+    container: {
+        color: "green"
+    },
+});
 
 export default function App() {
   return (
@@ -10,8 +16,8 @@ export default function App() {
         alignItems: "center",
       }}
     >
-      <Text>Universal React with Expo.</Text>
-      <Text>Conveniently the frontend of PurdueEats!!</Text>
+      <Text style={ styles.container }>Universal React with Expo.</Text>
+      <Text style={ styles.container }>Very conveniently the frontend of PurdueEats!!</Text>
     </View>
   );
 }
