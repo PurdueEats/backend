@@ -1,1 +1,4 @@
 prototypes/_*
+
+# IntelliJ
+.idea
