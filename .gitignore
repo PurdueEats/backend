@@ -1,1 +1,6 @@
+prototypes/_*
+
+# IntelliJ
+.idea
+
 */__pycache__
