@@ -1,6 +1,5 @@
-prototypes/_*
+#Python Compilation
+**/__pycache__/
 
 # IntelliJ
 .idea
-
-*/__pycache__
