@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, View, Text, TextInput } from "react-native";
 import Logo from "../../resources/logo.png";
-import { Button, Item } from 'native-base';
+import { Button, Item, Toast } from 'native-base';
 
 const LoginManager = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     function handleLogin() {
-        console.log("handle login of " + email + " " + password)
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Wrong password!",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+        console.log(email + " " + password)
     }
 
     function handleForgotPassword() {
@@ -20,7 +29,7 @@ const LoginManager = () => {
     }
 
     return (
-        <View >
+        <View>
             <View style={ styles.logoView }>
                 <Image source={ Logo } />
             </View>
