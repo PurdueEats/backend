@@ -1,35 +1,51 @@
-import React from "react";
-import { Image, StyleSheet, View, Text } from "react-native";
+import React, { useState } from "react";
+import { Image, StyleSheet, View, Text, TextInput } from "react-native";
 import Logo from "../../resources/logo.png";
-import { Button, Item, Input } from 'native-base';
+import { Button, Item } from 'native-base';
 
 const LoginManager = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    function handleLogin() {
+        console.log("handle login of " + email + " " + password)
+    }
+
+    function handleForgotPassword() {
+        console.log("handle forgot password")
+    }
+
+    function handleSignUp() {
+        console.log("handle sign up")
+    }
+
     return (
         <View >
             <View style={ styles.logoView }>
-                <Image source={ Logo } /*style={ styles.logo }*//>
-                <Text style={ styles.logoText }>
-                    PurdueEats
-                </Text>
+                <Image source={ Logo } />
             </View>
             <View style={ styles.formView }>
                 <Text style={ styles.formTitle }>Sign In</Text>
                 <Text style={ styles.componentIdentifier }>Email</Text>
-                <Item floatingLabel style={ styles.emailComponent }>
-                    <Input />
+                <Item style={ styles.emailComponent }>
+                    <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
                 </Item>
                 <Text style={ styles.componentIdentifier }>Password</Text>
-                <Item floatingLabel style={ styles.passwordComponent }>
-                    <Input />
+                <Item style={ styles.passwordComponent }>
+                    <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
                 </Item>
             </View>
             <View style={ styles.actionView }>
-                <Button style={ styles.loginButtonComponent }>
+                <Button style={ styles.loginButtonComponent } onPress={ handleLogin }>
                     <Text style={ styles.loginButtonText }>Sign In</Text>
                 </Button>
                 <View style={ styles.endingText }>
-                    <Text style={ styles.forgotPasswordText }>Forgot Password?</Text>
-                    <Text style={ styles.signUpText }>Sign Up</Text>
+                    <View>
+                        <Text style={ styles.forgotPasswordText } onPress={ handleForgotPassword }>Forgot Password?</Text>
+                    </View>
+                    <View>
+                        <Text style={ styles.signUpText } onPress={ handleSignUp }>Sign Up</Text>
+                    </View>
                 </View>
             </View>
         </View>
@@ -40,15 +56,7 @@ const styles = StyleSheet.create({
     logoView: {
         paddingTop: "12%",
         alignItems: "center",
-    },
-    // logo: {
-    //     width: "40%",
-    //     height: "20%",
-    // },
-    logoText: {
-        marginBottom: "8%",
-        fontSize: 18,
-        fontWeight: "bold"
+        marginBottom: "5%"
     },
     formView: {
         paddingTop: "2%",
@@ -65,12 +73,16 @@ const styles = StyleSheet.create({
         color: "red",
         fontWeight: "bold"
     },
+    textInput: {
+      width: "100%"
+    },
     emailComponent: {
-        marginBottom: "8%",
+        marginBottom: "10%",
         height: 40
     },
     passwordComponent: {
-        height: 40
+        height: 40,
+        marginBottom: "4%"
     },
     actionView: {
         paddingLeft: "10%",
@@ -92,17 +104,18 @@ const styles = StyleSheet.create({
     },
     forgotPasswordText: {
         alignItems: "center",
-        paddingTop: "5%",
-        paddingBottom: "3%",
+        paddingTop: "10%",
+        paddingBottom: "8%",
+        fontSize: 16,
         fontWeight: "bold",
         color: "gray"
     },
     signUpText: {
         alignItems: "center",
+        fontSize: 16,
         fontWeight: "bold",
         color: "red"
     }
 });
 
 export default LoginManager;
-
