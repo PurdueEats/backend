@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from mealratingmodel import MealRating
+from MenuItemReviewsModel import MealRating
 
 app = FastAPI()
 
