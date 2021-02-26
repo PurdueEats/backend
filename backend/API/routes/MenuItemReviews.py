@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from MenuItemReviewsModel import MealRating
+from MenuItemReview import MenuItemReview
 
 app = FastAPI()
 
@@ -13,7 +13,6 @@ async def get_meal_ratings():
 
 #add meal rating
 @app.post("/MenuItemReviews")
-async def add_meal_rating(meal_rating: MealRating):
+async def add_meal_rating(meal_rating: MenuItemReview):
   data.append(meal_rating.dict())
   return data[-1]
-  #return meal_rating
