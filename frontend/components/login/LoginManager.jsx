@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     textInput: {
-      width: "100%"
+        width: "100%",
+        height: 40
     },
     emailComponent: {
         marginBottom: "10%",
