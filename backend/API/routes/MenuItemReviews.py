@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from MenuItemReview import MenuItemReview
+from ../MenuItemReview import MenuItemReview
 
 app = FastAPI()
 
