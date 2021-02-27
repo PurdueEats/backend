@@ -65,12 +65,14 @@ async def login_user(userBasic: UserBasic):
   return {'UserID': user_id, 'token': token }
 
 
+"""
+TODO for Mark: Also add a delete user Method
+"""
 #TODO: How to structure Auth routes?
 
 """
 App.post Return Auth object UserOut - For Mark
 """
-
 @app.post("/{UserID}/Auth")
 async def update_auth(userBasic: UserBasic):
 
