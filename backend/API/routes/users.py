@@ -65,14 +65,32 @@ async def login_user(userBasic: UserBasic):
   return {'UserID': user_id, 'token': token }
 
 
-"""
-TODO for Mark: Also add a delete user Method
-"""
+async def delete_user(userBasic: UserBasic):
+  #Fetch user using email
+  user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}")]
+    
+  if len(user) != 1:
+    raise HTTPException(status_code=404, detail='User not found')    
+    
+  runQuery(f"DELETE FROM UserBasic WHERE UserID = {userBasic.user_id}")
+  #did not delete data associated with userid, do we need to delete them?
+  return;
+
 #TODO: How to structure Auth routes?
 
 """
 App.post Return Auth object UserOut - For Mark
 """
+async def return_auth(userBasic: UserBasic):
+  #Fetch user using email
+  user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}")]
+  if len(user) != 1:
+    raise HTTPException(status_code=404, detail='User not found')
+    
+  return runQuery(f"""
+    SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}
+     """)
+
 @app.post("/{UserID}/Auth")
 async def update_auth(userBasic: UserBasic):
 
