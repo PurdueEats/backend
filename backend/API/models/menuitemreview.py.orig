@@ -1,7 +1,10 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 
+<<<<<<< HEAD
+=======
 #MenuItemReview Model
+>>>>>>> 35f07ae328528e4e3e835d4c7f73a28ff4c14797
 class MenuItemReview(BaseModel):
   user_id: int
   menu_item_id: int
