@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 
-class MealRating(BaseModel):
+class MenuItemReview(BaseModel):
   user_id: int
   menu_item_id: int
   # 0 to 5 scale

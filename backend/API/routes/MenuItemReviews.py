@@ -1,20 +1,19 @@
 from fastapi import FastAPI
-from models.MenuItemReview import MealRating
-#from MenuItemReview import MealRating
+from API.models.MenuItemReview import MenuItemReview
+
 
 app = FastAPI()
 
-data = []
 
-#/MenuItemsReviews route
-# get every meal rating
-@app.get("/MenuItemReviews")
+data = []
+#Get every MenuItemReview
+@app.get("/MenuItemReview")
 async def get_meal_ratings():
   return data
 
-#add meal rating
-@app.post("/MenuItemReviews")
-async def add_meal_rating(meal_rating: MealRating):
-  data.append(meal_rating.dict())
-  return data[-1]
+#Add MenuItemReview to DB
+@app.post("/MenuItemReview", status_code=201)
+async def add_meal_rating(menuItemReview: MenuItemReview):
+  data.append(menuItemReview.dict())
+  return
 
