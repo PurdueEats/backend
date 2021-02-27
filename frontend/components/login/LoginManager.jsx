@@ -3,11 +3,22 @@ import { Image, StyleSheet, View, Text, TextInput } from "react-native";
 import Logo from "../../resources/logo.png";
 import { Button, Item, Toast } from 'native-base';
 
-const LoginManager = () => {
+function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     function handleLogin() {
+        // Sample code for sending package to API
+		// fetch(`/api/db/getBusinessData/` + params, {
+		// 	method: 'GET',
+		// 	headers : {
+		// 		'Content-Type': 'application/json',
+		// 		'Accept': 'application/json'
+		// 	}
+		// })
+		// 	.then(response => response.json())
+		// 	.then(response => this.setState({ "response" : response }))
+
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
@@ -15,9 +26,10 @@ const LoginManager = () => {
             textStyle: {
                 textAlign: 'center',
             },
-            duration: 1500
+            duration: 500
         });
-        console.log(email + " " + password)
+        console.log("email " + email + " password " + password)
+        navigation.navigate('Test')
     }
 
     function handleForgotPassword() {
@@ -32,6 +44,7 @@ const LoginManager = () => {
         <View>
             <View style={ styles.logoView }>
                 <Image source={ Logo } />
+				<Text style={ styles.logoTitle }>PurdueEats</Text>
             </View>
             <View style={ styles.formView }>
                 <Text style={ styles.formTitle }>Sign In</Text>
@@ -59,12 +72,17 @@ const LoginManager = () => {
             </View>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     logoView: {
         paddingTop: "12%",
         alignItems: "center",
+        marginBottom: "2%"
+    },
+	logoTitle: {
+        fontSize: 25,
+        fontWeight: "bold",
         marginBottom: "5%"
     },
     formView: {
@@ -76,7 +94,7 @@ const styles = StyleSheet.create({
     formTitle: {
         fontSize: 25,
         fontWeight: "bold",
-        marginBottom: "10%"
+        marginBottom: "8%"
     },
     componentIdentifier: {
         color: "red",
