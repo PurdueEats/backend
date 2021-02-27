@@ -1,13 +1,15 @@
+from typing import List
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import FileResponse
-from models.Users import UserIn, UserOut
-from models.UserExtra import UserExtra
-from models.UserProfile import UserProfile
-from models.UserFavoriteMenuItems import UserFavMeal
-from models.AppFeedback import Feedback
-from models.UserSchedule import UserSchedule
-from models.UserTransaction import UserTransaction
-from typing import List
+from API.models.Users import (
+    UserBasic
+    UserExtra
+    UserTransaction
+    UserProfile
+    UserTransaction
+    UserFavMenuItems
+  )
+
 
 app = FastAPI()
 
@@ -24,14 +26,14 @@ transaction_data = []
 #/Users route
 #
 # get every user
-@app.get("/Users", response_model=List[UserOut])
+@app.get("/", response_model=List[UserOut])
 async def get_users():
   return data
 
 #
 #/Users/Login route
 #
-@app.post("/Users/Login")
+@app.post("/Login")
 async def post_user_login():
   return
 
@@ -39,7 +41,7 @@ async def post_user_login():
 #/Users/Registers route
 #
 #add user to data
-@app.post("/Users/Register", response_model=UserOut)
+@app.post("/Register", status_code=201)
 async def add_user(user: UserIn):
   data.append(user.dict())
   return data[-1]
@@ -52,17 +54,20 @@ async def add_user(user: UserIn):
 async def get_a_user(user_id: int):
   return data[user_id - 1]
 
+
 #update a specific user
 @app.put("/Users/{UserID}", response_model=UserOut)
 async def update_user(user_id: int, user: UserIn):
   data[user_id - 1] = user.dict()
   return data[user_id - 1]
 
+
 #delete a specific user
 @app.delete("/Users/{UserID}", response_model=UserOut)
 async def delete_user(user_id: int):
   del data[user_id - 1]
   return {"info": "Successfully deleted"}
+
 
 #
 #/Users/{UserID}/Auth route
