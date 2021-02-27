@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from API.models.MenuItemReview import MenuItemReview
 from DB.Util import runQuery
  
@@ -21,6 +21,16 @@ async def get_meal_ratings():
 #Add MenuItemReview to DB
 @app.post("/", status_code=201)
 async def add_meal_rating(menuItemReview: MenuItemReview):
+
+  #Check for valid UserID and MenuItemId
+  user_id = [dict(row) for row in runQuery(f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {menuItemReview.user_id}")]
+  menu_id = [dict(row) for row in runQuery(f"SELECT COUNT(*) FROM MenuItems WHERE MenuItemID = {menuItemReview.menu_item_id}")]
+
+  if user_id[0]['f0_'] != 1:
+    raise HTTPException(status_code=400, detail='Invalid UserID')
+  if menu_id[0]['f0_'] != 1:
+    raise HTTPException(status_code=400, detail='Invalid MenuItemID')
+
   runQuery(f"""
   	INSERT INTO MenuItemsReviews values 
   	({menuItemReview.user_id}, {menuItemReview.menu_item_id},
