@@ -8,7 +8,7 @@ app = FastAPI()
 
 data = []
 #Get every MenuItemReview
-@app.get("/MenuItemReview", response_model=List[MenuItemReview])
+@app.get("/", response_model=List[MenuItemReview])
 async def get_meal_ratings():
 
   res = [dict(row) for row in runQuery("SELECT * FROM MenuItemsReviews")]
@@ -19,7 +19,7 @@ async def get_meal_ratings():
   return res
 
 #Add MenuItemReview to DB
-@app.post("/MenuItemReview", status_code=201)
+@app.post("/", status_code=201)
 async def add_meal_rating(menuItemReview: MenuItemReview):
   runQuery(f"""
   	INSERT INTO MenuItemsReviews values 
