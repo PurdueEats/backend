@@ -66,6 +66,11 @@ async def login_user(userBasic: UserBasic):
 
 
 #TODO: How to structure Auth routes?
+
+"""
+App.post Return Auth object UserOut - For Mark
+"""
+
 @app.post("/{UserID}/Auth")
 async def update_auth(userBasic: UserBasic):
 
@@ -195,4 +200,6 @@ async def post_transaction(UserID: int = Depends(auth.handler.auth_wrapper), use
     INSERT INTO UserTransaction values ({userTransation.user_id}, {userTransation.transaction_amount},
     {balance}, {userTransation.timestamp}
     """)
+
+  return
 
