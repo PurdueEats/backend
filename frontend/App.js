@@ -3,7 +3,7 @@ import { Root } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager"
-import TemplateComponent from "./components/Template/TemplateComponent";
+import TemplateComponent from "./components/template/TemplateComponent";
 
 export default function App() {
   const Stack = createStackNavigator();
