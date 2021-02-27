@@ -78,9 +78,6 @@ async def delete_user(userBasic: UserBasic):
 
 #TODO: How to structure Auth routes?
 
-"""
-App.post Return Auth object UserOut - For Mark
-"""
 async def return_auth(userBasic: UserBasic):
   #Fetch user using email
   user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}")]
