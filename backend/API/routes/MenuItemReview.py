@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI
 from API.models.MenuItemReview import MenuItemReview
 
@@ -7,7 +8,7 @@ app = FastAPI()
 
 data = []
 #Get every MenuItemReview
-@app.get("/MenuItemReview")
+@app.get("/MenuItemReview", response_model=List[MenuItemReview])
 async def get_meal_ratings():
   return data
 
