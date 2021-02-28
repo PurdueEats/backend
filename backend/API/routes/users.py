@@ -2,11 +2,11 @@ from typing import List
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import FileResponse
 from API.models.Users import (
-    UserBasic
-    UserExtra
-    UserProfile
-    UserSchedule
-    UserTransaction
+    UserBasic,
+    UserExtra,
+    UserProfile,
+    UserSchedule,
+    UserTransaction,
     UserFavMenuItems
   )
 
@@ -114,15 +114,15 @@ async def fetch_meal_plan(UserID: int = Depends(auth_handler.auth_wrapper)):
   if len(user_extra) != 1:
     raise HTTPException(status_code=404, detail='Meal Plan for user not found')
 
-  res = [UserExtra.parse_obj({'user_id':user_extra['UserID'], 'meal_plan_name':user_extra['MealPlanName']},
+  res = [UserExtra.parse_obj({'user_id':user_extra['UserID'], 'meal_plan_name':user_extra['MealPlanName'],
     'meal_swipe_count':user_extra['MealSwipeCount'], 'dining_dollar_amount':user_extra['DiningDollarBalance']
-    )]
+   } )]
 
   return res[0]
 
 
 @app.post("/{UserID}/MealPlan")
-async def assign_meal_plan(UserID: int = Depends(auth_handler.auth_wrapper), mealPlanName: str)
+async def assign_meal_plan(mealPlanName: str, UserID: int = Depends(auth_handler.auth_wrapper)):
   
   runQuery(f"DELETE from UserExtra WHERE UserID = {UserID}")
   meal_plan = [dict(row) for row in runQuery(f"SELECT * FROM MealPlan WHERE MealPlanName = {mealPlanName}")]
@@ -163,7 +163,7 @@ async def get_user_profile_pic(UserID: int = Depends(auth_handler.auth_wrapper))
 
 #post user's profile pic
 @app.post("/{UserID}/ProfilePic", status_code=201)
-async def upload_profile_pic(UserID: int = Depends(auth_handler.auth_wrapper), userProfile: UserProfile):
+async def upload_profile_pic(userProfile: UserProfile, UserID: int = Depends(auth_handler.auth_wrapper)):
 
   runQuery(f"DELETE FROM UserProfile WHERE UserID = {UserID}")
   runQuery(f"INSERT INTO UserProfile values ({userProfile.user_id}, {userProfile.profile_pic}")
@@ -186,7 +186,7 @@ async def get_user_schedule(UserID: int = Depends(auth_handler.auth_wrapper)):
 
 #post user's profile pic
 @app.post("/{UserID}/Schedule", status_code=201)
-async def upload_user_schedule(UserID: int = Depends(auth_handler.auth_wrapper), userSchedule: UserSchedule):
+async def upload_user_schedule(userSchedule: UserSchedule, UserID: int = Depends(auth_handler.auth_wrapper)):
 
   runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
   runQuery(f"INSERT INTO UserSchedule values ({userSchedule.user_id}, {userSchedule.schedule}")
@@ -205,7 +205,7 @@ async def fetch_transactions(userID: int = Depends(auth_handler.auth_wrapper)):
 
 
 @app.post("/{UserID}/Trans", status_code=201)
-async def post_transaction(UserID: int = Depends(auth.handler.auth_wrapper), userTransation: UserTransation):
+async def post_transaction(userTransation: UserTransation, UserID: int = Depends(auth.handler.auth_wrapper)):
 
   user_extra = [dict(row) for row in runQuery(f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
 
