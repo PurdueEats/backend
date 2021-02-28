@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Name from "./components/signup/Name"
 import Email from "./components/signup/Email"
 import MealPlan from "./components/signup/MealPlan"
-import DiningDollarEntry from "./components/signup/DiningDollarEntry";
+import LoginManager from "./components/login/LoginManager";
 
 
 export default function App() {
@@ -18,7 +18,7 @@ export default function App() {
                 <Stack.Navigator screenOptions={{
                     headerShown: false
                 }} initialRouteName="Email">
-                    <Stack.Screen name="Password" component={DiningDollarEntry}/>
+                    <Stack.Screen name="Password" component={LoginManager}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </Root>
