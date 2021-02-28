@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import { Button, Item } from 'native-base';
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 
 
@@ -235,7 +236,7 @@ const styles = StyleSheet.create({
 
 
 <View style={{flexDirection:'row',  justifyContent: 'space-around', alignItems: 'flex-end'}}>
-                                <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
+                                <TouchableOpacity active = { .5 } onPress={() => this.props.navigation.navigate('Login') }>
                                     <Image
                                         style={ styles.navBar }
                                         source={require('../../resources/home.png')}

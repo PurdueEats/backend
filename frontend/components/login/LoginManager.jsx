@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import { Button, Item } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 
 class LoginManager extends Component {
     constructor(props) {
