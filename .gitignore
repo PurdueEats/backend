@@ -4,3 +4,4 @@ prototypes/_*
 .idea
 
 */__pycache__
+/gen
