@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
 import { Button, Item } from 'native-base';
+import { sha256 } from 'react-native-sha256';
 
 class Password extends Component {
     constructor(props) {
@@ -9,8 +10,10 @@ class Password extends Component {
             password: ""
         };
     }
-    async storePassword() {
-        console.log("send name to database");
+    async storePassword(password) {
+        sha256(password).then( hash => {
+            // store hash
+        })
     }
 
     render() {
