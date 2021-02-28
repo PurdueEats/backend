@@ -1,23 +1,26 @@
 import * as React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { Root } from "native-base";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Name from "./components/signup/Name"
+import Email from "./components/signup/Email"
+import MealPlan from "./components/signup/MealPlan"
+import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 
-const styles = StyleSheet.create({
-    container: {
-        color: "green"
-    },
-});
 
 export default function App() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text style={ styles.container }>Universal React with Expo.</Text>
-      <Text style={ styles.container }>Very conveniently the frontend of PurdueEats!!</Text>
-    </View>
-  );
+    const Stack = createStackNavigator();
+
+    return (
+        // Do not remove Root! Root is necessary for toasts integrated in successive components.
+        <Root>
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{
+                    headerShown: false
+                }} initialRouteName="Email">
+                    <Stack.Screen name="Password" component={DiningDollarEntry}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+        </Root>
+    );
 }
