@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, View, Text, TextInput } from "react-native";
+import { Image, ScrollView, StyleSheet, View, Text, TextInput } from "react-native";
 import Logo from "../../resources/logo.png";
 import { Button, Item, Toast } from 'native-base';
 
@@ -18,7 +18,6 @@ function LoginManager({navigation}) {
 		// })
 		// 	.then(response => response.json())
 		// 	.then(response => this.setState({ "response" : response }))
-
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
@@ -29,7 +28,7 @@ function LoginManager({navigation}) {
             duration: 500
         });
         console.log("email " + email + " password " + password)
-        navigation.navigate('Test')
+        navigation.navigate("MealPreferences")
     }
 
     function handleForgotPassword() {
@@ -41,7 +40,7 @@ function LoginManager({navigation}) {
     }
 
     return (
-        <View>
+        <ScrollView>
             <View style={ styles.logoView }>
                 <Image source={ Logo } />
 				<Text style={ styles.logoTitle }>PurdueEats</Text>
@@ -70,7 +69,7 @@ function LoginManager({navigation}) {
                     </View>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 

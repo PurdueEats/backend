@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager"
 import TemplateComponent from "./components/template/TemplateComponent";
+import MealPreferences from "./components/login/MealPreferences";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -14,9 +15,10 @@ export default function App() {
           <NavigationContainer>
               <Stack.Navigator screenOptions={{
                   headerShown: false
-                }} initialRouteName="Login">
+                }} initialRouteName="MealPreferences">
                   <Stack.Screen name="Login" component={LoginManager}/>
                   <Stack.Screen name="Test" component={TemplateComponent} />
+                  <Stack.Screen name="MealPreferences" component={MealPreferences} />
               </Stack.Navigator>
           </NavigationContainer>
       </Root>
