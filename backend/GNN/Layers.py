@@ -75,3 +75,9 @@ class Layer(object):
     	
         for var in self.vars:
             tf.summary.histogram(self.name + '/vars/' + var, self.vars[var])
+
+
+class GCNLayer(Layer):
+
+    def __init__(self):
+        pass

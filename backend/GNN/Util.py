@@ -1,6 +1,13 @@
 import tensorflow as tf
 import numpy as np
 
+"""
+Semi-Supervised Classification with Graph Convolutional Networks
+Kipf, Thomas N. and Welling, Max
+International Conference on Learning Representations (ICLR)
+2017
+"""
+
 def glorot(shape, name=None):
     """Glorot & Bengio (AISTATS 2010) init."""
     init_range = np.sqrt(6.0/(shape[0]+shape[1]))
