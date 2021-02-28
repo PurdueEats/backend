@@ -1,13 +1,16 @@
 from typing import List
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Depends
 from fastapi.responses import FileResponse
+from API.routes.auth import AuthHandler
+from DB.Util import runQuery
 from API.models.Users import (
     UserBasic,
     UserExtra,
     UserProfile,
     UserSchedule,
     UserTransaction,
-    UserFavMenuItems
+    UserFavMenuItems,
+    UserOut
   )
 
 
@@ -194,7 +197,7 @@ async def upload_user_schedule(userSchedule: UserSchedule, UserID: int = Depends
   return
 
 
-@app.get("/{UserID}/Trans", response_model=List[UserTransation])
+@app.get("/{UserID}/Trans", response_model=List[UserTransaction])
 async def fetch_transactions(userID: int = Depends(auth_handler.auth_wrapper)):
 
   transactions = [dict(row) for row in runQuery(f"SELECT * FROM UserTransation WHERE UserID = {UserID} ORDER BY Timestamp")]
@@ -205,7 +208,7 @@ async def fetch_transactions(userID: int = Depends(auth_handler.auth_wrapper)):
 
 
 @app.post("/{UserID}/Trans", status_code=201)
-async def post_transaction(userTransation: UserTransation, UserID: int = Depends(auth.handler.auth_wrapper)):
+async def post_transaction(userTransation: UserTransaction, UserID: int = Depends(auth_handler.auth_wrapper)):
 
   user_extra = [dict(row) for row in runQuery(f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
 
