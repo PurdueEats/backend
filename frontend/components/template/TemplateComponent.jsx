@@ -4,6 +4,17 @@ import Logo from "../../resources/logo.png";
 
 function TemplateComponent({navigation}) {
 
+    // Sample code for sending package to API
+    // fetch(`/api/db/getBusinessData/` + params, {
+    // 	method: 'GET',
+    // 	headers : {
+    // 		'Content-Type': 'application/json',
+    // 		'Accept': 'application/json'
+    // 	}
+    // })
+    // 	.then(response => response.json())
+    // 	.then(response => this.setState({ "response" : response }))
+
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={ styles.screenView }>
