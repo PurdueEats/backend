@@ -7,6 +7,7 @@ function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    // API routing function
     function handleLogin() {
         // Sample code for sending package to API
 		// fetch(`/api/db/getBusinessData/` + params, {
