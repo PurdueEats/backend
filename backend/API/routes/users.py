@@ -1,6 +1,5 @@
 from typing import List
-from fastapi import FastAPI, File, UploadFile, Depends
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
 from API.models.Users import (
@@ -33,18 +32,18 @@ async def get_all_users():
 async def create_user(userBasic: UserBasic):
 
   #Validate user email
-  email = [dict(row) for row in runQuery(f"SELECT COUNT(*) FROM UserBasic WHERE Email = {userBasic.email}")]
+  email = [dict(row) for row in runQuery(f"SELECT COUNT(*) FROM UserBasic WHERE Email = '{userBasic.email}'")]
 
   if email[0]['f0_'] != 0:
     raise HTTPException(status_code=400, detail='Email already in use')
 
   hashed_password = auth_handler.get_password_hash(userBasic.password)
-  user_id = [dict(row) for row in runQuery("SELECT FARM_FINGERPRINT(TO_JSON_STRING(t)) as UserID")]
+  user_id = [dict(row) for row in runQuery("SELECT FARM_FINGERPRINT(GENERATE_UUID()) as UserID")]
 
   runQuery(f"""
     INSERT INTO UserBasic values 
-    ({user_id}, {userBasic.name},
-     {userBasic.email}, {hashed_password})
+    ({user_id[0]['UserID']}, '{userBasic.name}',
+     '{userBasic.email}', '{hashed_password}')
      """)
 
   return {'UserID': user_id}
@@ -54,10 +53,12 @@ async def create_user(userBasic: UserBasic):
 async def login_user(userBasic: UserBasic):
 
   #Fetch user using email
-  user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE Email = {userBasic.email}")]
+  user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE Email = '{userBasic.email}'")]
 
   if len(user) != 1:
     raise HTTPException(status_code=401, detail='Invalid username and/or password')
+
+  user = user[0]
 
   if not auth_handler.verify_password(userBasic.password, user['Password']):
     raise HTTPException(status_code=401, detail='Invalid username and/or password')
@@ -65,7 +66,7 @@ async def login_user(userBasic: UserBasic):
   token = auth_handler.encode_token(user['Email'])
 
 
-  return {'UserID': user_id, 'token': token }
+  return {'UserID': user['UserID'], 'token': token }
 
 
 async def delete_user(userBasic: UserBasic):
@@ -104,7 +105,7 @@ async def update_auth(userBasic: UserBasic):
 
   runQuery(f"""
     INSERT INTO UserBasic values 
-    ({user_id}, {userBasic.name},
+    ({userBasic.user_id}, {userBasic.name},
      {userBasic.email}, {hashed_password})
      """)
 
