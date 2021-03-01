@@ -1,3 +1,4 @@
+""" User routes module. Contains all user resource related routes"""
 from typing import List
 from fastapi import FastAPI, Depends, HTTPException
 from API.routes.auth import AuthHandler
@@ -72,20 +73,25 @@ async def login_user(userBasic: UserBasic):
     return {'UserID': user['UserID'], 'token': token}
 
 
-async def delete_user(userBasic: UserBasic):
+@app.delete("/{UserID}")
+async def delete_user(UserID: int = Depends(Depends(auth_handler.auth_wrapper))):
     # Fetch user using email
-    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}")]
+    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {UserID}")]
 
     if len(user) != 1:
         raise HTTPException(status_code=404, detail='User not found')
 
-    runQuery(f"DELETE FROM UserBasic WHERE UserID = {userBasic.user_id}")
-    # did not delete data associated with userid, do we need to delete them?
+    runQuery(f"DELETE FROM UserBasic WHERE UserID = {UserID}")
+    runQuery(f"DELETE FROM UserExtra WHERE UserID = {UserID}")
+    runQuery(f"DELETE FROM UserProfile WHERE UserID = {UserID}")
+    runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
+    runQuery(f"DELETE FROM UserTransaction WHERE UserID = {UserID}")
+    runQuery(f"DELETE FROM MenuItemReviews WHERE UserID = {UserID}")
+
     return
 
+
 # TODO: How to structure Auth routes?
-
-
 async def return_auth(userBasic: UserBasic):
     # Fetch user using email
     user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}")]
