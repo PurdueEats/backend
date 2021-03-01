@@ -1,55 +1,88 @@
-import React, { Component } from "react";
-import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
-import { Button, Item } from 'native-base';
+import React, { useState } from "react";
+import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import Logo from "../../resources/logo.png";
+import { Button, Item, Toast } from 'native-base';
 
-class LoginManager extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: "",
-            password: ""
-        };
+function LoginManager({navigation}) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    // TODO add check for token expiration
+    function tokenManager() {
+
     }
-    async forgotPwd() {}
 
-    render() {
-        return (
-            <View>
-                <View style={ styles.iconPosition }>
-                    <Image source = {require("../../resources/logo.png")} />
-                    <Text style={ styles.appName }>PurdueEats</Text>
-                </View>
-                <View style={ styles.content }>
-                    <Text style={ styles.signInContent }>Sign In</Text>
-                    <Text style={ styles.sectionHeader }>Email</Text>
-                    <Item style={ styles.emailContent }>
-                        <TextInput style={ styles.textInput } onChangeText={(email) => this.setState(email)} />
-                    </Item>
-                    <Text style={ styles.sectionHeader }>Password</Text>
-                    <Item style={ styles.passwordContent }>
-                        <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => this.setState(password)} />
-                    </Item>
-                </View>
-                <View style={ styles.buttons }>
-                    <Button style={ styles.signInButton }>
-                            <Text style={ styles.signInText }>Sign In</Text>
-                    </Button>
-                    <View style={ styles.optionText }>
-                        <View>
-                            <TouchableOpacity>
-                                <Text style={ styles.forgotPasswordText } >Forgot Password?</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View>
-                            <TouchableOpacity>
-                                <Text style={ styles.signUpText }>Sign Up</Text>
-                            </TouchableOpacity>
-                        </View>
+    function handleLogin() {
+        // Sample code for sending package to API
+        // fetch(`/api/db/getBusinessData/` + params, {
+        // 	method: 'GET',
+        // 	headers : {
+        // 		'Content-Type': 'application/json',
+        // 		'Accept': 'application/json'
+        // 	}
+        // })
+        // 	.then(response => response.json())
+        // 	.then(response => this.setState({ "response" : response }))
+
+        // following code for when sign in fails
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Wrong password!",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 500
+        });
+        // following command for if sign in is successful; assign token as global
+        navigation.navigate("MealPreferences")
+
+    }
+
+    function handleForgotPassword() {
+        // TODO
+    }
+
+    function handleSignUp() {
+        // TODO
+    }
+
+    return (
+        <ScrollView>
+            <View style={ styles.iconPosition }>
+                <Image source = { Logo } />
+                <Text style={ styles.appName }>PurdueEats</Text>
+            </View>
+            <View style={ styles.content }>
+                <Text style={ styles.signInContent }>Sign In</Text>
+                <Text style={ styles.sectionHeader }>Email</Text>
+                <Item style={ styles.emailContent }>
+                    <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
+                </Item>
+                <Text style={ styles.sectionHeader }>Password</Text>
+                <Item style={ styles.passwordContent }>
+                    <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
+                </Item>
+            </View>
+            <View style={ styles.buttons }>
+                <Button style={ styles.signInButton } onPress={ handleLogin }>
+                        <Text style={ styles.signInText }>Sign In</Text>
+                </Button>
+                <View style={ styles.optionText }>
+                    <View>
+                        <TouchableOpacity onPress={ handleForgotPassword }>
+                            <Text style={ styles.forgotPasswordText } >Forgot Password?</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity onPress={ handleSignUp }>
+                            <Text style={ styles.signUpText }>Sign Up</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
-        );
-    }
+        </ScrollView>
+    );
 }
 
 
