@@ -4,5 +4,8 @@
 #Package-lock
 **/package-lock.json
 
+#VSCode
+**/.vscode/
+
 # IntelliJ
 .idea
