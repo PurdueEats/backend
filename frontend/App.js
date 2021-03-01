@@ -5,6 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager"
 import TemplateComponent from "./components/template/TemplateComponent";
 import MealPreferences from "./components/login/MealPreferences";
+import Name from "./components/signup/Name"
+import Email from "./components/signup/Email"
+import MealPlan from "./components/signup/MealPlan"
+import LoginManager from "./components/login/LoginManager";
 
 export default function App() {
   const Stack = createStackNavigator();
