@@ -2,3 +2,6 @@ prototypes/_*
 
 # IntelliJ
 .idea
+
+*/__pycache__
+/gen
