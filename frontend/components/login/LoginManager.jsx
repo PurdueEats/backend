@@ -44,7 +44,7 @@ function LoginManager({navigation}) {
     }
 
     function handleSignUp() {
-        // TODO
+        navigation.navigate("SignupBegin")
     }
 
     return (
@@ -88,7 +88,7 @@ function LoginManager({navigation}) {
 
 const styles = StyleSheet.create({
     iconPosition: {
-        paddingTop: "15%",
+        paddingTop: "12%",
         marginBottom: "5%",
         alignItems: "center"
     },
@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "gray",
         alignItems: "center",
-        paddingTop: "10%",
-        paddingBottom: "10%",
+        paddingTop: "8%",
+        paddingBottom: "8%",
     },
     signUpText: {
         fontSize: 15,

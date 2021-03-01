@@ -24,7 +24,7 @@ function MealPreferences({navigation}) {
         // })
         // 	.then(response => response.json())
         // 	.then(response => this.setState({ "response" : response }))
-        navigation.navigate('Test')
+        navigation.navigate('Template')
     }
 
     return (
@@ -53,7 +53,7 @@ function MealPreferences({navigation}) {
                                     selectedColor={"#ff0000"}
                                     defaultRating={3}
                                     reviewSize={20}
-                                    size={30}
+                                    size={25}
                                     onFinishRating={ updateRating }
                                 />
                             </View>

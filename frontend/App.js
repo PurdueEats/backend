@@ -5,9 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager"
 import TemplateComponent from "./components/template/TemplateComponent";
 import MealPreferences from "./components/login/MealPreferences";
-import Name from "./components/signup/Name"
-import Email from "./components/signup/Email"
-import MealPlan from "./components/signup/MealPlan"
+import Name from "./components/signup/Name";
+import Email from "./components/signup/Email";
+import Password from "./components/signup/Password";
+import MealPlan from "./components/signup/MealPlan";
+import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 
 
 export default function App() {
@@ -20,9 +22,14 @@ export default function App() {
               <Stack.Navigator screenOptions={{
                   headerShown: false
                 }} initialRouteName="Login">
-                  <Stack.Screen name="Login" component={LoginManager}/>
-                  <Stack.Screen name="Test" component={TemplateComponent} />
-                  <Stack.Screen name="MealPreferences" component={MealPreferences} />
+                  <Stack.Screen name="Login" component={ LoginManager }/>
+                  <Stack.Screen name="SignupBegin" component={ Name }/>
+                  <Stack.Screen name="SignupEmail" component={ Email }/>
+                  <Stack.Screen name="SignupPassword" component={ Password }/>
+                  <Stack.Screen name="SignupMealPlan" component={ MealPlan }/>
+                  <Stack.Screen name="SignupDiningDollars" component={ DiningDollarEntry }/>
+                  <Stack.Screen name="MealPreferences" component={ MealPreferences }/>
+                  <Stack.Screen name="Template" component={ TemplateComponent }/>
               </Stack.Navigator>
           </NavigationContainer>
       </Root>
