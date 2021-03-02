@@ -56,7 +56,8 @@ async def create_user(userBasic: UserBasic):
 async def login_user(userBasic: UserBasic):
 
     # Fetch user using email
-    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE Email = '{userBasic.email}'")]
+    user = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserBasic WHERE Email = '{userBasic.email}'")]
 
     if len(user) != 1:
         raise HTTPException(
@@ -76,7 +77,8 @@ async def login_user(userBasic: UserBasic):
 @app.delete("/{UserID}")
 async def delete_user(UserID: int = Depends(auth_handler.auth_wrapper)):
     # Fetch user using email
-    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {UserID}")]
+    user = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserBasic WHERE UserID = {UserID}")]
 
     if len(user) != 1:
         raise HTTPException(status_code=404, detail='User not found')
@@ -88,29 +90,31 @@ async def delete_user(UserID: int = Depends(auth_handler.auth_wrapper)):
     runQuery(f"DELETE FROM UserTransaction WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserFavoriteMenuItems WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM MenuItemsReviews WHERE UserID = {UserID}")
-    #Add delete Dinning Review and Dinning Review
+    # Add delete Dinning Review and Dinning Review
 
     return
 
 
 # TODO: How to structure Auth routes?
-@app.get("/{UserID}/Auth")
-async def return_auth(userBasic: UserBasic):
+@app.get("/{UserID}/Auth", response_model=UserOut)
+async def return_auth(UserID: int = Depends(auth_handler.auth_wrapper)):
     # Fetch user using email
-    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}")]
+    user = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserBasic WHERE UserID = {UserID}")]
+
     if len(user) != 1:
         raise HTTPException(status_code=404, detail='User not found')
 
-    return runQuery(f"""
-    SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}
-     """)
+    user = user[0]
+    res = UserOut.parse_obj()
 
 
 @app.post("/{UserID}/Auth")
 async def update_auth(userBasic: UserBasic):
 
     # Fetch user using email
-    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}")]
+    user = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}")]
 
     if len(user) != 1:
         raise HTTPException(status_code=404, detail='User not found')
@@ -127,7 +131,8 @@ async def update_auth(userBasic: UserBasic):
 @app.get("/{UserID}/MealPlan", response_model=UserExtra)
 async def fetch_meal_plan(UserID: int = Depends(auth_handler.auth_wrapper)):
 
-    user_extra = [dict(row) for row in runQuery(f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
+    user_extra = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
 
     if len(user_extra) != 1:
         raise HTTPException(
@@ -144,7 +149,8 @@ async def fetch_meal_plan(UserID: int = Depends(auth_handler.auth_wrapper)):
 async def assign_meal_plan(mealPlanName: str, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     runQuery(f"DELETE from UserExtra WHERE UserID = {UserID}")
-    meal_plan = [dict(row) for row in runQuery(f"SELECT * FROM MealPlan WHERE MealPlanName = {mealPlanName}")]
+    meal_plan = [dict(row) for row in runQuery(
+        f"SELECT * FROM MealPlan WHERE MealPlanName = {mealPlanName}")]
 
     if len(meal_plan) != 1:
         raise HTTPException(status_code=404, detail='Meal Plan not found')
@@ -152,7 +158,8 @@ async def assign_meal_plan(mealPlanName: str, UserID: int = Depends(auth_handler
     """
   Needs hardcore update to change transaction history
   """
-    transactions = [dict(row) for row in runQuery(f"SELECT TransactionAmount FROM UserTransation WHERE UserID = {UserID}")]
+    transactions = [dict(row) for row in runQuery(
+        f"SELECT TransactionAmount FROM UserTransation WHERE UserID = {UserID}")]
 
     for trans in transactions:
         meal_plan['DiningDollars'] - trans['TransactionAmount']
@@ -170,7 +177,8 @@ async def assign_meal_plan(mealPlanName: str, UserID: int = Depends(auth_handler
 @app.get("/{UserID}/ProfilePic", response_model=UserProfile)
 async def get_user_profile_pic(UserID: int = Depends(auth_handler.auth_wrapper)):
 
-    profile = [dict(row) for row in runQuery(f"SELECT * FROM UserProfile WHERE UserID = {UserID}")]
+    profile = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserProfile WHERE UserID = {UserID}")]
 
     if len(profile) != 1:
         raise HTTPException(
@@ -187,7 +195,8 @@ async def get_user_profile_pic(UserID: int = Depends(auth_handler.auth_wrapper))
 async def upload_profile_pic(userProfile: UserProfile, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     runQuery(f"DELETE FROM UserProfile WHERE UserID = {UserID}")
-    runQuery(f"INSERT INTO UserProfile values ({userProfile.user_id}, {userProfile.profile_pic}")
+    runQuery(
+        f"INSERT INTO UserProfile values ({userProfile.user_id}, {userProfile.profile_pic}")
 
     return
 
@@ -195,7 +204,8 @@ async def upload_profile_pic(userProfile: UserProfile, UserID: int = Depends(aut
 @app.get("/{UserID}/Schedule", response_model=UserSchedule)
 async def get_user_schedule(UserID: int = Depends(auth_handler.auth_wrapper)):
 
-    schedule = [dict(row) for row in runQuery(f"SELECT * FROM UserSchedule WHERE UserID = {UserID}")]
+    schedule = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserSchedule WHERE UserID = {UserID}")]
 
     if len(schedule) != 1:
         raise HTTPException(status_code=404, detail='Schedule not found')
@@ -208,7 +218,6 @@ async def get_user_schedule(UserID: int = Depends(auth_handler.auth_wrapper)):
 
 # post user's profile pic
 @app.post("/{UserID}/Schedule", status_code=201)
-
 async def upload_user_schedule(userSchedule: UserSchedule, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
@@ -221,9 +230,10 @@ async def upload_user_schedule(userSchedule: UserSchedule, UserID: int = Depends
 @app.get("/{UserID}/Trans", response_model=List[UserTransaction])
 async def fetch_transactions(userID: int = Depends(auth_handler.auth_wrapper)):
 
-    transactions = [dict(row) for row in runQuery(f"SELECT * FROM UserTransation WHERE UserID = {userID} ORDER BY Timestamp")]
+    transactions = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserTransation WHERE UserID = {userID} ORDER BY Timestamp")]
     res = [UserTransaction.parse_obj({'user_id': row['UserId'], 'transaction_amount':row['TransactionAmount'],
-                                     'balance':row['Balance'], 'timestamp': row['Timestamp']}) for row in transactions]
+                                      'balance':row['Balance'], 'timestamp': row['Timestamp']}) for row in transactions]
 
     return res
 
@@ -231,7 +241,8 @@ async def fetch_transactions(userID: int = Depends(auth_handler.auth_wrapper)):
 @app.post("/{UserID}/Trans", status_code=201)
 async def post_transaction(userTransation: UserTransaction, UserID: int = Depends(auth_handler.auth_wrapper)):
 
-    user_extra = [dict(row) for row in runQuery(f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
+    user_extra = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
 
     if len(user_extra) != 1:
         raise HTTPException(status_code=401, detail='Invalid user')
