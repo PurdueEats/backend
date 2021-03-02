@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
 import { Button, Item } from 'native-base';
-//import CurrencyInput from 'react-native-currency-input';
 
 
 class DiningDollarEntry extends Component {
