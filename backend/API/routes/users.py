@@ -74,7 +74,7 @@ async def login_user(userBasic: UserBasic):
 
 
 @app.delete("/{UserID}")
-async def delete_user(UserID: int = Depends(Depends(auth_handler.auth_wrapper))):
+async def delete_user(UserID: int = Depends(auth_handler.auth_wrapper)):
     # Fetch user using email
     user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {UserID}")]
 
@@ -86,7 +86,9 @@ async def delete_user(UserID: int = Depends(Depends(auth_handler.auth_wrapper)))
     runQuery(f"DELETE FROM UserProfile WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserTransaction WHERE UserID = {UserID}")
+    runQuery(f"DELETE FROM UserFavoriteMenuItems WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM MenuItemReviews WHERE UserID = {UserID}")
+    #Add delete Dinning Review and Dinning Review Vote later
 
     return
 
