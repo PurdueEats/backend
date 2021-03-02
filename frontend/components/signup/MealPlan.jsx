@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
-import { Container, Header, Content, Picker, Form, Button, Item } from 'native-base';
+import { StyleSheet, SafeAreaView, Text } from "react-native";
+import { Button } from 'native-base';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
@@ -11,6 +11,7 @@ class MealPlan extends Component {
             selected: "key1"
         };
     }
+
     onValueChange(value: string) {
         this.setState({
             selected: value
