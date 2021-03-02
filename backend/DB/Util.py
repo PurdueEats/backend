@@ -1,5 +1,5 @@
 from google.cloud import bigquery
-from CreateDBSchema import (
+from DB.CreateDBSchema import (
 	create_user_tables,
 	create_dining_facilities_tables,
 	create_menu_items_table,

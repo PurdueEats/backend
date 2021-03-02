@@ -19,7 +19,7 @@ create_user_tables = {
 		UserID					INT64,
 		MealPlanName 			STRING,
 		MealSwipeCount			INT64,
-		DiningDollarBalance	INT64
+		DiningDollarBalance		FLOAT64
 	)
 	""",
 
@@ -28,8 +28,8 @@ create_user_tables = {
 	CREATE OR REPLACE TABLE UserTransaction
 	(
 		UserID					INT64,
-		TransactionAmount 		INT64,
-		Balance					INT64,
+		TransactionAmount 		FLOAT64,
+		Balance					FLOAT64,
 		Timestamp				TIMESTAMP
 	)
 	""",
@@ -72,7 +72,7 @@ create_dining_facilities_tables = {
 	CREATE OR REPLACE TABLE DiningFacilities
 	(
 		DiningFacilityID			INT64,
-		DiningFacilityName 		STRING,
+		DiningFacilityName 			STRING,
 		Description					STRING,
 		Address						STRING,
 		Image						BYTES
@@ -153,7 +153,7 @@ create_auxiliary_tables = {
 	(
 		MealPlanName		STRING,
 		MealSwipes			INT64,
-		DiningDollars		INT64
+		DiningDollars		FLOAT64
 	)
 	"""
 	,
