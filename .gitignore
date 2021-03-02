@@ -3,3 +3,6 @@
 
 # IntelliJ
 .idea
+
+*/__pycache__
+/gen

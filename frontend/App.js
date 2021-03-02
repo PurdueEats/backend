@@ -1,23 +1,37 @@
 import * as React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { Root } from "native-base";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginManager from "./components/login/LoginManager"
+import TemplateComponent from "./components/template/TemplateComponent";
+import MealPreferences from "./components/login/MealPreferences";
+import Name from "./components/signup/Name";
+import Email from "./components/signup/Email";
+import Password from "./components/signup/Password";
+import MealPlan from "./components/signup/MealPlan";
+import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 
-const styles = StyleSheet.create({
-    container: {
-        color: "green"
-    },
-});
 
 export default function App() {
+  const Stack = createStackNavigator();
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text style={ styles.container }>Universal React with Expo.</Text>
-      <Text style={ styles.container }>Very conveniently the frontend of PurdueEats!!</Text>
-    </View>
+      // Do not remove Root! Root is necessary for toasts integrated in successive components.
+      <Root>
+          <NavigationContainer>
+              <Stack.Navigator screenOptions={{
+                  headerShown: false
+                }} initialRouteName="Login">
+                  <Stack.Screen name="Login" component={ LoginManager }/>
+                  <Stack.Screen name="SignupBegin" component={ Name }/>
+                  <Stack.Screen name="SignupEmail" component={ Email }/>
+                  <Stack.Screen name="SignupPassword" component={ Password }/>
+                  <Stack.Screen name="SignupMealPlan" component={ MealPlan }/>
+                  <Stack.Screen name="SignupDiningDollars" component={ DiningDollarEntry }/>
+                  <Stack.Screen name="MealPreferences" component={ MealPreferences }/>
+                  <Stack.Screen name="Template" component={ TemplateComponent }/>
+              </Stack.Navigator>
+          </NavigationContainer>
+      </Root>
   );
 }
