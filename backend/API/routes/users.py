@@ -76,7 +76,7 @@ async def login_user(userBasic: UserBasic):
 @app.delete("/{UserID}")
 async def delete_user(UserID: int = Depends(auth_handler.auth_wrapper)):
     # Fetch user using email
-    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {UserID}")]
+    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE EMail = '{UserID}'")]
 
     if len(user) != 1:
         raise HTTPException(status_code=404, detail='User not found')
