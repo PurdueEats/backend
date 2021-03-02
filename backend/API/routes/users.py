@@ -68,7 +68,7 @@ async def login_user(userBasic: UserBasic):
         raise HTTPException(
             status_code=401, detail='Invalid username and/or password')
 
-    token = auth_handler.encode_token(user['Email'])
+    token = auth_handler.encode_token(user['Email'], user['UserID'])
 
     return {'UserID': user['UserID'], 'token': token}
 
@@ -76,7 +76,7 @@ async def login_user(userBasic: UserBasic):
 @app.delete("/{UserID}")
 async def delete_user(UserID: int = Depends(auth_handler.auth_wrapper)):
     # Fetch user using email
-    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE EMail = '{UserID}'")]
+    user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {UserID}")]
 
     if len(user) != 1:
         raise HTTPException(status_code=404, detail='User not found')
@@ -87,8 +87,8 @@ async def delete_user(UserID: int = Depends(auth_handler.auth_wrapper)):
     runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserTransaction WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserFavoriteMenuItems WHERE UserID = {UserID}")
-    runQuery(f"DELETE FROM MenuItemReviews WHERE UserID = {UserID}")
-    #Add delete Dinning Review and Dinning Review Vote later
+    runQuery(f"DELETE FROM MenuItemsReviews WHERE UserID = {UserID}")
+    #Add delete Dinning Review and Dinning Review
 
     return
 
