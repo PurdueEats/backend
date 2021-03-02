@@ -1,8 +1,8 @@
-#Schema Description of all User related tables
+# Schema Description of all User related tables
 create_user_tables = {
-	
-	"User_Basic":
-	f"""
+
+        "User_Basic":
+        f"""
 	CREATE OR REPLACE TABLE UserBasic
 	(
 		UserID			INT64,
@@ -12,8 +12,8 @@ create_user_tables = {
 	)
 	""",
 
-	"User_Extra":
-	f"""
+        "User_Extra":
+        f"""
 	CREATE OR REPLACE TABLE UserExtra
 	(
 		UserID					INT64,
@@ -23,8 +23,8 @@ create_user_tables = {
 	)
 	""",
 
-	"User_Transaction":
-	f"""
+        "User_Transaction":
+        f"""
 	CREATE OR REPLACE TABLE UserTransaction
 	(
 		UserID					INT64,
@@ -34,8 +34,8 @@ create_user_tables = {
 	)
 	""",
 
-	"User_Profile":
-	f"""
+        "User_Profile":
+        f"""
 	CREATE OR REPLACE TABLE UserProfile
 	(
 		UserID			INT64,
@@ -43,8 +43,8 @@ create_user_tables = {
 	)
 	""",
 
-	"User_Schedulle":
-	f"""
+        "User_Schedulle":
+        f"""
 	CREATE OR REPLACE TABLE UserProfile
 	(
 		UserID			INT64,
@@ -52,8 +52,8 @@ create_user_tables = {
 	)
 	""",
 
-	"User_Favorite_Menu_Items":
-	f"""
+        "User_Favorite_Menu_Items":
+        f"""
 	CREATE OR REPLACE TABLE UserFavoriteMenuItems
 	(
 		UserID			INT64,
@@ -64,11 +64,11 @@ create_user_tables = {
 
 }
 
-#Schema Description of all Dining Facility related tables
+# Schema Description of all Dining Facility related tables
 create_dining_facilities_tables = {
-	
-	"Dining_Facilities":
-	f"""
+
+        "Dining_Facilities":
+        f"""
 	CREATE OR REPLACE TABLE DiningFacilities
 	(
 		DiningFacilityID			INT64,
@@ -80,8 +80,8 @@ create_dining_facilities_tables = {
 	""",
 
 
-	"Dining_Facility_Reviews":
-	f"""
+        "Dining_Facility_Reviews":
+        f"""
 	CREATE OR REPLACE TABLE DiningFacilities
 	(
 		DiningFacilityReviewID		INT64,
@@ -94,8 +94,8 @@ create_dining_facilities_tables = {
 	)
 	""",
 
-	"Dining_Facility_Review_Vote":
-	f"""
+        "Dining_Facility_Review_Vote":
+        f"""
 	CREATE OR REPLACE TABLE DiningFacilities
 	(
 		DiningFacilityReviewID		INT64,
@@ -104,8 +104,8 @@ create_dining_facilities_tables = {
 	)
 	""",
 
-	"Dining_Facility_Menu_Items":
-	f"""
+        "Dining_Facility_Menu_Items":
+        f"""
 	CREATE OR REPLACE TABLE DiningFacilityMenuItems
 	(
 		DiningFacilityID		INT64,
@@ -117,11 +117,11 @@ create_dining_facilities_tables = {
 	"""
 }
 
-#Schema Description of all Menu Items related tables
+# Schema Description of all Menu Items related tables
 create_menu_items_table = {
-	
-	"Menu_Items":
-	f"""
+
+        "Menu_Items":
+        f"""
 	CREATE OR REPLACE TABLE MenuItems
 	(
 		MenuItemID		INT64,
@@ -132,8 +132,8 @@ create_menu_items_table = {
 	)
 	""",
 
-	"Menu_Items_Reviews":
-	f"""
+        "Menu_Items_Reviews":
+        f"""
 	CREATE OR REPLACE TABLE MenuItemsReviews
 	(
 		MenuItemID		INT64,
@@ -144,43 +144,40 @@ create_menu_items_table = {
 	""",
 }
 
-#Schema Description of all Auxiliary tables
+# Schema Description of all Auxiliary tables
 create_auxiliary_tables = {
-	
-	"MealPlan":
-	f"""
+
+        "MealPlan":
+        f"""
 	CREATE OR REPLACE TABLE MealPlan
 	(
 		MealPlanName		STRING,
 		MealSwipes			INT64,
 		DiningDollars		FLOAT64
 	)
-	"""
-	,
+	""",
 
-	"App_Feedback":
-	f"""
+        "App_Feedback":
+        f"""
 	CREATE OR REPLACE TABLE AppFeedback
 	(
 		UserID				INT64,
 		FeedbackText		STRING,
 		Timestamp 			TIMESTAMP
 	)
-	"""
-	,
+	""",
 
-	"FAQ":
-	f"""
+        "FAQ":
+        f"""
 	CREATE OR REPLACE TABLE FAQ
 	(
 		Question	STRING,
 		Answer		STRING
 	)
-	"""
-	,
+	""",
 
-	"Purdue_Fun_Fact":
-	f"""
+        "Purdue_Fun_Fact":
+        f"""
 	CREATE OR REPLACE TABLE PurdueFunFact
 	(
 		FunFact 	STRING,
