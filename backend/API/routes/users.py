@@ -92,6 +92,7 @@ async def delete_user(UserID: int = Depends(Depends(auth_handler.auth_wrapper)))
 
 
 # TODO: How to structure Auth routes?
+@app.get("/{UserID}/Auth")
 async def return_auth(userBasic: UserBasic):
     # Fetch user using email
     user = [dict(row) for row in runQuery(f"SELECT * FROM UserBasic WHERE UserID = {userBasic.user_id}")]
