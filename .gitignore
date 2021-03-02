@@ -7,5 +7,10 @@
 #VSCode
 **/.vscode/
 
+#Setup Files
+**/dist/
+**/PurdueEats.egg-info/
+**/build/
+
 # IntelliJ
 .idea
