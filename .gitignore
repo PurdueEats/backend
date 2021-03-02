@@ -3,8 +3,6 @@
 
 # IntelliJ
 .idea
-<<<<<<< HEAD
+
 */__pycache__
 /gen
-=======
->>>>>>> 8bd76a18e89e4b0910b1b26479e96409dc47ba0e
