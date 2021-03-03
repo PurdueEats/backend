@@ -3,7 +3,7 @@ from typing import List
 from fastapi import FastAPI, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
-from API.models.Users import (
+from API.models.users import (
     UserBasic,
     UserExtra,
     UserProfile,

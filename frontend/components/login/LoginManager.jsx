@@ -6,6 +6,7 @@ import { Button, Item, Toast } from 'native-base';
 function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [response, setResponse] = useState('');
 
     // TODO add check for token expiration
     function tokenManager() {
@@ -14,15 +15,22 @@ function LoginManager({navigation}) {
 
     function handleLogin() {
         // Sample code for sending package to API
-        // fetch(`/api/db/getBusinessData/` + params, {
-        // 	method: 'GET',
-        // 	headers : {
-        // 		'Content-Type': 'application/json',
-        // 		'Accept': 'application/json'
-        // 	}
-        // })
-        // 	.then(response => response.json())
-        // 	.then(response => this.setState({ "response" : response }))
+        fetch(`http://127.0.0.1:8000/Login`, {
+        	method: 'POST',
+        	headers : {
+        		'Content-Type': 'application/json',
+        		'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": 0,
+                "name": "",
+                "email": "mark@example.com",
+                "password": "dicksandshit"
+            })
+        })
+        	.then(response => response.json())
+            .then(response => setResponse(response))
+            console.log(response)
 
         // following code for when sign in fails
         Toast.show({
