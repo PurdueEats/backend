@@ -17,12 +17,11 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Profile" component={ProfileManager} />
-      <Stack.Screen name="Login" component={LoginManager} />
     </Stack.Navigator>
   );
 }
 
-const ContactStackNavigator = () => {
+const LoginStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Login" component={LoginManager} />
@@ -30,4 +29,4 @@ const ContactStackNavigator = () => {
   );
 }
 
-export { MainStackNavigator, ContactStackNavigator };
+export { MainStackNavigator, LoginStackNavigator };

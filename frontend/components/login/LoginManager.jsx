@@ -21,7 +21,9 @@ class LoginManager extends Component {
                     <Text style={ styles.appName }>PurdueEats</Text>
                 </View>
                 <View style={ styles.content }>
+                    <TouchableOpacity active = { .5 } onPress={() => this.props.navigation.navigate('Profile') }>
                     <Text style={ styles.signInContent }>Sign In</Text>
+                    </TouchableOpacity>
                     <Text style={ styles.sectionHeader }>Email</Text>
                     <Item style={ styles.emailContent }>
                         <TextInput style={ styles.textInput } onChangeText={(email) => this.setState(email)} />
@@ -42,7 +44,7 @@ class LoginManager extends Component {
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <TouchableOpacity>
+                            <TouchableOpacity active = { .5 } onPress={() => this.props.navigation.navigate('Profile') }>
                                 <Text style={ styles.signUpText }>Sign Up</Text>
                             </TouchableOpacity>
                         </View>

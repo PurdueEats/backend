@@ -92,80 +92,74 @@ const styles = StyleSheet.create({
 
     render () {
     return (
-
-
-
-
-
          <View
               style={{
               flex: 1,
+              }}
 
-                            }}
+         >
 
-                        >
+            <View
+                style={styles.profileHeader
 
-        <View
-                    style={styles.profileHeader
+                }
+            >
+                <View
+                style={{ width: 40, height: 40}}
 
-                    }
                 >
-        <View
-            style={{ width: 40, height: 40}}
-
-        >
 
 
-        <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
-        <Image
-                    style={{ width: 40, height: 40,  }}
-                    source={require('../../resources/arrow.png')}
-                />
-        </TouchableOpacity>
-        </View>
-
-        <Text style={ styles.profileWord }>Profile</Text>
-        <Text style={ styles.profileWord }>       </Text>
-        </View>
-
-
-         <View
-            style={{
-            alignItems: "center",
-            justifyContent: "center",
-
-            }}
-        >
-
-        <Image
-            style={ styles.profileImage }
-            source={require('../../resources/profileicon.png')}
-        />
-        </View>
-
-
-        <View
-                    style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    }}
-                >
-        <Text style={ styles.textNormal }>   Firstname Lastname </Text>
-
-
-        <Image
-                            style={ styles.editImage }
-                            source={require('../../resources/edit.png')}
+                    <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
+                        <Image
+                            style={{ width: 40, height: 40,  }}
+                            source={require('../../resources/arrow.png')}
                         />
-        </View>
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={ styles.profileWord }>Profile</Text>
+                <Text style={ styles.profileWord }>       </Text>
+            </View>
 
 
-        <View
-                            style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            }}
-                        >
+            <View
+                style={{
+                alignItems: "center",
+                justifyContent: "center",
+
+                }}
+            >
+
+                <Image
+                    style={ styles.profileImage }
+                    source={require('../../resources/profileicon.png')}
+                />
+            </View>
+
+
+            <View
+                style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                }}
+            >
+                <Text style={ styles.textNormal }>   Firstname Lastname </Text>
+
+
+                <Image
+                    style={ styles.editImage }
+                    source={require('../../resources/edit.png')}
+                />
+            </View>
+
+
+            <View
+                style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                }}
+            >
                 <Text style={ styles.textNormal }>   email111@purdue.edu </Text>
 
                 <Image
@@ -173,102 +167,96 @@ const styles = StyleSheet.create({
                     source={require('../../resources/edit.png')}
                 />
 
-                </View>
+            </View>
 
 
 
 
 
-        <View
-                  style={ styles.border
-                  }
+            <View/>
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                }}
+            >
+                <Text style={ styles.textNormal }>   Boiler Flex Unlimited Plan 350 </Text>
+
+
+                <Image
+                    style={ styles.editImage }
+                    source={require('../../resources/edit.png')}
                 />
-                    <View
-                                    style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    }}
-                                >
-                        <Text style={ styles.textNormal }>   Boiler Flex Unlimited Plan 350 </Text>
+            </View>
 
-
-                        <Image
-                                            style={ styles.editImage }
-                                            source={require('../../resources/edit.png')}
-                                        />
-                        </View>
-
-
-        <View
-                                            style={{
-                                            flexDirection: "row",
-                                            justifyContent: "space-between",
-                                            }}
-                                        >
-                                <Text style={ styles.textNormal }>   Dining Dollars Left: $340.56 </Text>
-
-
-                                <Image
-                                                    style={ styles.editImage }
-                                                    source={require('../../resources/edit.png')}
-                                                />
-                                </View>
 
             <View
-                              style={
-                              styles.border
-                              }
-                            />
-
-                    <View
-                        style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-
-                        }}
-                    >
-                    <Text style={ styles.textNormal}>Track Meals</Text>
-                    <Text style={ styles.textNormal}>Change Password</Text>
-                    <Text style={ styles.textNormalRed}>Delete Account</Text>
-
-                    </View>
+                style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                }}
+            >
+                <Text style={ styles.textNormal }>   Dining Dollars Left: $340.56 </Text>
 
 
-
-<View style={{flexDirection:'row',  justifyContent: 'space-around', alignItems: 'flex-end'}}>
-                                <TouchableOpacity active = { .5 } onPress={() => this.props.navigation.navigate('Login') }>
-                                    <Image
-                                        style={ styles.navBar }
-                                        source={require('../../resources/home.png')}
-                                    />
-                                </TouchableOpacity>
-                                <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
-                                <Image
-                                    style={ styles.navBar }
-                                    source={require('../../resources/map.png')}
-                                />
-                                </TouchableOpacity>
-                                <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
-                                <Image
-                                    style={ styles.navBar }
-                                    source={require('../../resources/buddy.png')}
-                                />
-                                </TouchableOpacity>
-                                <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
-                                <Image
-                                    style={ styles.navBar }
-                                    source={require('../../resources/profile.png')}
-                                />
-                                </TouchableOpacity>
-                                <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
-                                <Image
-                                    style={ styles.navBar }
-                                   source={require('../../resources/settings.png')}
-                                />
-                                </TouchableOpacity>
-
-                            </View>
+                <Image
+                    style={ styles.editImage }
+                    source={require('../../resources/edit.png')}
+                />
             </View>
+
+            <View/>
+
+            <View
+                style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+
+                }}
+            >
+                <Text style={ styles.textNormal}>Track Meals</Text>
+                <Text style={ styles.textNormal}>Change Password</Text>
+                <Text style={ styles.textNormalRed}>Delete Account</Text>
+
+            </View>
+
+            <View style={{flexDirection:'row',  justifyContent: 'space-around', alignItems: 'flex-end'}}>
+                <TouchableOpacity active = { .5 } onPress={() => this.props.navigation.navigate('Login') }>
+                    <Image
+                        style={ styles.navBar }
+                        source={require('../../resources/home.png')}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
+                    <Image
+                        style={ styles.navBar }
+                        source={require('../../resources/map.png')}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
+                    <Image
+                        style={ styles.navBar }
+                        source={require('../../resources/buddy.png')}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
+                    <Image
+                        style={ styles.navBar }
+                        source={require('../../resources/profile.png')}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
+                    <Image
+                        style={ styles.navBar }
+                        source={require('../../resources/settings.png')}
+                    />
+                </TouchableOpacity>
+
+             </View>
+
+
+
+         </View>
   );
   }
 }
