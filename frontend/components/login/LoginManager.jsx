@@ -16,6 +16,7 @@ function LoginManager({navigation}) {
     function handleLogin() {
         // Sample code for sending package to API
         
+        //Login Route
         // fetch(`http://127.0.0.1:8000/Login`, {
         // 	method: 'POST',
         // 	headers : {
@@ -32,7 +33,7 @@ function LoginManager({navigation}) {
         // 	.then(response => response.json())
         //     .then(response => setResponse(response))
 
-
+        //MealPlan Route
         fetch(`http://127.0.0.1:8000/-1954205092411918600/MealPlan`, {
         	method: 'GET',
         	headers : {
