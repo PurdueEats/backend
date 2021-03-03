@@ -38,14 +38,14 @@ create_user_tables = {
         f"""
 	CREATE OR REPLACE TABLE UserProfile
 	(
-		UserID			INT64,
-		ProfilePicture	BYTES
+		UserID				INT64,
+		ProfilePicture		BYTES
 	)
 	""",
 
-        "User_Schedulle":
-        f"""
-	CREATE OR REPLACE TABLE UserProfile
+	"User_Schedule":
+	f"""
+	CREATE OR REPLACE TABLE UserSchedule
 	(
 		UserID			INT64,
 		Schedule 		BYTES
