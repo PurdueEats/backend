@@ -1,8 +1,8 @@
 import React from "react";
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
 import Logo from "../../resources/logo.png";
 
-function TemplateComponent({navigation}) {
+function MapManager({navigation}) {
 
     // Sample code for sending package to API
     // fetch(`/api/db/getBusinessData/` + params, {
@@ -16,11 +16,11 @@ function TemplateComponent({navigation}) {
     // 	.then(response => this.setState({ "response" : response }))
 
     return (
-        // Do not remove ScrollView. Adds scrolling to screens.
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={ styles.screenView }>
                 <Image style={ styles.logoImage } source={ Logo } />
             </View>
+            <Text> Welp, there's no map yet. </Text>
         </ScrollView>
     );
 }
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default TemplateComponent;
+export default MapManager;

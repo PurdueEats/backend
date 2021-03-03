@@ -10,6 +10,7 @@ import Email from "./components/signup/Email";
 import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
 import DiningDollarEntry from "./components/signup/DiningDollarEntry";
+import MapManager from "./components/map/MapManager";
 
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
                   <Stack.Screen name="SignupMealPlan" component={ MealPlan }/>
                   <Stack.Screen name="SignupDiningDollars" component={ DiningDollarEntry }/>
                   <Stack.Screen name="MealPreferences" component={ MealPreferences }/>
+                  <Stack.Screen name="Map" component={ MapManager }/>
                   <Stack.Screen name="Template" component={ TemplateComponent }/>
               </Stack.Navigator>
           </NavigationContainer>
