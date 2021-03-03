@@ -15,22 +15,35 @@ function LoginManager({navigation}) {
 
     function handleLogin() {
         // Sample code for sending package to API
-        fetch(`http://127.0.0.1:8000/Login`, {
-        	method: 'POST',
+        
+        // fetch(`http://127.0.0.1:8000/Login`, {
+        // 	method: 'POST',
+        // 	headers : {
+        // 		'Content-Type': 'application/json',
+        // 		'Accept': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         "user_id": 0,
+        //         "name": "",
+        //         "email": "mark@example.com",
+        //         "password": "dicksandshit"
+        //     })
+        // })
+        // 	.then(response => response.json())
+        //     .then(response => setResponse(response))
+
+
+        fetch(`http://127.0.0.1:8000/-1954205092411918600/MealPlan`, {
+        	method: 'GET',
         	headers : {
         		'Content-Type': 'application/json',
-        		'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                "user_id": 0,
-                "name": "",
-                "email": "mark@example.com",
-                "password": "dicksandshit"
-            })
+                'Accept': 'application/json',
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ3MzIwMDEsImlhdCI6MTYxNDczMTcwMSwidXNlcl9pZCI6LTE5NTQyMDUwOTI0MTE5MTg2MzAsImVtYWlsIjoibWFya0BleGFtcGxlLmNvbSJ9.kHHPySXoxDouflLsCGgrMiqYNrFZ6b2qyVI-JDfzykU'
+            }
         })
         	.then(response => response.json())
             .then(response => setResponse(response))
-            console.log(response)
+             console.log(response)
 
         // following code for when sign in fails
         Toast.show({
