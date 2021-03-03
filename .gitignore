@@ -1,6 +1,17 @@
 #Python Compilation
 **/__pycache__/
 
+#Package-lock
+**/package-lock.json
+
+#VSCode
+**/.vscode/
+
+#Setup Files
+**/dist/
+**/PurdueEats.egg-info/
+**/build/
+
 # IntelliJ
 .idea
 
