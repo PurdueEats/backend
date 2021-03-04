@@ -23,7 +23,7 @@ export default function App() {
           <NavigationContainer>
               <Stack.Navigator screenOptions={{
                   headerShown: false
-                }} initialRouteName="Profile">
+                }} initialRouteName="Login">
                   <Stack.Screen name="Profile" component={ ProfileManager }/>
                   <Stack.Screen name="Login" component={ LoginManager }/>
                   <Stack.Screen name="SignupBegin" component={ Name }/>
