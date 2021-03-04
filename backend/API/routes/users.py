@@ -129,15 +129,13 @@ async def update_auth(userBasic: UserBasic):
 
     if userBasic.password != "":
         hashed_password = auth_handler.get_password_hash(userBasic.password)
-    else:
-        userBasic.name = user['Name']
 
-    runQuery(f"DELETE FROM UserBasic WHERE UserID = {userBasic.user_id}")
+    #runQuery(f"DELETE FROM UserBasic WHERE UserID = {userBasic.user_id}")
 
     runQuery(f"""
     INSERT INTO UserBasic values 
-    ({userBasic.user_id}, {userBasic.name},
-     '{userBasic.email}', {hashed_password})
+    ({userBasic.user_id}, '{userBasic.name}',
+     '{userBasic.email}', '{hashed_password}')
      """)
 
 
