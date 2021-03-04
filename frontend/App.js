@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager"
 import TemplateComponent from "./components/template/TemplateComponent";
 import MealPreferences from "./components/login/MealPreferences";
+import MealReview from "./components/meal-review/MealReview";
 import Name from "./components/signup/Name";
 import Email from "./components/signup/Email";
 import Password from "./components/signup/Password";
@@ -22,7 +23,7 @@ export default function App() {
           <NavigationContainer>
               <Stack.Navigator screenOptions={{
                   headerShown: false
-                }} initialRouteName="Login">
+                }} initialRouteName="MealReview">
                   <Stack.Screen name="Login" component={ LoginManager }/>
                   <Stack.Screen name="SignupBegin" component={ Name }/>
                   <Stack.Screen name="SignupEmail" component={ Email }/>
@@ -30,6 +31,7 @@ export default function App() {
                   <Stack.Screen name="SignupMealPlan" component={ MealPlan }/>
                   <Stack.Screen name="SignupDiningDollars" component={ DiningDollarEntry }/>
                   <Stack.Screen name="MealPreferences" component={ MealPreferences }/>
+                  <Stack.Screen name="MealReview" component={ MealReview }/>
                   <Stack.Screen name="Map" component={ MapManager }/>
                   <Stack.Screen name="Template" component={ TemplateComponent }/>
               </Stack.Navigator>
