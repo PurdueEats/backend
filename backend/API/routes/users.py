@@ -3,6 +3,7 @@ from typing import List
 from fastapi import FastAPI, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
+from API.models.MealPlan import MealPlanIn
 from API.models.users import (
     UserBasic,
     UserExtra,
@@ -130,7 +131,7 @@ async def update_auth(userBasic: UserBasic):
     if userBasic.password != "":
         hashed_password = auth_handler.get_password_hash(userBasic.password)
 
-    #runQuery(f"DELETE FROM UserBasic WHERE UserID = {userBasic.user_id}")
+    runQuery(f"DELETE FROM UserBasic WHERE UserID = {userBasic.user_id}")
 
     runQuery(f"""
     INSERT INTO UserBasic values 
@@ -157,26 +158,29 @@ async def fetch_meal_plan(UserID: int = Depends(auth_handler.auth_wrapper)):
 
 
 @app.post("/{UserID}/MealPlan")
-async def assign_meal_plan(mealPlanName: str, UserID: int = Depends(auth_handler.auth_wrapper)):
+async def assign_meal_plan(mealPlanName: MealPlanIn, UserID: int = Depends(auth_handler.auth_wrapper)):
 
+    mealPlanName = mealPlanName.MealPlanName
     runQuery(f"DELETE from UserExtra WHERE UserID = {UserID}")
     meal_plan = [dict(row) for row in runQuery(
-        f"SELECT * FROM MealPlan WHERE MealPlanName = {mealPlanName}")]
+        f"SELECT * FROM MealPlan WHERE MealPlanName = '{mealPlanName}'")]
+
 
     if len(meal_plan) != 1:
         raise HTTPException(status_code=404, detail='Meal Plan not found')
 
+    meal_plan = meal_plan[0]
     """
   Needs hardcore update to change transaction history
   """
     transactions = [dict(row) for row in runQuery(
-        f"SELECT TransactionAmount FROM UserTransation WHERE UserID = {UserID}")]
+        f"SELECT TransactionAmount FROM UserTransaction WHERE UserID = {UserID}")]
 
     for trans in transactions:
         meal_plan['DiningDollars'] - trans['TransactionAmount']
 
     runQuery(f"""
-    INSERT INTO UserExtra value (
+    INSERT INTO UserExtra values (
     {UserID}, '{meal_plan['MealPlanName']}',
     {meal_plan['MealSwipes']}, {meal_plan['DiningDollars']}
     )
