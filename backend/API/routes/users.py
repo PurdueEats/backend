@@ -106,8 +106,6 @@ async def return_auth(UserID: int = Depends(auth_handler.auth_wrapper)):
         raise HTTPException(status_code=404, detail='User not found')
 
     user = user[0]
-    print(user['Email'])
-    print(type(user['Email']))
 
     res = UserOut.parse_obj(
         {'user_id': user['UserID'], 'name': user['Name'], 'email': user['Email']})
@@ -126,7 +124,7 @@ async def update_auth(userBasic: UserBasic):
     if len(user) != 1:
         raise HTTPException(status_code=404, detail='User not found')
 
-    runQuery(f"DELETE FROM UserBasic WHERE UserID = {userBasic.user_id}")
+    user = user[0]
     hashed_password = user['Password']
 
     if userBasic.password != "":
@@ -134,10 +132,12 @@ async def update_auth(userBasic: UserBasic):
     else:
         userBasic.name = user['Name']
 
+    runQuery(f"DELETE FROM UserBasic WHERE UserID = {userBasic.user_id}")
+
     runQuery(f"""
     INSERT INTO UserBasic values 
     ({userBasic.user_id}, {userBasic.name},
-     {userBasic.email}, {hashed_password})
+     '{userBasic.email}', {hashed_password})
      """)
 
 
