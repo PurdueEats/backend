@@ -135,7 +135,7 @@ async def update_auth(userBasic: UserBasic):
     runQuery(f"""
     INSERT INTO UserBasic values 
     ({userBasic.user_id}, '{userBasic.name}',
-     '{userBasic.email}', '{hashed_password}')
+     '{user['Email']}', '{hashed_password}')
      """)
 
 
