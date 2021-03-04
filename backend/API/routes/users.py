@@ -274,10 +274,10 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     runQuery(f"""
     INSERT INTO UserExtra values (
         {user_extra['UserID']}, '{user_extra['MealPlanName']}',
-        {user_extra['MealSwipes']}, {balance}
+        {user_extra['MealSwipeCount']}, {balance}
     )
     """)
-    
+
     runQuery(f"""
     INSERT INTO UserTransaction values ({userTransaction.user_id}, {userTransaction.transaction_amount},
     {balance}, '{userTransaction.timestamp}')
