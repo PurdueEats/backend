@@ -3,6 +3,7 @@ import { Root } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager"
+import ProfileManager from "./components/profile/ProfileManager"
 import TemplateComponent from "./components/template/TemplateComponent";
 import MealPreferences from "./components/login/MealPreferences";
 import Name from "./components/signup/Name";
@@ -22,7 +23,8 @@ export default function App() {
           <NavigationContainer>
               <Stack.Navigator screenOptions={{
                   headerShown: false
-                }} initialRouteName="Login">
+                }} initialRouteName="Profile">
+                  <Stack.Screen name="Profile" component={ ProfileManager }/>
                   <Stack.Screen name="Login" component={ LoginManager }/>
                   <Stack.Screen name="SignupBegin" component={ Name }/>
                   <Stack.Screen name="SignupEmail" component={ Email }/>

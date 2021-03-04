@@ -16,7 +16,7 @@ function LoginManager({navigation}) {
     function handleLogin() {
         // Sample code for sending package to API
         
-        //Login Route
+        // Login Route
         // fetch(`http://127.0.0.1:8000/Login`, {
         // 	method: 'POST',
         // 	headers : {
@@ -24,10 +24,10 @@ function LoginManager({navigation}) {
         // 		'Accept': 'application/json'
         //     },
         //     body: JSON.stringify({
-        //         "user_id": 0,
-        //         "name": "",
-        //         "email": "mark@example.com",
-        //         "password": "dicksandshit"
+        //         "user_id": 0330,
+        //         "name": "eric",
+        //         "email": "eric@example.com",
+        //         "password": "eric123"
         //     })
         // })
         // 	.then(response => response.json())
