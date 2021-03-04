@@ -107,7 +107,7 @@ async def return_auth(UserID: int = Depends(auth_handler.auth_wrapper)):
 
     user = user[0]
     res = UserOut.parse_obj(
-        {'user_id': user['UserID'], 'name': user['Name'], 'email': [user['Emal']]})
+        {'user_id': user['UserID'], 'name': user['Name'], 'email': [user['Email']]})
 
     return res
 
