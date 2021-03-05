@@ -22,7 +22,7 @@ export default function App() {
           <NavigationContainer>
               <Stack.Navigator screenOptions={{
                   headerShown: false
-                }} initialRouteName="Login">
+                }} initialRouteName="Map">
                   <Stack.Screen name="Login" component={ LoginManager }/>
                   <Stack.Screen name="SignupBegin" component={ Name }/>
                   <Stack.Screen name="SignupEmail" component={ Email }/>
