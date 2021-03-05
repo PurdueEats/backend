@@ -3,6 +3,7 @@ import dgl
 from dgl.data import DGLDataset
 import torch
 from six.moves import urllib
+import numpy
 
 
 urllib.request.urlretrieve(
@@ -22,8 +23,25 @@ class SyntheticDataset(DGLDataset):
         super().__init__(name='synthetic')
 
     def process(self):
-        edges =  pd.read_csv(r'C:\Users\Mark\Desktop\preprocessed data\clean_reviews.csv')#TODO: FIX THIS DIRECTORY
-        properties = pd.read_csv(r'C:\Users\Mark\Desktop\preprocessed data\clean_recipes.csv')#TODO: FIX THIS DIRECTORY
+        edges =  pd.read_csv(r'C:\Users\Mark\Desktop\preprocessed data\clean_reviews_tiny.csv')#TODO: FIX THIS DIRECTORY
+        properties = pd.read_csv(r'C:\Users\Mark\Desktop\preprocessed data\clean_recipes_tiny.csv')#TODO: FIX THIS DIRECTORY
+        
+
+        # Get names of indexes for which column recipe id is greater than 7100
+        #indexNames = properties[properties['RecipeID'] > 7010 ].index
+        # Delete these row indexes from dataFrame
+        #properties.drop(indexNames , inplace=True)
+        #properties.to_csv(r'C:\Users\Mark\Desktop\preprocessed data\clean_recipes_tiny.csv')
+        
+        #indexNames = edges[edges['RecipeID'] > 7010 ].index
+        # Delete these row indexes from dataFrame
+        #edges.drop(indexNames , inplace=True)
+        #edges.to_csv(r'C:\Users\Mark\Desktop\preprocessed data\clean_reviews_tiny.csv')
+        
+        #print(properties.shape)
+        #print(edges.shape)
+             
+        
         self.graphs = []
         self.labels = []
 
@@ -48,6 +66,11 @@ class SyntheticDataset(DGLDataset):
             num_nodes = num_nodes_dict[graph_id]
             label = label_dict[graph_id]
 
+            ratings = ratings.astype(numpy.int64) #custom: change ratings type to int64 to match src
+            #print("ratings: ", ratings.dtype)
+            #print("src: ", src.dtype)
+
+            print (len(src))
             # Create a graph and add it to the list of graphs and labels.
             g = dgl.graph((src, ratings), num_nodes=num_nodes) #custom
             self.graphs.append(g)
