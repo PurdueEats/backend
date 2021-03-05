@@ -47,10 +47,10 @@ function NavBar() {
             />
 
             <Tab.Screen
-                name="Buddy"
-                component={FindABuddy}
+                name="Profile"
+                component={Profile}
                 options={{
-                    tabBarLabel: 'Buddy',
+                    tabBarLabel: 'Profile',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="account-circle" color={color} size={size} />
                     ),
