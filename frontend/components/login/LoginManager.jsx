@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import Logo from "../../resources/logo.png";
 import { Button, Item, Toast } from 'native-base';
@@ -15,36 +15,53 @@ function LoginManager({navigation}) {
 
     function handleLogin() {
         // Sample code for sending package to API
-        
+
+        // fetch(`https://api.chucknorris.io/jokes/categories`, {
+        //     method: 'GET',
+        //     headers : {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     },
+        // })
+        //     .then(response => response.json())
+        //     .then(response => setResponse(response))
+        // console.log(response)
+
         //Login Route
-        // fetch(`http://127.0.0.1:8000/Login`, {
-        // 	method: 'POST',
+        fetch('http://purdueeats-304919.uc.r.appspot.com/Login', {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": 0,
+                "name": "",
+                "email": "johndoe@iscool.com",
+                "password": "johndoe"
+            })
+        })
+            .then(response => response.json())
+            .then(response => setResponse(response))
+        console.log(response)
+
+        // Network fail handler
+        if ( response === '' ) {
+            console.log("Network response failed")
+        }
+
+        //MealPlan Route
+        // fetch(`http://127.0.0.1:8000/-1954205092411918630/MealPlan`, {
+        // 	method: 'GET',
         // 	headers : {
         // 		'Content-Type': 'application/json',
-        // 		'Accept': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         "user_id": 0,
-        //         "name": "",
-        //         "email": "mark@example.com",
-        //         "password": "dicksandshit"
-        //     })
+        //         'Accept': 'application/json',
+        //         'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ4OTU3OTQsImlhdCI6MTYxNDg5NTQ5NCwidXNlcl9pZCI6LTE5NTQyMDUwOTI0MTE5MTg2MzAsImVtYWlsIjoibWFya0BleGFtcGxlLmNvbSJ9.OthBKGCv7qAPE9UovT08zL60wthqAcHWwG-mqyOODvQ'
+        //     }
         // })
         // 	.then(response => response.json())
         //     .then(response => setResponse(response))
-
-        //MealPlan Route
-        fetch(`http://127.0.0.1:8000/-1954205092411918600/MealPlan`, {
-        	method: 'GET',
-        	headers : {
-        		'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ3MzIwMDEsImlhdCI6MTYxNDczMTcwMSwidXNlcl9pZCI6LTE5NTQyMDUwOTI0MTE5MTg2MzAsImVtYWlsIjoibWFya0BleGFtcGxlLmNvbSJ9.kHHPySXoxDouflLsCGgrMiqYNrFZ6b2qyVI-JDfzykU'
-            }
-        })
-        	.then(response => response.json())
-            .then(response => setResponse(response))
-             console.log(response)
+        //      console.log(response)
 
         // following code for when sign in fails
         Toast.show({
