@@ -1,35 +1,39 @@
-import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
-import { Button, Item } from 'native-base';
+import React, {Component, useState} from "react";
+import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, Image, TouchableOpacity} from "react-native";
+import {Button, Item} from 'native-base';
 import { sha256 } from 'react-native-sha256';
 
-class Password extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            password: ""
-        };
+function Password({navigation}) {
+    const [password, setPassword] = useState('');
+    const [response, setResponse] = useState('');
+
+    // TODO add check for token expiration
+    function tokenManager() {
+
     }
-    async storePassword(password) {
+
+    function storePassword() {
+        // TODO
+    }
+
+    function hashPassword() {
         sha256(password).then( hash => {
             // store hash
         })
     }
 
-    render() {
-        return (
-            <SafeAreaView style={ styles.screen }>
-                <Text style={ styles.questionTitle }>Enter your password.</Text>
-                <Item style={ styles.passwordInput }>
-                    <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => this.setState(password)} />
-                </Item>
+    return (
+        <SafeAreaView style={ styles.screen }>
+            <Text style={ styles.questionTitle }>Enter your password.</Text>
+            <Item style={ styles.passwordInput }>
+                <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => this.setState(password)} />
+            </Item>
 
-                <Button style={ styles.continueButton }>
-                    <Text style={ styles.continueText }>Continue</Text>
-                </Button>
-            </SafeAreaView>
-        );
-    }
+            <Button style={ styles.continueButton }>
+                <Text style={ styles.continueText }>Continue</Text>
+            </Button>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({

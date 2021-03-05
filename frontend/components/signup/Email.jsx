@@ -1,32 +1,29 @@
-import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
-import { Button, Item } from 'native-base';
+import React, {Component, useState} from "react";
+import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, Image, TouchableOpacity} from "react-native";
+import {Button, Item, Toast} from 'native-base';
 
-class Email extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: ""
-        };
-    }
-    async storeEmail() {
-        console.log("send email to database");
+function Email({navigation}) {
+    const [email, setEmail] = useState('');
+    const [response, setResponse] = useState('');
+
+    // TODO add check for token expiration
+    function tokenManager() {
     }
 
-    render() {
-        return (
-            <SafeAreaView style={ styles.screen }>
-                <Text style={ styles.questionTitle }>Enter your email.</Text>
-                <Item style={ styles.emailInput }>
-                    <TextInput style={ styles.textInput } onChangeText={(email) => this.setState(email)} />
-                </Item>
-
-                <Button style={ styles.continueButton }>
-                    <Text style={ styles.continueText }>Continue</Text>
-                </Button>
-            </SafeAreaView>
-        );
+    function storeEmail() {
     }
+    return (
+        <SafeAreaView style={ styles.screen }>
+            <Text style={ styles.questionTitle }>Enter your email.</Text>
+            <Item style={ styles.emailInput }>
+                <TextInput style={ styles.textInput } onChangeText={(email) => this.setState(email)} />
+            </Item>
+
+            <Button style={ styles.continueButton }>
+                <Text style={ styles.continueText }>Continue</Text>
+            </Button>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({

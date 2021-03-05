@@ -1,33 +1,33 @@
-import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
-import { Button, Item } from 'native-base';
+import React, {Component, useState} from "react";
+import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, Image, TouchableOpacity} from "react-native";
+import {Button, Item, Toast} from 'native-base';
 
-class Name extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: ""
-        };
-    }
-    async storeName() {
-        console.log("send name to database");
+function Name({navigation}) {
+    const [name, setName] = useState('');
+    const [response, setResponse] = useState('');
+
+    // TODO add check for token expiration
+    function tokenManager() {
     }
 
-    render() {
-        return (
-            <SafeAreaView style={ styles.screen }>
-                <Text style={ styles.questionTitle }>Enter your name.</Text>
-                <Item style={ styles.nameInput }>
-                    <TextInput style={ styles.textInput } onChangeText={(name) => this.setState(name)} />
-                </Item>
+    function storeName() {
 
-                <Button style={ styles.continueButton }>
-                    <Text style={ styles.continueText }>Continue</Text>
-                </Button>
-            </SafeAreaView>
-        );
     }
+
+    return (
+        <SafeAreaView style={ styles.screen }>
+            <Text style={ styles.questionTitle }>Enter your name.</Text>
+            <Item style={ styles.nameInput }>
+                <TextInput style={ styles.textInput } onChangeText={(name) => this.setState(name)} />
+            </Item>
+
+            <Button style={ styles.continueButton }>
+                <Text style={ styles.continueText }>Continue</Text>
+            </Button>
+        </SafeAreaView>
+    );
 }
+
 
 const styles = StyleSheet.create({
     screen:{

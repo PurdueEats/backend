@@ -1,32 +1,31 @@
-import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
-import { Button, Item } from 'native-base';
+import React, {Component, useState} from "react";
+import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, Image, TouchableOpacity} from "react-native";
+import {Button, Item, Toast} from 'native-base';
 
+function DiningDollarEntry({navigation}) {
+    const [diningDollars, setDiningDollars] = useState('');
+    const [response, setResponse] = useState('');
 
-class DiningDollarEntry extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            diningDollars: ""
-        };
-    }
-    async storeDiningDollars() {
-        console.log("send dining dollars to database");
+    // TODO add check for token expiration
+    function tokenManager() {
+
     }
 
-    render() {
-        return (
-            <SafeAreaView style={ styles.screen }>
-                <Text style={ styles.questionTitle }>Enter the number of dining dollars you have.</Text>
-                <Item style={ styles.diningInput }>
-                    <TextInput style={ styles.textInput } onChangeText={(diningDollars) => this.setState(diningDollars)} />
-                </Item>
-                <Button style={ styles.signUpButton }>
-                    <Text style={ styles.signUpText }>Sign Up!</Text>
-                </Button>
-            </SafeAreaView>
-        );
+    function storeDiningDollars() {
+        // TODO
     }
+
+    return (
+        <SafeAreaView style={ styles.screen }>
+            <Text style={ styles.questionTitle }>Enter the number of dining dollars you have.</Text>
+            <Item style={ styles.diningInput }>
+                <TextInput style={ styles.textInput } onChangeText={(diningDollars) => this.setState(diningDollars)} />
+            </Item>
+            <Button style={ styles.signUpButton }>
+                <Text style={ styles.signUpText }>Sign Up!</Text>
+            </Button>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({

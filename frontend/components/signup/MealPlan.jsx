@@ -1,55 +1,49 @@
-import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, Text } from "react-native";
-import { Button } from 'native-base';
+import React, {Component, useState} from "react";
+import {StyleSheet, SafeAreaView, Text, ScrollView, View, Image, TextInput, TouchableOpacity} from "react-native";
+import {Button, Item, Toast} from 'native-base';
 import DropDownPicker from 'react-native-dropdown-picker';
 
+function MealPlan({navigation}) {
+    const [mealPlan, setMealPlan] = useState('');
+    const [response, setResponse] = useState('');
 
-class MealPlan extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selected: "key1"
-        };
+    // TODO add check for token expiration
+    function tokenManager() {
+
     }
 
-    onValueChange(value: string) {
-        this.setState({
-            selected: value
-        });
+    function storeMealPlan() {
+        // TODO
     }
 
-    async storeMealPlan() {
-        console.log("send name to database");
-    }
-
-    render() {
-        return (
-            <SafeAreaView style={ styles.screen }>
-                <Text style={ styles.questionTitle }>Select your meal plan.</Text>
-                <DropDownPicker
-                    items={[
-                        {label: '10 Meal Plan + 100', value: '10 Meal Plan + 100'},
-                        {label: '15 Meal Plan + 450', value: '15 Meal Plan + 450'},
-                        {label: '21 Meal Plan + 250', value: '21 Meal Plan + 250'},
-                        {label: '21 Meal Plan + 500', value: '21 Meal Plan + 500'},
-                    ]}
-                    defaultValue={this.state.country}
-                    containerStyle={{height: 40}}
-                    style={{backgroundColor: '#fafafa'}}
-                    itemStyle={{
-                        justifyContent: 'flex-start'
-                    }}
-                    dropDownStyle={{backgroundColor: '#fafafa'}}
-                    onChangeItem={item => this.setState({
-                        country: item.value
-                    })}
-                />
-                <Button style={ styles.continueButton }>
-                    <Text style={ styles.continueText }>Continue</Text>
-                </Button>
-            </SafeAreaView>
-        );
-    }
+    return (
+        <SafeAreaView style={ styles.screen }>
+            <Text style={ styles.questionTitle }>Select your meal plan.</Text>
+            <DropDownPicker
+                items={[
+                    {label: '10 Meal Plan + 100', value: '10 Meal Plan + 100'},
+                    {label: '15 Meal Plan + 450', value: '15 Meal Plan + 450'},
+                    {label: '21 Meal Plan + 250', value: '21 Meal Plan + 250'},
+                    {label: '21 Meal Plan + 500', value: '21 Meal Plan + 500'},
+                ]}
+                //defaultValue={this.state.country}
+                containerStyle={{height: 40}}
+                style={{backgroundColor: '#fafafa'}}
+                itemStyle={{
+                    justifyContent: 'flex-start'
+                }}
+                dropDownStyle={{backgroundColor: '#fafafa'}}
+                /*
+                onChangeItem={item => this.setState({
+                    country: item.value
+                })}
+                 */
+            />
+            <Button style={ styles.continueButton }>
+                <Text style={ styles.continueText }>Continue</Text>
+            </Button>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
