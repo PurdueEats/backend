@@ -13,29 +13,29 @@ function DiningFacilities({navigation}) {
     return (
         <ScrollView>
             <View style={ styles.iconPosition }>
-                <Image source = { Logo } style = {styles.iconSize} />
+                <Image source = { Logo } style = { styles.iconSize } />
             </View>
             <Text style={ styles.sectionTitle }>Menu</Text>
-            <View style={styles.imageContainer}>
+            <View style={ styles.imageContainer }>
                 <TouchableOpacity>
-                    <Image source = { Earhart } style = {styles.diningImage} />
+                    <Image source = { Earhart } style = { styles.diningImage } />
                     <Text>{"some text"}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Image source = { Wiley } style = {styles.diningImage}/>
+                    <Image source = { Wiley } style = { styles.diningImage }/>
                 </TouchableOpacity>
             </View>
-            <View style={{flexDirection: "row"}}>
+            <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity>
-                    <Image source = { Hillenbrand } style = {styles.diningImage}  />
+                    <Image source = { Hillenbrand } style = { styles.diningImage }  />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Image source = { Windsor} style = {styles.diningImage} />
+                    <Image source = { Windsor} style = { styles.diningImage } />
                 </TouchableOpacity>
             </View>
-            <View style={styles.lastDiningCourt}>
+            <View style={ styles.lastDiningCourt }>
                 <TouchableOpacity>
-                    <Image source = { Ford } style = {styles.diningImage} />
+                    <Image source = { Ford } style = { styles.diningImage } />
                 </TouchableOpacity>
             </View>
         </ScrollView>
@@ -52,23 +52,28 @@ const styles = StyleSheet.create({
     },
     iconSize: {
     },
+    sectionTitle: {
+        fontSize: 35,
+        fontWeight: "bold",
+        marginTop: "-125%"
+    },
     diningImage: {
         aspectRatio: 1,
-        resizeMode:'contain',
         opacity: 0.5,
-        width: "10%",
-        marginRight: "5%"
+        width: 150,
+        height: 150,
+        marginRight: "7%",
+        marginLeft: "7%"
     },
     imageContainer: {
         flexDirection: "row",
         marginLeft: "5%",
         marginRight: "5%",
-
-
+        alignItems: "center"
     },
     lastDiningCourt: {
         alignItems: "center",
-        marginLeft: "7%"
+        marginTop: "10%"
     },
 });
 
