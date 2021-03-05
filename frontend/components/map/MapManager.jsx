@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
-import Logo from "../../resources/logo.png";[]
+import Logo from "../../resources/logo.png";
 
 function MapManager({navigation}) {
     // const region = getInitialState();
