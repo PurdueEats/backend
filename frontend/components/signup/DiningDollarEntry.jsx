@@ -6,23 +6,37 @@ function DiningDollarEntry({navigation}) {
     const [diningDollars, setDiningDollars] = useState('');
     const [response, setResponse] = useState('');
 
-    // TODO add check for token expiration
-    function tokenManager() {
-
-    }
-
     function storeDiningDollars() {
-        // TODO
+        fetch(`http://127.0.0.1:8000/Trans`, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": 0,
+                "transaction_amount": diningDollars,
+                "balance": 0,
+                "timestamp": "2021-02-27T06:23:29.468000+00:00"
+            })
+        })
+            .then(response => response.json())
+            .then(response => setResponse(response))
+            .catch(function(error) {
+                console.log('Issue with post req. ' + error.message);
+                throw error;
+            });
+        // navigation.navigate("HomeManager")
     }
 
     return (
         <SafeAreaView style={ styles.screen }>
             <Text style={ styles.questionTitle }>Enter the number of dining dollars you have.</Text>
             <Item style={ styles.diningInput }>
-                <TextInput style={ styles.textInput } onChangeText={(diningDollars) => this.setState(diningDollars)} />
+                <TextInput style={ styles.textInput } onChangeText={(diningDollars) => setDiningDollars(diningDollars)}/>
             </Item>
             <Button style={ styles.signUpButton }>
-                <Text style={ styles.signUpText }>Sign Up!</Text>
+                <Text style={ styles.signUpText } onPress={storeDiningDollars()}>Sign Up!</Text>
             </Button>
         </SafeAreaView>
     );
