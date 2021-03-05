@@ -3,6 +3,8 @@ import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } fro
 import { Button, Item } from 'native-base';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
+import ReactRoundedImage from "react-rounded-image";
+
 
 
 
@@ -111,9 +113,10 @@ function ProfileManager({navigation}) {
 
                      }}
                 >
+
                     <Image
                         style={ styles.profileImage }
-                        source={require('../../resources/profileicon.png')}
+                        source={require('../../resources/train.jpg')}
                     />
                 </View>
 
@@ -432,6 +435,7 @@ const styles = StyleSheet.create({
             height: 200,
             marginBottom: "5%",
             alignItems: "center",
+            borderRadius: 400 / 2,
 
         },
 
