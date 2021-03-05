@@ -13,7 +13,6 @@ import ModalDropdown from 'react-native-modal-dropdown';
 
 function ProfileManager({navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalVisible2, setModalVisible2] = useState(false);
     const [modalVisible3, setModalVisible3] = useState(false);
     const [modalVisible4, setModalVisible4] = useState(false);
 
@@ -91,38 +90,7 @@ function ProfileManager({navigation}) {
                                       </View>
                         </Modal>
 
-                 <Modal
-                                                 animationType="slide"
-                                                 transparent={true}
-                                                 visible={modalVisible2}
-                                                 onRequestClose={() => {
-                                                   Alert.alert("Modal has been closed.");
-                                                   setModalVisible(!modalVisible2);
-                                                 }}
-                                               >
-                                               <View style={styles.centeredView}>
-                                                         <View style={styles.modalView}>
 
-                                                         <TouchableOpacity active = { .5 } onPress={() => setModalVisible2(!modalVisible2) }>
-                                                                                                          <Image
-                                                                                                              style={{ width: 40, height: 40,  }}
-                                                                                                              source={require('../../resources/arrow.png')}
-                                                                                                          />
-                                                                                                              </TouchableOpacity >
-                                                           <Text style={styles.modalText}>Set new email</Text>
-
-                                                              <TextInput style={ styles.textEnter } onChangeText={(email) => setEmail(email)} />
-                                                         <View
-                                                               style={{
-                                                                    borderBottomWidth: 1,
-                                                                           borderBottomColor: 'grey',
-                                                                            width: 200,
-                                                                            }}
-                                                               />
-
-                                                         </View>
-                                                       </View>
-                                         </Modal>
                             <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
                                 <Image
                                     style={{ width: 40, height: 40,  }}
@@ -143,12 +111,13 @@ function ProfileManager({navigation}) {
 
                         }}
                     >
-
                         <Image
                             style={ styles.profileImage }
                             source={require('../../resources/profileicon.png')}
                         />
                     </View>
+
+
 
 
                     <View
@@ -177,12 +146,7 @@ function ProfileManager({navigation}) {
                     >
                         <Text style={ styles.textNormal }>   {email} </Text>
 
-                        <TouchableOpacity active = { .5 } onPress={() =>  setModalVisible2(true) }>
-                                                                        <Image
-                                                                        style={ styles.editImage }
-                                                                    source={require('../../resources/edit.png')}
-                                                                   />
-                                                </TouchableOpacity>
+
 
                     </View>
 
@@ -208,12 +172,7 @@ function ProfileManager({navigation}) {
                         <ModalDropdown style={ styles.textDropdown } defaultValue={plan} textStyle={ styles.textNormal }  dropdownTextStyle={ styles.dropdownText }
                         options={ plans } onSelect={ (plan) => setPlan((String(this.renderButtonText)))}/>
 
-                    <TouchableOpacity active = { .5 } onPress={() =>  setModalVisible(true) }>
-                        <Image
-                        style={ styles.editImage }
-                    source={require('../../resources/edit.png')}
-                   />
-                                           </TouchableOpacity>
+
 
 
                     </View>
@@ -225,45 +184,9 @@ function ProfileManager({navigation}) {
                         justifyContent: "space-between",
                         }}
                     >
-                        <Text style={ styles.textNormal }>  Dining Dollars Left: ${ dollars } </Text>
+                        <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
 
-                        <TouchableOpacity active = { .5 } onPress={() =>  setModalVisible3(true) }>
-                                                                        <Image
-                                                                        style={ styles.editImage }
-                                                                    source={require('../../resources/edit.png')}
-                                                                   />
-                                                </TouchableOpacity>
-                         <Modal
-                                                                         animationType="slide"
-                                                                         transparent={true}
-                                                                         visible={modalVisible3}
-                                                                         onRequestClose={() => {
-                                                                           Alert.alert("Modal has been closed.");
-                                                                           setModalVisible(!modalVisible3);
-                                                                         }}
-                                                                       >
-                                                                       <View style={styles.centeredView}>
-                                                                                 <View style={styles.modalView}>
-                                                                            <TouchableOpacity active = { .5 } onPress={() => setModalVisible3(!modalVisible3) }>
-                                                                                                                                                     <Image
-                                                                                                                                                         style={{ width: 40, height: 40,  }}
-                                                                                                                                                         source={require('../../resources/arrow.png')}
-                                                                                                                                                     />
-                                                                                                                                                         </TouchableOpacity >
-                                                                                   <Text style={styles.modalText}>Set dollar amount</Text>
 
-                                                                                      <TextInput style={ styles.textEnter } onChangeText={(dollars) => setDollars(dollars)} />
-                                                                                 <View
-                                                                                       style={{
-                                                                                            borderBottomWidth: 1,
-                                                                                                   borderBottomColor: 'grey',
-                                                                                                    width: 200,
-                                                                                                    }}
-                                                                                       />
-
-                                                                                 </View>
-                                                                               </View>
-                                                                 </Modal>
                     </View>
 
                     <View/>
@@ -323,41 +246,7 @@ function ProfileManager({navigation}) {
 
                     </View>
 
-                    <View style={{flexDirection:'row',  justifyContent: 'space-around', alignItems: 'flex-end'}}>
-                        <TouchableOpacity active = { .5 } onPress={() => this.props.navigation.navigate('Login') }>
-                            <Image
-                                style={ styles.navBar }
-                                source={require('../../resources/home.png')}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
-                            <Image
-                                style={ styles.navBar }
-                                source={require('../../resources/map.png')}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
-                            <Image
-                                style={ styles.navBar }
-                                source={require('../../resources/buddy.png')}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
-                            <Image
-                                style={ styles.navBar }
-                                source={require('../../resources/profile.png')}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
-                            <Image
-                                style={ styles.navBar }
-                                source={require('../../resources/settings.png')}
-                            />
-                        </TouchableOpacity>
 
-                     </View>
-
-                     <TextInput style={ styles.textNormal } onChangeText={(name) => setName(name)} />
 
 
 

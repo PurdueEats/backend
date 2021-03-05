@@ -17,21 +17,21 @@ function LoginManager({navigation}) {
         // Sample code for sending package to API
         
         // Login Route
-        // fetch(`http://127.0.0.1:8000/Login`, {
-        // 	method: 'POST',
-        // 	headers : {
-        // 		'Content-Type': 'application/json',
-        // 		'Accept': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         "user_id": 0330,
-        //         "name": "eric",
-        //         "email": "eric@example.com",
-        //         "password": "eric123"
-        //     })
-        // })
-        // 	.then(response => response.json())
-        //     .then(response => setResponse(response))
+         fetch(`http://127.0.0.1:8000/Login`, {
+         	method: 'POST',
+         	headers : {
+         		'Content-Type': 'application/json',
+         		'Accept': 'application/json'
+             },
+             body: JSON.stringify({
+                 "user_id": 0,
+                 "name": "eric",
+                 "email": "eric@example.com",
+                 "password": "eric123"
+             })
+         })
+         	.then(response => response.json())
+             .then(response => setResponse(response))
 
         //MealPlan Route
         fetch(`http://127.0.0.1:8000/-1954205092411918600/MealPlan`, {
