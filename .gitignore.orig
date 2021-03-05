@@ -2,7 +2,6 @@
 #
 .DS_Store
 
-<<<<<<< HEAD
 # Xcode
 #
 build/
@@ -62,7 +61,7 @@ buck-out/
 # Expo
 .expo/*
 web-build/
-=======
+
 #Package-lock
 **/package-lock.json
 
@@ -79,4 +78,3 @@ web-build/
 
 */__pycache__
 /gen
->>>>>>> b104c7ebabd5f12260e3444af2d9d4f13095a116
