@@ -12,6 +12,7 @@ import MealPlan from "./components/signup/MealPlan";
 import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 import MapManager from "./components/map/MapManager";
 import DiningFacilities from "./components/dining/DiningFacilities";
+import NavBar from "./components/home/NavBar";
 
 
 export default function App() {
@@ -23,8 +24,8 @@ export default function App() {
           <NavigationContainer>
               <Stack.Navigator screenOptions={{
                   headerShown: false
-                }} initialRouteName="Dining">
-                  <Stack.Screen name="Dining" component={ DiningFacilities}/>
+                }} initialRouteName="NavBar">
+                  <Stack.Screen name="NavBar" component={ NavBar}/>
               </Stack.Navigator>
           </NavigationContainer>
       </Root>
