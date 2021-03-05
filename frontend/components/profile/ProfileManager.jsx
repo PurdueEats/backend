@@ -198,6 +198,11 @@ function ProfileManager({navigation}) {
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
                                  <TouchableOpacity active = { .5 } onPress={() => setModalVisible3(!modalVisible3) }>
+
+                                     <Image
+                                        style={ styles.arrow }
+                                        source={require('../../resources/arrow.png')}
+                                     />
                                  </TouchableOpacity >
                                  <Text style={styles.modalText}>Current password: {password}</Text>
                                  <Text style={styles.modalText}>Set password</Text>
