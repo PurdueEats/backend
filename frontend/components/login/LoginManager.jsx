@@ -6,59 +6,66 @@ import { Button, Item, Toast } from 'native-base';
 function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [response, setResponse] = useState('');
+    const [response, setResponse] = useState({ UserId : "", token : "" });
 
     // TODO add check for token expiration
     function tokenManager() {
 
     }
 
-    function handleLogin() {
-        // Sample code for sending package to API
-        
-        //Login Route
-        // fetch(`http://127.0.0.1:8000/Login`, {
-        // 	method: 'POST',
-        // 	headers : {
-        // 		'Content-Type': 'application/json',
-        // 		'Accept': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         "user_id": 0,
-        //         "name": "",
-        //         "email": "mark@example.com",
-        //         "password": "dicksandshit"
-        //     })
-        // })
-        // 	.then(response => response.json())
-        //     .then(response => setResponse(response))
+    function clearResponse() {
+    }
 
-        //MealPlan Route
-        fetch(`http://127.0.0.1:8000/-1954205092411918600/MealPlan`, {
-        	method: 'GET',
-        	headers : {
-        		'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ3MzIwMDEsImlhdCI6MTYxNDczMTcwMSwidXNlcl9pZCI6LTE5NTQyMDUwOTI0MTE5MTg2MzAsImVtYWlsIjoibWFya0BleGFtcGxlLmNvbSJ9.kHHPySXoxDouflLsCGgrMiqYNrFZ6b2qyVI-JDfzykU'
-            }
-        })
-        	.then(response => response.json())
-            .then(response => setResponse(response))
-             console.log(response)
-
-        // following code for when sign in fails
+    function displayError() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
-            text: "Wrong password!",
+            text: "Incorrect username/password combination.",
             textStyle: {
                 textAlign: 'center',
             },
-            duration: 500
+            duration: 1500
         });
-        // following command for if sign in is successful; assign token as global
-        navigation.navigate("MealPreferences")
+    }
 
+    function handleLogin() {
+        setResponse({ UserId: "", token: "" });
+        // Login Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Login`, {
+        	method: 'POST',
+        	headers : {
+        		'Content-Type': 'application/json',
+        		'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": 0,
+                "name": "string",
+                "email": email,
+                "password": password
+            })
+        })
+            .then(
+                function(response) {
+                    if (response.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        displayError();
+                        return;
+                    } else {
+                        // Login successful, redirect to MealPreferences
+                        navigation.navigate("Template", { response });
+                    }
+
+                    // Examine the text in the response
+                    response.json().then(function(data) {
+                        console.log(data);
+                        setResponse(data);
+                    });
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
     }
 
     function handleForgotPassword() {

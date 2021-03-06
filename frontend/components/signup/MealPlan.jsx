@@ -44,11 +44,7 @@ function MealPlan({navigation}) {
                     justifyContent: 'flex-start'
                 }}
                 dropDownStyle={{backgroundColor: '#fafafa'}}
-                /*
-                onChangeItem={item => this.setState({
-                    country: item.value
-                })}
-                 */
+                onChangeItem={item => setMealPlan(item)}
             />
             <Button style={ styles.continueButton }>
                 <Text style={ styles.continueText } onPress={storeMealPlan()}>Continue</Text>

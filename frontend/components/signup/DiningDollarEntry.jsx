@@ -6,34 +6,65 @@ function DiningDollarEntry({navigation}) {
     const [diningDollars, setDiningDollars] = useState('');
     const [response, setResponse] = useState('');
 
-    function storeDiningDollars() {
-        fetch(`http://127.0.0.1:8000/Trans`, {
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Incorrect username/password combination.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function handleSignUp() {
+        // setResponse({  });
+        // Login Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Login`, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                "user_id": 0,
-                "transaction_amount": diningDollars,
-                "balance": 0,
-                "timestamp": "2021-02-27T06:23:29.468000+00:00"
+                // TODO edit body
+                // "user_id": 0,
+                // "name": "string",
+                // "email": email,
+                // "password": password
             })
         })
-            .then(response => response.json())
-            .then(response => setResponse(response))
-            .catch(function(error) {
-                console.log('Issue with post req. ' + error.message);
-                throw error;
+            .then(
+                function(response) {
+                    // all fails are 400s 200s are success
+                    if (/*response.status !== 200 ||*/ response.status !== 201) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        displayError();
+                        return;
+                    } else {
+                        // Login successful, redirect to MealPreferences
+                        navigation.navigate("MealPreferences")
+                    }
+
+                    // // Examine the text in the response
+                    // response.json().then(function(data) {
+                    //     console.log(data);
+                    //     setResponse(data);
+                    // });
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
             });
-        // navigation.navigate("HomeManager")
     }
 
     return (
         <SafeAreaView style={ styles.screen }>
             <Text style={ styles.questionTitle }>Enter the number of dining dollars you have.</Text>
             <Item style={ styles.diningInput }>
-                <TextInput style={ styles.textInput } onChangeText={(diningDollars) => setDiningDollars(diningDollars)}/>
+                <TextInput style={ styles.textInput } onChangeText={(diningDollars) => setDiningDollars(diningDollars)} />
             </Item>
             <Button style={ styles.signUpButton }>
                 <Text style={ styles.signUpText } onPress={storeDiningDollars()}>Sign Up!</Text>
@@ -74,4 +105,5 @@ const styles = StyleSheet.create({
         color: "white"
     },
 });
+
 export default DiningDollarEntry;
