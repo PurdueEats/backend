@@ -18,7 +18,7 @@ function Name({navigation}) {
         <SafeAreaView style={ styles.screen }>
             <Text style={ styles.questionTitle }>Enter your name.</Text>
             <Item style={ styles.nameInput }>
-                <TextInput style={ styles.textInput } onChangeText={(name) => this.setState(name)} />
+                <TextInput style={ styles.textInput } onChangeText={(name) => setName(name)} />
             </Item>
 
             <Button style={ styles.continueButton }>

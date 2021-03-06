@@ -16,7 +16,7 @@ function Email({navigation}) {
         <SafeAreaView style={ styles.screen }>
             <Text style={ styles.questionTitle }>Enter your email.</Text>
             <Item style={ styles.emailInput }>
-                <TextInput style={ styles.textInput } onChangeText={(email) => this.setState(email)} />
+                <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
             </Item>
 
             <Button style={ styles.continueButton }>

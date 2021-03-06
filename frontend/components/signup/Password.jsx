@@ -26,7 +26,7 @@ function Password({navigation}) {
         <SafeAreaView style={ styles.screen }>
             <Text style={ styles.questionTitle }>Enter your password.</Text>
             <Item style={ styles.passwordInput }>
-                <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => this.setState(password)} />
+                <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
             </Item>
 
             <Button style={ styles.continueButton }>
