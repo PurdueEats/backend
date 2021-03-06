@@ -7,13 +7,29 @@ function Password({navigation}) {
     const [password, setPassword] = useState('');
     const [response, setResponse] = useState('');
 
-    // TODO add check for token expiration
-    function tokenManager() {
-
-    }
-
-    function storePassword() {
-        // TODO
+    function storeUserInfo() {
+        fetch(`http://127.0.0.1:8000/Register`, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": 0,
+                /*
+                "name": name,
+                "email": email,
+                "password": password
+                */
+            })
+        })
+            .then(response => response.json())
+            .then(response => setResponse(response))
+            .catch(function(error) {
+                console.log('Issue with post req. ' + error.message);
+                throw error;
+            });
+        navigation.navigate("MealPlan")
     }
 
     function hashPassword() {
@@ -30,7 +46,7 @@ function Password({navigation}) {
             </Item>
 
             <Button style={ styles.continueButton }>
-                <Text style={ styles.continueText }>Continue</Text>
+                <Text style={ styles.continueText } onPress={storeUserInfo()}>Continue</Text>
             </Button>
         </SafeAreaView>
     );

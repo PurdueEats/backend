@@ -7,13 +7,24 @@ function MealPlan({navigation}) {
     const [mealPlan, setMealPlan] = useState('');
     const [response, setResponse] = useState('');
 
-    // TODO add check for token expiration
-    function tokenManager() {
-
-    }
-
     function storeMealPlan() {
-        // TODO
+        fetch(`http://127.0.0.1:8000/MealPlan`, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "MealPlanName": mealPlan
+            })
+        })
+            .then(response => response.json())
+            .then(response => setResponse(response))
+            .catch(function(error) {
+                console.log('Issue with post req. ' + error.message);
+                throw error;
+            });
+        navigation.navigate("DiningDollarEntry")
     }
 
     return (
@@ -36,7 +47,7 @@ function MealPlan({navigation}) {
                 onChangeItem={item => setMealPlan(item)}
             />
             <Button style={ styles.continueButton }>
-                <Text style={ styles.continueText }>Continue</Text>
+                <Text style={ styles.continueText } onPress={storeMealPlan()}>Continue</Text>
             </Button>
         </SafeAreaView>
     );

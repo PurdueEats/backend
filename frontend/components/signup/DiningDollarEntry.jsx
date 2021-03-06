@@ -4,7 +4,7 @@ import {Button, Item, Toast} from 'native-base';
 
 function DiningDollarEntry({navigation}) {
     const [diningDollars, setDiningDollars] = useState('');
-    // const [response, setResponse] = useState('');
+    const [response, setResponse] = useState('');
 
     function displayError() {
         Toast.show({
@@ -67,7 +67,7 @@ function DiningDollarEntry({navigation}) {
                 <TextInput style={ styles.textInput } onChangeText={(diningDollars) => setDiningDollars(diningDollars)} />
             </Item>
             <Button style={ styles.signUpButton }>
-                <Text style={ styles.signUpText }>Sign Up!</Text>
+                <Text style={ styles.signUpText } onPress={storeDiningDollars()}>Sign Up!</Text>
             </Button>
         </SafeAreaView>
     );
@@ -105,4 +105,5 @@ const styles = StyleSheet.create({
         color: "white"
     },
 });
+
 export default DiningDollarEntry;

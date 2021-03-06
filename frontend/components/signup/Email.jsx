@@ -5,13 +5,11 @@ import {Button, Item, Toast} from 'native-base';
 function Email({navigation}) {
     const [email, setEmail] = useState('');
     const [response, setResponse] = useState('');
-
-    // TODO add check for token expiration
-    function tokenManager() {
-    }
+    //console.log(route.params.name);
 
     function storeEmail() {
     }
+
     return (
         <SafeAreaView style={ styles.screen }>
             <Text style={ styles.questionTitle }>Enter your email.</Text>
@@ -20,7 +18,7 @@ function Email({navigation}) {
             </Item>
 
             <Button style={ styles.continueButton }>
-                <Text style={ styles.continueText }>Continue</Text>
+                <Text style={ styles.continueText} onPress={navigation.navigate("Password")}>Continue</Text>
             </Button>
         </SafeAreaView>
     );

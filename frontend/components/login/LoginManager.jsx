@@ -73,7 +73,7 @@ function LoginManager({navigation}) {
     }
 
     function handleSignUp() {
-        navigation.navigate("SignupBegin")
+        navigation.navigate("Name")
     }
 
     return (

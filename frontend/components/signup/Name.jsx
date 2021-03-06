@@ -6,12 +6,7 @@ function Name({navigation}) {
     const [name, setName] = useState('');
     const [response, setResponse] = useState('');
 
-    // TODO add check for token expiration
-    function tokenManager() {
-    }
-
     function storeName() {
-
     }
 
     return (
@@ -20,9 +15,8 @@ function Name({navigation}) {
             <Item style={ styles.nameInput }>
                 <TextInput style={ styles.textInput } onChangeText={(name) => setName(name)} />
             </Item>
-
-            <Button style={ styles.continueButton }>
-                <Text style={ styles.continueText }>Continue</Text>
+            <Button style={ styles.continueButton }  onPress={navigation.navigate("Email")}>
+                <Text style={ styles.continueText } >Continue</Text>
             </Button>
         </SafeAreaView>
     );
