@@ -5,35 +5,35 @@ import { Button, Item } from 'native-base';
 import Logo from "../../resources/logo.png";
 import SelectMultiple from 'react-native-select-multiple'
 
-const meals = [ "Hamburger", "Balsamic Chicken", "Hotdog", "Pizza", "Beef Broccoli Stirfry", "Grilled Cheese", "BBQ Chicken Quesadilla", "Caesar Salad", "Grilled Chicken Breast" ]
-const selectedMealsList = []
+const meals = [
+    { label: 'Hamburger', value: 'ham' },
+    { label: 'Balsamic Chicken', value: 'bchick'},
+    { label: 'Grilled Chicken', value: 'gchick' },
+    { label: 'Hotdog', value: 'hotdog' },
+    { label: 'Pizza', value: 'piz' },
+    { label: 'Beef Broccoli Stirfry', value: 'bbs' },
+    { label: 'Grilled Cheese', value: 'gc' },
+    { label: 'BBQ Chicken Quesadilla', value: 'bbqq' },
+    { label: 'Caesar Salad', value: 'cs' }
+]
+
+const ratings = [ 3, 3, 3, 3, 3, 3, 3, 3, 3 ]
+
 function MealReview({navigation}) {
   //state = { selectedFruits: [] }
-  const [selectedMeals, setSelectedMeals] = useState([]);
+  const [selectedMeals, setSelectedMeals] = React.useState([]);
 
-  onSelectionsChange = ( meals ) => {
+  const onSelectionsChange = newSelections => {
     // selectedFruits is array of { label, value }
-    //this.setState({ selectedFruits })
-    selectedMealsList.push(meals)
+    setSelectedMeals(newSelections)
   }
 
-  function handleRecordMeal() {
-    // Sample code for sending package to API
-    // MenuItemReview Post request
-  	// fetch(`/api/db/getBusinessData/` + params, {
-    // 	method: 'GET',
-  	// 	headers : {
-  	// 		'Content-Type': 'application/json',
-  	// 		'Accept': 'application/json'
-  	// 	}
-  	// })
-  	// 	.then(response => response.json())
-  	// 	.then(response => this.setState({ "response" : response }))
+  function handleMealReview() {
     navigation.navigate("MealReview")
    }
 
     return (
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View showsVerticalScrollIndicator={false}>
               <View style={ styles.screenView }>
                 <Image style={ styles.logoImage } source={ Logo } />
                     <Text style={ styles.screenTitle }>Record Meal</Text>
@@ -56,26 +56,26 @@ function MealReview({navigation}) {
                  />
               </View>
               <View>
-                  <View>
+                <View>
                     <SelectMultiple
                       items={meals}
                       //selectedItems={this.state.selectedFruits}
-                      selectedItems={selectedMealsList}
+                      selectedItems={selectedMeals}
                       onSelectionsChange={onSelectionsChange}
                       />
-                  </View>
+                </View>
               </View>
               <View>
                   <View style={{ flexDirection:"row" }}>
                     <Button style={ styles.cancelButtonComponent }>
                         <Text style={ styles.cancelButtonText }>Cancel</Text>
                     </Button>
-                    <Button style={ styles.confirmButtonComponent } onPress={ handleRecordMeal }>
+                    <Button style={ styles.confirmButtonComponent } onPress={ handleMealReview }>
                         <Text style={ styles.confirmButtonText }>Confirm</Text>
                     </Button>
                   </View>
               </View>
-          </ScrollView>
+          </View>
     )
 }
 
