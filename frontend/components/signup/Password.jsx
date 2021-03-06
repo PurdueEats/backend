@@ -1,41 +1,12 @@
-import React, {Component, useState} from "react";
-import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, Image, TouchableOpacity} from "react-native";
-import {Button, Item} from 'native-base';
-import { sha256 } from 'react-native-sha256';
+import React, { useState } from "react";
+import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
+import { Button, Item } from 'native-base';
 
-function Password({navigation}) {
+function Password({route, navigation}) {
     const [password, setPassword] = useState('');
-    const [response, setResponse] = useState('');
 
-    function storeUserInfo() {
-        fetch(`http://127.0.0.1:8000/Register`, {
-            method: 'POST',
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                "user_id": 0,
-                /*
-                "name": name,
-                "email": email,
-                "password": password
-                */
-            })
-        })
-            .then(response => response.json())
-            .then(response => setResponse(response))
-            .catch(function(error) {
-                console.log('Issue with post req. ' + error.message);
-                throw error;
-            });
-        navigation.navigate("MealPlan")
-    }
-
-    function hashPassword() {
-        sha256(password).then( hash => {
-            // store hash
-        })
+    function handleNavigate() {
+        navigation.navigate("MealPlan", { name: route.params.name, email: route.params.email, password: password })
     }
 
     return (
@@ -44,9 +15,8 @@ function Password({navigation}) {
             <Item style={ styles.passwordInput }>
                 <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
             </Item>
-
-            <Button style={ styles.continueButton }>
-                <Text style={ styles.continueText } onPress={storeUserInfo()}>Continue</Text>
+            <Button style={ styles.continueButton } onPress={ handleNavigate }>
+                <Text style={ styles.continueText }>Continue</Text>
             </Button>
         </SafeAreaView>
     );

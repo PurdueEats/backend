@@ -1,13 +1,12 @@
-import React, {Component, useState} from "react";
-import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, Image, TouchableOpacity} from "react-native";
-import {Button, Item, Toast} from 'native-base';
+import React, { useState } from "react";
+import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
+import { Button, Item } from 'native-base';
 
-function Email({navigation}) {
+function Email({route, navigation}) {
     const [email, setEmail] = useState('');
-    const [response, setResponse] = useState('');
-    //console.log(route.params.name);
 
-    function storeEmail() {
+    function handleNavigate() {
+        navigation.navigate("Password", { name: route.params.name, email: email })
     }
 
     return (
@@ -16,9 +15,8 @@ function Email({navigation}) {
             <Item style={ styles.emailInput }>
                 <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
             </Item>
-
-            <Button style={ styles.continueButton }>
-                <Text style={ styles.continueText} onPress={navigation.navigate("Password")}>Continue</Text>
+            <Button style={ styles.continueButton } onPress={ handleNavigate } >
+                <Text style={ styles.continueText}>Continue</Text>
             </Button>
         </SafeAreaView>
     );

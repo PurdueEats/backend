@@ -1,12 +1,12 @@
-import React, {Component, useState} from "react";
-import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, Image, TouchableOpacity} from "react-native";
-import {Button, Item, Toast} from 'native-base';
+import React, { useState } from "react";
+import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
+import { Button, Item } from 'native-base';
 
 function Name({navigation}) {
     const [name, setName] = useState('');
-    const [response, setResponse] = useState('');
 
-    function storeName() {
+    function handleNavigate() {
+        navigation.navigate("Email", { name: name })
     }
 
     return (
@@ -15,7 +15,7 @@ function Name({navigation}) {
             <Item style={ styles.nameInput }>
                 <TextInput style={ styles.textInput } onChangeText={(name) => setName(name)} />
             </Item>
-            <Button style={ styles.continueButton }  onPress={navigation.navigate("Email")}>
+            <Button style={ styles.continueButton } onPress={ handleNavigate } >
                 <Text style={ styles.continueText } >Continue</Text>
             </Button>
         </SafeAreaView>

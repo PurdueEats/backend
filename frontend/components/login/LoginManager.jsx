@@ -6,14 +6,11 @@ import { Button, Item, Toast } from 'native-base';
 function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [response, setResponse] = useState({ UserId : "", token : "" });
+    const [response, setResponse] = useState({ UserID : "", token : "" });
 
     // TODO add check for token expiration
     function tokenManager() {
 
-    }
-
-    function clearResponse() {
     }
 
     function displayError() {
@@ -31,7 +28,7 @@ function LoginManager({navigation}) {
     function handleLogin() {
         setResponse({ UserId: "", token: "" });
         // Login Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Login`, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
         	method: 'POST',
         	headers : {
         		'Content-Type': 'application/json',
@@ -45,22 +42,20 @@ function LoginManager({navigation}) {
             })
         })
             .then(
-                function(response) {
-                    if (response.status !== 200) {
+                function(apiResponse) {
+                    if (apiResponse.status !== 200) {
                         console.log('Looks like there was a problem. Status Code: ' +
                             response.status);
                         displayError();
                         return;
                     } else {
+                        // Examine the text in the response
+                        apiResponse.json().then(function(data) {
+                            setResponse(data);
+                        });
                         // Login successful, redirect to MealPreferences
-                        navigation.navigate("Template", { response });
+                        navigation.navigate("Template", { UserID: response.UserID, token: response.token });
                     }
-
-                    // Examine the text in the response
-                    response.json().then(function(data) {
-                        console.log(data);
-                        setResponse(data);
-                    });
                 }
             )
             .catch(function(err) {

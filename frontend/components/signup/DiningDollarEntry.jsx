@@ -1,8 +1,8 @@
-import React, {Component, useState} from "react";
-import {StyleSheet, SafeAreaView, Text, TextInput, ScrollView, View, Image, TouchableOpacity} from "react-native";
-import {Button, Item, Toast} from 'native-base';
+import React, { useState } from "react";
+import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
+import { Button, Item, Toast } from 'native-base';
 
-function DiningDollarEntry({navigation}) {
+function DiningDollarEntry({route, navigation}) {
     const [diningDollars, setDiningDollars] = useState('');
     const [response, setResponse] = useState('');
 
@@ -10,7 +10,7 @@ function DiningDollarEntry({navigation}) {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
-            text: "Incorrect username/password combination.",
+            text: "There was an issue registering your account, please change your data.",
             textStyle: {
                 textAlign: 'center',
             },
@@ -19,40 +19,38 @@ function DiningDollarEntry({navigation}) {
     }
 
     function handleSignUp() {
-        // setResponse({  });
         // Login Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Login`, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Register`, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                // TODO edit body
-                // "user_id": 0,
-                // "name": "string",
-                // "email": email,
-                // "password": password
+                "user_id": 0,
+                "name": route.params.name,
+                "email": route.params.email,
+                "password": route.params.password
             })
         })
             .then(
                 function(response) {
-                    // all fails are 400s 200s are success
-                    if (/*response.status !== 200 ||*/ response.status !== 201) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Login successful, redirect to MealPreferences
+                        navigation.navigate("Login")
+                    } else {
                         console.log('Looks like there was a problem. Status Code: ' +
                             response.status);
                         displayError();
+                        console.log(response.json())
                         return;
-                    } else {
-                        // Login successful, redirect to MealPreferences
-                        navigation.navigate("MealPreferences")
                     }
 
-                    // // Examine the text in the response
-                    // response.json().then(function(data) {
-                    //     console.log(data);
-                    //     setResponse(data);
-                    // });
+                    // Examine the text in the response
+                    response.json().then(function(data) {
+                        console.log(data);
+                        setResponse(data);
+                    });
                 }
             )
             .catch(function(err) {
@@ -66,8 +64,8 @@ function DiningDollarEntry({navigation}) {
             <Item style={ styles.diningInput }>
                 <TextInput style={ styles.textInput } onChangeText={(diningDollars) => setDiningDollars(diningDollars)} />
             </Item>
-            <Button style={ styles.signUpButton }>
-                <Text style={ styles.signUpText } onPress={storeDiningDollars()}>Sign Up!</Text>
+            <Button style={ styles.signUpButton } onPress={ handleSignUp }>
+                <Text email style={ styles.signUpText }>Sign Up!</Text>
             </Button>
         </SafeAreaView>
     );
