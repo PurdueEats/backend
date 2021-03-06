@@ -1,6 +1,6 @@
 """ User routes module. Contains all user resource related routes"""
 from typing import List
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
 from API.models.MealPlan import MealPlanIn
@@ -15,7 +15,7 @@ from API.models.users import (
 )
 
 
-app = FastAPI()
+app = APIRouter()
 auth_handler = AuthHandler()
 
 
