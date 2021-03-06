@@ -16,9 +16,11 @@ function Password({navigation}) {
             },
             body: JSON.stringify({
                 "user_id": 0,
-                "name": "",
-                "email": "",
-                "password": ""
+                /*
+                "name": name,
+                "email": email,
+                "password": password
+                */
             })
         })
             .then(response => response.json())
