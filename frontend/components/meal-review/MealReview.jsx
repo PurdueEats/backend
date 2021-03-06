@@ -17,30 +17,56 @@ const meals = [
     { label: 'Caesar Salad', value: 'cs' }
 ]
 
-const ratings = [ 3, 3, 3, 3, 3, 3, 3, 3, 3 ]
 
-function MealReview({navigation}) {
-  //state = { selectedFruits: [] }
+function MealReview({route, navigation}) {
+
+  const [ratings, setRatings] = React.useState('');
   const [selectedMeals, setSelectedMeals] = React.useState([]);
+  const [response, setResponse] = React.useState('');
 
   const onSelectionsChange = newSelections => {
-    // selectedFruits is array of { label, value }
     setSelectedMeals(newSelections)
   }
 
   function handleMealReview() {
+    fetch(`http://127.0.0.1:8000/`, {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+         }
+     })
+         .then(response => response.json())
+         .then(response => setResponse(response))
+    fetch(`http://127.0.0.1:8000/`, {
+        method: 'POST',
+        headers : {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+         },
+         body: JSON.stringify( {
+            'user_id': 1,
+            'menu_item_id': 1,
+            'rating': 1,
+            'timestamp': "2021-02-27T06:23:29.468000+00:00"
+         })
+     })
+         .then(response => response.json())
+         .then(response => setResponse(response))
+         console.log(ratings)
     navigation.navigate("MealReview")
    }
-
+   function updateRating(rating) {
+        setRatings(rating);
+    }
     return (
-          <View showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false}>
               <View style={ styles.screenView }>
                 <Image style={ styles.logoImage } source={ Logo } />
                     <Text style={ styles.screenTitle }>Record Meal</Text>
               </View>
               <View>
                 <AirbnbRating
-                    //key={index + "Rating"}
                     count={5}
                     reviews={["Terrible", "Meh", "OK", "Good", "Amazing"]}
                     type={"custom"}
@@ -49,11 +75,8 @@ function MealReview({navigation}) {
                     defaultRating={3}
                     reviewSize={20}
                     size={25}
-                    //onFinishRating={ updateRating }
-                    /*function updateRating(rating) {
-                        ratings[index] = rating;
-                    }*/
-                 />
+                    onFinishRating={ updateRating }
+                />
               </View>
               <View>
                 <View>
@@ -72,10 +95,11 @@ function MealReview({navigation}) {
                     </Button>
                     <Button style={ styles.confirmButtonComponent } onPress={ handleMealReview }>
                         <Text style={ styles.confirmButtonText }>Confirm</Text>
+
                     </Button>
                   </View>
               </View>
-          </View>
+          </ScrollView>
     )
 }
 
