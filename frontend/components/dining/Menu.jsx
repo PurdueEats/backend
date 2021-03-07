@@ -77,59 +77,132 @@ function Menu({navigation}) {
                     dropDownStyle={{backgroundColor: '#fafafa'}}
                     onChangeItem={item => setFilter(item.value)}
                 />
-                <View style={{flexDirection: "row"}}>
-                    <Text style={styles.firstItem}>Alfredo Pasta</Text>
-                    <View style={styles.icons}>
-                        <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                {filter === "All Items" ? (
+                    <View>
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={styles.firstItem}>Alfredo Pasta</Text>
+                            <View style={styles.icons}>
+                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#c4baba',
+                                borderBottomWidth: 1,
+                                marginTop: "2%",
+                                marginBottom: "5%"
+                            }}
+                        />
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={styles.secondItem}>Chicken Sandwich</Text>
+                        </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#c4baba',
+                                borderBottomWidth: 1,
+                                marginTop: "2%",
+                                marginBottom: "5%"
+                            }}
+                        />
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={styles.thirdItem}>Salad</Text>
+                            <View style={styles.icons}>
+                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#c4baba',
+                                borderBottomWidth: 1,
+                                marginTop: "2%",
+                                marginBottom: "5%"
+                            }}
+                        />
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={styles.fourthItem}>Gluten Free Pasta</Text>
+                            <View style={styles.icons}>
+                                <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#c4baba',
+                                borderBottomWidth: 1,
+                                marginTop: "2%",
+                                marginBottom: "5%"
+                            }}
+                        />
                     </View>
-                </View>
-                <View
-                    style={{
-                        borderBottomColor: '#c4baba',
-                        borderBottomWidth: 1,
-                        marginTop: "2%",
-                        marginBottom: "5%"
-                    }}
-                />
-                <View style={{flexDirection: "row"}}>
-                    <Text style={styles.secondItem}>Chicken Sandwich</Text>
-                </View>
-                <View
-                    style={{
-                        borderBottomColor: '#c4baba',
-                        borderBottomWidth: 1,
-                        marginTop: "2%",
-                        marginBottom: "5%"
-                    }}
-                />
-                <View style={{flexDirection: "row"}}>
-                    <Text style={styles.thirdItem}>Salad</Text>
-                    <View style={styles.icons}>
-                        <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                    ):(
+                    <View>
+
                     </View>
-                </View>
-                <View
-                    style={{
-                        borderBottomColor: '#c4baba',
-                        borderBottomWidth: 1,
-                        marginTop: "2%",
-                        marginBottom: "5%"
-                    }}
-                />
-                <View style={{flexDirection: "row"}}>
-                    <Text style={styles.fourthItem}>Gluten Free Pasta</Text>
-                    <View style={styles.icons}>
-                        <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
+                )}
+                {filter === "Gluten Free" ? (
+                    <View>
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={styles.fourthItem}>Gluten Free Pasta</Text>
+                            <View style={styles.icons}>
+                                <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#c4baba',
+                                borderBottomWidth: 1,
+                                marginTop: "2%",
+                                marginBottom: "5%"
+                            }}
+                        />
                     </View>
-                </View>
-                <View
-                    style={{
-                        borderBottomColor: '#c4baba',
-                        borderBottomWidth: 1,
-                        marginTop: "2%",
-                        marginBottom: "5%"
-                    }}
-                />
+                    ): (
+                        <View>
+
+                        </View>
+                )}
+                {filter === "Vegetarian" ? (
+                    <View>
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={styles.firstItem}>Alfredo Pasta</Text>
+                            <View style={styles.icons}>
+                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#c4baba',
+                                borderBottomWidth: 1,
+                                marginTop: "2%",
+                                marginBottom: "5%"
+                            }}
+                        />
+                    </View>
+                ): (
+                    <View>
+
+                    </View>
+                )}
+                {filter === "Dairy Free" ? (
+                    <View>
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={styles.thirdItem}>Salad</Text>
+                            <View style={styles.icons}>
+                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#c4baba',
+                                borderBottomWidth: 1,
+                                marginTop: "2%",
+                                marginBottom: "5%"
+                            }}
+                        />
+                    </View>
+                ): (
+                    <View>
+                    </View>
+                )}
             </SafeAreaView>
         </ScrollView>
     );
