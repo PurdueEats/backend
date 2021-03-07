@@ -39,8 +39,4 @@ const styles = StyleSheet.create({
     }
 });
 
-<<<<<<< HEAD
 export default TemplateComponent;
-=======
-export default TemplateComponent;
->>>>>>> ae7bf05... back arrows and deleting edit button
