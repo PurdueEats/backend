@@ -1,26 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import {Image, ScrollView, StyleSheet, View, Text, Alert} from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 import Logo from "../../resources/logo.png";
-import { Button } from 'native-base';
 
 function MapManager({navigation}) {
-    const [location, setLocation] = useState('');
-
-    function handlePress() {
-        // console.log(findCoordinates().)
-    }
-
-    function findCoordinates() {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                return JSON.stringify(position);
-
-            },
-            error => Alert.alert(error.message),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-        );
-    }
 
     return (
         <View>
