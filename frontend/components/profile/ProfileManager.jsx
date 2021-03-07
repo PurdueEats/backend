@@ -44,108 +44,81 @@ function ProfileManager({route, navigation}) {
 
     }
 
-    const plans = ['   Meal Plan: Boiler Flex Unlimited Plan 350', '   Meal Plan: Boiler Plan 2', '   Meal Plan: I will add the actual names in later'];
-
-
-
-    // TODO add check for token expiration
-    function tokenManager() {
-
-
-    }
     function getAuth() {
-                    console.log("in here?");
-
-            //MealPlan Route
-                   // Login Route
-                   fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/Auth`, {
-                   	method: 'GET',
-                   	headers : {
-                   		'Content-Type': 'application/json',
-                   		'Accept': 'application/json',
-                   		'Authorization': 'Bearer ' + route.params.token
-                       },
-
-                   })
-                       .then(
-                           function(apiResponse) {
-                               if (apiResponse.status !== 200) {
-                                   console.log('Looks like there was a problem. Status Code: ' +
-                                       response.status);
-                                   return;
-                               } else {
-                                   // Examine the text in the response
-                                   apiResponse.json().then(function(data) {
-                                       setResponse(data);
-                                       // Login successful, redirect to MealPreferences
-                                       setName(data.name);
-                                       setEmail(data.email);
-                                   });
-                               }
-                           }
-                       )
-                       .catch(function(err) {
-                           console.log('Fetch Error :-S', err);
-                       });
-
-
-
-    }
-
-    function getMealInfo() {
-                    console.log("here?");
-                    console.log(route.params.UserID);
-                    console.log(route.params.token);
-                //MealPlan Route
-                                  // Login Route
-                                  fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/MealPlan`, {
-                                  	method: 'GET',
-                                  	headers : {
-                                  		'Content-Type': 'application/json',
-                                  		'Accept': 'application/json',
-                                  		'Authorization': 'Bearer ' + route.params.token
-                                      },
-
-                                  })
-                                      .then(
-                                          function(apiResponse) {
-                                              if (apiResponse.status !== 200) {
-                                                  console.log('Looks like there was a problem. Status Code: ' +
-                                                      response.status);
-                                                  return;
-                                              } else {
-                                                  // Examine the text in the response
-                                                  apiResponse.json().then(function(data) {
-                                                      setMealResponse(data);
-                                                      // Login successful, redirect to MealPreferences
-                                                      setDollars(data.diningDollars);
-                                                      setPlan(data.mealPlan);
-                                                      setSwipes(data.swipes);
-                                                  });
-                                              }
-                                          }
-                                      )
-                                      .catch(function(err) {
-                                          console.log('Fetch Error :-S', err);
-                                      });
-
-
-
-            }
-
-    function deleteAccount() {
-
-        console.log("in?");
-
-                            // Login Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+UserId, {
+        // Auth Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID + `/Auth`, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + route.params.token
             },
+        })
+            .then(
+                function(apiResponse) {
+                    if (apiResponse.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        return;
+                    } else {
+                        // Examine the text in the response
+                        apiResponse.json().then(function(data) {
+                            setResponse(data);
+                            // Login successful, redirect to MealPreferences
+                            setName(data.name);
+                            setEmail(data.email);
+                        });
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
 
+    function getMealPlan() {
+        // MealPlan Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + `/MealPlan`, {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+        })
+            .then(
+                function(apiResponse) {
+                    if (apiResponse.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        return;
+                    } else {
+                        // Examine the text in the response
+                        apiResponse.json().then(function(data) {
+                            setMealResponse(data);
+                            // Login successful, redirect to MealPreferences
+                            setDollars(data.diningDollars);
+                            setPlan(data.mealPlan);
+                            setSwipes(data.swipes);
+                        });
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
+    function deleteAccount() {
+        console.log("entered delete");
+        // Delete Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID, {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
         })
         .then(
             function(apiResponse) {
