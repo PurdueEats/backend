@@ -1,32 +1,25 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
 import { Button, Item } from 'native-base';
 
-class Email extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: ""
-        };
-    }
-    async storeEmail() {
-        console.log("send email to database");
+function Email({route, navigation}) {
+    const [email, setEmail] = useState('');
+
+    function handleNavigate() {
+        navigation.navigate("Password", { name: route.params.name, email: email })
     }
 
-    render() {
-        return (
-            <SafeAreaView style={ styles.screen }>
-                <Text style={ styles.questionTitle }>Enter your email.</Text>
-                <Item style={ styles.emailInput }>
-                    <TextInput style={ styles.textInput } onChangeText={(email) => this.setState(email)} />
-                </Item>
-
-                <Button style={ styles.continueButton }>
-                    <Text style={ styles.continueText }>Continue</Text>
-                </Button>
-            </SafeAreaView>
-        );
-    }
+    return (
+        <SafeAreaView style={ styles.screen }>
+            <Text style={ styles.questionTitle }>Enter your email.</Text>
+            <Item style={ styles.emailInput }>
+                <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
+            </Item>
+            <Button style={ styles.continueButton } onPress={ handleNavigate } >
+                <Text style={ styles.continueText}>Continue</Text>
+            </Button>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
