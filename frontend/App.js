@@ -13,7 +13,6 @@ import MealPlan from "./components/signup/MealPlan";
 import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 import MapManager from "./components/map/MapManager";
 
-
 export default function App() {
   const Stack = createStackNavigator();
 
@@ -23,7 +22,7 @@ export default function App() {
           <NavigationContainer>
               <Stack.Navigator screenOptions={{
                   headerShown: false
-                }} initialRouteName="MealReview">
+                }} initialRouteName="Map">
                   <Stack.Screen name="Login" component={ LoginManager }/>
                   <Stack.Screen name="SignupBegin" component={ Name }/>
                   <Stack.Screen name="SignupEmail" component={ Email }/>

@@ -13,7 +13,10 @@
 **/build/
 
 # IntelliJ
+CS307.iml
+PurdueEats.iml
 .idea
+/venv
 
 */__pycache__
 /gen
