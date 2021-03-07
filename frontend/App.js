@@ -13,8 +13,6 @@ import MealPlan from "./components/signup/MealPlan";
 import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 import MapManager from "./components/map/MapManager";
 
-
-
 export default function App() {
   const Stack = createStackNavigator();
 

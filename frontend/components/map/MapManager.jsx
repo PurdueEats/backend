@@ -1,29 +1,29 @@
-import React from "react";
-import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
+import React, { useState } from "react";
+import {Image, ScrollView, StyleSheet, View, Text, Alert} from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 import Logo from "../../resources/logo.png";
-import { Button, Item } from 'native-base';
+import { Button } from 'native-base';
 
 function MapManager({navigation}) {
-    // const region = getInitialState();
-    //
-    // function getInitialState() {
-    //     return {
-    //         region: {
-    //             latitude: 37.78825,
-    //             longitude: -122.4324,
-    //             latitudeDelta: 0.0922,
-    //             longitudeDelta: 0.0421,
-    //         }
-    //     };
-    // }
+    const [location, setLocation] = useState('');
 
-    function onRegionChange(region) {
-        this.setState({ region });
+    function handlePress() {
+        // console.log(findCoordinates().)
+    }
+
+    function findCoordinates() {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                return JSON.stringify(position);
+
+            },
+            error => Alert.alert(error.message),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
     }
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <View>
             <View style={ styles.screenView }>
                 <Image style={ styles.logoImage } source={ Logo } />
             </View>
@@ -31,7 +31,7 @@ function MapManager({navigation}) {
                 <Text style={ styles.screenTitle }> Dining Locations </Text>
             </View>
             <MapView
-                style={{ height: "200%", width: "100%" }}
+                style={ styles.map }
                 provider="google"
                 initialRegion={{
                     latitude: 40.427284,
@@ -39,14 +39,9 @@ function MapManager({navigation}) {
                     latitudeDelta: .005,
                     longitudeDelta: .005
                 }}
+                showsUserLocation={true}
+                userLocationPriority={"high"}
             >
-                <Marker
-                    coordinate={{latitude: 40.9493258,
-                        longitude: -86.91963498354119}}
-                    title={"Ford"}
-                    description={"description"}
-                />
-
                 <Marker
                     coordinate={{latitude: 40.43210018,
                         longitude: -86.91955498354119}}
@@ -82,13 +77,7 @@ function MapManager({navigation}) {
                     description={"Dine-in/On-to-go available"}
                 />
             </MapView>
-
-            <View style={ styles.buttonView }>
-                <Button style={ styles.myLocationButtonComponent }>
-                    <Text style={ styles.myLocationButtonText }>Update My Location!</Text>
-                </Button>
-            </View>
-        </ScrollView>
+        </View>
     );
 }
 
@@ -100,31 +89,19 @@ const styles = StyleSheet.create({
     logoImage: {
         height: 70,
         width: 70,
-        marginBottom: "8%"
+        marginBottom: "4%"
     },
     screenTitle: {
         fontSize: 26,
+        marginBottom: "5%",
         fontWeight: "bold",
         textAlign: "center"
     },
-    myLocationButtonComponent: {
-        width: '100%',
-        height: '40%',
-        justifyContent: 'center',
-        backgroundColor: "#ff0000",
-        borderRadius: 10,
-        marginTop: "5%",
-        marginBottom: "10%"
-    },
-    myLocationButtonText: {
-        fontSize: 26,
-        fontWeight: "bold",
-        color: "white"
-    },
-    buttonView: {
-        paddingTop: "4%",
-        alignItems: "center",
-    },
+    map: {
+        height: "75%",
+        width: "100%",
+        borderRadius: 10
+    }
 });
 
 export default MapManager;
