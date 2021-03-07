@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ae7bf05... back arrows and deleting edit button
 import React, { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import Logo from "../../resources/logo.png";
@@ -36,4 +39,8 @@ const styles = StyleSheet.create({
     }
 });
 
+<<<<<<< HEAD
 export default TemplateComponent;
+=======
+export default TemplateComponent;
+>>>>>>> ae7bf05... back arrows and deleting edit button
