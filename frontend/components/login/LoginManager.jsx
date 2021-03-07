@@ -53,7 +53,7 @@ function LoginManager({navigation}) {
                         apiResponse.json().then(function(data) {
                             setResponse(data);
                             // Login successful, redirect to MealPreferences
-                            navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                            navigation.navigate("Profile", { UserID: data.UserID, token: data.token });
                         });
                     }
                 }

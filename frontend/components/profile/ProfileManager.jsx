@@ -1,10 +1,12 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 import { Button, Item } from 'native-base';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 import ReactRoundedImage from "react-rounded-image";
 import { StackActions } from '@react-navigation/native';
+
+
 
 function ProfileManager({route, navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
@@ -17,12 +19,21 @@ function ProfileManager({route, navigation}) {
     const [plan, setPlan] = useState('   Meal Plan: Boiler Flex Unlimited 350');
     const [dollars, setDollars] = useState('200');
     const [password, setPassword] = useState('password1');
-    const [swipes, setSwipes] = useState('5');
+    const [swipes, setSwipes] = useState('9');
 
     const [response, setResponse] = useState({ userID: "", name: "", email: "" });
     const [mealResponse, setMealResponse] = useState({ userID: "", mealPlan: "", diningDollars: "", });
 
     const popAction = StackActions.pop();
+
+
+
+
+
+   // useEffect(() => {
+     //   getAuth()
+   //     getMealInfo()
+  //  });
 
     function resetEverything() {
         setName('');
@@ -40,14 +51,14 @@ function ProfileManager({route, navigation}) {
     // TODO add check for token expiration
     function tokenManager() {
 
-    }
-    function getLogin() {
 
+    }
+    function getAuth() {
                     console.log("in here?");
 
             //MealPlan Route
                    // Login Route
-                   fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/Login`, {
+                   fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/Auth`, {
                    	method: 'GET',
                    	headers : {
                    		'Content-Type': 'application/json',
@@ -61,7 +72,6 @@ function ProfileManager({route, navigation}) {
                                if (apiResponse.status !== 200) {
                                    console.log('Looks like there was a problem. Status Code: ' +
                                        response.status);
-                                   displayError();
                                    return;
                                } else {
                                    // Examine the text in the response
@@ -84,15 +94,16 @@ function ProfileManager({route, navigation}) {
 
     function getMealInfo() {
                     console.log("here?");
-
-
+                    console.log(route.params.UserID);
+                    console.log(route.params.token);
                 //MealPlan Route
                                   // Login Route
                                   fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/MealPlan`, {
                                   	method: 'GET',
                                   	headers : {
                                   		'Content-Type': 'application/json',
-                                  		'Accept': 'application/json'
+                                  		'Accept': 'application/json',
+                                  		'Authorization': 'Bearer ' + route.params.token
                                       },
 
                                   })
@@ -101,12 +112,11 @@ function ProfileManager({route, navigation}) {
                                               if (apiResponse.status !== 200) {
                                                   console.log('Looks like there was a problem. Status Code: ' +
                                                       response.status);
-                                                  displayError();
                                                   return;
                                               } else {
                                                   // Examine the text in the response
                                                   apiResponse.json().then(function(data) {
-                                                      setResponse(data);
+                                                      setMealResponse(data);
                                                       // Login successful, redirect to MealPreferences
                                                       setDollars(data.diningDollars);
                                                       setPlan(data.mealPlan);
@@ -132,7 +142,8 @@ function ProfileManager({route, navigation}) {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
             },
 
         })
@@ -165,11 +176,12 @@ function ProfileManager({route, navigation}) {
         console.log("i3n?");
 
                             // Login Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserId+'Auth', {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserId+'/Auth', {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
             },
             body: JSON.stringify({
                 "user_id": route.params.UserId,
@@ -190,6 +202,7 @@ function ProfileManager({route, navigation}) {
                     apiResponse.json().then(function(data) {
 
                         setResponse(data);
+                        setName(name2);
                     });
                 }
             }
@@ -198,6 +211,8 @@ function ProfileManager({route, navigation}) {
             console.log('Fetch Error :-S', err);
         });
     }
+
+
 
     return (
 
@@ -228,7 +243,7 @@ function ProfileManager({route, navigation}) {
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
 
-                                <TouchableOpacity active = { .5 } onPress={() => setModalVisible(!modalVisible)}>
+                                <TouchableOpacity active = { .5 } onPress={() =>  setModalVisible(!setModalVisible)}>
                                     <Image
                                         style={ styles.backImage }
                                              source={require('../../resources/back.png')}
@@ -287,7 +302,7 @@ function ProfileManager({route, navigation}) {
                     <Text style={ styles.textNormal }>   {name} </Text>
 
 
-                    <TouchableOpacity active = { .5 } onPress={() =>  setModalVisible(true) }>
+                    <TouchableOpacity active = { .5 } onPress={() =>  getMealInfo() }>
                         <Image
                             style={ styles.editImage }
                             source={require('../../resources/edit.png')}
@@ -356,12 +371,7 @@ function ProfileManager({route, navigation}) {
                     }}
                 >
                 <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
-                 <TouchableOpacity active = { .5 } onPress={() =>  setModalVisible2(true) }>
-                    <Image
-                         style={ styles.editImage }
-                         source={require('../../resources/edit.png')}
-                    />
-                 </TouchableOpacity>
+
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -470,7 +480,7 @@ function ProfileManager({route, navigation}) {
                                 </TouchableOpacity >
                                 <Text style={styles.modalText}>Delete Account?</Text>
 
-                                <TouchableOpacity active = { .5 } onPress={ () => resetEverything() } >
+                                <TouchableOpacity active = { .5 } onPress={ () => deleteAccount() } >
                                     <Text style={ styles.textNormalRed }> DELETE ACCOUNT </Text>
                                 </TouchableOpacity>
 
