@@ -58,7 +58,7 @@ function MapManager({route, navigation}) {
             error => Alert.alert(error.message),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
         );
-    });
+    }, []);
 
     return (
         <View>
