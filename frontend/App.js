@@ -26,11 +26,11 @@ export default function App() {
                 }} initialRouteName="Login">
                   <Stack.Screen name="Profile" component={ ProfileManager }/>
                   <Stack.Screen name="Login" component={ LoginManager }/>
-                  <Stack.Screen name="SignupBegin" component={ Name }/>
-                  <Stack.Screen name="SignupEmail" component={ Email }/>
-                  <Stack.Screen name="SignupPassword" component={ Password }/>
-                  <Stack.Screen name="SignupMealPlan" component={ MealPlan }/>
-                  <Stack.Screen name="SignupDiningDollars" component={ DiningDollarEntry }/>
+                  <Stack.Screen name="Name" component={ Name }/>
+                  <Stack.Screen name="Email" component={ Email }/>
+                  <Stack.Screen name="Password" component={ Password }/>
+                  <Stack.Screen name="MealPlan" component={ MealPlan }/>
+                  <Stack.Screen name="DiningDollarEntry" component={ DiningDollarEntry }/>
                   <Stack.Screen name="MealPreferences" component={ MealPreferences }/>
                   <Stack.Screen name="Map" component={ MapManager }/>
                   <Stack.Screen name="Template" component={ TemplateComponent }/>
