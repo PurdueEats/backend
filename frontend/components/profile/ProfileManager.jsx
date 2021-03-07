@@ -4,9 +4,11 @@ import { Button, Item } from 'native-base';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 import ReactRoundedImage from "react-rounded-image";
+import { StackActions } from '@react-navigation/native';
 
 function ProfileManager({route, navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible2, setModalVisible2] = useState(false);
     const [modalVisible3, setModalVisible3] = useState(false);
     const [modalVisible4, setModalVisible4] = useState(false);
 
@@ -15,10 +17,12 @@ function ProfileManager({route, navigation}) {
     const [plan, setPlan] = useState('   Meal Plan: Boiler Flex Unlimited 350');
     const [dollars, setDollars] = useState('200');
     const [password, setPassword] = useState('password1');
+    const [swipes, setSwipes] = useState('5');
 
-    const [response, setResponse] = useState( { userID: "", name: "", email: "" });
-    const [mealResponse, setMealResponse] = useState( { userID: "", mealPlan: "", diningDollars: "", });
+    const [response, setResponse] = useState({ userID: "", name: "", email: "" });
+    const [mealResponse, setMealResponse] = useState({ userID: "", mealPlan: "", diningDollars: "", });
 
+    const popAction = StackActions.pop();
 
     function resetEverything() {
         setName('');
@@ -39,16 +43,16 @@ function ProfileManager({route, navigation}) {
     }
     function getLogin() {
 
+                    console.log("in here?");
 
             //MealPlan Route
-            setResponse({ UserId: "", name: "", email: "" });
                    // Login Route
-                   fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+UserId+`/Login`, {
+                   fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/Login`, {
                    	method: 'GET',
                    	headers : {
                    		'Content-Type': 'application/json',
                    		'Accept': 'application/json',
-                   		'Authorization': 'Bearer ' + token
+                   		'Authorization': 'Bearer ' + route.params.token
                        },
 
                    })
@@ -64,7 +68,8 @@ function ProfileManager({route, navigation}) {
                                    apiResponse.json().then(function(data) {
                                        setResponse(data);
                                        // Login successful, redirect to MealPreferences
-                                       navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                                       setName(data.name);
+                                       setEmail(data.email);
                                    });
                                }
                            }
@@ -78,12 +83,12 @@ function ProfileManager({route, navigation}) {
     }
 
     function getMealInfo() {
+                    console.log("here?");
 
 
                 //MealPlan Route
-                setResponse({ UserId: "", mealPlan: "", diningDollars: "" });
                                   // Login Route
-                                  fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+UserId+`/MealPlan`, {
+                                  fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/MealPlan`, {
                                   	method: 'GET',
                                   	headers : {
                                   		'Content-Type': 'application/json',
@@ -103,7 +108,9 @@ function ProfileManager({route, navigation}) {
                                                   apiResponse.json().then(function(data) {
                                                       setResponse(data);
                                                       // Login successful, redirect to MealPreferences
-                                                      navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                                                      setDollars(data.diningDollars);
+                                                      setPlan(data.mealPlan);
+                                                      setSwipes(data.swipes);
                                                   });
                                               }
                                           }
@@ -116,39 +123,80 @@ function ProfileManager({route, navigation}) {
 
             }
 
-     function deleteAccount() {
+    function deleteAccount() {
 
+        console.log("in?");
 
-          setResponse({ UserId: "", name: "", email: "" });
                             // Login Route
-                            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+UserId, {
-                            	method: 'GET',
-                            	headers : {
-                            		'Content-Type': 'application/json',
-                            		'Accept': 'application/json'
-                                },
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+UserId, {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
 
-                            })
-                                .then(
-                                    function(apiResponse) {
-                                        if (apiResponse.status !== 200) {
-                                            console.log('Looks like there was a problem. Status Code: ' +
-                                                response.status);
-                                            displayError();
-                                            return;
-                                        } else {
-                                            // Examine the text in the response
-                                            apiResponse.json().then(function(data) {
-                                                setResponse(data);
-                                                // Login successful, redirect to MealPreferences
-                                                navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
-                                            });
-                                        }
-                                    }
-                                )
-                                .catch(function(err) {
-                                    console.log('Fetch Error :-S', err);
-                                });
+        })
+        .then(
+            function(apiResponse) {
+                if (apiResponse.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                    response.status);
+                    displayError();
+                    return;
+                } else {
+                    // Examine the text in the response
+                    apiResponse.json().then(function(data) {
+                        setResponse(data);
+                        // Login successful, redirect to MealPreferences
+                        navigation.navigate("Login");
+                    });
+                }
+            }
+        )
+        .catch(function(err) {
+            console.log('Fetch Error :-S', err);
+        });
+    }
+
+
+
+    function putName(name2) {
+
+        console.log("i3n?");
+
+                            // Login Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserId+'Auth', {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": route.params.UserId,
+                "name": name2,
+                "email": email,
+                "password": password
+            })
+        })
+        .then(
+            function(apiResponse) {
+                if (apiResponse.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                    response.status);
+                    displayError();
+                    return;
+                } else {
+                    // Examine the text in the response
+                    apiResponse.json().then(function(data) {
+
+                        setResponse(data);
+                    });
+                }
+            }
+        )
+        .catch(function(err) {
+            console.log('Fetch Error :-S', err);
+        });
     }
 
     return (
@@ -167,7 +215,6 @@ function ProfileManager({route, navigation}) {
             >
                 <View
                     style={ styles.backImage }
-
                 >
                     <Modal
                         animationType="slide"
@@ -181,16 +228,16 @@ function ProfileManager({route, navigation}) {
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
 
-                                <TouchableOpacity active = { .5 } onPress={() => setModalVisible(!modalVisible) }>
+                                <TouchableOpacity active = { .5 } onPress={() => setModalVisible(!modalVisible)}>
                                     <Image
                                         style={ styles.backImage }
                                              source={require('../../resources/back.png')}
                                     />
-                                </TouchableOpacity >
+                                </TouchableOpacity>
                                 <Text style={styles.modalText}>Set new name</Text>
 
 
-                                <TextInput style={ styles.textEnter } onChangeText={(name) => setName(name)} />
+                                <TextInput style={ styles.textEnter } onChangeText={(name) => putName(name)} />
                                 <View
                                     style={
                                         styles.modalLine
@@ -201,7 +248,7 @@ function ProfileManager({route, navigation}) {
                     </Modal>
 
 
-                    <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
+                    <TouchableOpacity active = { .5 } onPress={ () => navigation.dispatch(popAction) }>
                         <Image
                              style={ styles.backImage }
                              source={require('../../resources/back.png')}
@@ -291,9 +338,60 @@ function ProfileManager({route, navigation}) {
                     }}
                 >
                     <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
+                </View>
+                <View
+                    style={{
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                    }}
+                >
+
+                </View>
 
 
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    }}
+                >
+                <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
+                 <TouchableOpacity active = { .5 } onPress={() =>  setModalVisible2(true) }>
+                    <Image
+                         style={ styles.editImage }
+                         source={require('../../resources/edit.png')}
+                    />
+                 </TouchableOpacity>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible2}
+                        onRequestClose={() => {
+                            Alert.alert("Modal has been closed.");
+                            setModalVisible(!modalVisible2);
+                        }}
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                 <TouchableOpacity active = { .5 } onPress={() => setModalVisible2(!modalVisible2) }>
 
+                                     <Image
+                                        style={ styles.backImage }
+                                        source={require('../../resources/back.png')}
+                                     />
+                                 </TouchableOpacity >
+                                 <Text style={styles.modalText}>Number of Swipes:</Text>
+
+                                 <TextInput style={ styles.textEnter } onChangeText={(swipes) => setSwipes(swipes)} />
+                                <View
+                                     style={
+                                     styles.modalLine
+                                      }
+                                />
+
+                                </View>
+                            </View>
+                        </Modal>
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -340,8 +438,9 @@ function ProfileManager({route, navigation}) {
                     <View
                       style={ styles.borderLine }
                     />
+                    <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("MealPreferences") }>
                         <Text style={ styles.textNormal}>Track Meals</Text>
-
+                    </TouchableOpacity>
                     <TouchableOpacity active = { .5 } onPress={() =>  setModalVisible3(true) }>
                         <Text style={ styles.textNormal}>Change Password</Text>
                     </TouchableOpacity>
