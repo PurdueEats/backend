@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Image, SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Image, SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity, Button } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DiningFacilities from "./DiningFacilities";
 import DropDownPicker from 'react-native-dropdown-picker';
+import Modal from 'react-native-modal';
+import * as Alert from "react-native-web";
 
 
 function Menu({navigation}) {
     const [filter, setFilter] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
 
     return (
         <ScrollView>
@@ -16,9 +19,40 @@ function Menu({navigation}) {
                         <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                     </TouchableOpacity>
                     <Text style={styles.title}>Menu</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity active = { .5 } onPress={() => setModalVisible(true) }>
                         <MaterialCommunityIcons name="help-circle-outline" color="red" size={30}/>
                     </TouchableOpacity>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <View>
+                            <View style={styles.modalView}>
+                                <TouchableOpacity active = { .5 } onPress={() => setModalVisible(!modalVisible) }>
+                                    <View style={styles.closeButton}>
+                                        <MaterialCommunityIcons name="close" color="red" size={20}/>
+                                    </View>
+                                </TouchableOpacity >
+                                <View style={{flexDirection: "row"}}>
+                                    <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={20}/>
+                                    <Text style={styles.modalText}>Vegetarian Item</Text>
+                                </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={20}/>
+                                    <Text style={styles.modalText}>Gluten Free Item</Text>
+                                </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={20}/>
+                                    <Text style={styles.modalText}>Dairy Free Item</Text>
+                                </View>
+
+                            </View>
+                        </View>
+                    </Modal>
                 </View>
                 <View
                     style={{
@@ -134,6 +168,30 @@ const styles = StyleSheet.create({
     icons: {
         flexDirection: "row",
         paddingRight: "10%",
+    },
+    modalText: {
+        color: "black",
+        marginBottom: "5%",
+
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    closeButton: {
+        marginRight: "90%",
+        marginBottom: "10%"
     }
 });
 
