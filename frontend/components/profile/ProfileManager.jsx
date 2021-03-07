@@ -302,6 +302,7 @@ function ProfileManager({route, navigation}) {
                     <Text style={ styles.textNormal }>   {name} </Text>
 
 
+
                     <TouchableOpacity active = { .5 } onPress={() =>  getMealInfo() }>
                         <Image
                             style={ styles.editImage }
