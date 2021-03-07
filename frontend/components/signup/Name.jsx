@@ -1,33 +1,27 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
 import { Button, Item } from 'native-base';
 
-class Name extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: ""
-        };
-    }
-    async storeName() {
-        console.log("send name to database");
+function Name({navigation}) {
+    const [name, setName] = useState('');
+
+    function handleNavigate() {
+        navigation.navigate("Email", { name: name })
     }
 
-    render() {
-        return (
-            <SafeAreaView style={ styles.screen }>
-                <Text style={ styles.questionTitle }>Enter your name.</Text>
-                <Item style={ styles.nameInput }>
-                    <TextInput style={ styles.textInput } onChangeText={(name) => this.setState(name)} />
-                </Item>
-
-                <Button style={ styles.continueButton }>
-                    <Text style={ styles.continueText }>Continue</Text>
-                </Button>
-            </SafeAreaView>
-        );
-    }
+    return (
+        <SafeAreaView style={ styles.screen }>
+            <Text style={ styles.questionTitle }>Enter your name.</Text>
+            <Item style={ styles.nameInput }>
+                <TextInput style={ styles.textInput } onChangeText={(name) => setName(name)} />
+            </Item>
+            <Button style={ styles.continueButton } onPress={ handleNavigate } >
+                <Text style={ styles.continueText } >Continue</Text>
+            </Button>
+        </SafeAreaView>
+    );
 }
+
 
 const styles = StyleSheet.create({
     screen:{
