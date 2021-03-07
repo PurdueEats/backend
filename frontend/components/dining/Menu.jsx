@@ -6,8 +6,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
 import { StackActions } from '@react-navigation/native';
 
-
-
 function Menu({navigation}) {
     const [filter, setFilter] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
