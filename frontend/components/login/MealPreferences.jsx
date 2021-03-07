@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
 import { AirbnbRating } from 'react-native-ratings';
 import { Button } from 'native-base';
 import Logo from "../../resources/logo.png";
 
-function MealPreferences({navigation}) {
+function MealPreferences({route, navigation}) {
     // const [meals, setMealRating] = useState('');
     const meals = [ "Hamburger", "Balsamic Chicken", "Hotdog", "Pizza", "Beef Broccoli Stirfry" ]
     const ratings = [ 3, 3, 3, 3, 3 ]
@@ -24,7 +24,7 @@ function MealPreferences({navigation}) {
         // })
         // 	.then(response => response.json())
         // 	.then(response => this.setState({ "response" : response }))
-        navigation.navigate('Template')
+        navigation.navigate("Template", { UserID: route.params.UserID, token: route.params.token });
     }
 
     return (

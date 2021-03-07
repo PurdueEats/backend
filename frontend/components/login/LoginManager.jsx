@@ -26,6 +26,7 @@ function LoginManager({navigation}) {
     }
 
     function handleLogin() {
+        setResponse({ UserId: "", token: "" });
         // Login Route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
         	method: 'POST',
@@ -51,9 +52,9 @@ function LoginManager({navigation}) {
                         // Examine the text in the response
                         apiResponse.json().then(function(data) {
                             setResponse(data);
+                            // Login successful, redirect to MealPreferences
+                            navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
                         });
-                        // Login successful, redirect to MealPreferences
-                        navigation.navigate("Template", { UserID: response.UserID, token: response.token });
                     }
                 }
             )
