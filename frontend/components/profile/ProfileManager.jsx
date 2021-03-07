@@ -5,14 +5,6 @@ import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 import ReactRoundedImage from "react-rounded-image";
 
-
-
-
-
-
-
-
-
 function ProfileManager({navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible3, setModalVisible3] = useState(false);
@@ -23,6 +15,9 @@ function ProfileManager({navigation}) {
     const [plan, setPlan] = useState('   Meal Plan: Boiler Flex Unlimited 350');
     const [dollars, setDollars] = useState('200');
     const [password, setPassword] = useState('password1');
+
+    const [response, setResponse] = useState( { userID: "", name: "", email: "" });
+    const [mealResponse, setMealResponse] = useState( { userID: "", mealPlan: "", diningDollars: "", });
 
 
     function resetEverything() {
@@ -41,8 +36,119 @@ function ProfileManager({navigation}) {
     function tokenManager() {
 
     }
+    function getLogin() {
 
 
+            //MealPlan Route
+            setResponse({ UserId: "", name: "", email: "" });
+                   // Login Route
+                   fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+UserId+`/Login`, {
+                   	method: 'GET',
+                   	headers : {
+                   		'Content-Type': 'application/json',
+                   		'Accept': 'application/json',
+                   		'Authorization': 'Bearer ' + token
+                       },
+
+                   })
+                       .then(
+                           function(apiResponse) {
+                               if (apiResponse.status !== 200) {
+                                   console.log('Looks like there was a problem. Status Code: ' +
+                                       response.status);
+                                   displayError();
+                                   return;
+                               } else {
+                                   // Examine the text in the response
+                                   apiResponse.json().then(function(data) {
+                                       setResponse(data);
+                                       // Login successful, redirect to MealPreferences
+                                       navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                                   });
+                               }
+                           }
+                       )
+                       .catch(function(err) {
+                           console.log('Fetch Error :-S', err);
+                       });
+
+
+
+    }
+
+    function getMealInfo() {
+
+
+                //MealPlan Route
+                setResponse({ UserId: "", mealPlan: "", diningDollars: "" });
+                                  // Login Route
+                                  fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+UserId+`/MealPlan`, {
+                                  	method: 'GET',
+                                  	headers : {
+                                  		'Content-Type': 'application/json',
+                                  		'Accept': 'application/json'
+                                      },
+
+                                  })
+                                      .then(
+                                          function(apiResponse) {
+                                              if (apiResponse.status !== 200) {
+                                                  console.log('Looks like there was a problem. Status Code: ' +
+                                                      response.status);
+                                                  displayError();
+                                                  return;
+                                              } else {
+                                                  // Examine the text in the response
+                                                  apiResponse.json().then(function(data) {
+                                                      setResponse(data);
+                                                      // Login successful, redirect to MealPreferences
+                                                      navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                                                  });
+                                              }
+                                          }
+                                      )
+                                      .catch(function(err) {
+                                          console.log('Fetch Error :-S', err);
+                                      });
+
+
+
+            }
+
+     function deleteAccount() {
+
+
+          setResponse({ UserId: "", name: "", email: "" });
+                            // Login Route
+                            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+UserId, {
+                            	method: 'GET',
+                            	headers : {
+                            		'Content-Type': 'application/json',
+                            		'Accept': 'application/json'
+                                },
+
+                            })
+                                .then(
+                                    function(apiResponse) {
+                                        if (apiResponse.status !== 200) {
+                                            console.log('Looks like there was a problem. Status Code: ' +
+                                                response.status);
+                                            displayError();
+                                            return;
+                                        } else {
+                                            // Examine the text in the response
+                                            apiResponse.json().then(function(data) {
+                                                setResponse(data);
+                                                // Login successful, redirect to MealPreferences
+                                                navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                                            });
+                                        }
+                                    }
+                                )
+                                .catch(function(err) {
+                                    console.log('Fetch Error :-S', err);
+                                });
+    }
 
     return (
          <View
@@ -58,7 +164,7 @@ function ProfileManager({navigation}) {
                 }
             >
                 <View
-                    style={ styles.arrowImage }
+                    style={ styles.backImage }
 
                 >
                     <Modal
@@ -75,8 +181,8 @@ function ProfileManager({navigation}) {
 
                                 <TouchableOpacity active = { .5 } onPress={() => setModalVisible(!modalVisible) }>
                                     <Image
-                                        style={ styles.arrowImage }
-                                             source={require('../../resources/arrow.png')}
+                                        style={ styles.backImage }
+                                             source={require('../../resources/back.png')}
                                     />
                                 </TouchableOpacity >
                                 <Text style={styles.modalText}>Set new name</Text>
@@ -95,14 +201,14 @@ function ProfileManager({navigation}) {
 
                     <TouchableOpacity active = { .5 } onPress={() => alert("Image Clicked") }>
                         <Image
-                             style={ styles.arrowImage }
-                             source={require('../../resources/arrow.png')}
+                             style={ styles.backImage }
+                             source={require('../../resources/back.png')}
                         />
                     </TouchableOpacity>
                 </View>
 
                 <Text style={ styles.profileWord }>Profile</Text>
-                <Text style={ styles.profileWord }>       </Text>
+                <Text style={ styles.profileWord }>           </Text>
             </View>
 
 
@@ -185,10 +291,7 @@ function ProfileManager({navigation}) {
                     <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
 
 
-                    <Image
-                        style={ styles.editImage }
-                        source={require('../../resources/edit.png')}
-                    />
+
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -203,8 +306,8 @@ function ProfileManager({navigation}) {
                                  <TouchableOpacity active = { .5 } onPress={() => setModalVisible3(!modalVisible3) }>
 
                                      <Image
-                                        style={ styles.arrow }
-                                        source={require('../../resources/arrow.png')}
+                                        style={ styles.back }
+                                        source={require('../../resources/back.png')}
                                      />
                                  </TouchableOpacity >
                                  <Text style={styles.modalText}>Current password: {password}</Text>
@@ -260,8 +363,8 @@ function ProfileManager({navigation}) {
 
                                 <TouchableOpacity active = { .5 } onPress={() => setModalVisible4(!modalVisible4) }>
                                     <Image
-                                        style={ styles.arrow }
-                                        source={require('../../resources/arrow.png')}
+                                        style={ styles.back }
+                                        source={require('../../resources/back.png')}
                                     />
                                 </TouchableOpacity >
                                 <Text style={styles.modalText}>Delete Account?</Text>
@@ -422,9 +525,9 @@ const styles = StyleSheet.create({
 
         },
 
-    arrowImage: {
-        width: 40,
-        height: 40
+    backImage: {
+        width: 60,
+        height: 60
 
 
 

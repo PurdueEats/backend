@@ -6,7 +6,7 @@ import { Button } from 'native-base';
 function TemplateComponent({route, navigation}) {
 
     function handlePress() {
-        console.log(route.params.UserID)
+        console.log("oh man " + route.params.UserID)
         console.log(route.params.token)
     }
 
