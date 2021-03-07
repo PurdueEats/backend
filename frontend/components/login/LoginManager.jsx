@@ -26,7 +26,6 @@ function LoginManager({navigation}) {
     }
 
     function handleLogin() {
-        setResponse({ UserId: "", token: "" });
         // Login Route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
         	method: 'POST',
