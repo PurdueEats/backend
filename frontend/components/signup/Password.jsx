@@ -1,35 +1,25 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
 import { Button, Item } from 'native-base';
-import { sha256 } from 'react-native-sha256';
 
-class Password extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            password: ""
-        };
-    }
-    async storePassword(password) {
-        sha256(password).then( hash => {
-            // store hash
-        })
+function Password({route, navigation}) {
+    const [password, setPassword] = useState('');
+
+    function handleNavigate() {
+        navigation.navigate("MealPlan", { name: route.params.name, email: route.params.email, password: password })
     }
 
-    render() {
-        return (
-            <SafeAreaView style={ styles.screen }>
-                <Text style={ styles.questionTitle }>Enter your password.</Text>
-                <Item style={ styles.passwordInput }>
-                    <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => this.setState(password)} />
-                </Item>
-
-                <Button style={ styles.continueButton }>
-                    <Text style={ styles.continueText }>Continue</Text>
-                </Button>
-            </SafeAreaView>
-        );
-    }
+    return (
+        <SafeAreaView style={ styles.screen }>
+            <Text style={ styles.questionTitle }>Enter your password.</Text>
+            <Item style={ styles.passwordInput }>
+                <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
+            </Item>
+            <Button style={ styles.continueButton } onPress={ handleNavigate }>
+                <Text style={ styles.continueText }>Continue</Text>
+            </Button>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
