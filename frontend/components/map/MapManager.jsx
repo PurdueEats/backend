@@ -1,15 +1,38 @@
-import React from "react";
-import {Image, ScrollView, StyleSheet, View, Text, Alert} from "react-native";
+import React, {useState} from "react";
+import {Image, StyleSheet, View, Text, Alert} from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 import Logo from "../../resources/logo.png";
+import { Button } from 'native-base';
 
 function MapManager({navigation}) {
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
+
+    async function findCoordinates() {
+        await navigator.geolocation.getCurrentPosition(
+            position => {
+                position = JSON.stringify(position);
+                position = JSON.parse(position);
+
+                // setResponse(location)
+                setLatitude(position["coords"]['latitude']);
+                setLongitude(position["coords"]['longitude']);
+            },
+            error => Alert.alert(error.message),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
+    }
 
     return (
         <View>
             <View style={ styles.screenView }>
                 <Image style={ styles.logoImage } source={ Logo } />
             </View>
+            <Button onPress={ findCoordinates } >
+                <Text>Find location</Text>
+            </Button>
+            <Text>Latitude: {latitude}</Text>
+            <Text>Longitude: {longitude}</Text>
             <View>
                 <Text style={ styles.screenTitle }> Dining Locations </Text>
             </View>
