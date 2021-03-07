@@ -4,7 +4,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DiningFacilities from "./DiningFacilities";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
-import * as Alert from "react-native-web";
+import { StackActions } from '@react-navigation/native';
+
 
 
 function Menu({navigation}) {
@@ -15,7 +16,7 @@ function Menu({navigation}) {
         <ScrollView>
             <SafeAreaView style={ styles.screen }>
                 <View style={{flexDirection: "row"}}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={navigation.dispatch(StackActions.pop(1))}>
                         <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                     </TouchableOpacity>
                     <Text style={styles.title}>Menu</Text>
