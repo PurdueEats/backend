@@ -5,7 +5,7 @@ import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 import ReactRoundedImage from "react-rounded-image";
 
-function ProfileManager({navigation}) {
+function ProfileManager({route, navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible3, setModalVisible3] = useState(false);
     const [modalVisible4, setModalVisible4] = useState(false);
@@ -24,6 +24,7 @@ function ProfileManager({navigation}) {
         setName('');
         setEmail('');
         setDollars('');
+        console.log(route.params.token);
 
 
     }
@@ -151,6 +152,7 @@ function ProfileManager({navigation}) {
     }
 
     return (
+
          <View
              style={{
                 flex: 1,
@@ -306,7 +308,7 @@ function ProfileManager({navigation}) {
                                  <TouchableOpacity active = { .5 } onPress={() => setModalVisible3(!modalVisible3) }>
 
                                      <Image
-                                        style={ styles.back }
+                                        style={ styles.backImage }
                                         source={require('../../resources/back.png')}
                                      />
                                  </TouchableOpacity >
@@ -363,7 +365,7 @@ function ProfileManager({navigation}) {
 
                                 <TouchableOpacity active = { .5 } onPress={() => setModalVisible4(!modalVisible4) }>
                                     <Image
-                                        style={ styles.back }
+                                        style={ styles.backImage }
                                         source={require('../../resources/back.png')}
                                     />
                                 </TouchableOpacity >
