@@ -10,29 +10,26 @@ import Name from "./components/signup/Name";
 import Email from "./components/signup/Email";
 import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
-import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 import MapManager from "./components/map/MapManager";
 
 export default function App() {
-  const Stack = createStackNavigator();
+    const Stack = createStackNavigator();
 
-  return (
-      // Do not remove Root! Root is necessary for toasts integrated in successive components.
-      <Root>
-          <NavigationContainer>
-              <Stack.Navigator screenOptions={{
-                  headerShown: false
-                }} initialRouteName="Map">
-                  <Stack.Screen name="Login" component={ LoginManager }/>
-                  <Stack.Screen name="SignupBegin" component={ Name }/>
-                  <Stack.Screen name="SignupEmail" component={ Email }/>
-                  <Stack.Screen name="SignupPassword" component={ Password }/>
-                  <Stack.Screen name="SignupMealPlan" component={ MealPlan }/>
-                  <Stack.Screen name="SignupDiningDollars" component={ DiningDollarEntry }/>
-                  <Stack.Screen name="MealPreferences" component={ MealPreferences }/>
-                  <Stack.Screen name="MealReview" component={ MealReview }/>
-                  <Stack.Screen name="Map" component={ MapManager }/>
-                  <Stack.Screen name="Template" component={ TemplateComponent }/>
+    return (
+        // Do not remove Root! Root is necessary for toasts integrated in successive components.
+        <Root>
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{
+                    headerShown: false
+                }} initialRouteName="Login">
+                  <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
+                  <Stack.Screen name="Name" component={ Name }/>
+                  <Stack.Screen name="Email" component={ Email }/>
+                  <Stack.Screen name="Password" component={ Password }/>
+                  <Stack.Screen name="MealPlan" component={ MealPlan } options={{gestureEnabled: false}}/>
+                  <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
+                  <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}} />
+                  <Stack.Screen name="Template" component={ TemplateComponent } options={{gestureEnabled: false}}/>
               </Stack.Navigator>
           </NavigationContainer>
       </Root>

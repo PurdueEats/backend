@@ -6,76 +6,56 @@ import { Button, Item, Toast } from 'native-base';
 function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [response, setResponse] = useState('');
 
-    // TODO add check for token expiration
     function tokenManager() {
-
+        // TODO add check for token expiration
     }
 
-    function handleLogin() {
-        // Sample code for sending package to API
-
-        // fetch(`https://api.chucknorris.io/jokes/categories`, {
-        //     method: 'GET',
-        //     headers : {
-        //         'Content-Type': 'application/json',
-        //         'Accept': 'application/json'
-        //     },
-        // })
-        //     .then(response => response.json())
-        //     .then(response => setResponse(response))
-        // console.log(response)
-
-        //Login Route
-        fetch('http://purdueeats-304919.uc.r.appspot.com/Login', {
-            method: 'POST',
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                "user_id": 0,
-                "name": "",
-                "email": "johndoe@iscool.com",
-                "password": "johndoe"
-            })
-        })
-            .then(response => response.json())
-            .then(response => setResponse(response))
-        console.log(response)
-
-        // Network fail handler
-        if ( response === '' ) {
-            console.log("Network response failed")
-        }
-
-        //MealPlan Route
-        // fetch(`http://127.0.0.1:8000/-1954205092411918630/MealPlan`, {
-        // 	method: 'GET',
-        // 	headers : {
-        // 		'Content-Type': 'application/json',
-        //         'Accept': 'application/json',
-        //         'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ4OTU3OTQsImlhdCI6MTYxNDg5NTQ5NCwidXNlcl9pZCI6LTE5NTQyMDUwOTI0MTE5MTg2MzAsImVtYWlsIjoibWFya0BleGFtcGxlLmNvbSJ9.OthBKGCv7qAPE9UovT08zL60wthqAcHWwG-mqyOODvQ'
-        //     }
-        // })
-        // 	.then(response => response.json())
-        //     .then(response => setResponse(response))
-        //      console.log(response)
-
-        // following code for when sign in fails
+    function displayError() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
-            text: "Wrong password!",
+            text: "Incorrect username/password combination.",
             textStyle: {
                 textAlign: 'center',
             },
-            duration: 500
+            duration: 1500
         });
-        // following command for if sign in is successful; assign token as global
-        navigation.navigate("MealPreferences")
+    }
 
+    function handleLogin() {
+        // Login Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
+        	method: 'POST',
+        	headers : {
+        		'Content-Type': 'application/json',
+        		'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": 0,
+                "name": "string",
+                "email": email,
+                "password": password
+            })
+        })
+            .then(
+                function(response) {
+                    if (response.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        displayError();
+                    } else {
+                        // Examine the text in the response
+                        response.json().then(function(data) {
+                            // Login successful, redirect to MealPreferences
+                            navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                        });
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
     }
 
     function handleForgotPassword() {
@@ -83,7 +63,7 @@ function LoginManager({navigation}) {
     }
 
     function handleSignUp() {
-        navigation.navigate("SignupBegin")
+        navigation.navigate("Name")
     }
 
     return (

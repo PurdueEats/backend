@@ -18,7 +18,7 @@ function MapManager({route, navigation}) {
                 latitude: 40.43210018,
                 longitude: -86.91955498354119
             }))
-            ford = convertDisatance(ford, 'mi')
+            ford = convertDistance(ford, 'mi')
             ford = ford.toFixed(2)
             setFordDistance(ford);
 
@@ -60,7 +60,7 @@ function MapManager({route, navigation}) {
     }, []);
 
     return (
-        <View>
+        <ScrollView>
             <View style={ styles.screenView }>
                 <Text style={ styles.screenTitle }> Map </Text>
             </View>
@@ -126,7 +126,7 @@ function MapManager({route, navigation}) {
                 />
             </MapView>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -168,4 +168,3 @@ const styles = StyleSheet.create({
 });
 
 export default MapManager;
-
