@@ -36,7 +36,6 @@ function ProfileManager({route, navigation}) {
             getAuth()
             getMealInfo()
         }
-        del = false;
 
 
     });
