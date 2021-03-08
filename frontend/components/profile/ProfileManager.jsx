@@ -45,7 +45,6 @@ function ProfileManager({route, navigation}) {
 
     // Gets login and Email
     function getAuth() {
-        console.log("in here?");
         // Auth Route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/Auth`, {
             method: 'GET',
@@ -79,8 +78,6 @@ function ProfileManager({route, navigation}) {
     // Fetches Plan and Swipe information
     function getMealInfo() {
         console.log("here?");
-        console.log(route.params.UserID);
-        console.log(route.params.token);
         // MealPlan Route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/MealPlan`, {
             method: 'GET',
@@ -116,8 +113,8 @@ function ProfileManager({route, navigation}) {
     function deleteAccount() {
         console.log("in?");
         // Deletion route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+UserId, {
-            method: 'GET',
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserId, {
+            method: 'DELETE',
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -156,7 +153,7 @@ function ProfileManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
             body: JSON.stringify({
-                "user_id": route.params.UserId,
+                "user_id": 0,
                 "name": name2,
                 "email": email,
                 "password": password
@@ -197,7 +194,7 @@ function ProfileManager({route, navigation}) {
                             <Image style={ styles.backImage }  source={require('../../resources/back.png')}/>
                         </TouchableOpacity>
                         <Text style={styles.modalText}>Set new name</Text>
-                        <TextInput style={ styles.textEnter } onChangeText={(name) => putName(name)} />
+                        <TextInput style={ styles.textEnter } onChangeText={(name2) => putName(name2)} />
                         <View style={ styles.modalLine }/>
                     </View>
                 </View>
