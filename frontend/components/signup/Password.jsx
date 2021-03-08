@@ -13,7 +13,7 @@ function Password({route, navigation}) {
             textStyle: {
                 textAlign: 'center',
             },
-            duration: 1500
+            duration: 3000
         });
     }
 
