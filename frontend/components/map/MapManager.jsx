@@ -1,8 +1,12 @@
 import React, {useState, useEffect } from "react";
-import {Image, StyleSheet, View, Text, Alert} from "react-native";
+import {Image, StyleSheet, ScrollView, View, Text, TouchableOpacity, Alert} from "react-native";
 import MapView, { Marker } from 'react-native-maps';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StackActions } from '@react-navigation/native';
 import getDistance from 'geolib/es/getDistance';
 import convertDistance from 'geolib/es/convertDistance'
+import NavBar from "../home/NavBar";
+
 
 function MapManager({route, navigation}) {
     const [fordDistance, setFordDistance] = useState('');
@@ -60,8 +64,11 @@ function MapManager({route, navigation}) {
     }, []);
 
     return (
-        <ScrollView>
-            <View style={ styles.screenView }>
+        <View>
+            <View style={ [styles.screenView, {flexDirection:"row"}] } >
+                    <TouchableOpacity style={ styles.button } onPress={navigation.dispatch(StackActions.pop(1))}>
+                        <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                    </TouchableOpacity>
                 <Text style={ styles.screenTitle }> Map </Text>
             </View>
             <View style={ styles.box }>
@@ -81,19 +88,10 @@ function MapManager({route, navigation}) {
                 userLocationPriority={"high"}
             >
                 <Marker
-//                      style={ styles.defaultFontFamily }
-//                     textBreakStrategy='simple'
-//                             fontFamily='arial'
-//                             alignSelf='stretch'
-//                             textAlign='center'
-//                             width='100%'
-//                     baseFontStyle={{ fontFamily: "arial" }}
-//                     ignoredStyles={["font-family", "letter-spacing"]}
-//                     style={{ fontFamily: 'arial', }}
                     coordinate={{latitude: 40.43210018,
                         longitude: -86.91955498354119}}
                     title={"Ford"}
-                    description={ fordDistance + "  miles away " }
+                    description={ fordDistance + " miles away " }
                 >
                 </Marker>
 
@@ -126,44 +124,49 @@ function MapManager({route, navigation}) {
                 />
             </MapView>
             </View>
-        </ScrollView>
+            <NavBar style={ styles.navBar }>
+            </NavBar>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     screenView: {
-        paddingTop: "15%",
-        alignItems: "center",
+        marginTop: "12%",
+        marginBottom: "5%",
+        alignItems: 'center',
     },
-    logoImage: {
-        height: 70,
-        width: 70,
-        marginBottom: "4%",
+    button: {
+        marginRight: "30%",
+        marginLeft: "5%",
     },
     screenTitle: {
         fontSize: 26,
-        marginBottom: "5%",
+        marginBottom: "1%",
         fontWeight: "bold",
-        textAlign: "center",
     },
     map: {
         height: "100%",
-        width: "96%",
+        width: "98%",
         borderRadius: 10,
         borderStyle: 'solid',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
-        marginLeft: "2%",
+        marginLeft: "1%",
         justifyContent: 'center',
     },
     box: {
-        height: "80%",
+        height: "78%",
         width: "96%",
         borderWidth : 4,
         borderColor : 'black',
         marginLeft: "2%",
+    },
+    navBar: {
+        marginTop: "10%",
+        marginBottom: "10%",
     },
 });
 
