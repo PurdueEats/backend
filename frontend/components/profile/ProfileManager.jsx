@@ -27,9 +27,18 @@ function ProfileManager({route, navigation}) {
 
     const popAction = StackActions.pop();
 
+    var del = false;
+
+
     useEffect(() => {
-        getAuth()
-        getMealInfo()
+
+        if (!del) {
+            getAuth()
+            getMealInfo()
+        }
+        del = false;
+
+
     });
 
     function resetEverything() {
@@ -78,7 +87,6 @@ function ProfileManager({route, navigation}) {
 
     // Fetches Plan and Swipe information
     function getMealInfo() {
-        console.log("here?");
         // MealPlan Route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/MealPlan`, {
             method: 'GET',
@@ -112,6 +120,7 @@ function ProfileManager({route, navigation}) {
     }
 
     function deleteAccount() {
+        del = true;
         console.log("in?");
         // Deletion route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserId, {
