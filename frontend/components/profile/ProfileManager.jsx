@@ -14,12 +14,13 @@ function ProfileManager({route, navigation}) {
     const [modalPassword, setModalPassword] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
 
-    const [name, setName] = useState('Eric Thompson');
-    const [email, setEmail] = useState('email@email.email');
-    const [plan, setPlan] = useState('   Meal Plan: Boiler Flex Unlimited 350');
-    const [dollars, setDollars] = useState('200');
-    const [password, setPassword] = useState('password1');
-    const [swipes, setSwipes] = useState('9');
+    const [name, setName] = useState('');
+    const [nameNew, setNameNew] = useState('');
+    const [email, setEmail] = useState('');
+    const [plan, setPlan] = useState('');
+    const [dollars, setDollars] = useState('');
+    const [password, setPassword] = useState('Password');
+    const [swipes, setSwipes] = useState('');
     const plans = ['   Meal Plan: Boiler Flex Unlimited Plan 350', '   Meal Plan: Boiler Plan 2', '   Meal Plan: I will add the actual names in later'];
 
     const [response, setResponse] = useState({ userID: "", name: "", email: "" });
@@ -27,18 +28,34 @@ function ProfileManager({route, navigation}) {
 
     const popAction = StackActions.pop();
 
-    var del = false;
+    const [del, setDel] = useState(false);
+    const [nam, setNam] = useState(false);
 
 
     useEffect(() => {
-
-        if (!del) {
+        if (!del & !nam) {
             getAuth()
             getMealInfo()
         }
-
-
     });
+
+
+    function handleNameExit() {
+        setNam(true);
+        console.log(name);
+        console.log(nameNew);
+        if (name != nameNew) {
+            console.log("got into here");
+            setName(nameNew);
+            console.log(name);
+            putName(nameNew);
+            console.log(name);
+        }
+        setModalName(!setModalName);
+    }
+
+
+
 
     function resetEverything() {
         setName('');
@@ -106,9 +123,9 @@ function ProfileManager({route, navigation}) {
                     // Set Fields to correct values
                     apiResponse.json().then(function(data) {
                         setMealResponse(data);
-                        setDollars(data.diningDollars);
-                        setPlan(data.mealPlan);
-                        setSwipes(data.swipes);
+                        setDollars(data.dining_dollar_amount);
+                        setPlan(data.meal_plan_name);
+                        setSwipes(data.meal_swipe_count);
                     });
                 }
             }
@@ -119,7 +136,7 @@ function ProfileManager({route, navigation}) {
     }
 
     function deleteAccount() {
-        del = true;
+        setDel(true);
         console.log("in?");
         // Deletion route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserId, {
@@ -162,10 +179,10 @@ function ProfileManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
             body: JSON.stringify({
-                "user_id": 0,
+                "user_id": route.params.UserId,
                 "name": name2,
                 "email": email,
-                "password": password
+                "password": "Password"
             })
         })
         .then(
@@ -173,13 +190,21 @@ function ProfileManager({route, navigation}) {
                 if (apiResponse.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' +
                     response.status);
-                    displayError();
+                    console.log(route.params.UserId);
+                    console.log(name2);
+                    console.log(email);
+                    console.log(password);
+                    setNam(false);
+
                     return;
                 } else {
+                    console.log("got through");
                     // Examine the text in the response
                     apiResponse.json().then(function(data) {
-                        setResponse(data);
-                        setName(name2);
+                    setResponse(data);
+                    setName(name2);
+                    setNam(false);
+
                     });
                 }
             }
@@ -199,11 +224,11 @@ function ProfileManager({route, navigation}) {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <TouchableOpacity active = { .5 } onPress={() =>  setModalName(!setModalName)}>
+                        <TouchableOpacity active = { .5 } onPress={() =>  handleNameExit()}>
                             <Image style={ styles.backImage }  source={require('../../resources/back.png')}/>
                         </TouchableOpacity>
                         <Text style={styles.modalText}>Set new name</Text>
-                        <TextInput style={ styles.textEnter } onChangeText={(name2) => putName(name2)} />
+                        <TextInput style={ styles.textEnter } onChangeText={(nameNew) => setNameNew(nameNew)} />
                         <View style={ styles.modalLine }/>
                     </View>
                 </View>
@@ -378,6 +403,7 @@ const styles = StyleSheet.create({
     textDrop: {
         color: "black",
         marginBottom: "3%",
+        marginLeft: "2%",
         flexDirection: "row",
         fontSize: 14
     },
