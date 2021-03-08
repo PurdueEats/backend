@@ -9,7 +9,6 @@ import Name from "./components/signup/Name";
 import Email from "./components/signup/Email";
 import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
-import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 import MapManager from "./components/map/MapManager";
 
 
@@ -28,7 +27,6 @@ export default function App() {
                   <Stack.Screen name="Email" component={ Email }/>
                   <Stack.Screen name="Password" component={ Password }/>
                   <Stack.Screen name="MealPlan" component={ MealPlan }/>
-                  <Stack.Screen name="DiningDollarEntry" component={ DiningDollarEntry }/>
                   <Stack.Screen name="MealPreferences" component={ MealPreferences }/>
                   <Stack.Screen name="Map" component={ MapManager }/>
                   <Stack.Screen name="Template" component={ TemplateComponent }/>
