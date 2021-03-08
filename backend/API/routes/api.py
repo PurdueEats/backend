@@ -1,8 +1,8 @@
-from fastapi import APIRouter
+from fastapi import FastAPI, APIRouter
 
 from API.routes import users, dining, menu, auxiliary, MenuItemReview
 
-router = APIRouter()
+router = FastAPI()
 router.include_router(users.app, tags=["Users"], prefix="/Users")
 router.include_router(dining.app, tags=["Dining"], prefix="/DF")
 router.include_router(menu.app, tags=["Menu"], prefix="/MenuItems")
