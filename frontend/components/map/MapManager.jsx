@@ -18,7 +18,7 @@ function MapManager({route, navigation}) {
                 latitude: 40.43210018,
                 longitude: -86.91955498354119
             }))
-            ford = convertDistance(ford, 'mi')
+            ford = convertDisatance(ford, 'mi')
             ford = ford.toFixed(2)
             setFordDistance(ford);
 
@@ -168,3 +168,4 @@ const styles = StyleSheet.create({
 });
 
 export default MapManager;
+
