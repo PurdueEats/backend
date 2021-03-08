@@ -59,6 +59,7 @@ function ProfileManager({route, navigation}) {
                 if (apiResponse.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' +
                                 response.status);
+                    navigation.navigate("Login");
                     return;
                 } else {
                     // Set fields to correct values
