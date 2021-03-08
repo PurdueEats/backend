@@ -27,10 +27,10 @@ function ProfileManager({route, navigation}) {
 
     const popAction = StackActions.pop();
 
-    //useEffect(() => {
-        //getAuth()
-        //getMealInfo()
-    //});
+    useEffect(() => {
+        getAuth()
+        getMealInfo()
+    });
 
     function resetEverything() {
         setName('');
