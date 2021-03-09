@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     screenView: {
         marginTop: "12%",
         marginBottom: "5%",
+        marginLeft: "43%",
         alignItems: 'center',
     },
     button: {
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     box: {
-        height: "78%",
+        height: "85%",
         width: "96%",
         borderWidth : 4,
         borderColor : 'black',
