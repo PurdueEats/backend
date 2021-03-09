@@ -1,8 +1,9 @@
 """ User routes module. Contains all user resource related routes"""
 from typing import List
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
+from API.models.MealPlan import MealPlanIn
 from API.models.users import (
     UserBasic,
     UserExtra,
@@ -14,7 +15,7 @@ from API.models.users import (
 )
 
 
-app = FastAPI()
+app = APIRouter()
 auth_handler = AuthHandler()
 
 
@@ -106,8 +107,9 @@ async def return_auth(UserID: int = Depends(auth_handler.auth_wrapper)):
         raise HTTPException(status_code=404, detail='User not found')
 
     user = user[0]
+
     res = UserOut.parse_obj(
-        {'user_id': user['UserID'], 'name': user['Name'], 'email': [user['Emal']]})
+        {'user_id': user['UserID'], 'name': user['Name'], 'email': user['Email']})
 
     return res
 
@@ -123,13 +125,18 @@ async def update_auth(userBasic: UserBasic):
     if len(user) != 1:
         raise HTTPException(status_code=404, detail='User not found')
 
+    user = user[0]
+    hashed_password = user['Password']
+
+    if userBasic.password != "":
+        hashed_password = auth_handler.get_password_hash(userBasic.password)
+
     runQuery(f"DELETE FROM UserBasic WHERE UserID = {userBasic.user_id}")
-    hashed_password = auth_handler.get_password_hash(userBasic.password)
 
     runQuery(f"""
     INSERT INTO UserBasic values 
-    ({userBasic.user_id}, {userBasic.name},
-     {userBasic.email}, {hashed_password})
+    ({userBasic.user_id}, '{userBasic.name}',
+     '{user['Email']}', '{hashed_password}')
      """)
 
 
@@ -143,6 +150,7 @@ async def fetch_meal_plan(UserID: int = Depends(auth_handler.auth_wrapper)):
         raise HTTPException(
             status_code=404, detail='Meal Plan for user not found')
 
+    user_extra = user_extra[0]
     res = [UserExtra.parse_obj({'user_id': user_extra['UserID'], 'meal_plan_name':user_extra['MealPlanName'],
                                 'meal_swipe_count':user_extra['MealSwipeCount'], 'dining_dollar_amount':user_extra['DiningDollarBalance']
                                 })]
@@ -151,26 +159,31 @@ async def fetch_meal_plan(UserID: int = Depends(auth_handler.auth_wrapper)):
 
 
 @app.post("/{UserID}/MealPlan")
-async def assign_meal_plan(mealPlanName: str, UserID: int = Depends(auth_handler.auth_wrapper)):
+async def assign_meal_plan(mealPlanName: MealPlanIn, UserID: int = Depends(auth_handler.auth_wrapper)):
 
-    runQuery(f"DELETE from UserExtra WHERE UserID = {UserID}")
+    mealPlanName = mealPlanName.MealPlanName
     meal_plan = [dict(row) for row in runQuery(
-        f"SELECT * FROM MealPlan WHERE MealPlanName = {mealPlanName}")]
+        f"SELECT * FROM MealPlan WHERE MealPlanName = '{mealPlanName}'")]
+
 
     if len(meal_plan) != 1:
         raise HTTPException(status_code=404, detail='Meal Plan not found')
 
+    meal_plan = meal_plan[0]
     """
   Needs hardcore update to change transaction history
   """
     transactions = [dict(row) for row in runQuery(
-        f"SELECT TransactionAmount FROM UserTransation WHERE UserID = {UserID}")]
+        f"SELECT TransactionAmount FROM UserTransaction WHERE UserID = {UserID}")]
 
     for trans in transactions:
         meal_plan['DiningDollars'] - trans['TransactionAmount']
 
+
+    runQuery(f"DELETE from UserExtra WHERE UserID = {UserID}")
+
     runQuery(f"""
-    INSERT INTO UserExtra value (
+    INSERT INTO UserExtra values (
     {UserID}, '{meal_plan['MealPlanName']}',
     {meal_plan['MealSwipes']}, {meal_plan['DiningDollars']}
     )
@@ -236,15 +249,15 @@ async def upload_user_schedule(userSchedule: UserSchedule, UserID: int = Depends
 async def fetch_transactions(userID: int = Depends(auth_handler.auth_wrapper)):
 
     transactions = [dict(row) for row in runQuery(
-        f"SELECT * FROM UserTransation WHERE UserID = {userID} ORDER BY Timestamp")]
-    res = [UserTransaction.parse_obj({'user_id': row['UserId'], 'transaction_amount':row['TransactionAmount'],
+        f"SELECT * FROM UserTransaction WHERE UserID = {userID} ORDER BY Timestamp")]
+    res = [UserTransaction.parse_obj({'user_id': row['UserID'], 'transaction_amount':row['TransactionAmount'],
                                       'balance':row['Balance'], 'timestamp': row['Timestamp']}) for row in transactions]
 
     return res
 
 
 @app.post("/{UserID}/Trans", status_code=201)
-async def post_transaction(userTransation: UserTransaction, UserID: int = Depends(auth_handler.auth_wrapper)):
+async def post_transaction(userTransaction: UserTransaction, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     user_extra = [dict(row) for row in runQuery(
         f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
@@ -252,11 +265,22 @@ async def post_transaction(userTransation: UserTransaction, UserID: int = Depend
     if len(user_extra) != 1:
         raise HTTPException(status_code=401, detail='Invalid user')
 
-    balance = user_extra['dining_dollar_amount'] - \
-        userTransation.transaction_amount
+    user_extra = user_extra[0]
+    balance = user_extra['DiningDollarBalance'] - \
+        userTransaction.transaction_amount
+    
+    runQuery(f"DELETE FROM UserExtra WHERE UserID = {UserID}")
+
     runQuery(f"""
-    INSERT INTO UserTransaction values ({userTransation.user_id}, {userTransation.transaction_amount},
-    {balance}, {userTransation.timestamp}
+    INSERT INTO UserExtra values (
+        {user_extra['UserID']}, '{user_extra['MealPlanName']}',
+        {user_extra['MealSwipeCount']}, {balance}
+    )
+    """)
+
+    runQuery(f"""
+    INSERT INTO UserTransaction values ({userTransaction.user_id}, {userTransaction.transaction_amount},
+    {balance}, '{userTransaction.timestamp}')
     """)
 
     return

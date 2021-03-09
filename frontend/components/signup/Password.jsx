@@ -1,35 +1,66 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
-import { Button, Item } from 'native-base';
-import { sha256 } from 'react-native-sha256';
+import {Button, Item, Toast} from 'native-base';
 
-class Password extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            password: ""
-        };
+function Password({route, navigation}) {
+    const [password, setPassword] = useState('');
+
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "There was an issue registering your account, please change your name, email, or password.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 3000
+        });
     }
-    async storePassword(password) {
-        sha256(password).then( hash => {
-            // store hash
+
+    function registerUser() {
+        // Register Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Register`, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": 0,
+                "name": route.params.name,
+                "email": route.params.email,
+                "password": password
+            })
         })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        navigation.navigate("MealPlan", { email: route.params.email, password: password })
+                    } else {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        displayError();
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
     }
 
-    render() {
-        return (
-            <SafeAreaView style={ styles.screen }>
-                <Text style={ styles.questionTitle }>Enter your password.</Text>
-                <Item style={ styles.passwordInput }>
-                    <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => this.setState(password)} />
-                </Item>
-
-                <Button style={ styles.continueButton }>
-                    <Text style={ styles.continueText }>Continue</Text>
-                </Button>
-            </SafeAreaView>
-        );
-    }
+    return (
+        <SafeAreaView style={ styles.screen }>
+            <Text style={ styles.questionTitle }>Enter your password.</Text>
+            <Text style={ styles.detailsTitle }>Passwords must be at least 6 characters long.</Text>
+            <Item style={ styles.passwordInput }>
+                <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
+            </Item>
+            <Button style={ styles.continueButton } onPress={ registerUser }>
+                <Text style={ styles.continueText }>Continue</Text>
+            </Button>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -42,6 +73,10 @@ const styles = StyleSheet.create({
     questionTitle: {
         fontSize: 25,
         fontWeight: "bold",
+        paddingBottom: "2%"
+    },
+    detailsTitle: {
+        fontSize: 18,
     },
     textInput: {
         width: "100%",

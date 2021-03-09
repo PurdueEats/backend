@@ -6,13 +6,12 @@ import { Button, Item, Toast } from 'native-base';
 function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [response, setResponse] = useState('');
 
-    // TODO add check for token expiration
     function tokenManager() {
-
+        // TODO add check for token expiration
     }
 
+<<<<<<< HEAD
     function handleLogin() {
         // Sample code for sending package to API
 
@@ -64,18 +63,53 @@ function LoginManager({navigation}) {
         //      console.log(response)
 
         // following code for when sign in fails
+=======
+    function displayError() {
+>>>>>>> 4f45bbb824d5e534370f93590a9c94f17a7d9d69
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
-            text: "Wrong password!",
+            text: "Incorrect username/password combination.",
             textStyle: {
                 textAlign: 'center',
             },
-            duration: 500
+            duration: 1500
         });
-        // following command for if sign in is successful; assign token as global
-        navigation.navigate("MealPreferences")
+    }
 
+    function handleLogin() {
+        // Login Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
+        	method: 'POST',
+        	headers : {
+        		'Content-Type': 'application/json',
+        		'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": 0,
+                "name": "string",
+                "email": email,
+                "password": password
+            })
+        })
+            .then(
+                function(response) {
+                    if (response.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        displayError();
+                    } else {
+                        // Examine the text in the response
+                        response.json().then(function(data) {
+                            // Login successful, redirect to MealPreferences
+                            navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                        });
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
     }
 
     function handleForgotPassword() {
@@ -83,7 +117,7 @@ function LoginManager({navigation}) {
     }
 
     function handleSignUp() {
-        navigation.navigate("SignupBegin")
+        navigation.navigate("Name")
     }
 
     return (
