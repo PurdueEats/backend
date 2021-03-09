@@ -27,11 +27,15 @@ const styles = StyleSheet.create({
         paddingTop: "50%",
         paddingLeft: "10%",
         paddingRight: "10%",
-        paddingBottom: "12%"
+        paddingBottom: "12%",
+        marginRight: "10%",
+        marginLeft: "10%"
     },
     questionTitle: {
         fontSize: 25,
         fontWeight: "bold",
+        marginTop: "10%",
+        marginLeft: "10%"
     },
     textInput: {
         width: "100%",
@@ -40,13 +44,16 @@ const styles = StyleSheet.create({
     passwordInput: {
         marginBottom: "10%",
         marginTop: "20%",
-        height: 40
+        height: 40,
+        marginLeft: "10%",
+        marginRight: "10%",
     },
     continueButton: {
         width: '100%',
         justifyContent: 'center',
         backgroundColor: "red",
-        borderRadius: 10
+        borderRadius: 10,
+        alignItems: "center"
     },
     continueText: {
         fontSize: 16,
