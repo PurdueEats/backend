@@ -52,7 +52,7 @@ async def create_user(userBasic: UserBasic):
      '{userBasic.email}', '{hashed_password}')
      """)
 
-    return {'UserID': user_id}
+    return {'UserID': str(user_id[0]['UserID'])}
 
 
 @app.post("/Login")
@@ -74,7 +74,7 @@ async def login_user(userBasic: UserBasic):
 
     token = auth_handler.encode_token(user['Email'], user['UserID'])
 
-    return {'UserID': user['UserID'], 'token': token}
+    return {'UserID': str(user['UserID']), 'token': token}
 
 
 @app.delete("/{UserID}")
