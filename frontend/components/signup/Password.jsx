@@ -26,7 +26,7 @@ function Password({route, navigation}) {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                "user_id": 0,
+                "user_id": "0",
                 "name": route.params.name,
                 "email": route.params.email,
                 "password": password
@@ -65,22 +65,23 @@ function Password({route, navigation}) {
 
 const styles = StyleSheet.create({
     screen:{
-        paddingTop: "50%",
-        paddingLeft: "10%",
-        paddingRight: "10%",
+        marginTop: "50%",
+        paddingLeft: "5%",
+        paddingRight: "5%",
         paddingBottom: "12%",
+        marginLeft: "10%",
         marginRight: "10%",
-        marginLeft: "10%"
     },
     questionTitle: {
         fontSize: 25,
         fontWeight: "bold",
         marginTop: "10%",
-        marginLeft: "10%",
-        paddingBottom: "2%"
+        paddingBottom: "2%",
+        textAlign:"center"
     },
     detailsTitle: {
         fontSize: 18,
+        textAlign:"center",
     },
     textInput: {
         width: "100%",
