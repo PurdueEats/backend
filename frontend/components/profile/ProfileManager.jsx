@@ -16,6 +16,7 @@ function ProfileManager({route, navigation}) {
 
     const [name, setName] = useState('');
     const [nameNew, setNameNew] = useState('');
+    const [passNew, setPassNew] = useState('');
     const [email, setEmail] = useState('');
     const [plan, setPlan] = useState('');
     const [planNew, setPlanNew] = useState('');
@@ -55,9 +56,13 @@ function ProfileManager({route, navigation}) {
         setModalName(!setModalName);
     }
 
- function handlePlanExit(newPlan) {
+    function handlePlanExit(newPlan) {
         setModalPlan(!setModalPlan);
         sendMealPlan(newPlan);
+    }
+    function handlePassExit(password2) {
+        setModalPlan(!setModalPassword);
+        changePassword(password2);
     }
 
     function sendMealPlan(planNew) {
@@ -207,7 +212,11 @@ function ProfileManager({route, navigation}) {
     }
 
     function putName(name2) {
-        console.log(parseInt(route.params.UserId));
+
+        console.log(name2);
+        console.log(email);
+        console.log(password);
+        console.log(route.params.UserID);
         // Set name route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +'/Auth', {
             method: 'POST',
@@ -217,6 +226,7 @@ function ProfileManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
             body: JSON.stringify({
+                "user_id": 0,
                 "name": name2,
                 "email": email,
                 "password": "Password"
@@ -227,7 +237,6 @@ function ProfileManager({route, navigation}) {
                 if (apiResponse.status !== 200) {
                     console.log('PutName like there was a problem. Status Code: ' +
                     response.status);
-                    console.log(parseInt(route.params.UserId));
                     console.log(name2);
                     console.log(email);
                     console.log(password);
@@ -250,6 +259,48 @@ function ProfileManager({route, navigation}) {
             console.log('Fetch Error :-S', err);
         });
     }
+
+    function changePassword(password2) {
+        console.log(email);
+        console.log(password);
+        // Set name route
+        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/ForgotPassword', {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+            body: JSON.stringify({
+                "email": email,
+            })
+        })
+        .then(
+            function(apiResponse) {
+                if (apiResponse.status !== 200) {
+                    console.log('PutName like there was a problem. Status Code: ' +
+                    response.status);
+                    console.log(email);
+                    console.log(password);
+                    setNam(false);
+
+                    return;
+                } else {
+                    console.log("got through");
+                    // Examine the text in the response
+                    apiResponse.json().then(function(data) {
+                    setResponse(data);
+                    setNam(false);
+
+                    });
+                }
+            }
+        )
+        .catch(function(err) {
+            console.log('Fetch Error :-S', err);
+        });
+    }
+
 
     return (
         <View style={styles.viewFlex}>
@@ -343,12 +394,12 @@ function ProfileManager({route, navigation}) {
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <TouchableOpacity active = { .5 } onPress={() => setModalPassword(!modalPassword) }>
+                            <TouchableOpacity active = { .5 } onPress={() => handlePassExit(passNew) }>
                                 <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>Current password: {password}</Text>
                             <Text style={styles.modalText}>Set password</Text>
-                            <TextInput style={ styles.textEnter } onChangeText={(password) => setPassword(password)} />
+                            <TextInput style={ styles.textEnter } onChangeText={(password2) => setPassNew(password2)} />
                             <View style={ styles.modalLine }/>
                         </View>
                     </View>
