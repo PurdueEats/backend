@@ -47,7 +47,7 @@ function LoginManager({navigation}) {
                         // Examine the text in the response
                         response.json().then(function(data) {
                             // Login successful, redirect to MealPreferences
-                            navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                            navigation.navigate("MealReview", { UserID: data.UserID, token: data.token });
                         });
                     }
                 }

@@ -8,15 +8,15 @@ import SelectMultiple from 'react-native-select-multiple'
 
 
 const meals = [
-    { label: 'Hamburger', value: 'ham' },
-    { label: 'Balsamic Chicken', value: 'bchick'},
-    { label: 'Grilled Chicken', value: 'gchick' },
-    { label: 'Hotdog', value: 'hotdog' },
-    { label: 'Pizza', value: 'piz' },
-    { label: 'Beef Broccoli Stirfry', value: 'bbs' },
-    { label: 'Grilled Cheese', value: 'gc' },
-    { label: 'BBQ Chicken Quesadilla', value: 'bbqq' },
-    { label: 'Caesar Salad', value: 'cs' }
+    { label: 'Burger', value: 1 },
+    { label: 'Balsamic Chicken', value: 2 },
+    { label: 'Grilled Chicken', value: 3 },
+    { label: 'Hotdog', value: 4 },
+    { label: 'Pizza', value: 5 },
+    { label: 'Beef Broccoli Stirfry', value: 6 },
+    { label: 'Grilled Cheese', value: 7 },
+    { label: 'BBQ Chicken Quesadilla', value: 8 },
+    { label: 'Caesar Salad', value: 9 }
 ]
 
 
@@ -30,47 +30,17 @@ function MealReview({route, navigation}) {
     setSelectedMeals(newSelections)
   }
 
-//   function handleMealReview() {
-//     fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
-//         method: 'GET',
-//         headers : {
-//             'Content-Type': 'application/json',
-//             'Accept': 'application/json',
-//          }
-//      })
-//          .then(response => response.json())
-//          .then(response => setResponse(response))
-//     fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
-//         method: 'POST',
-//         headers : {
-//             'Content-Type': 'application/json',
-//             'Accept': 'application/json',
-//          },
-//          body: JSON.stringify( {
-//             'user_id': 2373328848193777032,
-//             'menu_item_id': 1,
-//             'rating': 1,
-//             'timestamp': "2021-03-04T06:23:29.468000+00:00"
-//          })
-//      })
-//          .then(response => response.json())
-//          .then(response => setResponse(response))
-//          console.log(ratings)
-//     navigation.navigate("MealReview")
-//    }
-
     function displayError() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
-            text: "Incorrect username/password combination.",
+            text: "Invalid meal selection!",
             textStyle: {
                 textAlign: 'center',
             },
             duration: 1500
         });
     }
-
 
     function handleMealReview() {
         console.log("hit");
@@ -81,37 +51,21 @@ function MealReview({route, navigation}) {
         		'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "user_id": "-6583805008624267670",
-                "menu_item_id": 1,
+                "user_id": "-5820074427223127369",
+//                 "user_id": route.params.UserID.toString(),
+                "menu_item_id": selectedMeals,
                 "rating": ratings,
-                "timestamp": "2021-03-09T06:23:29.468000+00:00"
+                "timestamp": "2021-04-04T06:23:29.468000+00:00"
             })
         })
-//             .then(
-//                 function(response) {
-//                     if (response.status === 201) {
-//                                 // Successful POST
-//                                 console.log('YAYYYY ' + response.status);
-//                                 navigation.navigate("MealReview")
-//                      } else {
-//                         console.log('Looks like there was a problem. Status Code: ' +
-//                                     response.status);
-//                         console.log('rating cuh ' + ratings);
-//                         console.log('meals cuh ' + selectedMeals);
-//                         displayError();
-//                      }
-//                  }
-//             )
-//             .catch(function(err) {
-//                 console.log('Fetch Error :-S', err);
-//             });
-//             console.log('YEET');
             .then((response) => response.json())
                     .then((responseData) => {
-                                             console.log("inside responsejson");
-                                             console.log('response object:',responseData);
+                     console.log("inside responsejson");
+                     console.log('response object:',responseData);
+                     console.log(selectedMeals);
+                     console.log('userID: ' + route.params.UserID.toString());
+                     console.log('userID: ' + -6583805008624267670n)
 //         console.log(parseInt(route.params.UserId));
-
                      }).done();
     }
 

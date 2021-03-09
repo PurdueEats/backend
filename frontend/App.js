@@ -20,7 +20,7 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
                     headerShown: false
-                }} initialRouteName="MealReview">
+                }} initialRouteName="Login">
                   <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Name" component={ Name }/>
                   <Stack.Screen name="Email" component={ Email }/>
