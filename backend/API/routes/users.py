@@ -1,4 +1,6 @@
 """ User routes module. Contains all user resource related routes"""
+from random import choice
+from string import ascii_uppercase
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from API.routes.auth import AuthHandler
@@ -50,7 +52,7 @@ async def create_user(userBasic: UserBasic):
      '{userBasic.email}', '{hashed_password}')
      """)
 
-    return {'UserID': user_id}
+    return {'UserID': str(user_id[0]['UserID'])}
 
 
 @app.post("/Login")
@@ -72,7 +74,7 @@ async def login_user(userBasic: UserBasic):
 
     token = auth_handler.encode_token(user['Email'], user['UserID'])
 
-    return {'UserID': user['UserID'], 'token': token}
+    return {'UserID': str(user['UserID']), 'token': token}
 
 
 @app.delete("/{UserID}")
@@ -115,7 +117,7 @@ async def return_auth(UserID: int = Depends(auth_handler.auth_wrapper)):
 
 
 #Password Reset route
-@app.post("/{UserID}/Auth")
+@app.post("/{UserID}/Auth", status_code=201)
 async def update_auth(userBasic: UserBasic, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     # Fetch user using email
@@ -159,7 +161,7 @@ async def fetch_meal_plan(UserID: int = Depends(auth_handler.auth_wrapper)):
     return res[0]
 
 
-@app.post("/{UserID}/MealPlan")
+@app.post("/{UserID}/MealPlan", status_code=201)
 async def assign_meal_plan(mealPlanName: MealPlanIn, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     mealPlanName = mealPlanName.MealPlanName
@@ -285,3 +287,60 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     """)
 
     return
+
+
+@app.post("/ForgotPassword", status_code=201)
+async def forgot_password(email: str):
+
+    user = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserBasic WHERE Email = '{email}'")]
+
+    if len(user) != 1:
+        raise HTTPException(
+            status_code=401, detail='Invalid username and/or password')
+
+    user = user[0]
+    new_password = ''.join(choice(ascii_uppercase) for _ in range(8))
+    hashed_password = auth_handler.get_password_hash(new_password)
+    user['Password'] = hashed_password
+
+
+    runQuery(f"DELETE FROM UserBasic WHERE Email = '{email}'")
+
+    runQuery(f"""
+    INSERT INTO UserBasic values 
+    ({user['UserID']}, '{user['Name']}',
+     '{user['Email']}', '{user['Password']}')
+     """)
+
+    import requests
+
+    r = requests.post(
+		"https://api.mailgun.net/v3/sandbox459d6d8b3208457c8613631ae018378a.mailgun.org/messages",
+		auth=("api", fetch_api_key()),
+		data={"from": "Excited User <mailgun@sandbox459d6d8b3208457c8613631ae018378a.mailgun.org>",
+			"to": [email],
+			"subject": "Hello",
+			"text": "Your new password is: " + new_password})
+
+    print(r.text)
+
+    return
+
+
+def fetch_api_key():
+
+    from google.cloud import secretmanager_v1beta1 as secretmanager
+
+    secret_id = 'MAILGUN_KEY'
+    project_id = 'purdueeats-304919'
+    version_id = 1    # use the management tools to determine version at runtime
+
+    client = secretmanager.SecretManagerServiceClient()
+
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+
+    response = client.access_secret_version(request={"name": name})
+    payload = response.payload.data.decode("UTF-8")
+
+    return payload
