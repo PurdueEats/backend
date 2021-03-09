@@ -33,42 +33,38 @@ function ProfileManager({route, navigation}) {
     const [del, setDel] = useState(false);
     const [nam, setNam] = useState(false);
     const [plann, setPlann] = useState(false);
+    const [pas, setPas] = useState(false);
 
 
     useEffect(() => {
-        if (!del & !nam & !plann) {
+        if (!del & !nam & !plann & !pas) {
             getAuth()
             getMealInfo()
         }
     });
 
-
     function handleNameExit() {
         setNam(true);
-        console.log(name);
-        console.log(nameNew);
         if (name != nameNew) {
-            console.log("got into here");
             setName(nameNew);
-            console.log(nameNew);
             putName(nameNew);
         }
         setModalName(!setModalName);
     }
 
     function handlePlanExit(newPlan) {
+        setPlann(true);
         setModalPlan(!setModalPlan);
         sendMealPlan(newPlan);
     }
     function handlePassExit(password2) {
-        setModalPlan(!setModalPassword);
+        setPas(true);
+        setModalPassword(!setModalPassword);
         changePassword(password2);
     }
 
     function sendMealPlan(planNew) {
         // Send Meal Plan Route
-        setPlann(true);
-        console.log("got into here");
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/MealPlan`, {
             method: 'POST',
             headers : {
@@ -83,10 +79,9 @@ function ProfileManager({route, navigation}) {
         })
             .then(
                 function(response) {
-                    if (response.status === 200 || response.status === 201) {
+                    if (response.status === 200 & response.status === 201) {
                         // Successful POST
                         setPlann(false);
-                        console.log('post');
                     } else {
                         console.log('Meal like there was a problem. Status Code: ' +
                             response.status);
@@ -114,7 +109,7 @@ function ProfileManager({route, navigation}) {
     // Gets login and Email
     function getAuth() {
         // Auth Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/pooppooppeepee/Auth`, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId + `/Auth`, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -123,18 +118,19 @@ function ProfileManager({route, navigation}) {
             },
         })
         .then(
-            function(apiResponse) {
-                if (apiResponse.status !== 200) {
+            function(response) {
+                if (response.status !== 200 & response.status !== 201) {
                     console.log('Auth like there was a problem. Status Code: ' +
                                 response.status);
                     navigation.navigate("Login");
                     return;
                 } else {
                     // Set fields to correct values
-                    apiResponse.json().then(function(data) {
+                    response.json().then(function(data) {
                         setResponse(data);
                         setName(data.name);
                         setEmail(data.email);
+                        setPassword(data.password);
                     });
                 }
             }
@@ -147,24 +143,23 @@ function ProfileManager({route, navigation}) {
     // Fetches Plan and Swipe information
     function getMealInfo() {
         // MealPlan Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/MealPlan`, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + `/MealPlan`, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + route.params.token
             },
-
         })
         .then(
-            function(apiResponse) {
-                if (apiResponse.status !== 200) {
+            function(response) {
+                if (response.status !== 200 & response.status !== 201) {
                     console.log('GetMeal like there was a problem. Status Code: ' +
                                 response.status);
                     return;
                 } else {
                     // Set Fields to correct values
-                    apiResponse.json().then(function(data) {
+                    response.json().then(function(data) {
                         setMealResponse(data);
                         setDollars(data.dining_dollar_amount);
                         setPlan(data.meal_plan_name);
@@ -178,11 +173,11 @@ function ProfileManager({route, navigation}) {
         });
     }
 
+    //deletes account
     function deleteAccount() {
         setDel(true);
-        console.log("in?");
         // Deletion route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserId, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId, {
             method: 'DELETE',
             headers : {
                 'Content-Type': 'application/json',
@@ -191,15 +186,15 @@ function ProfileManager({route, navigation}) {
             },
         })
         .then(
-            function(apiResponse) {
-                if (apiResponse.status !== 200) {
+            function(response) {
+                if (response.status !== 200 & response.status !== 201) {
                     console.log('Delete like there was a problem. Status Code: ' +
                     response.status);
                     displayError();
                     return;
                 } else {
                     // Navigates back to login
-                    apiResponse.json().then(function(data) {
+                    response.json().then(function(data) {
                         setResponse(data);
                         navigation.navigate("Login");
                     });
@@ -211,13 +206,8 @@ function ProfileManager({route, navigation}) {
         });
     }
 
+    // Set name route
     function putName(name2) {
-
-        console.log(name2);
-        console.log(email);
-        console.log(password);
-        console.log(route.params.UserID);
-        // Set name route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +'/Auth', {
             method: 'POST',
             headers : {
@@ -226,45 +216,33 @@ function ProfileManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
             body: JSON.stringify({
-                "user_id": 0,
+                "user_id": "" + route.params.UserID + "",
                 "name": name2,
                 "email": email,
-                "password": "Password"
+                "password": ""
             })
         })
         .then(
-            function(apiResponse) {
-                if (apiResponse.status !== 200) {
-                    console.log('PutName like there was a problem. Status Code: ' +
-                    response.status);
-                    console.log(name2);
-                    console.log(email);
-                    console.log(password);
+            function(response) {
+                if (response.status !== 200 & response.status !== 201) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                                response.status);
                     setNam(false);
-
-                    return;
                 } else {
-                    console.log("got through");
-                    // Examine the text in the response
-                    apiResponse.json().then(function(data) {
-                    setResponse(data);
-                    setName(name2);
+                    // Successful POST
                     setNam(false);
-
-                    });
-                }
-            }
+                 }
+             }
         )
         .catch(function(err) {
             console.log('Fetch Error :-S', err);
         });
     }
 
+    //change password route
     function changePassword(password2) {
-        console.log(email);
-        console.log(password);
         // Set name route
-        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/ForgotPassword', {
+        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Auth', {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -272,25 +250,26 @@ function ProfileManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
             body: JSON.stringify({
+                "user_id": "" + route.params.UserID + "",
+                "name": name,
                 "email": email,
+                "password": password2
             })
         })
         .then(
-            function(apiResponse) {
-                if (apiResponse.status !== 200) {
+            function(response) {
+                if (response.status !== 200 & response.status !== 201) {
                     console.log('PutName like there was a problem. Status Code: ' +
                     response.status);
-                    console.log(email);
-                    console.log(password);
-                    setNam(false);
+                    setPas(false);
 
                     return;
                 } else {
-                    console.log("got through");
                     // Examine the text in the response
-                    apiResponse.json().then(function(data) {
+                    console.log('password updated');
+                    response.json().then(function(data) {
                     setResponse(data);
-                    setNam(false);
+                    setPas(false);
 
                     });
                 }
@@ -300,7 +279,6 @@ function ProfileManager({route, navigation}) {
             console.log('Fetch Error :-S', err);
         });
     }
-
 
     return (
         <View style={styles.viewFlex}>
@@ -397,7 +375,6 @@ function ProfileManager({route, navigation}) {
                             <TouchableOpacity active = { .5 } onPress={() => handlePassExit(passNew) }>
                                 <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
                             </TouchableOpacity>
-                            <Text style={styles.modalText}>Current password: {password}</Text>
                             <Text style={styles.modalText}>Set password</Text>
                             <TextInput style={ styles.textEnter } onChangeText={(password2) => setPassNew(password2)} />
                             <View style={ styles.modalLine }/>
