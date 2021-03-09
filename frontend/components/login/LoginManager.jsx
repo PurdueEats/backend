@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import Logo from "../../resources/logo.png";
 import { Button, Item, Toast } from 'native-base';
@@ -6,6 +6,8 @@ import { Button, Item, Toast } from 'native-base';
 function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    // Add use effect to clear email and password on re-render
 
     function tokenManager() {
         // TODO add check for token expiration

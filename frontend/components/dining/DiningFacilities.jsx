@@ -8,8 +8,9 @@ import Hillenbrand from "../../resources/hillenbrand.png"
 import Windsor from "../../resources/windsor.png"
 
 
-function DiningFacilities({navigation}) {
+function DiningFacilities({route, navigation}) {
     const [diningCourt, setDiningCourt] = useState('');
+
     return (
         <ScrollView>
             <View style={ styles.iconPosition }>
@@ -41,7 +42,6 @@ function DiningFacilities({navigation}) {
         </ScrollView>
     );
 }
-
 
 const styles = StyleSheet.create({
     iconPosition: {
