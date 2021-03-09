@@ -10,62 +10,7 @@ function LoginManager({navigation}) {
     function tokenManager() {
         // TODO add check for token expiration
     }
-
-<<<<<<< HEAD
-    function handleLogin() {
-        // Sample code for sending package to API
-
-        // fetch(`https://api.chucknorris.io/jokes/categories`, {
-        //     method: 'GET',
-        //     headers : {
-        //         'Content-Type': 'application/json',
-        //         'Accept': 'application/json'
-        //     },
-        // })
-        //     .then(response => response.json())
-        //     .then(response => setResponse(response))
-        // console.log(response)
-
-        //Login Route
-        fetch('http://purdueeats-304919.uc.r.appspot.com/Login', {
-            method: 'POST',
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                "user_id": 0,
-                "name": "",
-                "email": "johndoe@iscool.com",
-                "password": "johndoe"
-            })
-        })
-            .then(response => response.json())
-            .then(response => setResponse(response))
-        console.log(response)
-
-        // Network fail handler
-        if ( response === '' ) {
-            console.log("Network response failed")
-        }
-
-        //MealPlan Route
-        // fetch(`http://127.0.0.1:8000/-1954205092411918630/MealPlan`, {
-        // 	method: 'GET',
-        // 	headers : {
-        // 		'Content-Type': 'application/json',
-        //         'Accept': 'application/json',
-        //         'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ4OTU3OTQsImlhdCI6MTYxNDg5NTQ5NCwidXNlcl9pZCI6LTE5NTQyMDUwOTI0MTE5MTg2MzAsImVtYWlsIjoibWFya0BleGFtcGxlLmNvbSJ9.OthBKGCv7qAPE9UovT08zL60wthqAcHWwG-mqyOODvQ'
-        //     }
-        // })
-        // 	.then(response => response.json())
-        //     .then(response => setResponse(response))
-        //      console.log(response)
-
-        // following code for when sign in fails
-=======
     function displayError() {
->>>>>>> 4f45bbb824d5e534370f93590a9c94f17a7d9d69
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
