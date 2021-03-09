@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import DiningFacilities from "../dining/DiningFacilities";
 import MapManager from "../map/MapManager";
 
-const Tab = createBottomTabNavigator();
-
 function NavBar() {
+    const Tab = createBottomTabNavigator();
+    const navigation = useNavigation();
+
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -20,7 +22,9 @@ function NavBar() {
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                        <MaterialCommunityIcons
+                            onPress={navigation.navigate("Template")}
+                            name="home" color={color} size={size} />
                     ),
                 }}
             />
@@ -71,4 +75,5 @@ function NavBar() {
         </Tab.Navigator>
     );
 }
+
 export default NavBar;

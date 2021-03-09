@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StackActions } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import MapManager from "../map/MapManager";
+import TemplateComponent from "../template/TemplateComponent";
 import Logo from "../../resources/logo.png";
 import Earhart from "../../resources/earhart.png"
 import Wiley from "../../resources/wiley.png"
@@ -8,8 +13,11 @@ import Hillenbrand from "../../resources/hillenbrand.png"
 import Windsor from "../../resources/windsor.png"
 
 
-function DiningFacilities({navigation}) {
+function DiningFacilities({route, navigation}) {
+    const popAction = StackActions.pop();
+
     const [diningCourt, setDiningCourt] = useState('');
+
     return (
         <ScrollView>
             <View style={ styles.iconPosition }>

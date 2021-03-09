@@ -3,12 +3,15 @@ import { StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import getDistance from 'geolib/es/getDistance';
 import convertDistance from 'geolib/es/convertDistance'
-import NavBar from "../home/NavBar";
+import DiningFacilities from "../dining/DiningFacilities";
+import TemplateComponent from "../template/TemplateComponent";
 
 function MapManager({route, navigation}) {
     const popAction = StackActions.pop();
+    const Tab = createBottomTabNavigator();
 
     const [fordDistance, setFordDistance] = useState('');
     const [wileyDistance, setWileyDistance] = useState('');
@@ -125,7 +128,48 @@ function MapManager({route, navigation}) {
                     />
                 </MapView>
             </View>
-            <NavBar />
+            <Tab.Navigator
+                tabBarOptions={{
+                    activeTintColor: 'gray',
+                }}
+            >
+                <Tab.Screen
+                    name="Home"
+                    component={DiningFacilities}
+                    options={{
+                        tabBarLabel: 'Home',
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons
+                                onPress={() => navigation.navigate("Dining", { UserID: route.params.UserID, token: route.params.token })}
+                                name="home" color={color} size={size} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="Profile"
+                    component={TemplateComponent}
+                    options={{
+                        tabBarLabel: 'Profile',
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons
+                                onPress={() => navigation.navigate("Template", { UserID: route.params.UserID, token: route.params.token })}
+                                name="account-circle" color={color} size={size} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="Buddy"
+                    component={TemplateComponent}
+                    options={{
+                        tabBarLabel: 'Profile',
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons
+                                onPress={() => navigation.navigate("Template", { UserID: route.params.UserID, token: route.params.token })}
+                                name="account-circle" color={color} size={size} />
+                        ),
+                    }}
+                />
+            </Tab.Navigator>
         </View>
     );
 }
