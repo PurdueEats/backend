@@ -304,10 +304,44 @@ async def forgot_password(email: str):
     hashed_password = auth_handler.get_password_hash(new_password)
     user['Password'] = hashed_password
 
-    runQuery(f"DELETE FROM UserBasic WHERE Email = '{email}")
+
+    runQuery(f"DELETE FROM UserBasic WHERE Email = '{email}'")
 
     runQuery(f"""
     INSERT INTO UserBasic values 
     ({user['UserID']}, '{user['Name']}',
      '{user['Email']}', '{user['Password']}')
      """)
+
+    import requests
+
+    r = requests.post(
+		"https://api.mailgun.net/v3/sandbox459d6d8b3208457c8613631ae018378a.mailgun.org/messages",
+		auth=("api", fetch_api_key()),
+		data={"from": "Excited User <mailgun@sandbox459d6d8b3208457c8613631ae018378a.mailgun.org>",
+			"to": [email],
+			"subject": "Hello",
+			"text": "Your new password is: " + new_password})
+
+    print(fetch_api_key())
+    print(r.text)
+
+    return
+
+
+def fetch_api_key():
+
+    from google.cloud import secretmanager_v1beta1 as secretmanager
+
+    secret_id = 'MAILGUN_KEY'
+    project_id = 'purdueeats-304919'
+    version_id = 1    # use the management tools to determine version at runtime
+
+    client = secretmanager.SecretManagerServiceClient()
+
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+
+    response = client.access_secret_version(request={"name": name})
+    payload = response.payload.data.decode("UTF-8")
+
+    return payload
