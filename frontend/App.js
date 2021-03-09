@@ -9,7 +9,6 @@ import Name from "./components/signup/Name";
 import Email from "./components/signup/Email";
 import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
-import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 import MapManager from "./components/map/MapManager";
 
 
@@ -23,15 +22,14 @@ export default function App() {
               <Stack.Navigator screenOptions={{
                   headerShown: false
                 }} initialRouteName="Login">
-                  <Stack.Screen name="Login" component={ LoginManager }/>
+                  <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Name" component={ Name }/>
                   <Stack.Screen name="Email" component={ Email }/>
                   <Stack.Screen name="Password" component={ Password }/>
-                  <Stack.Screen name="MealPlan" component={ MealPlan }/>
-                  <Stack.Screen name="DiningDollarEntry" component={ DiningDollarEntry }/>
-                  <Stack.Screen name="MealPreferences" component={ MealPreferences }/>
-                  <Stack.Screen name="Map" component={ MapManager }/>
-                  <Stack.Screen name="Template" component={ TemplateComponent }/>
+                  <Stack.Screen name="MealPlan" component={ MealPlan } options={{gestureEnabled: false}}/>
+                  <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
+                  <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}} />
+                  <Stack.Screen name="Template" component={ TemplateComponent } options={{gestureEnabled: false}}/>
               </Stack.Navigator>
           </NavigationContainer>
       </Root>
