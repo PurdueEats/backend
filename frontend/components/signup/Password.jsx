@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
-import {Button, Item, Toast} from 'native-base';
+import { Button, Item, Toast } from 'native-base';
 
 function Password({route, navigation}) {
     const [password, setPassword] = useState('');

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, Component, Fragment } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TextInput } from "react-native";
-import { AirbnbRating, TouchableOpacity} from 'react-native-ratings';
-import { Button, Item } from 'native-base';
+import React, { useState, useEffect } from "react";
+import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
+import { AirbnbRating } from 'react-native-ratings';
+import { Button } from 'native-base';
 import Logo from "../../resources/logo.png";
 import SelectMultiple from 'react-native-select-multiple'
 
@@ -16,7 +16,6 @@ const meals = [
     { label: 'BBQ Chicken Quesadilla', value: 'bbqq' },
     { label: 'Caesar Salad', value: 'cs' }
 ]
-
 
 function MealReview({route, navigation}) {
 
@@ -54,11 +53,12 @@ function MealReview({route, navigation}) {
          .then(response => response.json())
          .then(response => setResponse(response))
          console.log(ratings)
-    navigation.navigate("MealReview")
+      navigation.navigate("MealReview")
    }
    function updateRating(rating) {
         setRatings(rating);
     }
+
     return (
           <ScrollView showsVerticalScrollIndicator={false}>
               <View style={ styles.screenView }>
@@ -82,7 +82,6 @@ function MealReview({route, navigation}) {
                 <View>
                     <SelectMultiple
                       items={meals}
-                      //selectedItems={this.state.selectedFruits}
                       selectedItems={selectedMeals}
                       onSelectionsChange={onSelectionsChange}
                       />
@@ -131,21 +130,17 @@ const styles = StyleSheet.create({
         paddingRight: "10%",
     },
     confirmButtonComponent: {
-        //position: 'absolute',
         width: '50%',
         right: 0,
         justifyContent: 'center',
         backgroundColor: "green",
-        //borderRadius: 10,
     },
     cancelButtonComponent: {
-        //position: 'absolute',
         flex: 1,
         width: '50%',
         left: 0,
         justifyContent: 'center',
         backgroundColor: "red",
-        //borderRadius: 10,
     },
     confirmButtonText: {
         fontSize: 16,
@@ -158,4 +153,5 @@ const styles = StyleSheet.create({
         color: "white"
     },
 });
+
 export default MealReview

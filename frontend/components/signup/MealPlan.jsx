@@ -15,7 +15,7 @@ function MealPlan({route, navigation}) {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                "user_id": 0,
+                "user_id": "0",
                 "name": "string",
                 "email": route.params.email,
                 "password": route.params.password
@@ -51,7 +51,6 @@ function MealPlan({route, navigation}) {
             body: JSON.stringify({
                 "MealPlanName": "21 Meal Plan +500"
             })
-
         })
             .then(
                 function(response) {

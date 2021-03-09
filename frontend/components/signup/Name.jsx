@@ -22,7 +22,6 @@ function Name({navigation}) {
     );
 }
 
-
 const styles = StyleSheet.create({
     screen:{
         paddingTop: "50%",
