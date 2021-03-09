@@ -7,6 +7,8 @@ function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    // Add use effect to clear email and password on re-render
+
     function tokenManager() {
         // TODO add check for token expiration
     }
