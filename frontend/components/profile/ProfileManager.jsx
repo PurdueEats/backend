@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 import { Button, Item } from 'native-base';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import ModalDropdown from 'react-native-modal-dropdown';
+import DropDownPicker from 'react-native-dropdown-picker';
 import ReactRoundedImage from "react-rounded-image";
 import { StackActions } from '@react-navigation/native';
 
@@ -10,7 +10,7 @@ import { StackActions } from '@react-navigation/native';
 
 function ProfileManager({route, navigation}) {
     const [modalName, setModalName] = useState(false);
-    const [modalSwipes, setModalSwipes] = useState(false);
+    const [ModalPlan, setModalPlan] = useState(false);
     const [modalPassword, setModalPassword] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
 
@@ -18,6 +18,7 @@ function ProfileManager({route, navigation}) {
     const [nameNew, setNameNew] = useState('');
     const [email, setEmail] = useState('');
     const [plan, setPlan] = useState('');
+    const [planNew, setPlanNew] = useState('');
     const [dollars, setDollars] = useState('');
     const [password, setPassword] = useState('Password');
     const [swipes, setSwipes] = useState('');
@@ -30,10 +31,12 @@ function ProfileManager({route, navigation}) {
 
     const [del, setDel] = useState(false);
     const [nam, setNam] = useState(false);
+    const [plann, setPlann] = useState(false);
 
 
     useEffect(() => {
-        if (!del & !nam) {
+        if (!del & !nam & !plann) {
+            console.log(plan);
             getAuth()
             getMealInfo()
         }
@@ -54,8 +57,45 @@ function ProfileManager({route, navigation}) {
         setModalName(!setModalName);
     }
 
+ function handlePlanExit(newPlan) {
+        setModalPlan(!setModalPlan);
+        sendMealPlan(newPlan);
+    }
 
+    function sendMealPlan(planNew) {
+        // Send Meal Plan Route
+        setPlann(true);
+        console.log("got into here");
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/MealPlan`, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+            body: JSON.stringify({
+                "MealPlanName": planNew
+            })
 
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        setPlann(false);
+                        console.log('post');
+                    } else {
+                        console.log('Meal like there was a problem. Status Code: ' +
+                            response.status);
+                        setPlann(false);
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+
+    }
 
     function resetEverything() {
         setName('');
@@ -82,7 +122,7 @@ function ProfileManager({route, navigation}) {
         .then(
             function(apiResponse) {
                 if (apiResponse.status !== 200) {
-                    console.log('Looks like there was a problem. Status Code: ' +
+                    console.log('Auth like there was a problem. Status Code: ' +
                                 response.status);
                     navigation.navigate("Login");
                     return;
@@ -116,7 +156,7 @@ function ProfileManager({route, navigation}) {
         .then(
             function(apiResponse) {
                 if (apiResponse.status !== 200) {
-                    console.log('Looks like there was a problem. Status Code: ' +
+                    console.log('GetMeal like there was a problem. Status Code: ' +
                                 response.status);
                     return;
                 } else {
@@ -150,7 +190,7 @@ function ProfileManager({route, navigation}) {
         .then(
             function(apiResponse) {
                 if (apiResponse.status !== 200) {
-                    console.log('Looks like there was a problem. Status Code: ' +
+                    console.log('Delete like there was a problem. Status Code: ' +
                     response.status);
                     displayError();
                     return;
@@ -188,7 +228,7 @@ function ProfileManager({route, navigation}) {
         .then(
             function(apiResponse) {
                 if (apiResponse.status !== 200) {
-                    console.log('Looks like there was a problem. Status Code: ' +
+                    console.log('PutName like there was a problem. Status Code: ' +
                     response.status);
                     console.log(route.params.UserId);
                     console.log(name2);
@@ -258,8 +298,10 @@ function ProfileManager({route, navigation}) {
             <View style={ styles.borderLine }/>
         <View/>
         <View style={styles.rowBetween}>
-            <ModalDropdown style={ styles.textDrop } defaultValue={plan} textStyle={ styles.textDrop }  dropdownTextStyle={ styles.textNormal }
-            options={ plans } onSelect={ (plan) => setPlan((String(this.renderButtonText)))}/>
+        <Text style={ styles.textNormal }>   {plan} </Text>
+        <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
+            <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
+        </TouchableOpacity>
         </View>
         <View style={styles.rowBetween}>
             <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
@@ -267,20 +309,32 @@ function ProfileManager({route, navigation}) {
         <View style={styles.colBetween}/>
             <View style={styles.rowBetween}>
                 <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
-                <Modal animationType="slide" transparent={true} visible={modalSwipes}
+                <Modal animationType="slide" transparent={true} visible={ModalPlan}
                     onRequestClose={() => {
                         Alert.alert("Modal has been closed.");
-                        setModalName(!modalSwipes);
+                        setModalName(!ModalPlan);
                     }}
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <TouchableOpacity active = { .5 } onPress={() => setModalSwipes(!modalSwipes) }>
+                            <TouchableOpacity active = { .5 } onPress={() => handlePlanExit(planNew) }>
                                 <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
                             </TouchableOpacity >
-                            <Text style={styles.modalText}>Number of Swipes:</Text>
-                            <TextInput style={ styles.textEnter } onChangeText={(swipes) => setSwipes(swipes)} />
-                            <View style={ styles.modalLine }/>
+                            <DropDownPicker
+                                items={[
+                                    {label: '10 Meal Plan +100', value: '10 Meal Plan +100'},
+                                    {label: '15 Meal Plan +450', value: '15 Meal Plan +450'},
+                                    {label: '21 Meal Plan +250', value: '21 Meal Plan +250'},
+                                    {label: '21 Meal Plan +500', value: '21 Meal Plan +500'},
+                                ]}
+                                containerStyle={{height: 40, width: 200}}
+                                style={{backgroundColor: '#fafafa'}}
+                                itemStyle={{
+                                    justifyContent: 'flex-start'
+                                }}
+                                dropDownStyle={{backgroundColor: '#fafafa'}}
+                                onChangeItem={item => setPlanNew(item.value)}
+                            />
                         </View>
                     </View>
                 </Modal>
@@ -490,8 +544,26 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
+        elevation: 5,
+        height: 350
+    },
+
+    modalViewPlan: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
         elevation: 5
     },
+
 });
 
 
