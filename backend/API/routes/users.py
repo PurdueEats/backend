@@ -1,4 +1,6 @@
 """ User routes module. Contains all user resource related routes"""
+from random import choice
+from string import ascii_uppercase
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from API.routes.auth import AuthHandler
@@ -115,7 +117,7 @@ async def return_auth(UserID: int = Depends(auth_handler.auth_wrapper)):
 
 
 #Password Reset route
-@app.post("/{UserID}/Auth")
+@app.post("/{UserID}/Auth", status_code=201)
 async def update_auth(userBasic: UserBasic, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     # Fetch user using email
@@ -159,7 +161,7 @@ async def fetch_meal_plan(UserID: int = Depends(auth_handler.auth_wrapper)):
     return res[0]
 
 
-@app.post("/{UserID}/MealPlan")
+@app.post("/{UserID}/MealPlan", status_code=201)
 async def assign_meal_plan(mealPlanName: MealPlanIn, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     mealPlanName = mealPlanName.MealPlanName
@@ -285,3 +287,27 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     """)
 
     return
+
+
+@app.post("/ForgotPassword", status_code=201)
+async def forgot_password(email: str):
+
+    user = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserBasic WHERE Email = '{email}'")]
+
+    if len(user) != 1:
+        raise HTTPException(
+            status_code=401, detail='Invalid username and/or password')
+
+    user = user[0]
+    new_password = ''.join(choice(ascii_uppercase) for _ in range(8))
+    hashed_password = auth_handler.get_password_hash(new_password)
+    user['Password'] = hashed_password
+
+    runQuery(f"DELETE FROM UserBasic WHERE Email = '{email}")
+
+    runQuery(f"""
+    INSERT INTO UserBasic values 
+    ({user['UserID']}, '{user['Name']}',
+     '{user['Email']}', '{user['Password']}')
+     """)
