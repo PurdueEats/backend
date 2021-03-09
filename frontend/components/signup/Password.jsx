@@ -10,7 +10,7 @@ function Password({route, navigation}) {
     }
 
     return (
-        <SafeAreaView style={ styles.screen }>
+        <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
             <Text style={ styles.questionTitle }>Enter your password.</Text>
             <Item style={ styles.passwordInput }>
                 <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
