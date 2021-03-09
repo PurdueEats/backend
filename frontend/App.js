@@ -14,14 +14,14 @@ import MapManager from "./components/map/MapManager";
 
 
 export default function App() {
-  const Stack = createStackNavigator();
+    const Stack = createStackNavigator();
 
-  return (
-      // Do not remove Root! Root is necessary for toasts integrated in successive components.
-      <Root>
-          <NavigationContainer>
-              <Stack.Navigator screenOptions={{
-                  headerShown: false
+    return (
+        // Do not remove Root! Root is necessary for toasts integrated in successive components.
+        <Root>
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{
+                    headerShown: false
                 }} initialRouteName="Login">
                   <Stack.Screen name="Profile" component={ ProfileManager }/>
                   <Stack.Screen name="Login" component={ LoginManager }/>
