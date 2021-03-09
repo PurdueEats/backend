@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
+import { StyleSheet, SafeAreaView, Text, TextInput, View } from "react-native";
 import { Button, Item } from 'native-base';
 
 function Name({navigation}) {
@@ -10,14 +10,17 @@ function Name({navigation}) {
     }
 
     return (
-        <SafeAreaView style={ styles.screen }>
+        <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
             <Text style={ styles.questionTitle }>Enter your name.</Text>
             <Item style={ styles.nameInput }>
                 <TextInput style={ styles.textInput } onChangeText={(name) => setName(name)} />
             </Item>
-            <Button style={ styles.continueButton } onPress={ handleNavigate } >
-                <Text style={ styles.continueText } >Continue</Text>
-            </Button>
+            <View style={{flexDirection: "row"}}>
+                <Button style={ styles.continueButton } onPress={ handleNavigate } >
+                    <Text style={ styles.continueText } >Continue</Text>
+                </Button>
+            </View>
+
         </SafeAreaView>
     );
 }
@@ -27,11 +30,15 @@ const styles = StyleSheet.create({
         paddingTop: "50%",
         paddingLeft: "10%",
         paddingRight: "10%",
-        paddingBottom: "12%"
+        paddingBottom: "12%",
+        marginRight: "10%",
+        marginLeft: "10%"
     },
     questionTitle: {
         fontSize: 25,
         fontWeight: "bold",
+        marginTop: "10%",
+        marginLeft: "10%"
     },
     textInput: {
         width: "100%",
@@ -40,13 +47,16 @@ const styles = StyleSheet.create({
     nameInput: {
         marginBottom: "10%",
         marginTop: "20%",
-        height: 40
+        height: 40,
+        marginLeft: "10%",
+        marginRight: "10%",
     },
     continueButton: {
         width: '100%',
         justifyContent: 'center',
         backgroundColor: "red",
-        borderRadius: 10
+        borderRadius: 10,
+        alignItems: "center"
     },
     continueText: {
         fontSize: 16,

@@ -70,7 +70,7 @@ function MealPlan({route, navigation}) {
     }
 
     return (
-        <SafeAreaView style={ styles.screen }>
+        <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
             <Text style={ styles.questionTitle }>Select your meal plan.</Text>
             <DropDownPicker
                 items={[
@@ -99,11 +99,15 @@ const styles = StyleSheet.create({
         paddingTop: "50%",
         paddingLeft: "10%",
         paddingRight: "10%",
-        paddingBottom: "12%"
+        paddingBottom: "12%",
+        marginRight: "10%",
+        marginLeft: "10%",
+        marginTop: "10%"
     },
     questionTitle: {
         fontSize: 25,
         fontWeight: "bold",
+        marginTop: "10%"
     },
     textInput: {
         width: "100%",
