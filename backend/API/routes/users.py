@@ -323,7 +323,6 @@ async def forgot_password(email: str):
 			"subject": "Hello",
 			"text": "Your new password is: " + new_password})
 
-    print(fetch_api_key())
     print(r.text)
 
     return
