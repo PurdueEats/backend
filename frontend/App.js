@@ -12,6 +12,7 @@ import Email from "./components/signup/Email";
 import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
 import MapManager from "./components/map/MapManager";
+import NavBar from "./components/home/NavBar";
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -31,6 +32,7 @@ export default function App() {
                   <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}}/>
+                    <Stack.Screen name="NavBar" component={ NavBar }/>
                   <Stack.Screen name="Template" component={ TemplateComponent }/>
               </Stack.Navigator>
           </NavigationContainer>

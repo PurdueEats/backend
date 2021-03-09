@@ -1,36 +1,35 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import DiningFacilities from "../dining/DiningFacilities";
 import MapManager from "../map/MapManager";
+import TemplateComponent from "../template/TemplateComponent";
 
-function NavBar() {
+function NavBar({route, navigation}) {
     const Tab = createBottomTabNavigator();
-    const navigation = useNavigation();
+    const Stack = createStackNavigator();
 
     return (
         <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="Dining"
             tabBarOptions={{
                 activeTintColor: 'red',
             }}
         >
-            <Tab.Screen
-                name="Home"
-                component={DiningFacilities}
+            <Stack.Screen
+                name="Dining"
+                component={ DiningFacilities }
                 options={{
-                    tabBarLabel: 'Home',
+                    tabBarLabel: 'Dining',
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons
-                            onPress={navigation.navigate("Template")}
-                            name="home" color={color} size={size} />
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
                     ),
                 }}
             />
-            <Tab.Screen
+            <Stack.Screen
                 name="Map"
-                component={MapManager}
+                component={ MapManager }
                 options={{
                     tabBarLabel: 'Map',
                     tabBarIcon: ({ color, size }) => (
@@ -38,21 +37,10 @@ function NavBar() {
                     ),
                 }}
             />
-            {/*
-            <Tab.Screen
-                name="Buddy"
-                component={FindABuddy}
-                options={{
-                    tabBarLabel: 'Buddy',
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account-multiple" color={color} size={size} />
-                    ),
-                }}
-            />
-
-            <Tab.Screen
+            <Stack.Screen
                 name="Profile"
-                component={Profile}
+                component={ TemplateComponent }
+                initialParams={{ UserID: route.params.UserID, token: route.params.token }}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color, size }) => (
@@ -60,18 +48,40 @@ function NavBar() {
                     ),
                 }}
             />
-            <Tab.Screen
-                name="Settings"
-                component={Settings}
-                options={{
-                    tabBarLabel: 'Settings',
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="cog" color={color} size={size} />
-                    ),
-                }}
-            />
-            */}
+            {/*<Stack.Screen*/}
+            {/*    name="Buddy"*/}
+            {/*    component={FindABuddy}*/}
+            {/*    initialParams={{ UserID: route.params.UserID, token: route.params.token }}*/}
+            {/*    options={{*/}
+            {/*        tabBarLabel: 'Buddy',*/}
+            {/*        tabBarIcon: ({ color, size }) => (*/}
+            {/*            <MaterialCommunityIcons name="account-multiple" color={color} size={size} />*/}
+            {/*        ),*/}
+            {/*    }}*/}
+            {/*/>*/}
 
+            {/*<Stack.Screen*/}
+            {/*    name="Profile"*/}
+            {/*    component={Profile}*/}
+            {/*    initialParams={{ UserID: route.params.UserID, token: route.params.token }}*/}
+            {/*    options={{*/}
+            {/*        tabBarLabel: 'Profile',*/}
+            {/*        tabBarIcon: ({ color, size }) => (*/}
+            {/*            <MaterialCommunityIcons name="account-circle" color={color} size={size} />*/}
+            {/*        ),*/}
+            {/*    }}*/}
+            {/*/>*/}
+            {/*<Stack.Screen*/}
+            {/*    name="Settings"*/}
+            {/*    component={Settings}*/}
+            {/*    initialParams={{ UserID: route.params.UserID, token: route.params.token }}*/}
+            {/*    options={{*/}
+            {/*        tabBarLabel: 'Settings',*/}
+            {/*        tabBarIcon: ({ color, size }) => (*/}
+            {/*            <MaterialCommunityIcons name="cog" color={color} size={size} />*/}
+            {/*        ),*/}
+            {/*    }}*/}
+            {/*/>*/}
         </Tab.Navigator>
     );
 }
