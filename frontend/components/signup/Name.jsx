@@ -12,6 +12,7 @@ function Name({navigation}) {
     return (
         <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
             <Text style={ styles.questionTitle }>Enter your name.</Text>
+            <Text style={ styles.detailsTitle }>This will be the name associated with your account.</Text>
             <Item style={ styles.nameInput }>
                 <TextInput style={ styles.textInput } onChangeText={(name) => setName(name)} />
             </Item>
@@ -20,26 +21,29 @@ function Name({navigation}) {
                     <Text style={ styles.continueText } >Continue</Text>
                 </Button>
             </View>
-
         </SafeAreaView>
     );
 }
 
-
 const styles = StyleSheet.create({
     screen:{
-        paddingTop: "50%",
+        marginTop: "50%",
         paddingLeft: "10%",
         paddingRight: "10%",
         paddingBottom: "12%",
-        marginRight: "10%",
-        marginLeft: "10%"
+        marginLeft: "10%",
+        marginRight: "10%"
     },
     questionTitle: {
         fontSize: 25,
         fontWeight: "bold",
         marginTop: "10%",
-        marginLeft: "10%"
+        paddingBottom: "2%",
+        textAlign:"center"
+    },
+    detailsTitle: {
+        fontSize: 18,
+        textAlign:"center",
     },
     textInput: {
         width: "100%",

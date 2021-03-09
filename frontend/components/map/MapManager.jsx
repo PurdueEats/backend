@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
+import { StyleSheet, View, Text, Alert } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StackActions } from '@react-navigation/native';
 import getDistance from 'geolib/es/getDistance';
 import convertDistance from 'geolib/es/convertDistance'
 
 function MapManager({route, navigation}) {
-    const popAction = StackActions.pop();
-
     const [fordDistance, setFordDistance] = useState('');
     const [wileyDistance, setWileyDistance] = useState('');
     const [windsorDistance, setWindsorDistance] = useState('');
