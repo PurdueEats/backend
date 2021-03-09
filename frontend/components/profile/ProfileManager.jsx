@@ -36,7 +36,6 @@ function ProfileManager({route, navigation}) {
 
     useEffect(() => {
         if (!del & !nam & !plann) {
-            console.log(plan);
             getAuth()
             getMealInfo()
         }
@@ -50,9 +49,8 @@ function ProfileManager({route, navigation}) {
         if (name != nameNew) {
             console.log("got into here");
             setName(nameNew);
-            console.log(name);
+            console.log(nameNew);
             putName(nameNew);
-            console.log(name);
         }
         setModalName(!setModalName);
     }
@@ -111,7 +109,7 @@ function ProfileManager({route, navigation}) {
     // Gets login and Email
     function getAuth() {
         // Auth Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserID+`/Auth`, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/pooppooppeepee/Auth`, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -209,9 +207,9 @@ function ProfileManager({route, navigation}) {
     }
 
     function putName(name2) {
-        console.log("i3n?");
+        console.log(parseInt(route.params.UserId));
         // Set name route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+route.params.UserId+'/Auth', {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +'/Auth', {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -219,7 +217,6 @@ function ProfileManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
             body: JSON.stringify({
-                "user_id": route.params.UserId,
                 "name": name2,
                 "email": email,
                 "password": "Password"
@@ -230,7 +227,7 @@ function ProfileManager({route, navigation}) {
                 if (apiResponse.status !== 200) {
                     console.log('PutName like there was a problem. Status Code: ' +
                     response.status);
-                    console.log(route.params.UserId);
+                    console.log(parseInt(route.params.UserId));
                     console.log(name2);
                     console.log(email);
                     console.log(password);
