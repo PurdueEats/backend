@@ -116,7 +116,7 @@ async def return_auth(UserID: int = Depends(auth_handler.auth_wrapper)):
 
 #Password Reset route
 @app.post("/{UserID}/Auth")
-async def update_auth(userBasic: UserBasic):
+async def update_auth(userBasic: UserBasic, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     # Fetch user using email
     user = [dict(row) for row in runQuery(
@@ -127,7 +127,8 @@ async def update_auth(userBasic: UserBasic):
 
     user = user[0]
     hashed_password = user['Password']
-
+    userBasic.user_id = UserID
+    
     if userBasic.password != "":
         hashed_password = auth_handler.get_password_hash(userBasic.password)
 
