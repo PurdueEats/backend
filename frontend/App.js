@@ -26,7 +26,7 @@ export default function App() {
                     headerShown: false
                 }} initialRouteName="Login">
                   <Stack.Screen name="Profile" component={ ProfileManager }/>
-                  <Stack.Screen name="Login" component={ LoginManager }/>
+                  <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Name" component={ Name }/>
                   <Stack.Screen name="Email" component={ Email }/>
                   <Stack.Screen name="Password" component={ Password }/>
