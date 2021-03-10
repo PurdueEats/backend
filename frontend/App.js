@@ -19,6 +19,7 @@ import ForgotPassword from "./components/login/ForgotPassword"
 
 export default function App() {
     const Stack = createStackNavigator();
+    
     return (
         // Do not remove Root! Root is necessary for toasts integrated in successive components.
         <Root>
