@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import Logo from "../../resources/logo.png";
 import { Button } from 'native-base';
@@ -8,6 +8,7 @@ function TemplateComponent({route, navigation}) {
     function handlePress() {
         console.log("oh man " + route.params.UserID)
         console.log(route.params.token)
+        navigation.navigate("Login")
     }
 
     return (

@@ -24,7 +24,7 @@ function MealPreferences({route, navigation}) {
         // })
         // 	.then(response => response.json())
         // 	.then(response => this.setState({ "response" : response }))
-        navigation.navigate("Template", { UserID: route.params.UserID, token: route.params.token });
+        navigation.navigate("NavBar", { UserID: route.params.UserID, token: route.params.token });
     }
 
     return (
@@ -58,7 +58,6 @@ function MealPreferences({route, navigation}) {
                                 />
                             </View>
                         );
-
                     }))}
             </View>
             <View style={ styles.actionView }>

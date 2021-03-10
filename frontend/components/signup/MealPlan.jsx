@@ -15,7 +15,7 @@ function MealPlan({route, navigation}) {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                "user_id": 0,
+                "user_id": "0",
                 "name": "string",
                 "email": route.params.email,
                 "password": route.params.password
@@ -51,7 +51,6 @@ function MealPlan({route, navigation}) {
             body: JSON.stringify({
                 "MealPlanName": "21 Meal Plan +500"
             })
-
         })
             .then(
                 function(response) {
@@ -71,8 +70,9 @@ function MealPlan({route, navigation}) {
     }
 
     return (
-        <SafeAreaView style={ styles.screen }>
+        <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
             <Text style={ styles.questionTitle }>Select your meal plan.</Text>
+            <Text style={ styles.detailsTitle }>This will be the meal plan and dining dollar amount associated with your account.</Text>
             <DropDownPicker
                 items={[
                     {label: '10 Meal Plan + 100', value: '10 Meal Plan + 100'},
@@ -80,6 +80,7 @@ function MealPlan({route, navigation}) {
                     {label: '21 Meal Plan + 250', value: '21 Meal Plan + 250'},
                     {label: '21 Meal Plan + 500', value: '21 Meal Plan + 500'},
                 ]}
+                defaultValue={'10 Meal Plan + 100'}
                 containerStyle={{height: 40}}
                 style={{backgroundColor: '#fafafa'}}
                 itemStyle={{
@@ -97,14 +98,24 @@ function MealPlan({route, navigation}) {
 
 const styles = StyleSheet.create({
     screen:{
-        paddingTop: "50%",
+        marginTop: "50%",
         paddingLeft: "10%",
         paddingRight: "10%",
-        paddingBottom: "12%"
+        paddingBottom: "12%",
+        marginLeft: "10%",
+        marginRight: "10%"
     },
     questionTitle: {
         fontSize: 25,
         fontWeight: "bold",
+        marginTop: "10%",
+        paddingBottom: "2%",
+        textAlign:"center"
+    },
+    detailsTitle: {
+        fontSize: 18,
+        paddingBottom: "10%",
+        textAlign:"center",
     },
     textInput: {
         width: "100%",

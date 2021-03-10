@@ -10,8 +10,9 @@ function Email({route, navigation}) {
     }
 
     return (
-        <SafeAreaView style={ styles.screen }>
+        <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
             <Text style={ styles.questionTitle }>Enter your email.</Text>
+            <Text style={ styles.detailsTitle }>This will be the email you use to login.</Text>
             <Item style={ styles.emailInput }>
                 <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
             </Item>
@@ -24,14 +25,23 @@ function Email({route, navigation}) {
 
 const styles = StyleSheet.create({
     screen:{
-        paddingTop: "50%",
+        marginTop: "50%",
         paddingLeft: "10%",
         paddingRight: "10%",
-        paddingBottom: "12%"
+        paddingBottom: "12%",
+        marginLeft: "10%",
+        marginRight: "10%"
     },
     questionTitle: {
         fontSize: 25,
         fontWeight: "bold",
+        marginTop: "10%",
+        paddingBottom: "2%",
+        textAlign:"center"
+    },
+    detailsTitle: {
+        fontSize: 18,
+        textAlign:"center",
     },
     textInput: {
         width: "100%",
@@ -40,13 +50,16 @@ const styles = StyleSheet.create({
     emailInput: {
         marginBottom: "10%",
         marginTop: "20%",
-        height: 40
+        height: 40,
+        marginLeft: "10%",
+        marginRight: "10%",
     },
     continueButton: {
         width: '100%',
         justifyContent: 'center',
         backgroundColor: "red",
-        borderRadius: 10
+        borderRadius: 10,
+        alignItems: "center"
     },
     continueText: {
         fontSize: 16,
