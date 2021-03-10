@@ -12,7 +12,7 @@ function LoginManager({navigation}) {
     function tokenManager() {
         // TODO add check for token expiration
     }
-    
+
     function displayError() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
