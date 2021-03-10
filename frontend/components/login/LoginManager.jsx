@@ -1,64 +1,63 @@
-import React, { useState } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity, Alert} from "react-native";
 import Logo from "../../resources/logo.png";
 import { Button, Item, Toast } from 'native-base';
 
 function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [response, setResponse] = useState('');
 
-    // TODO add check for token expiration
+    // Add use effect to clear email and password on re-render
+
     function tokenManager() {
-
+        // TODO add check for token expiration
     }
 
-    function handleLogin() {
-        // Sample code for sending package to API
-        
-        //Login Route
-        // fetch(`http://127.0.0.1:8000/Login`, {
-        // 	method: 'POST',
-        // 	headers : {
-        // 		'Content-Type': 'application/json',
-        // 		'Accept': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         "user_id": 0,
-        //         "name": "",
-        //         "email": "mark@example.com",
-        //         "password": "dicksandshit"
-        //     })
-        // })
-        // 	.then(response => response.json())
-        //     .then(response => setResponse(response))
-
-        //MealPlan Route
-        fetch(`http://127.0.0.1:8000/-1954205092411918600/MealPlan`, {
-        	method: 'GET',
-        	headers : {
-        		'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ3MzIwMDEsImlhdCI6MTYxNDczMTcwMSwidXNlcl9pZCI6LTE5NTQyMDUwOTI0MTE5MTg2MzAsImVtYWlsIjoibWFya0BleGFtcGxlLmNvbSJ9.kHHPySXoxDouflLsCGgrMiqYNrFZ6b2qyVI-JDfzykU'
-            }
-        })
-        	.then(response => response.json())
-            .then(response => setResponse(response))
-             console.log(response)
-
-        // following code for when sign in fails
+    function displayError() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
-            text: "Wrong password!",
+            text: "Incorrect username/password combination.",
             textStyle: {
                 textAlign: 'center',
             },
-            duration: 500
+            duration: 1500
         });
-        // following command for if sign in is successful; assign token as global
-        navigation.navigate("MealPreferences")
+    }
 
+    function handleLogin() {
+        // Login Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
+        	method: 'POST',
+        	headers : {
+        		'Content-Type': 'application/json',
+        		'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": "0",
+                "name": "string",
+                "email": email,
+                "password": password
+            })
+        })
+            .then(
+                function(response) {
+                    if (response.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        displayError();
+                    } else {
+                        // Examine the text in the response
+                        response.json().then(function(data) {
+                            // Login successful, redirect to MealPreferences
+                            navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                        });
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
     }
 
     function handleForgotPassword() {
@@ -66,7 +65,7 @@ function LoginManager({navigation}) {
     }
 
     function handleSignUp() {
-        navigation.navigate("SignupBegin")
+        navigation.navigate("Name")
     }
 
     return (
@@ -106,7 +105,6 @@ function LoginManager({navigation}) {
         </ScrollView>
     );
 }
-
 
 const styles = StyleSheet.create({
     iconPosition: {

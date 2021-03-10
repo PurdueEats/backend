@@ -1,9 +1,9 @@
 from typing import List
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 from API.models.MenuItemReview import MenuItemReview
 from DB.Util import runQuery
- 
-app = FastAPI()
+
+app = APIRouter()
 
 
 #Get every MenuItemReview

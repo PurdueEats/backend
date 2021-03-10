@@ -1,25 +1,24 @@
 import React from "react";
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import Logo from "../../resources/logo.png";
+import { Button } from 'native-base';
 
-function TemplateComponent({navigation}) {
+function TemplateComponent({route, navigation}) {
 
-    // Sample code for sending package to API
-    // fetch(`/api/db/getBusinessData/` + params, {
-    // 	method: 'GET',
-    // 	headers : {
-    // 		'Content-Type': 'application/json',
-    // 		'Accept': 'application/json'
-    // 	}
-    // })
-    // 	.then(response => response.json())
-    // 	.then(response => this.setState({ "response" : response }))
+    function handlePress() {
+        console.log("oh man " + route.params.UserID)
+        console.log(route.params.token)
+        navigation.navigate("Login")
+    }
 
     return (
         // Do not remove ScrollView. Adds scrolling to screens.
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={ styles.screenView }>
                 <Image style={ styles.logoImage } source={ Logo } />
+                <Button onPress={ handlePress }>
+                    <Text>Button</Text>
+                </Button>
             </View>
         </ScrollView>
     );
