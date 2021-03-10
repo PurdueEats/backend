@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
+import { Image, StyleSheet, View, Text } from "react-native";
 import { AirbnbRating } from 'react-native-ratings';
 import { Button } from 'native-base';
-import Logo from "../../resources/logo.png";
 import SelectMultiple from 'react-native-select-multiple'
+import Logo from "../../resources/logo.png";
 
 const meals = [
     { label: 'Hamburger', value: 'ham' },
@@ -60,7 +60,7 @@ function MealReview({route, navigation}) {
     }
 
     return (
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
               <View style={ styles.screenView }>
                 <Image style={ styles.logoImage } source={ Logo } />
                     <Text style={ styles.screenTitle }>Record Meal</Text>
@@ -98,7 +98,7 @@ function MealReview({route, navigation}) {
                     </Button>
                   </View>
               </View>
-          </ScrollView>
+          </View>
     )
 }
 
