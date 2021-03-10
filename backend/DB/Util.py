@@ -22,6 +22,7 @@ def runQuery(sql: str):
     query = client.query(sql, job_config)
     results = query.result()
     print(results)
+    return results
 
 
 def userTableSetup():

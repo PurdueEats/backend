@@ -128,7 +128,17 @@ create_menu_items_table = {
 		HashID			STRING,
 		ItemName		STRING,
 		Nutrition		BYTES,
-		Allergen		BYTES
+		Eggs			BOOL,
+		Fish			BOOL,
+		Gluten			BOOL,
+		Milk			BOOL,
+		Peanuts			BOOL,
+		Shellfish		BOOL,
+		Soy			BOOL,
+                TreeNuts		BOOL,
+		Vegetarian		BOOL,
+		Vegan			BOOL,
+                Wheat			BOOL
 	)
 	""",
 

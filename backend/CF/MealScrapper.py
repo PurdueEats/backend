@@ -20,10 +20,8 @@ def meal_scrapper(request):
     """
 
     DATE = '/' + datetime.today().strftime('%Y-%m-%d')
-
     MAX_ID = [dict(row) for row in runQuery(
-            f"SELECT max(MenuItemID) FROM MenuItems")][0]
-    print(MAX_ID)
+        "SELECT max(MenuItemID) FROM MenuItems")][0]['f0_'] + 1
 
     for i, loc in enumerate(LOCATIONS):
 
@@ -34,7 +32,22 @@ def meal_scrapper(request):
         #    DiningFacilityName = '{loc}'""")][0]
 
         for meals in response['Meals']:
-            print(meals)
+            #print(meals)
+            time = meals['Hours']['StartTime'] + "-" + meals['Hours']['EndTime']
+            time = ' '.join(format(ord(x), 'b') for x in time)
+
+            for station in meals['Stations']:
+                
+                for item in station['Items']:
+                    query = 'INSERT INTO MenuItems values ('
+                    query += f"{str(MAX_ID)}, '{item['ID']}', '{item['Name']}',"
+                    query += "b'Nutrition',"
+
+                    for alllergen in item['Allergen']
+
+
+
+            pass
         print(response['Location'])
         print()
 
