@@ -5,9 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager"
 import ProfileManager from "./components/profile/ProfileManager"
 import TemplateComponent from "./components/template/TemplateComponent";
-import MealPreferences from "./components/login/MealPreferences";
+import MealPreferences from "./components/meal/MealPreferences";
 import DiningCourt from "./components/dining/DiningFacilities";
-import MealReview from "./components/meal-review/MealReview";
+import Menu from "./components/dining/Menu";
+import MealReview from "./components/meal/MealReview";
 import Name from "./components/signup/Name";
 import Email from "./components/signup/Email";
 import Password from "./components/signup/Password";
@@ -34,6 +35,8 @@ export default function App() {
                     <Stack.Screen name="MealPlan" component={ MealPlan } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
+                    <Stack.Screen name="Menu" component={ Menu }/>
+                    <Stack.Screen name="MealReview" component={ MealReview }/>
                     <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Profile" component={ ProfileManager }/>
                     <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>

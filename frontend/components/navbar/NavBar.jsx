@@ -5,7 +5,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DiningFacilities from "../dining/DiningFacilities";
 import MapManager from "../map/MapManager";
 import ProfileManager from "../profile/ProfileManager";
-import TemplateComponent from "../template/TemplateComponent";
 
 function NavBar({route, navigation}) {
     const Tab = createBottomTabNavigator();
@@ -21,6 +20,7 @@ function NavBar({route, navigation}) {
             <Stack.Screen
                 name="Dining"
                 component={ DiningFacilities }
+                initialParams={{ UserID: route.params.UserID, token: route.params.token }}
                 options={{
                     tabBarLabel: 'Dining',
                     tabBarIcon: ({ color, size }) => (
@@ -31,6 +31,7 @@ function NavBar({route, navigation}) {
             <Stack.Screen
                 name="Map"
                 component={ MapManager }
+                initialParams={{ UserID: route.params.UserID, token: route.params.token }}
                 options={{
                     tabBarLabel: 'Map',
                     tabBarIcon: ({ color, size }) => (
