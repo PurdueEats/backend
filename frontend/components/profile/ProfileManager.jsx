@@ -301,9 +301,7 @@ function ProfileManager({route, navigation}) {
             </Modal>
             <View style={ styles.profileHeader }>
                 <View style={ styles.backImage }>
-                    <TouchableOpacity active = { .5 } onPress={ () => navigation.dispatch(popAction) }>
-                        <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
-                    </TouchableOpacity>
+                    <Text style={ styles.profileWord }>           </Text>
                 </View>
                 <Text style={ styles.profileWord }>Profile</Text>
                 <Text style={ styles.profileWord }>           </Text>

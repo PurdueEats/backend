@@ -11,7 +11,7 @@ function ForgotPassword({navigation}) {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
-            text: "There was an issue reseting your password.",
+            text: "There was an issue resetting your password.",
             textStyle: {
                 textAlign: 'center',
             },
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: "bold",
         marginTop: "10%",
-        marginLeft: "10%",
+        marginLeft: "7%",
         paddingBottom: "2%"
     },
     detailsTitle: {

@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DiningFacilities from "../dining/DiningFacilities";
 import MapManager from "../map/MapManager";
 import TemplateComponent from "../template/TemplateComponent";
+import Profile from "../profile/ProfileManager"
 
 function NavBar({route, navigation}) {
     const Tab = createBottomTabNavigator();
@@ -39,7 +40,7 @@ function NavBar({route, navigation}) {
             />
             <Stack.Screen
                 name="Profile"
-                component={ TemplateComponent }
+                component={ Profile }
                 initialParams={{ UserID: route.params.UserID, token: route.params.token }}
                 options={{
                     tabBarLabel: 'Profile',
