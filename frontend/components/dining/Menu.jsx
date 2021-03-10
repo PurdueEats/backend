@@ -1,27 +1,23 @@
 import React, { useState } from "react";
-import { Image, SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import DiningFacilities from "./DiningFacilities";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
-import { StackActions } from '@react-navigation/native';
 import { Button} from 'native-base';
 
-
-function Menu({navigation}) {
+function Menu({route, navigation}) {
     const [filter, setFilter] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
-    /*
     function handleNavigate() {
-        navigation.navigate("", { :  })
+        navigation.navigate("MealReview", { UserID: route.params.UserID, token: route.params.token });
     }
-    */
+
     return (
         <ScrollView>
             <SafeAreaView style={ styles.screen }>
                 <View style={{flexDirection: "row"}}>
-                    <TouchableOpacity onPress={navigation.dispatch(StackActions.pop(1))}>
+                    <TouchableOpacity>
                         <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                     </TouchableOpacity>
                     <Text style={styles.title}>Menu</Text>
@@ -55,7 +51,6 @@ function Menu({navigation}) {
                                     <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={20}/>
                                     <Text style={styles.modalText}>Dairy Free Item</Text>
                                 </View>
-
                             </View>
                         </View>
                     </Modal>
@@ -74,11 +69,10 @@ function Menu({navigation}) {
                     <MaterialCommunityIcons name="star" color="red" size={20}/>
                     <MaterialCommunityIcons name="star" color="red" size={20}/>
                     <MaterialCommunityIcons name="star" color="red" size={20}/>
-                    <Button style={ styles.recordButton }>
+                    <Button style={ styles.recordButton } onPress={ handleNavigate }>
                         <Text style={ styles.recordText } >Record Meal</Text>
                     </Button>
                 </View>
-
                 <DropDownPicker
                     items={[
                         {label: 'All Items', value: 'All Items'},
@@ -195,9 +189,7 @@ function Menu({navigation}) {
                         />
                     </View>
                 ): (
-                    <View>
-
-                    </View>
+                    <View />
                 )}
                 {filter === "Dairy Free" ? (
                     <View>

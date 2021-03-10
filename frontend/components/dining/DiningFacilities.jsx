@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import Logo from "../../resources/logo.png";
 import Earhart from "../../resources/earhart.png"
 import Wiley from "../../resources/wiley.png"
@@ -10,11 +10,14 @@ import MaterialTabs from 'react-native-material-tabs';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 
-
 function DiningFacilities({route, navigation}) {
     const [diningCourt, setDiningCourt] = useState('');
     const [selectedTab, setSelectedTab] = useState(0);
 
+
+    function handleNavigate() {
+        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token });
+    }
 
     return (
         <ScrollView>
@@ -40,14 +43,14 @@ function DiningFacilities({route, navigation}) {
                 <View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center"}}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={ handleNavigate }>
                                 <Image source = { Earhart } style = { styles.earhartDiningImage }/>
                                 <Text style={ styles.earhartTitle }>{"Earhart"}</Text>
                                 <Text style={ styles.earhartTime }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={ handleNavigate }>
                             <Image source = { Wiley } style = { styles.wileyDiningImage }/>
                             <Text style={ styles.wileyTitle }>{"Wiley"}</Text>
                             <Text style={ styles.wileyTime }>{"4:00-10:00 PM"}</Text>
@@ -55,21 +58,21 @@ function DiningFacilities({route, navigation}) {
                     </View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center"}}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={ handleNavigate }>
                                 <Image source = { Hillenbrand } style = { styles.hillenbrandDiningImage }/>
                                 <Text style={ styles.hillenbrandTitle }>{"Hillenbrand"}</Text>
                                 <Text style={ styles.hillenbrandTime }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={ handleNavigate }>
                             <Image source = { Windsor } style = { styles.windsorDiningImage }/>
                             <Text style={ styles.windsorTitle }>{"Windsor"}</Text>
                             <Text style={ styles.windsorTime }>{"4:00-10:00 PM"}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={ styles.lastDiningCourt }>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={ handleNavigate }>
                             <Image source = { Ford } style = { styles.fordDiningImage } />
                             <Text style={ styles.fordTitle }>{"Ford"}</Text>
                             <Text style={ styles.fordTime }>{"4:00-10:00 PM"}</Text>
