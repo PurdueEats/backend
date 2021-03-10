@@ -58,7 +58,6 @@ function MealPreferences({route, navigation}) {
                                 />
                             </View>
                         );
-
                     }))}
             </View>
             <View style={ styles.actionView }>

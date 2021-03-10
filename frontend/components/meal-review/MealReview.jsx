@@ -1,8 +1,7 @@
-import React, { useState, useEffect, Component, Fragment } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-import { AirbnbRating} from 'react-native-ratings';
-// import { AirbnbRating, TouchableOpacity} from 'react-native-ratings';
-import { Button, Item, Toast } from 'native-base';
+import React, { useState, useEffect } from "react";
+import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
+import { AirbnbRating } from 'react-native-ratings';
+import { Button } from 'native-base';
 import Logo from "../../resources/logo.png";
 import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
@@ -32,6 +31,7 @@ function MealReview({route, navigation}) {
     setSelectedMeals(newSelections)
   }
 
+<<<<<<< HEAD
     function displayError() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
@@ -70,6 +70,35 @@ function MealReview({route, navigation}) {
         })
     }
 
+=======
+  function handleMealReview() {
+    fetch(`http://127.0.0.1:8000/`, {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+         }
+     })
+         .then(response => response.json())
+         .then(response => setResponse(response))
+    fetch(`http://127.0.0.1:8000/`, {
+        method: 'POST',
+        headers : {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+         },
+         body: JSON.stringify( {
+            'user_id': 1,
+            'menu_item_id': 1,
+            'rating': 1,
+            'timestamp': "2021-02-27T06:23:29.468000+00:00"
+         })
+     })
+         .then(response => response.json())
+         .then(response => setResponse(response))
+         console.log(ratings)
+      navigation.navigate("MealReview")
+   }
    function updateRating(rating) {
         setRatings(rating);
     }
@@ -194,4 +223,5 @@ const styles = StyleSheet.create({
         color: "white"
     },
 });
+
 export default MealReview
