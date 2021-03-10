@@ -12,7 +12,7 @@ function Name({navigation}) {
     return (
         <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
             <Text style={ styles.questionTitle }>Enter your name.</Text>
-            <Text style={ styles.detailsTitle }>This will be the name associated with your account.</Text>
+            <Text style={ styles.detailsTitle }>This will be the name that we associate with your account.</Text>
             <Item style={ styles.nameInput }>
                 <TextInput style={ styles.textInput } onChangeText={(name) => setName(name)} />
             </Item>

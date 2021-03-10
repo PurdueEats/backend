@@ -3,26 +3,25 @@ import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity,
 import { AirbnbRating} from 'react-native-ratings';
 // import { AirbnbRating, TouchableOpacity} from 'react-native-ratings';
 import { Button, Item, Toast } from 'native-base';
-import Logo from "../../resources/logo.png";
 import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
+import Logo from "../../resources/logo.png";
 
 const meals = [
-    { label: 'Burger', value: 1 },
-    { label: 'Balsamic Chicken', value: 2 },
-    { label: 'Grilled Chicken', value: 3 },
-    { label: 'Hotdog', value: 4 },
-    { label: 'Pizza', value: 5 },
-    { label: 'Beef Broccoli Stirfry', value: 6 },
-    { label: 'Grilled Cheese', value: 7 },
-    { label: 'BBQ Chicken Quesadilla', value: 8 },
-    { label: 'Caesar Salad', value: 9 },
+    { label: 'Texas French Toast', value: 1 },
+    { label: 'Maple Syrup', value: 2 },
+    { label: 'Scrambled Eggs', value: 3 },
+    { label: 'Gluten Free Blueberry Muffin', value: 21 },
+    { label: 'Hard Cooked Eggs', value: 18 },
+    { label: 'Gluten-Free White Bread', value: 19 },
+    { label: 'Vanilla Sunflower Butter', value: 22 },
+    { label: 'Rice Chex Cereal', value: 20 },
+    { label: 'Wild Rice', value: 15 },
 ]
 
 function MealReview({route, navigation}) {
-
   const [ratings, setRatings] = React.useState('');
   const [selectedMeals, setSelectedMeals] = React.useState([]);
   const [response, setResponse] = React.useState('');
@@ -48,6 +47,7 @@ function MealReview({route, navigation}) {
 
     function handleMealReview() {
         selectedMeals.map(item => {
+            console.log("hit");
             fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
                 method: 'POST',
                 headers : {
@@ -61,11 +61,12 @@ function MealReview({route, navigation}) {
                     "timestamp": time
                 })
             })
-                .then((response) => response.json())
+                .then((response) => response.text())
                         .then((responseData) => {
                          console.log("inside responsejson");
                          console.log('response object:',responseData);
 //                       console.log(moment.tz.zonesForCountry('US'));
+            console.log(item.value);
                          }).done();
         })
     }
