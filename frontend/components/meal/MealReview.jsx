@@ -9,15 +9,15 @@ import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
 const meals = [
-    { label: 'Texas French Toast', value: 1 },
-    { label: 'Maple Syrup', value: 2 },
-    { label: 'Scrambled Eggs', value: 3 },
-    { label: 'Gluten Free Blueberry Muffin', value: 21 },
-    { label: 'Hard Cooked Eggs', value: 18 },
-    { label: 'Gluten-Free White Bread', value: 19 },
-    { label: 'Vanilla Sunflower Butter', value: 22 },
-    { label: 'Rice Chex Cereal', value: 20 },
-    { label: 'Wild Rice', value: 15 },
+    { label: 'Freshly Baked Vegan Cookies', value: 21 },
+    { label: 'Seasoned Chicken Fajita', value: 25 },
+    { label: 'Sausage Links', value: 43 },
+    { label: 'Vegan Salads ', value: 20 },
+    { label: 'Mexican Fiesta Rice', value: 35 },
+    { label: 'Mini Spring Rolls', value: 19 },
+    { label: 'Roast Turkey', value: 6 },
+    { label: 'Fried Tofu Cubes', value: 23 },
+    { label: 'Banana Muffin', value: 47 },
 ]
 
 function MealReview({route, navigation}) {
