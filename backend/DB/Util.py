@@ -6,6 +6,7 @@ from DB.CreateDBSchema import (
     create_auxiliary_tables
 )
 from DB.MealPlans import meal_plan_list
+from DB.DiningFacilities import dining_facility_list
 import sys
 
 
@@ -58,6 +59,12 @@ def insertMealPlans():
         runQuery(meal_plan_list[meal_plan])
 
 
+def insertDiningFacilities():
+    runQuery("DELETE from DiningFacilities WHERE True")
+    for dining_facility in dining_facility_list:
+        runQuery(dining_facility_list[dining_facility])
+
+
 def main():
 
     if len(sys.argv) != 2:
@@ -74,6 +81,8 @@ def main():
         auxiliaryTableSetup()
     elif sys.argv[1].lower() == "insert-mealplans":
         insertMealPlans()
+    elif sys.argv[1].lower() == "insert-diningfacilities":
+        insertDiningFacilities()
     else:
 
         # For specific tablles
