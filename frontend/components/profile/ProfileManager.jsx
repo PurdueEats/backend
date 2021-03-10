@@ -260,6 +260,9 @@ function ProfileManager({route, navigation}) {
                 </View>
             </Modal>
             <View style={ styles.profileHeader }>
+                <View style={ styles.backImage }>
+                    <Text style={ styles.profileWord }>           </Text>
+                </View>
                 <Text style={ styles.profileWord }>Profile</Text>
                 <Text style={ styles.profileWord }>           </Text>
             </View>
