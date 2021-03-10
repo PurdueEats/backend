@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import { Image, SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity, Button } from "react-native";
+import { Image, SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DiningFacilities from "./DiningFacilities";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
 import { StackActions } from '@react-navigation/native';
+import { Button} from 'native-base';
+
 
 function Menu({navigation}) {
     const [filter, setFilter] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
+    /*
+    function handleNavigate() {
+        navigation.navigate("", { :  })
+    }
+    */
     return (
         <ScrollView>
             <SafeAreaView style={ styles.screen }>
@@ -61,6 +68,17 @@ function Menu({navigation}) {
                         marginBottom: "5%"
                     }}
                 />
+                <View style={{flexDirection: "row"}}>
+                    <MaterialCommunityIcons name="star" color="red" size={20}/>
+                    <MaterialCommunityIcons name="star" color="red" size={20}/>
+                    <MaterialCommunityIcons name="star" color="red" size={20}/>
+                    <MaterialCommunityIcons name="star" color="red" size={20}/>
+                    <MaterialCommunityIcons name="star" color="red" size={20}/>
+                    <Button style={ styles.recordButton }>
+                        <Text style={ styles.recordText } >Record Meal</Text>
+                    </Button>
+                </View>
+
                 <DropDownPicker
                     items={[
                         {label: 'All Items', value: 'All Items'},
@@ -202,6 +220,7 @@ function Menu({navigation}) {
                     <View>
                     </View>
                 )}
+
             </SafeAreaView>
         </ScrollView>
     );
@@ -264,6 +283,21 @@ const styles = StyleSheet.create({
     closeButton: {
         marginRight: "90%",
         marginBottom: "10%"
+    },
+    recordButton: {
+        width: '35%',
+        justifyContent: 'center',
+        backgroundColor: "red",
+        borderRadius: 10,
+        marginTop:"0%",
+        marginBottom: "3%",
+        height: "60%",
+        marginLeft: "32%"
+    },
+    recordText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "white"
     }
 });
 
