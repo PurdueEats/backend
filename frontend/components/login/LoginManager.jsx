@@ -61,7 +61,7 @@ function LoginManager({navigation}) {
     }
 
     function handleForgotPassword() {
-        // TODO
+        navigation.navigate("ForgotPassword")
     }
 
     function handleSignUp() {
