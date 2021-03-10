@@ -70,4 +70,5 @@ def meal_scrapper(request):
         print()
 
 
-meal_scrapper(None)
+if __name__ == "__main__":
+    meal_scrapper(None)
