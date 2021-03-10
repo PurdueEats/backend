@@ -26,8 +26,7 @@ export default function App() {
                 <Stack.Navigator screenOptions={{
                     headerShown: false
                 }} initialRouteName="Login">
-                  <Stack.Screen name="Profile" component={ ProfileManager }/>
-                  <Stack.Screen name="Login" component={ LoginManager }/>
+                  <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Name" component={ Name }/>
                   <Stack.Screen name="Email" component={ Email }/>
                   <Stack.Screen name="Password" component={ Password }/>
@@ -36,6 +35,7 @@ export default function App() {
                   <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}}/>
+                  <Stack.Screen name="Profile" component={ ProfileManager }/>
                   <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Template" component={ TemplateComponent }/>
               </Stack.Navigator>
