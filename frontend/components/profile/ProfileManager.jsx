@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
-import { StackActions } from '@react-navigation/native';
 
 function ProfileManager({route, navigation}) {
     const [modalName, setModalName] = useState(false);
@@ -452,6 +451,7 @@ const styles = StyleSheet.create({
 
     textEnter: {
         color: "black",
+        width: "60%",
         flexDirection: "row",
     },
 
@@ -509,6 +509,7 @@ const styles = StyleSheet.create({
     modalText: {
         color: "black",
         marginBottom: "5%",
+
         },
 
     modalView: {
