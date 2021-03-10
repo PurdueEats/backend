@@ -11,7 +11,6 @@ import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
 import DiningDollarEntry from "./components/signup/DiningDollarEntry";
 import MapManager from "./components/map/MapManager";
-import Menu from "./components/dining/Menu"
 
 
 export default function App() {
@@ -23,8 +22,8 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
                     headerShown: false
-                }} initialRouteName="Menu">
-                    <Stack.Screen name="Menu" component={ Menu }/>
+                }} initialRouteName="Login">
+                    <Stack.Screen name="Login" component={ LoginManager }/>
                     <Stack.Screen name="Name" component={ Name }/>
                     <Stack.Screen name="Email" component={ Email }/>
                     <Stack.Screen name="Password" component={ Password }/>
