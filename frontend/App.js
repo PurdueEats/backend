@@ -3,6 +3,7 @@ import { Root } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager"
+import ProfileManager from "./components/profile/ProfileManager"
 import TemplateComponent from "./components/template/TemplateComponent";
 import MealPreferences from "./components/login/MealPreferences";
 import DiningCourt from "./components/dining/DiningFacilities";
@@ -32,6 +33,7 @@ export default function App() {
                   <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}}/>
+                  <Stack.Screen name="Profile" component={ ProfileManager }/>
                   <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Template" component={ TemplateComponent }/>
               </Stack.Navigator>
