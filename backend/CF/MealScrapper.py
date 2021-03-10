@@ -5,6 +5,7 @@ from google.cloud import bigquery
 client = bigquery.Client()
 table_id = "[PROJECT-ID].[DATASET].[TABLE]"
 
+
 URL = 'https://api.hfs.purdue.edu/menus/v2/locations/'
 LOCATIONS = ['Earhart', 'Hillenbrand', 'Ford', 'Windsor', 'Wiley']
 DATE = ''
@@ -22,7 +23,7 @@ def meal_scrapper(request):
     DATE = datetime.today().strftime('%Y-%m-%d')
 
     for loc in LOCATIONS:
-      pass
+        pass
     
     response = requests.get('')
     request_json = request.get_json()
