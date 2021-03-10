@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
+import { StyleSheet, SafeAreaView, Text, TextInput, View, TouchableOpacity, Image } from "react-native";
 import {Button, Item, Toast} from 'native-base';
+import { StackActions } from '@react-navigation/native';
 
 function ForgotPassword({navigation}) {
     const [email, setEmail] = useState('');
+    const popAction = StackActions.pop();
 
     function displayError() {
         Toast.show({
@@ -46,15 +48,24 @@ function ForgotPassword({navigation}) {
     }
 
     return (
-        <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
-            <Text style={ styles.questionTitle }>Enter your email.</Text>
-            <Item style={ styles.emailInput }>
-                <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
-            </Item>
-            <Button style={ styles.continueButton } onPress={ () => forgotPassword(email) }>
-                <Text style={ styles.continueText }>Submit</Text>
-            </Button>
-        </SafeAreaView>
+        <View style={styles.viewFlex}>
+             <View style={ styles.profileHeader }>
+                <View style={ styles.backImage }>
+                    <TouchableOpacity active = { .5 } onPress={ () => navigation.dispatch(popAction) }>
+                        <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
+                    </TouchableOpacity>
+                </View>
+             </View>
+            <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
+                <Text style={ styles.questionTitle }>Enter your email.</Text>
+                <Item style={ styles.emailInput }>
+                    <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
+                </Item>
+                <Button style={ styles.continueButton } onPress={ () => forgotPassword(email) }>
+                    <Text style={ styles.continueText }>Submit</Text>
+                </Button>
+            </SafeAreaView>
+        </View>
     );
 }
 
@@ -99,6 +110,21 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         color: "white"
+    },
+    profileHeader: {
+        marginTop: "8%",
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        color: "black",
+        fontSize: 22,
+    },
+    backImage: {
+        width: 60,
+        height: 60
+    },
+    viewFlex: {
+        flex: 1,
     },
 });
 
