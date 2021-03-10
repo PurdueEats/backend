@@ -49,7 +49,7 @@ function MealPlan({route, navigation}) {
                 'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
-                "MealPlanName": "21 Meal Plan +500"
+                "MealPlanName": mealPlan
             })
         })
             .then(
@@ -72,15 +72,14 @@ function MealPlan({route, navigation}) {
     return (
         <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
             <Text style={ styles.questionTitle }>Select your meal plan.</Text>
-            <Text style={ styles.detailsTitle }>This will be the meal plan and dining dollar amount associated with your account.</Text>
+            <Text style={ styles.detailsTitle }>This will be the meal plan and dining dollar amount that we associate with your account.</Text>
             <DropDownPicker
                 items={[
-                    {label: '10 Meal Plan + 100', value: '10 Meal Plan + 100'},
-                    {label: '15 Meal Plan + 450', value: '15 Meal Plan + 450'},
-                    {label: '21 Meal Plan + 250', value: '21 Meal Plan + 250'},
-                    {label: '21 Meal Plan + 500', value: '21 Meal Plan + 500'},
+                    {label: '10 Meal Plan +100', value: '10 Meal Plan +100'},
+                    {label: '15 Meal Plan +450', value: '15 Meal Plan +450'},
+                    {label: '21 Meal Plan +250', value: '21 Meal Plan +250'},
+                    {label: '21 Meal Plan +500', value: '21 Meal Plan +500'},
                 ]}
-                defaultValue={'10 Meal Plan + 100'}
                 containerStyle={{height: 40}}
                 style={{backgroundColor: '#fafafa'}}
                 itemStyle={{

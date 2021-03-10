@@ -7,9 +7,12 @@ import Ford from "../../resources/ford.png"
 import Hillenbrand from "../../resources/hillenbrand.png"
 import Windsor from "../../resources/windsor.png"
 
-
 function DiningFacilities({route, navigation}) {
     const [diningCourt, setDiningCourt] = useState('');
+
+    function handleNavigate() {
+        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token });
+    }
 
     return (
         <ScrollView>
@@ -18,24 +21,24 @@ function DiningFacilities({route, navigation}) {
             </View>
             <Text style={ styles.sectionTitle }>Menu</Text>
             <View style={ styles.imageContainer }>
-                <TouchableOpacity>
-                    <Image source = { Earhart } style = { styles.diningImage } />
-                    <Text>{"some text"}</Text>
+                <TouchableOpacity onPress={ handleNavigate }>
+                    <Image source = { Earhart }
+                           style = { styles.diningImage } />
                 </TouchableOpacity>
-                <TouchableOpacity>
-                    <Image source = { Wiley } style = { styles.diningImage }/>
+                <TouchableOpacity onPress={ handleNavigate }>
+                    <Image source = { Wiley } style = { styles.diningImage } />
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row" }}>
-                <TouchableOpacity>
-                    <Image source = { Hillenbrand } style = { styles.diningImage }  />
+                <TouchableOpacity onPress={ handleNavigate }>
+                    <Image source = { Hillenbrand } style = { styles.diningImage } />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={ handleNavigate }>
                     <Image source = { Windsor} style = { styles.diningImage } />
                 </TouchableOpacity>
             </View>
             <View style={ styles.lastDiningCourt }>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={ handleNavigate }>
                     <Image source = { Ford } style = { styles.diningImage } />
                 </TouchableOpacity>
             </View>
