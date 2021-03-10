@@ -16,7 +16,7 @@ create_user_tables = {
         f"""
 	CREATE OR REPLACE TABLE UserExtra
 	(
-		UserID					INT64,
+		UserID				INT64,
 		MealPlanName 			STRING,
 		MealSwipeCount			INT64,
 		DiningDollarBalance		FLOAT64
@@ -28,7 +28,7 @@ create_user_tables = {
 	CREATE OR REPLACE TABLE UserTransaction
 	(
 		UserID					INT64,
-		TransactionAmount 		FLOAT64,
+		TransactionAmount 			FLOAT64,
 		Balance					FLOAT64,
 		Timestamp				TIMESTAMP
 	)
@@ -38,7 +38,7 @@ create_user_tables = {
         f"""
 	CREATE OR REPLACE TABLE UserProfile
 	(
-		UserID				INT64,
+		UserID			INT64,
 		ProfilePicture		BYTES
 	)
 	""",
@@ -73,24 +73,24 @@ create_dining_facilities_tables = {
 	(
 		DiningFacilityID			INT64,
 		DiningFacilityName 			STRING,
-		Description					STRING,
-		Address						STRING,
-		Image						BYTES
+		Description				STRING,
+		Address					STRING,
+		Image					BYTES
 	)
 	""",
 
 
         "Dining_Facility_Reviews":
         f"""
-	CREATE OR REPLACE TABLE DiningFacilities
+	CREATE OR REPLACE TABLE DiningFacilityReview
 	(
 		DiningFacilityReviewID		INT64,
-		UserID						INT64,
-		DiningFacilityID			INT64,
-		Review 						STRING,
-		Rating						INT64,
-		UpvoteCount					INT64,
-		DownvoteCount				INT64
+		UserID				INT64,
+		DiningFacilityID		INT64,
+		Review 				STRING,
+		Rating				INT64,
+		UpvoteCount			INT64,
+		DownvoteCount			INT64
 	)
 	""",
 
@@ -99,8 +99,8 @@ create_dining_facilities_tables = {
 	CREATE OR REPLACE TABLE DiningFacilities
 	(
 		DiningFacilityReviewID		INT64,
-		UserID						INT64,
-		Vote						INT64
+		UserID				INT64,
+		Vote				INT64
 	)
 	""",
 
@@ -109,9 +109,9 @@ create_dining_facilities_tables = {
 	CREATE OR REPLACE TABLE DiningFacilityMenuItems
 	(
 		DiningFacilityID		INT64,
-		MenuItemID				INT64,
-		Timing					BYTES,
-		Station					STRING
+		MenuItemID			INT64,
+		Timing				BYTES,
+		Station				STRING
 
 	)
 	"""
@@ -128,7 +128,17 @@ create_menu_items_table = {
 		HashID			STRING,
 		ItemName		STRING,
 		Nutrition		BYTES,
-		Allergen		BYTES
+		Eggs			BOOL,
+		Fish			BOOL,
+		Gluten			BOOL,
+		Milk			BOOL,
+		Peanuts			BOOL,
+		Shellfish		BOOL,
+		Soy			BOOL,
+                TreeNuts		BOOL,
+		Vegetarian		BOOL,
+		Vegan			BOOL,
+                Wheat			BOOL
 	)
 	""",
 
@@ -139,7 +149,7 @@ create_menu_items_table = {
 		MenuItemID		INT64,
 		UserID			INT64,
 		Rating			INT64,
-		Timestamp   	TIMESTAMP
+		Timestamp   		TIMESTAMP
 	)
 	""",
 }
@@ -152,7 +162,7 @@ create_auxiliary_tables = {
 	CREATE OR REPLACE TABLE MealPlan
 	(
 		MealPlanName		STRING,
-		MealSwipes			INT64,
+		MealSwipes		INT64,
 		DiningDollars		FLOAT64
 	)
 	""",
@@ -161,9 +171,9 @@ create_auxiliary_tables = {
         f"""
 	CREATE OR REPLACE TABLE AppFeedback
 	(
-		UserID				INT64,
+		UserID			INT64,
 		FeedbackText		STRING,
-		Timestamp 			TIMESTAMP
+		Timestamp 		TIMESTAMP
 	)
 	""",
 
