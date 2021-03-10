@@ -24,14 +24,13 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
                     headerShown: false
-                }} initialRouteName="Login">
-                    <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
+                }} initialRouteName="Dining">
+                    <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Name" component={ Name }/>
                     <Stack.Screen name="Email" component={ Email }/>
                     <Stack.Screen name="Password" component={ Password }/>
                     <Stack.Screen name="MealPlan" component={ MealPlan } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
-                    <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Profile" component={ ProfileManager }/>
                     <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
