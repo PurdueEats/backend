@@ -1,11 +1,13 @@
 import React, { useState, useEffect, Component, Fragment } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TextInput } from "react-native";
-import { AirbnbRating, TouchableOpacity} from 'react-native-ratings';
+import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { AirbnbRating} from 'react-native-ratings';
+// import { AirbnbRating, TouchableOpacity} from 'react-native-ratings';
 import { Button, Item, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
 import SelectMultiple from 'react-native-select-multiple'
-// import * as axios from 'axios';
-
+import moment from 'moment';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StackActions } from '@react-navigation/native';
 
 const meals = [
     { label: 'Burger', value: 1 },
@@ -16,15 +18,15 @@ const meals = [
     { label: 'Beef Broccoli Stirfry', value: 6 },
     { label: 'Grilled Cheese', value: 7 },
     { label: 'BBQ Chicken Quesadilla', value: 8 },
-    { label: 'Caesar Salad', value: 9 }
+    { label: 'Caesar Salad', value: 9 },
 ]
-
 
 function MealReview({route, navigation}) {
 
   const [ratings, setRatings] = React.useState('');
   const [selectedMeals, setSelectedMeals] = React.useState([]);
   const [response, setResponse] = React.useState('');
+  const popAction = StackActions.pop();
 
   const onSelectionsChange = newSelections => {
     setSelectedMeals(newSelections)
@@ -41,32 +43,31 @@ function MealReview({route, navigation}) {
             duration: 1500
         });
     }
+    var moment = require('moment-timezone');
+    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     function handleMealReview() {
-        console.log("hit");
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
-        	method: 'POST',
-        	headers : {
-        	    'Accept': 'application/json',
-        		'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "user_id": "-5820074427223127369",
-//                 "user_id": route.params.UserID.toString(),
-                "menu_item_id": selectedMeals,
-                "rating": ratings,
-                "timestamp": "2021-04-04T06:23:29.468000+00:00"
+        selectedMeals.map(item => {
+            fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
+                method: 'POST',
+                headers : {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "user_id": route.params.UserID.toString(),
+                    "menu_item_id": item.value,
+                    "rating": ratings,
+                    "timestamp": time
+                })
             })
+                .then((response) => response.json())
+                        .then((responseData) => {
+                         console.log("inside responsejson");
+                         console.log('response object:',responseData);
+//                       console.log(moment.tz.zonesForCountry('US'));
+                         }).done();
         })
-            .then((response) => response.json())
-                    .then((responseData) => {
-                     console.log("inside responsejson");
-                     console.log('response object:',responseData);
-                     console.log(selectedMeals);
-                     console.log('userID: ' + route.params.UserID.toString());
-                     console.log('userID: ' + -6583805008624267670n)
-//         console.log(parseInt(route.params.UserId));
-                     }).done();
     }
 
    function updateRating(rating) {
@@ -77,9 +78,14 @@ function MealReview({route, navigation}) {
         setSelectedMeals([]);
     }
     return (
-          <View showsVerticalScrollIndicator={false}>
-              <View style={ styles.screenView }>
-                <Image style={ styles.logoImage } source={ Logo } />
+          <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={ [styles.screenView, {flexDirection:"row"}] } >
+                  <TouchableOpacity style={ styles.button } onPress={ () => navigation.dispatch(StackActions.pop(1))}>
+                      <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                  </TouchableOpacity>
+                  <Image style={ styles.logoImage } source={ Logo } />
+              </View>
+              <View>
                     <Text style={ styles.screenTitle }>Record Meal</Text>
               </View>
               <View style={ styles.ratingView }>
@@ -114,19 +120,28 @@ function MealReview({route, navigation}) {
                     </Button>
                   </View>
               </View>
-          </View>
+          </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     screenView: {
-        paddingTop: "10%",
+        marginTop: "5%",
+        marginLeft: "30%",
+        marginRight: "30%",
         alignItems: "center",
     },
+    button: {
+        marginLeft: "-65%",
+        marginRight: "73%",
+    },
     logoImage: {
-        height: 70,
-        width: 70,
-        marginBottom: "1%"
+        height: 80,
+        width: 80,
+        marginRight: "15%",
+        marginTop: "10%",
+        marginBottom: "3%",
+        alignItems: "center",
     },
     screenTitle: {
         fontSize: 26,

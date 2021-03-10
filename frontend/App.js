@@ -30,12 +30,10 @@ export default function App() {
                   <Stack.Screen name="MealPlan" component={ MealPlan } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="MealReview" component={ MealReview } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
-                  <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}} />
                   <Stack.Screen name="Template" component={ TemplateComponent } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}}/>
                   <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
-                  <Stack.Screen name="Template" component={ TemplateComponent }/>
               </Stack.Navigator>
           </NavigationContainer>
       </Root>
