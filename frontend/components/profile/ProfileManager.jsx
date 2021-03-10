@@ -1,12 +1,6 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
-import { Button, Item } from 'native-base';
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import DropDownPicker from 'react-native-dropdown-picker';
-import ReactRoundedImage from "react-rounded-image";
-import { StackActions } from '@react-navigation/native';
-
-
 
 function ProfileManager({route, navigation}) {
     const [modalName, setModalName] = useState(false);
@@ -21,31 +15,24 @@ function ProfileManager({route, navigation}) {
     const [plan, setPlan] = useState('');
     const [planNew, setPlanNew] = useState('');
     const [dollars, setDollars] = useState('');
-    const [password, setPassword] = useState('Password');
+    const [password, setPassword] = useState('');
     const [swipes, setSwipes] = useState('');
-    const plans = ['   Meal Plan: Boiler Flex Unlimited Plan 350', '   Meal Plan: Boiler Plan 2', '   Meal Plan: I will add the actual names in later'];
-
-    const [response, setResponse] = useState({ userID: "", name: "", email: "" });
-    const [mealResponse, setMealResponse] = useState({ userID: "", mealPlan: "", diningDollars: "", });
-
-    const popAction = StackActions.pop();
 
     const [del, setDel] = useState(false);
     const [nam, setNam] = useState(false);
     const [plann, setPlann] = useState(false);
     const [pas, setPas] = useState(false);
 
-
     useEffect(() => {
-        if (!del & !nam & !plann & !pas) {
+        if (!del && !nam && !plann && !pas) {
             getAuth()
             getMealInfo()
         }
-    });
+    }, []);
 
     function handleNameExit() {
         setNam(true);
-        if (name != nameNew) {
+        if (name !== nameNew) {
             setName(nameNew);
             putName(nameNew);
         }
@@ -61,6 +48,10 @@ function ProfileManager({route, navigation}) {
         setPas(true);
         setModalPassword(!setModalPassword);
         changePassword(password2);
+    }
+
+    function handleLogout() {
+        navigation.navigate("Login")
     }
 
     function sendMealPlan(planNew) {
@@ -79,7 +70,7 @@ function ProfileManager({route, navigation}) {
         })
             .then(
                 function(response) {
-                    if (response.status === 200 & response.status === 201) {
+                    if (response.status === 200 || response.status === 201) {
                         // Successful POST
                         setPlann(false);
                     } else {
@@ -92,18 +83,6 @@ function ProfileManager({route, navigation}) {
             .catch(function(err) {
                 console.log('Fetch Error :-S', err);
             });
-
-    }
-
-    function resetEverything() {
-        setName('');
-        setEmail('');
-        setDollars('');
-        console.log(route.params.token);
-    }
-
-    // TODO add check for token expiration
-    function tokenManager() {
     }
 
     // Gets login and Email
@@ -119,19 +98,18 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 & response.status !== 201) {
-                    console.log('Auth like there was a problem. Status Code: ' +
-                                response.status);
-                    navigation.navigate("Login");
-                    return;
-                } else {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful GET
                     // Set fields to correct values
                     response.json().then(function(data) {
-                        setResponse(data);
                         setName(data.name);
                         setEmail(data.email);
                         setPassword(data.password);
                     });
+                } else {
+                    console.log('Auth like there was a problem. Status Code: ' +
+                        response.status);
+                    navigation.navigate("Login");
                 }
             }
         )
@@ -153,18 +131,17 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 & response.status !== 201) {
-                    console.log('GetMeal like there was a problem. Status Code: ' +
-                                response.status);
-                    return;
-                } else {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful GET
                     // Set Fields to correct values
                     response.json().then(function(data) {
-                        setMealResponse(data);
                         setDollars(data.dining_dollar_amount);
                         setPlan(data.meal_plan_name);
                         setSwipes(data.meal_swipe_count);
                     });
+                } else {
+                    console.log('GetMeal like there was a problem. Status Code: ' +
+                        response.status);
                 }
             }
         )
@@ -187,17 +164,13 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 & response.status !== 201) {
-                    console.log('Delete like there was a problem. Status Code: ' +
-                    response.status);
-                    displayError();
-                    return;
-                } else {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful DELETE
                     // Navigates back to login
-                    response.json().then(function(data) {
-                        setResponse(data);
-                        navigation.navigate("Login");
-                    });
+                    navigation.navigate("Login");
+                } else {
+                    console.log('Delete like there was a problem. Status Code: ' +
+                        response.status);
                 }
             }
         )
@@ -224,12 +197,12 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 & response.status !== 201) {
-                    console.log('Looks like there was a problem. Status Code: ' +
-                                response.status);
+                if (response.status === 200 || response.status === 201) {
+                    // Successful POST
                     setNam(false);
                 } else {
-                    // Successful POST
+                    console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
                     setNam(false);
                  }
              }
@@ -258,20 +231,14 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 & response.status !== 201) {
-                    console.log('PutName like there was a problem. Status Code: ' +
-                    response.status);
+                if (response.status === 200 || response.status === 201) {
+                    // Successful POST
                     setPas(false);
-
-                    return;
                 } else {
                     // Examine the text in the response
-                    console.log('password updated');
-                    response.json().then(function(data) {
-                    setResponse(data);
+                    console.log('PutName like there was a problem. Status Code: ' +
+                        response.status);
                     setPas(false);
-
-                    });
                 }
             }
         )
@@ -284,11 +251,10 @@ function ProfileManager({route, navigation}) {
         <View style={styles.viewFlex}>
             <Modal animationType="slide" transparent={true} visible={modalName}
                 onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
                     setModalName(!modalName);
                 }}
             >
-                <View style={styles.centeredView}>
+                <View>
                     <View style={styles.modalView}>
                         <TouchableOpacity active = { .5 } onPress={() =>  handleNameExit()}>
                             <Image style={ styles.backImage }  source={require('../../resources/back.png')}/>
@@ -301,9 +267,7 @@ function ProfileManager({route, navigation}) {
             </Modal>
             <View style={ styles.profileHeader }>
                 <View style={ styles.backImage }>
-                    <TouchableOpacity active = { .5 } onPress={ () => navigation.dispatch(popAction) }>
-                        <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
-                    </TouchableOpacity>
+                    <Text style={ styles.profileWord }>           </Text>
                 </View>
                 <Text style={ styles.profileWord }>Profile</Text>
                 <Text style={ styles.profileWord }>           </Text>
@@ -337,21 +301,20 @@ function ProfileManager({route, navigation}) {
                 <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
                 <Modal animationType="slide" transparent={true} visible={ModalPlan}
                     onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
                         setModalName(!ModalPlan);
                     }}
                 >
-                    <View style={styles.centeredView}>
+                    <View>
                         <View style={styles.modalView}>
                             <TouchableOpacity active = { .5 } onPress={() => handlePlanExit(planNew) }>
                                 <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
                             </TouchableOpacity >
                             <DropDownPicker
                                 items={[
-                                    {label: '10 Meal Plan +100', value: '10 Meal Plan +100'},
-                                    {label: '15 Meal Plan +450', value: '15 Meal Plan +450'},
-                                    {label: '21 Meal Plan +250', value: '21 Meal Plan +250'},
-                                    {label: '21 Meal Plan +500', value: '21 Meal Plan +500'},
+                                    {label: '10 Meal Plan + 100', value: '10 Meal Plan +100'},
+                                    {label: '15 Meal Plan + 450', value: '15 Meal Plan +450'},
+                                    {label: '21 Meal Plan + 250', value: '21 Meal Plan +250'},
+                                    {label: '21 Meal Plan + 500', value: '21 Meal Plan +500'},
                                 ]}
                                 containerStyle={{height: 40, width: 200}}
                                 style={{backgroundColor: '#fafafa'}}
@@ -366,11 +329,10 @@ function ProfileManager({route, navigation}) {
                 </Modal>
                 <Modal animationType="slide" transparent={true} visible={modalPassword}
                     onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
                         setModalName(!modalPassword);
                     }}
                 >
-                    <View style={styles.centeredView}>
+                    <View>
                         <View style={styles.modalView}>
                             <TouchableOpacity active = { .5 } onPress={() => handlePassExit(passNew) }>
                                 <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
@@ -393,14 +355,16 @@ function ProfileManager({route, navigation}) {
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalDelete(true) }>
                     <Text style={ styles.textNormalRed}>Delete Account</Text>
                 </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={ () => handleLogout() }>
+                    <Text style={ styles.textNormal }>Logout</Text>
+                </TouchableOpacity>
 
                 <Modal animationType="slide" transparent={true} visible={modalDelete}
                     onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
                         setModalName(!modalDelete);
                     }}
                 >
-                    <View style={styles.centeredView}>
+                    <View>
                         <View style={styles.modalView}>
                             <TouchableOpacity active = { .5 } onPress={() => setModalDelete(!modalDelete) }>
                                 <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
@@ -496,6 +460,7 @@ const styles = StyleSheet.create({
 
     textEnter: {
         color: "black",
+        width: "60%",
         flexDirection: "row",
     },
 
@@ -504,7 +469,6 @@ const styles = StyleSheet.create({
         color: "red",
         marginBottom: "5%",
     },
-
 
     border: {
         borderBottomColor: 'grey',
@@ -554,6 +518,7 @@ const styles = StyleSheet.create({
     modalText: {
         color: "black",
         marginBottom: "5%",
+
         },
 
     modalView: {
@@ -590,6 +555,5 @@ const styles = StyleSheet.create({
     },
 
 });
-
 
 export default ProfileManager;
