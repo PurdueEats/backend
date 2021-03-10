@@ -82,7 +82,7 @@ create_dining_facilities_tables = {
 
         "Dining_Facility_Reviews":
         f"""
-	CREATE OR REPLACE TABLE DiningFacilities
+	CREATE OR REPLACE TABLE DiningFacilityReview
 	(
 		DiningFacilityReviewID		INT64,
 		UserID				INT64,

@@ -24,6 +24,12 @@ def meal_scrapper(request):
 
     DATE = '/' + datetime.today().strftime('%Y-%m-%d')
 
-    for loc in LOCATIONS:
-        response = requests.get(URL + loc + DATE)
-        print(response)
+    for i, loc in enumerate(LOCATIONS):
+        response = requests.get(URL + loc + DATE).json()
+
+
+        print(response['Location'])
+        print()
+
+
+meal_scrapper(None)
