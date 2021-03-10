@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Component, Fragment } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { AirbnbRating} from 'react-native-ratings';
-// import { AirbnbRating, TouchableOpacity} from 'react-native-ratings';
 import { Button, Item, Toast } from 'native-base';
 import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
@@ -65,7 +64,6 @@ function MealReview({route, navigation}) {
                         .then((responseData) => {
                          console.log("inside responsejson");
                          console.log('response object:',responseData);
-//                       console.log(moment.tz.zonesForCountry('US'));
             console.log(item.value);
                          }).done();
         })
