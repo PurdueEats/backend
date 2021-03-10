@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
+import { Toast } from 'native-base';
 
 function ProfileManager({route, navigation}) {
     const [modalName, setModalName] = useState(false);
@@ -18,20 +19,20 @@ function ProfileManager({route, navigation}) {
     const [password, setPassword] = useState('');
     const [swipes, setSwipes] = useState('');
 
-    const [del, setDel] = useState(false);
-    const [nam, setNam] = useState(false);
-    const [plann, setPlann] = useState(false);
-    const [pas, setPas] = useState(false);
+    const [delBool, setDelBool] = useState(false);
+    const [nameBool, setNameBool] = useState(false);
+    const [planBool, setPlanBool] = useState(false);
+    const [passwordBool, setPasswordBool] = useState(false);
 
     useEffect(() => {
-        if (!del && !nam && !plann && !pas) {
+        if (!delBool && !nameBool && !planBool && !passwordBool) {
             getAuth()
             getMealInfo()
         }
     }, []);
 
     function handleNameExit() {
-        setNam(true);
+        setNameBool(true);
         if (name !== nameNew) {
             setName(nameNew);
             putName(nameNew);
@@ -40,18 +41,32 @@ function ProfileManager({route, navigation}) {
     }
 
     function handlePlanExit(newPlan) {
-        setPlann(true);
+        setPlanBool(true);
         setModalPlan(!setModalPlan);
-        sendMealPlan(newPlan);
+        if (plan !== newPlan) {
+            setPlan(newPlan);
+            sendMealPlan(newPlan);
+        }
     }
     function handlePassExit(password2) {
-        setPas(true);
+        setPasswordBool(true);
         setModalPassword(!setModalPassword);
         changePassword(password2);
     }
 
     function handleLogout() {
-        navigation.navigate("Login")
+        if (!delBool && !nameBool && !planBool && !passwordBool) {
+            navigation.navigate("Login")
+        }
+        else Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Wait for profile to update",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
     }
 
     function sendMealPlan(planNew) {
@@ -72,11 +87,11 @@ function ProfileManager({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        setPlann(false);
+                        setPlanBool(false);
                     } else {
                         console.log('Meal like there was a problem. Status Code: ' +
                             response.status);
-                        setPlann(false);
+                        setPlanBool(false);
                     }
                 }
             )
@@ -199,11 +214,11 @@ function ProfileManager({route, navigation}) {
             function(response) {
                 if (response.status === 200 || response.status === 201) {
                     // Successful POST
-                    setNam(false);
+                    setNameBool(false);
                 } else {
                     console.log('Looks like there was a problem. Status Code: ' +
                         response.status);
-                    setNam(false);
+                    setNameBool(false);
                  }
              }
         )
@@ -233,12 +248,12 @@ function ProfileManager({route, navigation}) {
             function(response) {
                 if (response.status === 200 || response.status === 201) {
                     // Successful POST
-                    setPas(false);
+                    setPasswordBool(false);
                 } else {
                     // Examine the text in the response
                     console.log('PutName like there was a problem. Status Code: ' +
                         response.status);
-                    setPas(false);
+                    setPasswordBool(false);
                 }
             }
         )
