@@ -14,6 +14,7 @@ import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
 import MapManager from "./components/map/MapManager";
 import NavBar from "./components/navbar/NavBar";
+import ForgotPassword from "./components/login/ForgotPassword"
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -26,6 +27,7 @@ export default function App() {
                     headerShown: false
                 }} initialRouteName="Login">
                   <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
+                  <Stack.Screen name="ForgotPassword" component={ ForgotPassword }/>
                   <Stack.Screen name="Name" component={ Name }/>
                   <Stack.Screen name="Email" component={ Email }/>
                   <Stack.Screen name="Password" component={ Password }/>
