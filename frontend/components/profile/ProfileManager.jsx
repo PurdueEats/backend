@@ -50,6 +50,10 @@ function ProfileManager({route, navigation}) {
         changePassword(password2);
     }
 
+    function handleLogout() {
+        navigation.navigate("Login")
+    }
+
     function sendMealPlan(planNew) {
         // Send Meal Plan Route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/MealPlan`, {
@@ -94,17 +98,18 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 && response.status !== 201) {
-                    console.log('Auth like there was a problem. Status Code: ' +
-                                response.status);
-                    navigation.navigate("Login");
-                } else {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful GET
                     // Set fields to correct values
                     response.json().then(function(data) {
                         setName(data.name);
                         setEmail(data.email);
                         setPassword(data.password);
                     });
+                } else {
+                    console.log('Auth like there was a problem. Status Code: ' +
+                        response.status);
+                    navigation.navigate("Login");
                 }
             }
         )
@@ -126,16 +131,17 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 && response.status !== 201) {
-                    console.log('GetMeal like there was a problem. Status Code: ' +
-                                response.status);
-                } else {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful GET
                     // Set Fields to correct values
                     response.json().then(function(data) {
                         setDollars(data.dining_dollar_amount);
                         setPlan(data.meal_plan_name);
                         setSwipes(data.meal_swipe_count);
                     });
+                } else {
+                    console.log('GetMeal like there was a problem. Status Code: ' +
+                        response.status);
                 }
             }
         )
@@ -158,12 +164,13 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 && response.status !== 201) {
-                    console.log('Delete like there was a problem. Status Code: ' +
-                    response.status);
-                } else {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful DELETE
                     // Navigates back to login
                     navigation.navigate("Login");
+                } else {
+                    console.log('Delete like there was a problem. Status Code: ' +
+                        response.status);
                 }
             }
         )
@@ -190,12 +197,12 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 && response.status !== 201) {
-                    console.log('Looks like there was a problem. Status Code: ' +
-                                response.status);
+                if (response.status === 200 || response.status === 201) {
+                    // Successful POST
                     setNam(false);
                 } else {
-                    // Successful POST
+                    console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
                     setNam(false);
                  }
              }
@@ -224,13 +231,13 @@ function ProfileManager({route, navigation}) {
         })
         .then(
             function(response) {
-                if (response.status !== 200 && response.status !== 201) {
-                    console.log('PutName like there was a problem. Status Code: ' +
-                    response.status);
+                if (response.status === 200 || response.status === 201) {
+                    // Successful POST
                     setPas(false);
                 } else {
                     // Examine the text in the response
-                    console.log('password updated');
+                    console.log('PutName like there was a problem. Status Code: ' +
+                        response.status);
                     setPas(false);
                 }
             }
@@ -244,7 +251,6 @@ function ProfileManager({route, navigation}) {
         <View style={styles.viewFlex}>
             <Modal animationType="slide" transparent={true} visible={modalName}
                 onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
                     setModalName(!modalName);
                 }}
             >
@@ -295,7 +301,6 @@ function ProfileManager({route, navigation}) {
                 <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
                 <Modal animationType="slide" transparent={true} visible={ModalPlan}
                     onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
                         setModalName(!ModalPlan);
                     }}
                 >
@@ -324,7 +329,6 @@ function ProfileManager({route, navigation}) {
                 </Modal>
                 <Modal animationType="slide" transparent={true} visible={modalPassword}
                     onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
                         setModalName(!modalPassword);
                     }}
                 >
@@ -351,10 +355,12 @@ function ProfileManager({route, navigation}) {
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalDelete(true) }>
                     <Text style={ styles.textNormalRed}>Delete Account</Text>
                 </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={ () => handleLogout() }>
+                    <Text style={ styles.textNormal }>Logout</Text>
+                </TouchableOpacity>
 
                 <Modal animationType="slide" transparent={true} visible={modalDelete}
                     onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
                         setModalName(!modalDelete);
                     }}
                 >

@@ -72,7 +72,7 @@ function MealPlan({route, navigation}) {
     return (
         <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
             <Text style={ styles.questionTitle }>Select your meal plan.</Text>
-            <Text style={ styles.detailsTitle }>This will be the meal plan and dining dollar amount associated with your account.</Text>
+            <Text style={ styles.detailsTitle }>This will be the meal plan and dining dollar amount that we associate with your account.</Text>
             <DropDownPicker
                 items={[
                     {label: '10 Meal Plan +100', value: '10 Meal Plan +100'},

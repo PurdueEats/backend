@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, SafeAreaView, Text, TextInput, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, SafeAreaView, Text, TextInput, View } from "react-native";
 import {Button, Item, Toast} from 'native-base';
 import { StackActions } from '@react-navigation/native';
 
@@ -33,7 +33,6 @@ function ForgotPassword({navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        console.log('worked');
                         navigation.navigate("Login")
                     } else {
                         console.log('Looks like there was a problem. Status Code: ' +
@@ -49,15 +48,9 @@ function ForgotPassword({navigation}) {
 
     return (
         <View style={styles.viewFlex}>
-             <View style={ styles.profileHeader }>
-                <View style={ styles.backImage }>
-                    <TouchableOpacity active = { .5 } onPress={ () => navigation.dispatch(popAction) }>
-                        <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
-                    </TouchableOpacity>
-                </View>
-             </View>
             <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
                 <Text style={ styles.questionTitle }>Enter your email.</Text>
+                <Text style={ styles.detailsTitle }>If we have an account associated with your email, you'll receive an email to reset your password.</Text>
                 <Item style={ styles.emailInput }>
                     <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
                 </Item>
@@ -71,22 +64,23 @@ function ForgotPassword({navigation}) {
 
 const styles = StyleSheet.create({
     screen:{
-        paddingTop: "50%",
+        marginTop: "50%",
         paddingLeft: "10%",
         paddingRight: "10%",
         paddingBottom: "12%",
-        marginRight: "10%",
-        marginLeft: "10%"
+        marginLeft: "10%",
+        marginRight: "10%"
     },
     questionTitle: {
         fontSize: 25,
         fontWeight: "bold",
         marginTop: "10%",
-        marginLeft: "7%",
-        paddingBottom: "2%"
+        paddingBottom: "2%",
+        textAlign:"center"
     },
     detailsTitle: {
         fontSize: 18,
+        textAlign:"center",
     },
     textInput: {
         width: "100%",
