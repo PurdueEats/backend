@@ -13,7 +13,7 @@ import Email from "./components/signup/Email";
 import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
 import MapManager from "./components/map/MapManager";
-import NavBar from "./components/home/NavBar";
+import NavBar from "./components/navbar/NavBar";
 
 export default function App() {
     const Stack = createStackNavigator();
