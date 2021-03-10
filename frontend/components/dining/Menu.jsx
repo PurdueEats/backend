@@ -7,7 +7,6 @@ import Modal from 'react-native-modal';
 import { StackActions } from '@react-navigation/native';
 import { Button} from 'native-base';
 
-
 function Menu({navigation}) {
     const [filter, setFilter] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
