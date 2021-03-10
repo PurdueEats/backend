@@ -1,10 +1,7 @@
 import requests
 from datetime import datetime
 from google.cloud import bigquery
-
-
-client = bigquery.Client()
-table_id = "purdueeats-304919.PurdueEatsDatabase"
+from DB.Util import runQuery
 
 
 URL = 'https://api.hfs.purdue.edu/menus/v2/locations/'
@@ -24,10 +21,20 @@ def meal_scrapper(request):
 
     DATE = '/' + datetime.today().strftime('%Y-%m-%d')
 
+    MAX_ID = [dict(row) for row in runQuery(
+            f"SELECT max(MenuItemID) FROM MenuItems")][0]
+    print(MAX_ID)
+
     for i, loc in enumerate(LOCATIONS):
+
         response = requests.get(URL + loc + DATE).json()
 
+        #DF_ID = [dict(row) for row in runQuery(
+        #   f"""SELECT DiningFacilityID FROM UserBasic WHERE 
+        #    DiningFacilityName = '{loc}'""")][0]
 
+        for meals in response['Meals']:
+            print(meals)
         print(response['Location'])
         print()
 
