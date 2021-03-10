@@ -55,7 +55,6 @@ function Menu({navigation}) {
                                     <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={20}/>
                                     <Text style={styles.modalText}>Dairy Free Item</Text>
                                 </View>
-
                             </View>
                         </View>
                     </Modal>
@@ -78,7 +77,6 @@ function Menu({navigation}) {
                         <Text style={ styles.recordText } >Record Meal</Text>
                     </Button>
                 </View>
-
                 <DropDownPicker
                     items={[
                         {label: 'All Items', value: 'All Items'},
@@ -195,9 +193,7 @@ function Menu({navigation}) {
                         />
                     </View>
                 ): (
-                    <View>
-
-                    </View>
+                    <View />
                 )}
                 {filter === "Dairy Free" ? (
                     <View>
