@@ -9,7 +9,7 @@ import { StackActions } from '@react-navigation/native';
 function Menu({route, navigation}) {
     const [filter, setFilter] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-      const popAction = StackActions.pop();
+    const popAction = StackActions.pop();
 
     function handleNavigate() {
         navigation.navigate("MealReview", { UserID: route.params.UserID, token: route.params.token });

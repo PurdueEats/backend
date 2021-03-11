@@ -363,7 +363,7 @@ function ProfileManager({route, navigation}) {
             </View>
         <View style={styles.viewCenter}>
             <View style={ styles.borderLine }/>
-                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("MealPreferences") }>
+                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Track") }>
                     <Text style={ styles.textNormal}>Track Meals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
