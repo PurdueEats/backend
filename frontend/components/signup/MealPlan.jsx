@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "red",
         borderRadius: 10,
-        marginTop: "50%"
+        marginTop: "70%"
     },
     continueText: {
         fontSize: 16,
