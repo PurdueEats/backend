@@ -8,6 +8,8 @@
     "expo": "^40.0.1",
     "expo-cli": "^4.2.1",
     "geolib": "^3.3.1",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "native-base": "^2.15.2",
     "react": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",

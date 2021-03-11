@@ -88,10 +88,12 @@ function ProfileManager({route, navigation}) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
                         setPlanBool(false);
+                        getMealInfo();
                     } else {
                         console.log('Meal like there was a problem. Status Code: ' +
                             response.status);
                         setPlanBool(false);
+                        getMealInfo();
                     }
                 }
             )
@@ -167,7 +169,7 @@ function ProfileManager({route, navigation}) {
 
     //deletes account
     function deleteAccount() {
-        setDel(true);
+        setDelBool(true);
         // Deletion route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId, {
             method: 'DELETE',

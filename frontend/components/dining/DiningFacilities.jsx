@@ -21,7 +21,7 @@ function DiningFacilities({route, navigation}) {
 
     return (
         <ScrollView>
-            <View style={ styles.iconPosition }>
+            <View style={ [styles.iconPosition, {flexDirection:"row"}] }>
                 <Image source = { Logo } style = { styles.iconSize } />
             </View>
             <View style={styles.tabBar}>
@@ -42,7 +42,7 @@ function DiningFacilities({route, navigation}) {
             ): (
                 <View>
                     <View style={ styles.imageContainer }>
-                        <View style={{alignItems: "center", justifyContent: "center"}}>
+                        <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
                             <TouchableOpacity onPress={ handleNavigate }>
                                 <Image source = { Earhart } style = { styles.earhartDiningImage }/>
                                 <Text style={ styles.earhartTitle }>{"Earhart"}</Text>
@@ -57,7 +57,7 @@ function DiningFacilities({route, navigation}) {
                         </TouchableOpacity>
                     </View>
                     <View style={ styles.imageContainer }>
-                        <View style={{alignItems: "center", justifyContent: "center"}}>
+                        <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
                             <TouchableOpacity onPress={ handleNavigate }>
                                 <Image source = { Hillenbrand } style = { styles.hillenbrandDiningImage }/>
                                 <Text style={ styles.hillenbrandTitle }>{"Hillenbrand"}</Text>
@@ -86,10 +86,10 @@ function DiningFacilities({route, navigation}) {
 
 const styles = StyleSheet.create({
     iconPosition: {
-        paddingTop: "2%",
         marginBottom: "2%",
-        marginTop: "5%",
-        alignItems: "center",
+        marginTop: "7%",
+        marginRight: "10%",
+        marginLeft: "37%",
         aspectRatio: 0.6
     },
     iconSize: {
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     tabBar: {
         marginLeft: "5%",
         marginRight: "5%",
-        marginTop: "-125%"
+        marginTop: "-50%"
     },
     earhartTitle: {
         fontSize: 20,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         marginRight: "7%",
-        marginLeft: "2.5%",
+        marginLeft: "5%",
         marginBottom: "5%",
         marginTop:"5%"
     },
@@ -132,14 +132,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         position: "absolute",
-        marginLeft: "32%",
+        marginLeft: "29%",
         alignItems: "center",
         marginTop: "34%",
     },
     wileyTime: {
         fontSize: 15,
         position: "absolute",
-        marginLeft: "20%",
+        marginLeft: "15%",
         alignItems: "center",
         marginTop: "49%"
     },
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         marginRight: "7%",
-        marginLeft: "5%",
+        marginLeft: "-1%",
         marginBottom: "5%",
         marginTop: "5%"
     },
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         marginRight: "7%",
-        marginLeft: "2.5%",
+        marginLeft: "5%",
         marginBottom: "0%",
         marginTop:"5%"
     },
@@ -182,14 +182,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         position: "absolute",
-        marginLeft: "27%",
+        marginLeft: "23%",
         alignItems: "center",
         marginTop: "34%"
     },
     windsorTime: {
         fontSize: 15,
         position: "absolute",
-        marginLeft: "18.5%",
+        marginLeft: "15.5%",
         alignItems: "center",
         marginTop: "47%"
     },
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         marginRight: "7%",
-        marginLeft: "5%",
+        marginLeft: "-0.5%",
         marginBottom: "0%",
         marginTop: "5%"
     },
@@ -207,14 +207,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         position: "absolute",
-        marginLeft: "21%",
+        marginLeft: "20%",
         alignItems: "center",
         marginTop: "10%"
     },
     fordTime: {
         fontSize: 15,
         position: "absolute",
-        marginLeft: "14%",
+        marginLeft: "13%",
         alignItems: "center",
         marginTop: "17%"
     },
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         marginRight: "7%",
-        marginLeft: "7%",
+        marginLeft: "6%",
         marginBottom: "50%",
         marginTop: "-5%"
     },

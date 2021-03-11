@@ -4,10 +4,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
 import { Button} from 'native-base';
+import { StackActions } from '@react-navigation/native';
 
 function Menu({route, navigation}) {
     const [filter, setFilter] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+      const popAction = StackActions.pop();
 
     function handleNavigate() {
         navigation.navigate("MealReview", { UserID: route.params.UserID, token: route.params.token });
@@ -17,7 +19,7 @@ function Menu({route, navigation}) {
         <ScrollView>
             <SafeAreaView style={ styles.screen }>
                 <View style={{flexDirection: "row"}}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={ () => navigation.dispatch(StackActions.pop(1))}>
                         <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                     </TouchableOpacity>
                     <Text style={styles.title}>Menu</Text>
