@@ -1,8 +1,8 @@
-#Schema Description of all User related tables
+# Schema Description of all User related tables
 create_user_tables = {
-	
-	"User_Basic":
-	f"""
+
+        "User_Basic":
+        f"""
 	CREATE OR REPLACE TABLE UserBasic
 	(
 		UserID			INT64,
@@ -12,33 +12,33 @@ create_user_tables = {
 	)
 	""",
 
-	"User_Extra":
-	f"""
+        "User_Extra":
+        f"""
 	CREATE OR REPLACE TABLE UserExtra
 	(
-		UserID					INT64,
+		UserID				INT64,
 		MealPlanName 			STRING,
 		MealSwipeCount			INT64,
-		DiningDollarBalance	INT64
+		DiningDollarBalance		FLOAT64
 	)
 	""",
 
-	"User_Transaction":
-	f"""
+        "User_Transaction":
+        f"""
 	CREATE OR REPLACE TABLE UserTransaction
 	(
 		UserID					INT64,
-		TransactionAmount 		INT64,
-		Balance					INT64,
+		TransactionAmount 			FLOAT64,
+		Balance					FLOAT64,
 		Timestamp				TIMESTAMP
 	)
 	""",
 
-	"User_Profile":
-	f"""
+        "User_Profile":
+        f"""
 	CREATE OR REPLACE TABLE UserProfile
 	(
-		UserID				INT64,
+		UserID			INT64,
 		ProfilePicture		BYTES
 	)
 	""",
@@ -52,8 +52,8 @@ create_user_tables = {
 	)
 	""",
 
-	"User_Favorite_Menu_Items":
-	f"""
+        "User_Favorite_Menu_Items":
+        f"""
 	CREATE OR REPLACE TABLE UserFavoriteMenuItems
 	(
 		UserID			INT64,
@@ -64,123 +64,130 @@ create_user_tables = {
 
 }
 
-#Schema Description of all Dining Facility related tables
+# Schema Description of all Dining Facility related tables
 create_dining_facilities_tables = {
-	
-	"Dining_Facilities":
-	f"""
+
+        "Dining_Facilities":
+        f"""
 	CREATE OR REPLACE TABLE DiningFacilities
 	(
 		DiningFacilityID			INT64,
-		DiningFacilityName 		STRING,
-		Description					STRING,
-		Address						STRING,
-		Image						BYTES
+		DiningFacilityName 			STRING,
+		Description				STRING,
+		Address					STRING,
+		Image					BYTES
 	)
 	""",
 
 
-	"Dining_Facility_Reviews":
-	f"""
+        "Dining_Facility_Reviews":
+        f"""
+	CREATE OR REPLACE TABLE DiningFacilityReview
+	(
+		DiningFacilityReviewID		INT64,
+		UserID				INT64,
+		DiningFacilityID		INT64,
+		Review 				STRING,
+		Rating				INT64,
+		UpvoteCount			INT64,
+		DownvoteCount			INT64
+	)
+	""",
+
+        "Dining_Facility_Review_Vote":
+        f"""
 	CREATE OR REPLACE TABLE DiningFacilities
 	(
 		DiningFacilityReviewID		INT64,
-		UserID						INT64,
-		DiningFacilityID			INT64,
-		Review 						STRING,
-		Rating						INT64,
-		UpvoteCount					INT64,
-		DownvoteCount				INT64
+		UserID				INT64,
+		Vote				INT64
 	)
 	""",
 
-	"Dining_Facility_Review_Vote":
-	f"""
-	CREATE OR REPLACE TABLE DiningFacilities
-	(
-		DiningFacilityReviewID		INT64,
-		UserID						INT64,
-		Vote						INT64
-	)
-	""",
-
-	"Dining_Facility_Menu_Items":
-	f"""
+        "Dining_Facility_Menu_Items":
+        f"""
 	CREATE OR REPLACE TABLE DiningFacilityMenuItems
 	(
 		DiningFacilityID		INT64,
-		MenuItemID				INT64,
-		Timing					BYTES,
-		Station					STRING
+		MenuItemID			INT64,
+		Timing				BYTES,
+		Station				STRING
 
 	)
 	"""
 }
 
-#Schema Description of all Menu Items related tables
+# Schema Description of all Menu Items related tables
 create_menu_items_table = {
-	
-	"Menu_Items":
-	f"""
+
+        "Menu_Items":
+        f"""
 	CREATE OR REPLACE TABLE MenuItems
 	(
 		MenuItemID		INT64,
 		HashID			STRING,
 		ItemName		STRING,
 		Nutrition		BYTES,
-		Allergen		BYTES
+		Eggs			BOOL,
+		Fish			BOOL,
+		Gluten			BOOL,
+		Milk			BOOL,
+		Peanuts			BOOL,
+		Shellfish		BOOL,
+		Soy			BOOL,
+                TreeNuts		BOOL,
+		Vegetarian		BOOL,
+		Vegan			BOOL,
+                Wheat			BOOL
 	)
 	""",
 
-	"Menu_Items_Reviews":
-	f"""
+        "Menu_Items_Reviews":
+        f"""
 	CREATE OR REPLACE TABLE MenuItemsReviews
 	(
 		MenuItemID		INT64,
 		UserID			INT64,
 		Rating			INT64,
-		Timestamp   	TIMESTAMP
+		Timestamp   		TIMESTAMP
 	)
 	""",
 }
 
-#Schema Description of all Auxiliary tables
+# Schema Description of all Auxiliary tables
 create_auxiliary_tables = {
-	
-	"MealPlan":
-	f"""
+
+        "MealPlan":
+        f"""
 	CREATE OR REPLACE TABLE MealPlan
 	(
 		MealPlanName		STRING,
-		MealSwipes			INT64,
-		DiningDollars		INT64
+		MealSwipes		INT64,
+		DiningDollars		FLOAT64
 	)
-	"""
-	,
+	""",
 
-	"App_Feedback":
-	f"""
+        "App_Feedback":
+        f"""
 	CREATE OR REPLACE TABLE AppFeedback
 	(
-		UserID				INT64,
+		UserID			INT64,
 		FeedbackText		STRING,
-		Timestamp 			TIMESTAMP
+		Timestamp 		TIMESTAMP
 	)
-	"""
-	,
+	""",
 
-	"FAQ":
-	f"""
+        "FAQ":
+        f"""
 	CREATE OR REPLACE TABLE FAQ
 	(
 		Question	STRING,
 		Answer		STRING
 	)
-	"""
-	,
+	""",
 
-	"Purdue_Fun_Fact":
-	f"""
+        "Purdue_Fun_Fact":
+        f"""
 	CREATE OR REPLACE TABLE PurdueFunFact
 	(
 		FunFact 	STRING,

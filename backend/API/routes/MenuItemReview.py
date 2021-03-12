@@ -1,12 +1,11 @@
 from typing import List
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 from API.models.MenuItemReview import MenuItemReview
 from DB.Util import runQuery
- 
-app = FastAPI()
+
+app = APIRouter()
 
 
-data = []
 #Get every MenuItemReview
 @app.get("/", response_model=List[MenuItemReview])
 async def get_meal_ratings():
@@ -23,6 +22,7 @@ async def get_meal_ratings():
 async def add_meal_rating(menuItemReview: MenuItemReview):
 
   #Check for valid UserID and MenuItemId
+  print(menuItemReview.user_id)
   user_id = [dict(row) for row in runQuery(f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {menuItemReview.user_id}")]
   menu_id = [dict(row) for row in runQuery(f"SELECT COUNT(*) FROM MenuItems WHERE MenuItemID = {menuItemReview.menu_item_id}")]
 
@@ -33,7 +33,7 @@ async def add_meal_rating(menuItemReview: MenuItemReview):
 
   runQuery(f"""
   	INSERT INTO MenuItemsReviews values 
-  	({menuItemReview.user_id}, {menuItemReview.menu_item_id},
+  	({menuItemReview.menu_item_id}, {menuItemReview.user_id},
   	 {menuItemReview.rating}, '{menuItemReview.timestamp}')
   	 """)
 
