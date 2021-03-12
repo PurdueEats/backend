@@ -1,7 +1,7 @@
-import React, { useState, useEffect, Component, Fragment } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import React from "react";
+import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { AirbnbRating} from 'react-native-ratings';
-import { Button, Item, Toast } from 'native-base';
+import { Button, Toast } from 'native-base';
 import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
