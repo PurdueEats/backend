@@ -1,11 +1,8 @@
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity,} from "react-native";
-import { Button } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
-
-const popAction = StackActions.pop();
 
 function TrackMeals({route, navigation}) {
 
