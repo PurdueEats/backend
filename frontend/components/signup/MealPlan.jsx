@@ -97,7 +97,7 @@ function MealPlan({route, navigation}) {
 
 const styles = StyleSheet.create({
     screen:{
-        marginTop: "50%",
+        marginTop: "40%",
         paddingLeft: "10%",
         paddingRight: "10%",
         paddingBottom: "12%",
