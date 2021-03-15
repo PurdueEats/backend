@@ -91,4 +91,4 @@ def meal_scrapper(request):
 
 
 if __name__ == "__main__":
-    meal_scrapper({'Locations': ['Earhart', 'Hillenbrand', 'Ford', 'Windsor', 'Wiley'})
+    meal_scrapper({'Locations': ['Earhart', 'Hillenbrand', 'Ford', 'Windsor', 'Wiley']})
