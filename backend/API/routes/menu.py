@@ -1,7 +1,10 @@
 from fastapi import APIRouter, HTTPException
+from requests import get
 from DB.Util import runQuery
 from API.models.menu import MenuItem
+
 app = APIRouter()
+NUTRITION_URL = "https://api.hfs.purdue.edu/menus/v2/items/"
 
 
 @app.get("/{MenuItemID", response_model=MenuItem)
@@ -31,3 +34,19 @@ async def get_menu_item(MenuItemID: int):
     }) for item in res]
 
     return res[0]
+
+
+@app.get("/{MenuItemID/Nutrition", status_code=200)
+async def get_menu_item_nutrition(MenuItemID: int):
+
+    res = [dict(row) for row in runQuery(
+        f"""SELECT HashID FROM MenuItem WHERE MenuItemID = {MenuItemID}""")]
+    
+    if len(res) != 1:
+        raise HTTPException(status_code=404, detail='MenuItem not found')
+    
+    return get(NUTRITION_URL + res[0]['HashID']).json()
+    
+
+
+    
