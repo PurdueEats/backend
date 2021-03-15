@@ -127,7 +127,6 @@ create_menu_items_table = {
 		MenuItemID		INT64,
 		HashID			STRING,
 		ItemName		STRING,
-		Nutrition		BYTES,
 		Eggs			BOOL,
 		Fish			BOOL,
 		Gluten			BOOL,
