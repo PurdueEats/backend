@@ -41,7 +41,9 @@ def meal_scrapper(request):
             f"""DELETE FROM DiningFacilityMenuItems 
             WHERE DiningFacilityID = {DF_ID['DiningFacilityID']}""")
         
-        for meals in response['Meals']:
+        meals_list = [x for x in response['Meals'] if x['Status'] ==  'Open']
+
+        for meals in meals_list:
             
             time = meals['Hours']['StartTime'] + "-" + meals['Hours']['EndTime']
 
