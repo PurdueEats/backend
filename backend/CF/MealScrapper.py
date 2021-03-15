@@ -30,7 +30,7 @@ def meal_scrapper(request):
         MAX_ID = MAX_ID[0]['f0_'] + 1
 
     LOCATIONS = request['Locations']
-    
+
     for loc in LOCATIONS:
 
         response = requests.get(URL + loc + DATE).json()
@@ -91,4 +91,4 @@ def meal_scrapper(request):
 
 
 if __name__ == "__main__":
-    meal_scrapper(None)
+    meal_scrapper({'Locations': ['Earhart', 'Hillenbrand', 'Ford', 'Windsor', 'Wiley'})
