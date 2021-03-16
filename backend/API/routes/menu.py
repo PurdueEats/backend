@@ -41,12 +41,8 @@ async def get_menu_item_nutrition(MenuItemID: int):
 
     res = [dict(row) for row in runQuery(
         f"""SELECT HashID FROM MenuItem WHERE MenuItemID = {MenuItemID}""")]
-    
+
     if len(res) != 1:
         raise HTTPException(status_code=404, detail='MenuItem not found')
-    
+
     return get(NUTRITION_URL + res[0]['HashID']).json()
-    
-
-
-    

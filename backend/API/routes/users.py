@@ -99,7 +99,7 @@ async def delete_user(UserID: int = Depends(auth_handler.auth_wrapper)):
     runQuery(f"DELETE FROM UserFavoriteMenuItems WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserNutrition WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM MenuItemsReviews WHERE UserID = {UserID}")
-    
+
     # Add delete Dinning Review and Dinning Review
 
     return
