@@ -52,6 +52,11 @@ async def create_user(userBasic: UserBasic):
      '{userBasic.email}', '{hashed_password}')
      """)
 
+    runQuery(f"""
+    INSERT INTO UserNutrition values
+    ({user_id[0]['UserID']}, 0, 0, 0, 0)
+    """)
+
     return {'UserID': str(user_id[0]['UserID'])}
 
 
@@ -92,7 +97,9 @@ async def delete_user(UserID: int = Depends(auth_handler.auth_wrapper)):
     runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserTransaction WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserFavoriteMenuItems WHERE UserID = {UserID}")
+    runQuery(f"DELETE FROM UserNutrition WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM MenuItemsReviews WHERE UserID = {UserID}")
+    
     # Add delete Dinning Review and Dinning Review
 
     return
@@ -116,7 +123,7 @@ async def return_auth(UserID: int = Depends(auth_handler.auth_wrapper)):
     return res
 
 
-#Password Reset route
+# Password Reset route
 @app.post("/{UserID}/Auth", status_code=201)
 async def update_auth(userBasic: UserBasic, UserID: int = Depends(auth_handler.auth_wrapper)):
 
@@ -130,7 +137,7 @@ async def update_auth(userBasic: UserBasic, UserID: int = Depends(auth_handler.a
     user = user[0]
     hashed_password = user['Password']
     userBasic.user_id = UserID
-    
+
     if userBasic.password != "":
         hashed_password = auth_handler.get_password_hash(userBasic.password)
 
@@ -168,7 +175,6 @@ async def assign_meal_plan(mealPlanName: MealPlanIn, UserID: int = Depends(auth_
     meal_plan = [dict(row) for row in runQuery(
         f"SELECT * FROM MealPlan WHERE MealPlanName = '{mealPlanName}'")]
 
-
     if len(meal_plan) != 1:
         raise HTTPException(status_code=404, detail='Meal Plan not found')
 
@@ -181,7 +187,6 @@ async def assign_meal_plan(mealPlanName: MealPlanIn, UserID: int = Depends(auth_
 
     for trans in transactions:
         meal_plan['DiningDollars'] - trans['TransactionAmount']
-
 
     runQuery(f"DELETE from UserExtra WHERE UserID = {UserID}")
 
@@ -271,7 +276,7 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     user_extra = user_extra[0]
     balance = user_extra['DiningDollarBalance'] - \
         userTransaction.transaction_amount
-    
+
     runQuery(f"DELETE FROM UserExtra WHERE UserID = {UserID}")
 
     runQuery(f"""
@@ -304,7 +309,6 @@ async def forgot_password(email: str):
     hashed_password = auth_handler.get_password_hash(new_password)
     user['Password'] = hashed_password
 
-
     runQuery(f"DELETE FROM UserBasic WHERE Email = '{email}'")
 
     runQuery(f"""
@@ -316,12 +320,12 @@ async def forgot_password(email: str):
     import requests
 
     r = requests.post(
-		"https://api.mailgun.net/v3/sandbox459d6d8b3208457c8613631ae018378a.mailgun.org/messages",
-		auth=("api", fetch_api_key()),
-		data={"from": "Excited User <mailgun@sandbox459d6d8b3208457c8613631ae018378a.mailgun.org>",
-			"to": [email],
-			"subject": "Hello",
-			"text": "Your new password is: " + new_password})
+        "https://api.mailgun.net/v3/sandbox459d6d8b3208457c8613631ae018378a.mailgun.org/messages",
+        auth=("api", fetch_api_key()),
+        data={"from": "Excited User <mailgun@sandbox459d6d8b3208457c8613631ae018378a.mailgun.org>",
+                      "to": [email],
+                      "subject": "Hello",
+              "text": "Your new password is: " + new_password})
 
     print(r.text)
 
