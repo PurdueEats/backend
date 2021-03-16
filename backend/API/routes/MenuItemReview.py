@@ -2,6 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from API.models.MenuItemReview import MenuItemReview
 from API.routes.auth import AuthHandler
+from API.routes.menu import get_nutrition, nutrition_to_macros
 from DB.Util import runQuery
 
 app = APIRouter()
@@ -24,20 +25,20 @@ async def get_meal_ratings():
 @app.get("/{UserID}", response_model=List[MenuItemReview])
 async def get_user_meal_ratings(UserID: int = Depends(auth_handler.auth_wrapper)):
 
-    # Check for valid UserID and MenuItemId
-	user_id = [dict(row) for row in runQuery(f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {UserID}")]
+    # Check for valid UserID
+    user_id = [dict(row) for row in runQuery(
+        f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {UserID}")]
 
-	if user_id[0]['f0_'] != 1:
-		raise HTTPException(status_code=400, detail='Invalid UserID')
-	
+    if user_id[0]['f0_'] != 1:
+        raise HTTPException(status_code=400, detail='Invalid UserID')
 
-	res = [dict(row) for row in runQuery(
-		f"SELECT * FROM MenuItemsReviews WHERE UserID = {UserID}")]
-	res = [MenuItemReview.parse_obj({'user_id': item['UserID'], 'menu_item_id': item['MenuItemID'],
-										'rating':item['Rating'], 'timestamp': item['Timestamp']})
-			for item in res]
+    res = [dict(row) for row in runQuery(
+        f"SELECT * FROM MenuItemsReviews WHERE UserID = {UserID}")]
+    res = [MenuItemReview.parse_obj({'user_id': item['UserID'], 'menu_item_id': item['MenuItemID'],
+                                     'rating':item['Rating'], 'timestamp': item['Timestamp']})
+           for item in res]
 
-	return res
+    return res
 
 
 # Add MenuItemReview to DB
@@ -60,5 +61,24 @@ async def add_meal_rating(menuItemReview: MenuItemReview):
   	({menuItemReview.menu_item_id}, {menuItemReview.user_id},
   	 {menuItemReview.rating}, '{menuItemReview.timestamp}')
   	 """)
+
+    # Add User Nutrition insertion here
+    response = get_nutrition(menuItemReview.menu_item_id)
+    calories, carbs, fat, protein = nutrition_to_macros(response)
+
+    res = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserNutrition WHERE UserID = {menuItemReview.user_id}")][0]
+    runQuery(
+        f"DELETE FROM UserNutrition WHERE UserID = {menuItemReview.user_id}")
+
+    calories += res['Calories']
+    carbs += res['Carbs']
+    fat += res['Fat']
+    protein += res['Protein']
+
+    runQuery(f"""
+	INSERT INTO UserNutrition values
+	({menuItemReview.user_id}, {calories}, {carbs}, {fat}, {protein}
+	)""")
 
     return

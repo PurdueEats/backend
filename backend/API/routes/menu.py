@@ -39,6 +39,12 @@ async def get_menu_item(MenuItemID: int):
 @app.get("/{MenuItemID/Nutrition", status_code=200)
 async def get_menu_item_nutrition(MenuItemID: int):
 
+    return get_nutrition(MenuItemID)    
+
+
+# Proxy function for nutrition fetching
+def get_nutrition(MenuItemID: int):
+
     res = [dict(row) for row in runQuery(
         f"""SELECT HashID FROM MenuItem WHERE MenuItemID = {MenuItemID}""")]
 
@@ -46,3 +52,21 @@ async def get_menu_item_nutrition(MenuItemID: int):
         raise HTTPException(status_code=404, detail='MenuItem not found')
 
     return get(NUTRITION_URL + res[0]['HashID']).json()
+
+
+def nutrition_to_macros(response):
+
+    response = response['Nutrition']
+    calories, carbs, fat, protein = 0, 0, 0, 0
+
+    for term in response:
+	    if term['Name'] == 'Calories':
+		    calories = int(term['Value'])
+	    elif term['Name'] == 'Total fat':
+		    fat = int(term['Value'])
+	    elif term['Name'] == 'Total Carbohydrate':
+		    carbs = int(term['Value'])
+	    elif term['Name'] == 'Protein':
+		    protein = int(term['Value'])
+	
+    return (calories, carbs, fat, protein)
