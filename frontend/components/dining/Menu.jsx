@@ -5,14 +5,23 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
 import { Button} from 'native-base';
 import { StackActions } from '@react-navigation/native';
+import { SearchBar } from 'react-native-elements';
+
 
 function Menu({route, navigation}) {
     const [filter, setFilter] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const [search, setSearch] = useState('');
+    const [allData, setAllData] = useState('');
+    const [filterData, setFilterData] = useState('');
     const popAction = StackActions.pop();
 
     function handleNavigate() {
         navigation.navigate("MealReview", { UserID: route.params.UserID, token: route.params.token });
+    }
+
+    function searchFiltering (searchText) {
+
     }
 
     return (
@@ -75,21 +84,34 @@ function Menu({route, navigation}) {
                         <Text style={ styles.recordText } >Record Meal</Text>
                     </Button>
                 </View>
-                <DropDownPicker
-                    items={[
-                        {label: 'All Items', value: 'All Items'},
-                        {label: 'Gluten Free', value: 'Gluten Free'},
-                        {label: 'Vegetarian', value: 'Vegetarian'},
-                        {label: 'Dairy Free', value: 'Dairy Free'},
-                    ]}
-                    containerStyle={{height: 40}}
-                    style={{backgroundColor: '#fafafa'}}
-                    itemStyle={{
-                        justifyContent: 'flex-start'
-                    }}
-                    dropDownStyle={{backgroundColor: '#fafafa'}}
-                    onChangeItem={item => setFilter(item.value)}
+                <SearchBar
+                    round
+                    searchIcon={{ size: 20 }}
+                    placeholder="Look for an item here"
+                    value={search}
+                    lightTheme = "true"
+                    onChangeText={(searchText) => searchFiltering(searchText)}
+                    onClear={(searchText) => searchFiltering('')}
+
                 />
+                <View style={styles.dropDownStyle}>
+                    <DropDownPicker
+                        items={[
+                            {label: 'All Items', value: 'All Items'},
+                            {label: 'Gluten Free', value: 'Gluten Free'},
+                            {label: 'Vegetarian', value: 'Vegetarian'},
+                            {label: 'Dairy Free', value: 'Dairy Free'},
+                        ]}
+                        containerStyle={{height: 40}}
+                        style={{backgroundColor: '#fafafa'}}
+                        itemStyle={{
+                            justifyContent: 'flex-start'
+                        }}
+                        dropDownStyle={{backgroundColor: '#fafafa'}}
+                        onChangeItem={item => setFilter(item.value)}
+                    />
+                </View>
+
                 {filter === "All Items" ? (
                     <View>
                         <View style={{flexDirection: "row"}}>
@@ -233,6 +255,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginLeft: "30%",
         marginRight: "30%"
+    },
+    dropDownStyle: {
+        marginTop: "3%"
     },
     firstItem: {
         fontSize: 20,
