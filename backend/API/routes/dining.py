@@ -50,7 +50,7 @@ async def get_dining_facility_menu(DiningFacilityID: int):
     dining_facility = [dict(row) for row in runQuery(
         "SELECT COUNT(*) FROM DiningFacilities")]
 
-    if dining_facility[0]['f0_'] != 0:
+    if dining_facility[0]['f0_'] != 1:
         raise HTTPException(
             status_code=400, detail='Dining Facility not found')
 
