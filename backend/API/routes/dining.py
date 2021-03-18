@@ -79,7 +79,7 @@ async def get_dining_facility_menu(DiningFacilityID: int):
     }) for item in res]
 
 
-    def builder(item): return DiningFacilityMenuItem(
+    def builder(item): return DiningFacilityMenuItem.parse_obj(
         {'menu_item': item[1], 'timing': item[0]['Timing'], 'station': item[0]['Station']})
     
     res = list(map(builder, zip(res, menu_items)))
