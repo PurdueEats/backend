@@ -48,7 +48,7 @@ async def get_dining_facility(DiningFacilityID: int):
 async def get_dining_facility_menu(DiningFacilityID: int):
 
     dining_facility = [dict(row) for row in runQuery(
-        "SELECT COUNT(*) FROM DiningFacilities")]
+        f"SELECT COUNT(*) FROM DiningFacilities WHERE DiningFacilityID = {DiningFacilityID}")]
 
     if dining_facility[0]['f0_'] != 1:
         raise HTTPException(
