@@ -305,13 +305,16 @@ function ProfileManager({route, navigation}) {
             <View style={ styles.borderLine }/>
         <View/>
         <View style={styles.rowBetween}>
-        <Text style={ styles.textNormal }>   {plan} </Text>
-        <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
-            <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
-        </TouchableOpacity>
+            <Text style={ styles.textNormal }>   {plan} </Text>
+            <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
+                <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
+            </TouchableOpacity>
         </View>
         <View style={styles.rowBetween}>
             <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
+            <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
+                <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
+            </TouchableOpacity>
         </View>
         <View style={styles.colBetween}/>
             <View style={styles.rowBetween}>
