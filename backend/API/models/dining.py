@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from API.models.menu import MenuItem
 
 
 class DiningFacility(BaseModel):
@@ -7,3 +8,9 @@ class DiningFacility(BaseModel):
     description:            str
     address:                str
     image:                  bytes
+
+
+class DiningFacilityMenuItem(BaseModel):
+    menu_item:  MenuItem
+    timing:     str 
+    station:    str
