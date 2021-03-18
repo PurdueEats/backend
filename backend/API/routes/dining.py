@@ -11,7 +11,7 @@ app = APIRouter()
 @app.get("/", response_model=List[DiningFacility])
 async def get_dining_facilities():
 
-    res = [dict(row) for row in runQuery("SELECT * FROM DiningFacility")]
+    res = [dict(row) for row in runQuery("SELECT * FROM DiningFacilities")]
     res = [DiningFacility.parse_obj({
         'dining_facility_id':     item['DiningFacilityID'],
         'dining_facility_name':   item['DiningFacilityName'],
@@ -27,7 +27,7 @@ async def get_dining_facilities():
 async def get_dining_facility(DiningFacilityID: int):
 
     res = [dict(row) for row in runQuery(
-        f"SELECT * FROM DiningFacility WHERE DiningFacilityID = {DiningFacilityID}")]
+        f"SELECT * FROM DiningFacilities WHERE DiningFacilityID = {DiningFacilityID}")]
 
     if len(res) != 1:
         raise HTTPException(
@@ -48,7 +48,7 @@ async def get_dining_facility(DiningFacilityID: int):
 async def get_dining_facility_menu(DiningFacilityID: int):
 
     dining_facility = [dict(row) for row in runQuery(
-        "SELECT COUNT(*) FROM DiningFacility")]
+        "SELECT COUNT(*) FROM DiningFacilities")]
 
     if dining_facility[0]['f0_'] != 0:
         raise HTTPException(
