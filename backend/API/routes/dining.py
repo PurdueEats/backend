@@ -58,7 +58,7 @@ async def get_dining_facility_menu(DiningFacilityID: int):
         f"""
         SELECT * 
         FROM DiningFacilityMenuItems as DFI, MenuItems as MI
-        WHERE DFI.MenuItem = MI.MenuItem
+        WHERE DFI.MenuItemID = MI.MenuItemID
         """)]
 
     menu_items = [MenuItem.parse_obj({
