@@ -16,8 +16,8 @@ async def get_dining_facilities():
         'dining_facility_id':     item['DiningFacilityID'],
         'dining_facility_name':   item['DiningFacilityName'],
         'description':            item['Description'],
-        'address':                item['DiningFacilityID'],
-        'image':                  item['DiningFacilityID']
+        'address':                item['Address'],
+        'image':                  item['Image']
     }) for item in res]
 
     return res
@@ -37,8 +37,8 @@ async def get_dining_facility(DiningFacilityID: int):
         'dining_facility_id':     item['DiningFacilityID'],
         'dining_facility_name':   item['DiningFacilityName'],
         'description':            item['Description'],
-        'address':                item['DiningFacilityID'],
-        'image':                  item['DiningFacilityID']
+        'address':                item['Address'],
+        'image':                  item['Image']
     }) for item in res]
 
     return res[0]
