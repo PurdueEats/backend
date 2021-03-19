@@ -363,11 +363,16 @@ function ProfileManager({route, navigation}) {
             </View>
         <View style={styles.viewCenter}>
             <View style={ styles.borderLine }/>
-                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Track") }>
+                <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("Track") }>
                     <Text style={ styles.textNormal}>Track Meals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
                     <Text style={ styles.textNormal}>Change Password</Text>
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("EditSchedule", { UserID: route.params.UserID, token: route.params.token }) }>
+                    <Text style={ styles.textNormal}>Change Schedule</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalDelete(true) }>
                     <Text style={ styles.textNormalRed}>Delete Account</Text>
