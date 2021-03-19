@@ -5,7 +5,7 @@ from DB.Util import runQuery
 
 
 URL = 'https://api.hfs.purdue.edu/menus/v2/locations/'
-LOCATIONS = ['Earhart', 'Hillenbrand', 'Ford', 'Windsor', 'Wiley']
+LOCATIONS = []
 DATE = ''
 
 
@@ -28,6 +28,8 @@ def meal_scrapper(request):
         MAX_ID = 1
     else:
         MAX_ID = MAX_ID[0]['f0_'] + 1
+
+    LOCATIONS = request['Locations']
 
     for loc in LOCATIONS:
 
@@ -58,7 +60,6 @@ def meal_scrapper(request):
 
                         query = 'INSERT INTO MenuItems values ('
                         query += f"{str(MAX_ID)}, '{item['ID']}', \"{item['Name']}\","
-                        query += "b'Nutrition',"
 
                         if 'Allergens' not in item:
                             item['Allergens'] = [{'Value': False} for _ in range(11)]
@@ -90,4 +91,4 @@ def meal_scrapper(request):
 
 
 if __name__ == "__main__":
-    meal_scrapper(None)
+    meal_scrapper({'Locations': ['Earhart', 'Hillenbrand', 'Ford', 'Windsor', 'Wiley']})
