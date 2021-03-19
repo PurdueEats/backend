@@ -12,6 +12,7 @@ app = APIRouter()
 async def get_dining_facilities():
 
     res = [dict(row) for row in runQuery("SELECT * FROM DiningFacilities")]
+    
     res = [DiningFacility.parse_obj({
         'dining_facility_id':     item['DiningFacilityID'],
         'dining_facility_name':   item['DiningFacilityName'],
@@ -19,6 +20,7 @@ async def get_dining_facilities():
         'address':                item['Address'],
         'image':                  item['Image']
     }) for item in res]
+
 
     return res
 
