@@ -11,9 +11,9 @@ import { SearchBar } from 'react-native-elements';
 function Menu({route, navigation}) {
     const [filter, setFilter] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    const [search, setSearch] = useState('');
+    const [searched, setSearched] = useState('');
     const [allData, setAllData] = useState('');
-    const [filterData, setFilterData] = useState('');
+    const [FilterData, setFilterData] = useState('');
     const popAction = StackActions.pop();
 
     function handleNavigate() {
@@ -21,7 +21,20 @@ function Menu({route, navigation}) {
     }
 
     function searchFiltering (searchText) {
-
+        if (!searchText) {
+            setSearched(searchText);
+            setFilterData(allData);
+        }
+        if(searchText) {
+            const searchData = allData.filter(function (menuItem)
+            {
+                const menuInfo = menuItem.title ? menuItem.title.toUpperCase() : ''.toUpperCase();
+                const textInfo = searchText.toUpperCase();
+                return menuInfo.indexOf(textInfo) > -1;
+            });
+            setFilterData(searchData);
+            setSearched(searchText);
+        }
     }
 
     return (
@@ -88,11 +101,10 @@ function Menu({route, navigation}) {
                     round
                     searchIcon={{ size: 20 }}
                     placeholder="Look for an item here"
-                    value={search}
+                    value={searched}
                     lightTheme = "true"
                     onChangeText={(searchText) => searchFiltering(searchText)}
                     onClear={(searchText) => searchFiltering('')}
-
                 />
                 <View style={styles.dropDownStyle}>
                     <DropDownPicker
