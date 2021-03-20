@@ -25,7 +25,6 @@ function FavoriteMeals({route, navigation}) {
     const [removeSelection, setRemoveSelection] = useState([]);
     const [selectedFavMeals, setSelectedFavMeals] = React.useState([]);
 
-
     /*function handleNavigate() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token });
     }*/
@@ -41,16 +40,12 @@ function FavoriteMeals({route, navigation}) {
     function handleFavMeal() {
       setCurrentSelection(selectedFavMeals);
       setSelectedFavMeals([]);
-//       console.log(currentSelection)
     }
 
-    function handleRemoveMeal() {
-      console.log("Hit");
-      console.log(removeSelection);
-//       currentSelection = currentSelection.filter((item) => !removeSelection.includes(item));
-      setCurrentSelection(currentSelection);
-//       console.log(currentSelection);
-    }
+    const handleRemoveMeal = () => {
+       const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
+       setCurrentSelection(filtered);
+      }
 
     return (
         <ScrollView>
