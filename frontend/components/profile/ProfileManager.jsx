@@ -171,7 +171,7 @@ function ProfileManager({route, navigation}) {
     function deleteAccount() {
         setDelBool(true);
         // Deletion route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID, {
             method: 'DELETE',
             headers : {
                 'Content-Type': 'application/json',

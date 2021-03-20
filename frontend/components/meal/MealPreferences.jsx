@@ -11,12 +11,14 @@ function MealPreferences({route, navigation}) {
     var moment = require('moment-timezone');
     var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
+    // Fetch meal items
     // useEffect(() => {
+    //     // Obtain Meal Preferences route
     //     console.log("hit here")
     // })
 
     function handleSubmit() {
-        // Login Route
+        // Post Meal Preferences route
         // fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
         //     method: 'POST',
         //     headers : {
