@@ -8,22 +8,46 @@ function MealPreferences({route, navigation}) {
     // const [meals, setMealRating] = useState('');
     const meals = [ "Hamburger", "Balsamic Chicken", "Hotdog", "Pizza", "Beef Broccoli Stirfry" ]
     const ratings = [ 3, 3, 3, 3, 3 ]
+    var moment = require('moment-timezone');
+    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     // useEffect(() => {
     //     console.log("hit here")
     // })
 
     function handleSubmit() {
-        // Sample code for sending package to API
-        // fetch(`/api/db/getBusinessData/` + params, {
-        // 	method: 'GET',
-        // 	headers : {
-        // 		'Content-Type': 'application/json',
-        // 		'Accept': 'application/json'
-        // 	}
+        // Login Route
+        // fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
+        //     method: 'POST',
+        //     headers : {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         "user_id": route.params.UserID,
+        //         "menu_item_id": 30005,
+        //         "rating": 2,
+        //         "timestamp": "2021-03-04T06:23:29.468000+00:00"
+        //     })
         // })
-        // 	.then(response => response.json())
-        // 	.then(response => this.setState({ "response" : response }))
+        //     .then(
+        //         function(response) {
+        //             if (response.status !== 200) {
+        //                 console.log('Looks like there was a problem. Status Code: ' +
+        //                     response.status);
+        //                 displayError();
+        //             } else {
+        //                 // Examine the text in the response
+        //                 response.json().then(function(data) {
+        //                     // Login successful, redirect to MealPreferences
+        //                     navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+        //                 });
+        //             }
+        //         }
+        //     )
+        //     .catch(function(err) {
+        //         console.log('Fetch Error :-S', err);
+        //     });
         navigation.navigate("NavBar", { UserID: route.params.UserID, token: route.params.token });
     }
 
