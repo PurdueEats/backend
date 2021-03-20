@@ -8,6 +8,7 @@ function ProfileManager({route, navigation}) {
     const [ModalPlan, setModalPlan] = useState(false);
     const [modalPassword, setModalPassword] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
+    const [modalDining, setModalDining] = useState(false);
 
     const [name, setName] = useState('');
     const [nameNew, setNameNew] = useState('');
@@ -18,6 +19,9 @@ function ProfileManager({route, navigation}) {
     const [dollars, setDollars] = useState('');
     const [password, setPassword] = useState('');
     const [swipes, setSwipes] = useState('');
+    const [transact, setTransact] = useState('');
+    const [add, setAdd] = useState('Add');
+
 
     const [delBool, setDelBool] = useState(false);
     const [nameBool, setNameBool] = useState(false);
@@ -52,6 +56,18 @@ function ProfileManager({route, navigation}) {
         setPasswordBool(true);
         setModalPassword(!setModalPassword);
         changePassword(password2);
+    }
+
+    function handleDiningExit(subtract) {
+        setModalDining(!setModalDining);
+        if (add == 'Add') {
+            console.log("in here?")
+            sendDiningDollars(0 - subtract);
+        } else {
+            console.log("in here?")
+
+            sendDiningDollars(subtract);
+        }
     }
 
     function handleLogout() {
@@ -92,6 +108,45 @@ function ProfileManager({route, navigation}) {
                     } else {
                         console.log('Meal like there was a problem. Status Code: ' +
                             response.status);
+                        setPlanBool(false);
+                        getMealInfo();
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
+    function sendDiningDollars(dollars2) {
+        // Send Meal Plan Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/Trans`, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+            body: JSON.stringify({
+                "user_id": route.params.UserID,
+                "transaction_amount": dollars2,
+                "balance": dollars,
+                "timestamp": "2021-03-18T07:56:25.061Z"
+
+            })
+
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        console.log(dollars2);
+                        setPlanBool(false);
+                        getMealInfo();
+                    } else {
+                        console.log('Meal like there was a problem. Status Code: ' +
+                            response.status);
+                        console.log(dollars2);
                         setPlanBool(false);
                         getMealInfo();
                     }
@@ -282,6 +337,32 @@ function ProfileManager({route, navigation}) {
                     </View>
                 </View>
             </Modal>
+            <Modal animationType="slide" transparent={true} visible={modalDining}
+                onRequestClose={() => {
+                    setModalDining(!modalDining);
+                }}
+            >
+                <View>
+                    <View style={styles.modalView}>
+                        <TouchableOpacity active = { .5 } onPress={() =>  handleDiningExit(transact)}>
+                            <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
+                        </TouchableOpacity>
+                        <View style={styles.rowBetween}>
+                            <TouchableOpacity active = { .5 } onPress={() =>  setAdd('Subtract')}>
+                                <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
+                            </TouchableOpacity>
+                            <Text style={styles.modalText}>                </Text>
+                            <TouchableOpacity active = { .5 } onPress={() =>  setAdd('Add')}>
+                                <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={styles.modalText}>How many dollars?</Text>
+                        <TextInput style={ styles.textEnter } onChangeText={(transact) => setTransact(transact)} />
+                        <View style={ styles.modalLine }/>
+                    </View>
+                </View>
+            </Modal>
+
             <View style={ styles.profileHeader }>
                 <View style={ styles.backImage }>
                     <Text style={ styles.profileWord }>           </Text>
@@ -292,7 +373,6 @@ function ProfileManager({route, navigation}) {
             <View style={ styles.viewCenter }>
                 <Image style={ styles.profileImage } source={require('../../resources/train.jpg')}/>
             </View>
-
             <View style={styles.rowBetween}>
                 <Text style={ styles.textNormal }>   {name} </Text>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalName(true) }>
@@ -312,7 +392,7 @@ function ProfileManager({route, navigation}) {
         </View>
         <View style={styles.rowBetween}>
             <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
-            <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
+            <TouchableOpacity active = { .5 } onPress={() =>  setModalDining(true) }>
                 <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
             </TouchableOpacity>
         </View>
@@ -321,14 +401,14 @@ function ProfileManager({route, navigation}) {
                 <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
                 <Modal animationType="slide" transparent={true} visible={ModalPlan}
                     onRequestClose={() => {
-                        setModalName(!ModalPlan);
+                        setModalPlan(!ModalPlan);
                     }}
                 >
                     <View>
                         <View style={styles.modalView}>
                             <TouchableOpacity active = { .5 } onPress={() => handlePlanExit(planNew) }>
                                 <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
-                            </TouchableOpacity >
+                            </TouchableOpacity>
                             <DropDownPicker
                                 items={[
                                     {label: '10 Meal Plan + 100', value: '10 Meal Plan +100'},
