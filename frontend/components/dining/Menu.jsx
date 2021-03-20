@@ -53,6 +53,10 @@ function Menu({route, navigation}) {
                                     <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={20}/>
                                     <Text style={styles.modalText}>Dairy Free Item</Text>
                                 </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <MaterialCommunityIcons name="star" color="red" size={20}/>
+                                    <Text style={styles.modalText}>Favorite Item</Text>
+                                </View>
                             </View>
                         </View>
                     </Modal>
@@ -81,6 +85,7 @@ function Menu({route, navigation}) {
                         {label: 'Gluten Free', value: 'Gluten Free'},
                         {label: 'Vegetarian', value: 'Vegetarian'},
                         {label: 'Dairy Free', value: 'Dairy Free'},
+                        {label: 'Favorite Items', value: 'Favorite Items'}
                     ]}
                     containerStyle={{height: 40}}
                     style={{backgroundColor: '#fafafa'}}

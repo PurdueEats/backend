@@ -4,6 +4,7 @@ import { Button } from 'native-base';
 import Logo from "../../resources/logo.png";
 import MaterialTabs from 'react-native-material-tabs';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import { StackActions } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
 
 
@@ -50,6 +51,9 @@ function FavoriteMeals({route, navigation}) {
     return (
         <ScrollView>
             <View style={ [styles.iconPosition, {flexDirection:"row"}] }>
+                <TouchableOpacity style={ styles.button } onPress={ () => navigation.dispatch(StackActions.pop(1))}>
+                    <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                </TouchableOpacity>
                 <Image source = { Logo } style = { styles.iconSize } />
             </View>
             <View style={styles.tabBar}>
@@ -111,6 +115,11 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         width: 100,
         height: 100,
+    },
+    button: {
+        marginLeft: "-65%",
+        marginTop: "20%",
+        marginRight: "50%",
     },
     tabBar: {
         marginLeft: "5%",

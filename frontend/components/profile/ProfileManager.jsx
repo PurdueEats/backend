@@ -366,6 +366,9 @@ function ProfileManager({route, navigation}) {
                 <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Track") }>
                     <Text style={ styles.textNormal}>Track Meals</Text>
                 </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("FavoriteMeal") }>
+                    <Text style={ styles.textNormal}>Favorite Meals</Text>
+                </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
                     <Text style={ styles.textNormal}>Change Password</Text>
                 </TouchableOpacity>

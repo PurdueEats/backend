@@ -28,7 +28,7 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
                     headerShown: false
-                }} initialRouteName="FavoriteMeal">
+                }} initialRouteName="Login">
                     <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="ForgotPassword" component={ ForgotPassword }/>
                     <Stack.Screen name="Name" component={ Name }/>
