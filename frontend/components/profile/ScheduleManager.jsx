@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, Modal, TextInput} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image, Modal } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Logo from "../../resources/logo.png";
