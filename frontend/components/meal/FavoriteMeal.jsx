@@ -39,7 +39,8 @@ function FavoriteMeals({route, navigation}) {
     }
 
     function handleFavMeal() {
-      setCurrentSelection(selectedFavMeals);
+      const updatedList = currentSelection.concat(selectedFavMeals);
+      setCurrentSelection(updatedLists);
       setSelectedFavMeals([]);
     }
 
