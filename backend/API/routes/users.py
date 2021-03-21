@@ -13,7 +13,8 @@ from API.models.users import (
     UserSchedule,
     UserTransaction,
     UserFavMenuItems,
-    UserOut
+    UserOut,
+    UserNutrition
 )
 
 
@@ -294,7 +295,7 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     return
 
 
-@app.post("/{UserID}/Nutrition"):
+@app.post("/{UserID}/Nutrition")
 async def get_user_nutrition(UserID: int = Depends(auth_handler.auth_wrapper)):
 
     user_nutrition = [dict(row) for row in runQuery(
@@ -304,6 +305,16 @@ async def get_user_nutrition(UserID: int = Depends(auth_handler.auth_wrapper)):
         raise HTTPException(status_code=401, detail='Invalid user')
 
     user_nutrition = user_nutrition[0]
+
+    res = UserNutrition.parse_obj({
+        'user_id':  user_nutrition['UserID'],
+        'calories': user_nutrition['Calories'],
+        'carbs':    user_nutrition['Carbs'],
+        'fat':      user_nutrition['Fat'],
+        'protein':  user_nutrition['Protein']
+    })
+
+    return res
 
 
 @app.post("/ForgotPassword", status_code=201)
