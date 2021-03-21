@@ -294,6 +294,18 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     return
 
 
+@app.post("/{UserID}/Nutrition"):
+async def get_user_nutrition(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    user_nutrition = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserNutrition WHERE UserID = {UserID}")]
+
+    if len(user_nutrition) != 1:
+        raise HTTPException(status_code=401, detail='Invalid user')
+
+    user_nutrition = user_nutrition[0]
+
+
 @app.post("/ForgotPassword", status_code=201)
 async def forgot_password(email: str):
 
