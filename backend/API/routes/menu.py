@@ -12,10 +12,7 @@ NUTRITION_URL = "https://api.hfs.purdue.edu/menus/v2/items/"
 async def get_menu_items():
 
     res = [dict(row) for row in runQuery(
-        f"""SELECT * FROM MenuItem""")]
-
-    if len(res) != 1:
-        raise HTTPException(status_code=404, detail='MenuItem not found')
+        f"""SELECT * FROM MenuItems""")]
 
     res = [MenuItem.parse_obj({
         'menu_item_id':   item['MenuItemID'],
@@ -41,7 +38,7 @@ async def get_menu_items():
 async def get_menu_item(MenuItemID: int):
 
     res = [dict(row) for row in runQuery(
-        f"""SELECT * FROM MenuItem WHERE MenuItemID = {MenuItemID}""")]
+        f"""SELECT * FROM MenuItems WHERE MenuItemID = {MenuItemID}""")]
 
     if len(res) != 1:
         raise HTTPException(status_code=404, detail='MenuItem not found')
@@ -66,7 +63,7 @@ async def get_menu_item(MenuItemID: int):
     return res[0]
 
 
-@app.get("/{MenuItemID/Nutrition", status_code=200)
+@app.get("/{MenuItemID}/Nutrition", status_code=200)
 async def get_menu_item_nutrition(MenuItemID: int):
 
     return get_nutrition(MenuItemID)
@@ -76,7 +73,7 @@ async def get_menu_item_nutrition(MenuItemID: int):
 def get_nutrition(MenuItemID: int):
 
     res = [dict(row) for row in runQuery(
-        f"""SELECT HashID FROM MenuItem WHERE MenuItemID = {MenuItemID}""")]
+        f"""SELECT HashID FROM MenuItems WHERE MenuItemID = {MenuItemID}""")]
 
     if len(res) != 1:
         raise HTTPException(status_code=404, detail='MenuItem not found')
