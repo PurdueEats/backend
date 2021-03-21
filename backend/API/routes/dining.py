@@ -11,14 +11,16 @@ app = APIRouter()
 @app.get("/", response_model=List[DiningFacility])
 async def get_dining_facilities():
 
-    res = [dict(row) for row in runQuery("SELECT * FROM DiningFacility")]
+    res = [dict(row) for row in runQuery("SELECT * FROM DiningFacilities")]
+    
     res = [DiningFacility.parse_obj({
         'dining_facility_id':     item['DiningFacilityID'],
         'dining_facility_name':   item['DiningFacilityName'],
         'description':            item['Description'],
-        'address':                item['DiningFacilityID'],
-        'image':                  item['DiningFacilityID']
+        'address':                item['Address'],
+        'image':                  item['Image']
     }) for item in res]
+
 
     return res
 
@@ -27,7 +29,7 @@ async def get_dining_facilities():
 async def get_dining_facility(DiningFacilityID: int):
 
     res = [dict(row) for row in runQuery(
-        f"SELECT * FROM DiningFacility WHERE DiningFacilityID = {DiningFacilityID}")]
+        f"SELECT * FROM DiningFacilities WHERE DiningFacilityID = {DiningFacilityID}")]
 
     if len(res) != 1:
         raise HTTPException(
@@ -37,8 +39,8 @@ async def get_dining_facility(DiningFacilityID: int):
         'dining_facility_id':     item['DiningFacilityID'],
         'dining_facility_name':   item['DiningFacilityName'],
         'description':            item['Description'],
-        'address':                item['DiningFacilityID'],
-        'image':                  item['DiningFacilityID']
+        'address':                item['Address'],
+        'image':                  item['Image']
     }) for item in res]
 
     return res[0]
@@ -48,9 +50,9 @@ async def get_dining_facility(DiningFacilityID: int):
 async def get_dining_facility_menu(DiningFacilityID: int):
 
     dining_facility = [dict(row) for row in runQuery(
-        "SELECT COUNT(*) FROM DiningFacility")]
+        f"SELECT COUNT(*) FROM DiningFacilities WHERE DiningFacilityID = {DiningFacilityID}")]
 
-    if dining_facility[0]['f0_'] != 0:
+    if dining_facility[0]['f0_'] != 1:
         raise HTTPException(
             status_code=400, detail='Dining Facility not found')
 
@@ -58,7 +60,7 @@ async def get_dining_facility_menu(DiningFacilityID: int):
         f"""
         SELECT * 
         FROM DiningFacilityMenuItems as DFI, MenuItems as MI
-        WHERE DFI.MenuItem = MI.MenuItem
+        WHERE DFI.MenuItemID = MI.MenuItemID AND DFI.DiningFacilityID = {DiningFacilityID}
         """)]
 
     menu_items = [MenuItem.parse_obj({
@@ -79,7 +81,7 @@ async def get_dining_facility_menu(DiningFacilityID: int):
     }) for item in res]
 
 
-    def builder(item): return DiningFacilityMenuItem(
+    def builder(item): return DiningFacilityMenuItem.parse_obj(
         {'menu_item': item[1], 'timing': item[0]['Timing'], 'station': item[0]['Station']})
     
     res = list(map(builder, zip(res, menu_items)))

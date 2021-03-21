@@ -78,7 +78,6 @@ def get_nutrition(MenuItemID: int):
     if len(res) != 1:
         raise HTTPException(status_code=404, detail='MenuItem not found')
 
-    print(res)
     return get(NUTRITION_URL + res[0]['HashID']).json()
 
 

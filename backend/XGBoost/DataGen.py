@@ -28,22 +28,27 @@ def generate_dataset():
 
         for loc in LOCATIONS:
 
-            response = requests.get(URL +'/' + loc + '/' + cur_date).json()
+            response = requests.get(URL + '/' + loc + '/' + cur_date).json()
 
             meals_list = []
 
             try:
-                meals_list = [x for x in response['Meals'] if x['Status'] ==  'Open']
-            except: 
+                meals_list = [x for x in response['Meals']
+                              if x['Status'] == 'Open']
+            except:
                 pass
 
             for meals in meals_list:
 
+                time = meals['Hours']['StartTime'] + \
+                    "-" + meals['Hours']['EndTime']
+
                 for station in meals['Stations']:
-                    
+
                     for item in station['Items']:
 
-                        file.write(cur_date + ';' + loc + ';' + item['Name'] + '\n')
+                        file.write(
+                            cur_date + ';' + loc + ';' + meals['Name'] + ';' + time + ';' + item['Name'] + '\n')
 
     file.close()
 
