@@ -21,6 +21,7 @@ function ProfileManager({route, navigation}) {
     const [swipes, setSwipes] = useState('');
     const [transact, setTransact] = useState('');
     const [add, setAdd] = useState('Add');
+    const [sign, setSign] = useState('+');
 
 
     const [delBool, setDelBool] = useState(false);
@@ -68,6 +69,16 @@ function ProfileManager({route, navigation}) {
 
             sendDiningDollars(subtract);
         }
+    }
+
+    function handleAdd() {
+        setAdd('Add');
+        setSign('+');
+    }
+
+    function handleSub() {
+        setAdd('Subtract');
+        setSign('-');
     }
 
     function handleLogout() {
@@ -348,16 +359,19 @@ function ProfileManager({route, navigation}) {
                             <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
-                            <TouchableOpacity active = { .5 } onPress={() =>  setAdd('Subtract')}>
+                            <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
                                 <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>                </Text>
-                            <TouchableOpacity active = { .5 } onPress={() =>  setAdd('Add')}>
+                            <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
                                 <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
                             </TouchableOpacity>
                         </View>
-                        <Text style={styles.modalText}>How many dollars?</Text>
-                        <TextInput style={ styles.textEnter } onChangeText={(transact) => setTransact(transact)} />
+                        <Text style={styles.dollarsText}>How many dollars?</Text>
+                        <View style={styles.rowBetween}>
+                            <Text style={styles.big}>{sign}</Text>
+                            <TextInput style={ styles.textEnter } onChangeText={(transact) => setTransact(transact)} />
+                        </View>
                         <View style={ styles.modalLine }/>
                     </View>
                 </View>
@@ -619,6 +633,16 @@ const styles = StyleSheet.create({
         color: "black",
         marginBottom: "5%",
 
+        },
+    dollarsText: {
+        color: "black",
+        marginBottom: "1%",
+
+        },
+
+    big: {
+        color: "black",
+        fontSize: 20,
         },
 
     modalView: {
