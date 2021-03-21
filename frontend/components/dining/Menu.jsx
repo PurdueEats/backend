@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity, FlatList} from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
@@ -13,7 +13,7 @@ function Menu({route, navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [searched, setSearched] = useState('');
     const [allData, setAllData] = useState('');
-    const [FilterData, setFilterData] = useState('');
+    const [filterData, setFilterData] = useState('');
     const popAction = StackActions.pop();
 
     function handleNavigate() {
@@ -35,6 +35,40 @@ function Menu({route, navigation}) {
             setFilterData(searchData);
             setSearched(searchText);
         }
+    }
+
+    function renderLine() {
+        return (
+            <View
+                style={{
+                    borderBottomColor: '#c4baba',
+                    borderBottomWidth: 1,
+                    marginTop: "2%",
+                    marginBottom: "5%"
+                }}
+            />
+        );
+    }
+
+    function preprocessMenuItems() {
+
+    }
+
+    function getMenuItems() {
+        //fetch request here
+        // separate into different lists here
+    }
+    function renderMenuItem({menuItem}) {
+        return (
+            <TouchableOpacity>
+                <View style={{flexDirection: "row"}}>
+                    <Text style={styles.firstItem}>Alfredo Pasta</Text>
+                    <View style={styles.icons}>
+                        <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
     }
 
     return (
@@ -123,7 +157,7 @@ function Menu({route, navigation}) {
                         onChangeItem={item => setFilter(item.value)}
                     />
                 </View>
-
+                <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={renderMenuItem} keyExtractor={(menuItem, index) => index.toString()}/>
                 {filter === "All Items" ? (
                     <View>
                         <View style={{flexDirection: "row"}}>
