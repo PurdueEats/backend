@@ -220,6 +220,29 @@ function Menu({route, navigation}) {
                     </View>
                 )}
 
+                {filter === "Favorite Items" ? (
+                    <View>
+                        <View style={{flexDirection: "row"}}>
+                            <Text style={styles.fourthItem}>Strawberry Gelatin</Text>
+                            <View style={styles.icons}>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                borderBottomColor: '#c4baba',
+                                borderBottomWidth: 1,
+                                marginTop: "2%",
+                                marginBottom: "5%"
+                            }}
+                        />
+                    </View>
+                    ): (
+                        <View>
+
+                        </View>
+                )}
+
             </SafeAreaView>
         </ScrollView>
     );
