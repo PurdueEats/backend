@@ -317,6 +317,21 @@ async def get_user_nutrition(UserID: int = Depends(auth_handler.auth_wrapper)):
     return res
 
 
+@app.get("/{UserID}/UserFavMeals", response_model=List[UserFavMeals])
+async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
+    pass
+
+
+@app.post("/{UserID}/UserFavMeals", status_code=201)
+async def post_user_fav_meals(userFavMeals: UserFavMeals, UserID: int = Depends(auth_handler.auth_wrapper)):
+    pass
+
+
+@app.delete("/{UserID}/UserFavMeals", status_code=204)
+async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_handler.auth_wrapper)):
+    pass
+
+
 @app.post("/ForgotPassword", status_code=201)
 async def forgot_password(email: str):
 
