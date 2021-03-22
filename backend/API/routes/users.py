@@ -14,7 +14,8 @@ from API.models.users import (
     UserTransaction,
     UserFavMenuItems,
     UserOut,
-    UserNutrition
+    UserNutrition,
+    UserFavMeals
 )
 
 
@@ -319,12 +320,35 @@ async def get_user_nutrition(UserID: int = Depends(auth_handler.auth_wrapper)):
 
 @app.get("/{UserID}/UserFavMeals", response_model=List[UserFavMeals])
 async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
-    pass
+
+    res = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserFavoriteMenuItems WHERE UserID = {UserID}")]
+
+    res = [UserFavMeals.parse_obj({
+        'user_id':  item['UserID'],
+        'menu_id':  item['MenuItemID'],
+        'toggle':   item['Toggle']
+    })
+        for item in res]
+
+    return res
 
 
 @app.post("/{UserID}/UserFavMeals", status_code=201)
 async def post_user_fav_meals(userFavMeals: UserFavMeals, UserID: int = Depends(auth_handler.auth_wrapper)):
-    pass
+
+    userFavMeals.user_id = UserID
+
+    runQuery(f"""
+    DELETE FROM UserFavoriteMenuItems 
+    WHERE UserID = {userFavMeals.user_id} AND MenuItemID = {userFavMeals.menu_id}
+    """)
+
+    runQuery(f"""
+    INSERT INTO UserFavoriteMenuItems values (
+    {userFavMeals.user_id}, {userFavMeals.menu_id}, {userFavMeals.toggle}
+    )
+    """)
 
 
 @app.delete("/{UserID}/UserFavMeals", status_code=204)
