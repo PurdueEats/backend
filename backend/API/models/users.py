@@ -51,3 +51,9 @@ class UserNutrition(BaseModel):
     carbs:      int
     fat:        int
     protein:    int
+
+
+class UserFavMeals(BaseModel):
+    user_id:    int
+    meal_id:    int
+    toggle:     bool
