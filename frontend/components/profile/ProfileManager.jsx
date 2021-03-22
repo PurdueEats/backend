@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Toast } from 'native-base';
+import moment from 'moment';
+
+
 
 function ProfileManager({route, navigation}) {
     const [modalName, setModalName] = useState(false);
@@ -28,6 +31,9 @@ function ProfileManager({route, navigation}) {
     const [nameBool, setNameBool] = useState(false);
     const [planBool, setPlanBool] = useState(false);
     const [passwordBool, setPasswordBool] = useState(false);
+
+    var moment = require('moment-timezone');
+    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     useEffect(() => {
         if (!delBool && !nameBool && !planBool && !passwordBool) {
@@ -142,7 +148,7 @@ function ProfileManager({route, navigation}) {
                 "user_id": route.params.UserID,
                 "transaction_amount": dollars2,
                 "balance": dollars,
-                "timestamp": "2021-03-18T07:56:25.061Z"
+                "timestamp": time
 
             })
 
