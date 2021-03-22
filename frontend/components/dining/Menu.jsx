@@ -72,16 +72,46 @@ function Menu({route, navigation}) {
 
     function getMenuItems() {
         //fetch request here
-        // separate into different lists here
+        // need dining id
     }
     function renderMenuItem({menuItem}) {
         return (
             <TouchableOpacity>
                 <View style={{flexDirection: "row"}}>
-                    <Text style={styles.firstItem}>Alfredo Pasta</Text>
-                    <View style={styles.icons}>
-                        <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
-                    </View>
+                    <Text style={styles.firstItem}>{menuItem.item_name}</Text>
+                    {menuItem.is_vegetarian == true ? (
+                        <View style={styles.icons}>
+                            <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                        </View>
+                    ): (
+                        <View>
+                        </View>
+                    )}
+                    {menuItem.has_wheat == false && menuItem.has_gluten == false ? (
+                        <View style={styles.icons}>
+                            <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
+                        </View>
+                    ): (
+                        <View>
+                        </View>
+                    )}
+                    {menuItem.has_milk == false ? (
+                        <View style={styles.icons}>
+                            <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                        </View>
+                    ): (
+                        <View>
+                        </View>
+                    )}
+                    {menuItem.has_peanuts == false && menuItem.has_treenuts == false ? (
+                        <View style={styles.icons}>
+                            <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
+                        </View>
+                    ): (
+                        <View>
+                        </View>
+                    )}
+
                 </View>
             </TouchableOpacity>
         );
