@@ -14,6 +14,11 @@ function Menu({route, navigation}) {
     const [searched, setSearched] = useState('');
     const [allData, setAllData] = useState('');
     const [filterData, setFilterData] = useState('');
+    const [vegetarianData, setVegetarianData] = useState('');
+    const [glutenFreeData, setGlutenFreeData] = useState('');
+    const [dairyFreeData, setDairyFreeData] = useState('');
+    const [nutFreeData, setNutFreeData] = useState('');
+
     const popAction = StackActions.pop();
 
     function handleNavigate() {
@@ -23,7 +28,7 @@ function Menu({route, navigation}) {
     function searchFiltering (searchText) {
         if (!searchText) {
             setSearched(searchText);
-            setFilterData(allData);
+            setFilterData(filterData);
         }
         if(searchText) {
             const searchData = allData.filter(function (menuItem)
@@ -50,8 +55,19 @@ function Menu({route, navigation}) {
         );
     }
 
-    function preprocessMenuItems() {
-
+    function preprocessMenuItems(menuItem) {
+        if(menuItem.is_vegetarian == true) {
+            setVegetarianData(menuItem);
+        }
+        if(menuItem.has_wheat == false && menuItem.has_gluten == false) {
+            setGlutenFreeData(menuItem);
+        }
+        if(menuItem.has_milk == false) {
+            setDairyFreeData(menuItem);
+        }
+        if (menuItem.has_peanuts == false && menuItem.has_treenuts == false) {
+            setNutFreeData(menuItem);
+        }
     }
 
     function getMenuItems() {
@@ -109,6 +125,10 @@ function Menu({route, navigation}) {
                                     <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={20}/>
                                     <Text style={styles.modalText}>Dairy Free Item</Text>
                                 </View>
+                                <View style={{flexDirection: "row"}}>
+                                    <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={20}/>
+                                    <Text style={styles.modalText}>Nut Free Item</Text>
+                                </View>
                             </View>
                         </View>
                     </Modal>
@@ -156,7 +176,33 @@ function Menu({route, navigation}) {
                         dropDownStyle={{backgroundColor: '#fafafa'}}
                         onChangeItem={item => setFilter(item.value)}
                     />
+
                 </View>
+                {filter === "Gluten Free" ? (
+                    setFilterData(glutenFreeData)
+                ): (
+                    setFilterData(filterData)
+                )}
+                {filter === "Vegetarian" ? (
+                    setFilterData(vegetarianData)
+                ): (
+                    setFilterData(filterData)
+                )}
+                {filter === "Dairy Free" ? (
+                    setFilterData(dairyFreeData)
+                ): (
+                    setFilterData(filterData)
+                )}
+                {filter === "Nut Free" ? (
+                    setFilterData(nutFreeData)
+                ): (
+                    setFilterData(filterData)
+                )}
+                {filter === "All Items" ? (
+                    setFilterData(allData)
+                ): (
+                    setFilterData(filterData)
+                )}
                 <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={renderMenuItem} keyExtractor={(menuItem, index) => index.toString()}/>
                 {filter === "All Items" ? (
                     <View>
