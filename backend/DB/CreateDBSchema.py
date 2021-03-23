@@ -62,6 +62,18 @@ create_user_tables = {
 	)
 	""",
 
+	"User_Nutrition":
+	f"""
+	CREATE OR REPLACE TABLE UserNutrition
+	(
+		UserID		INT64,
+		Calories	INT64,
+		Carbs		INT64,
+		Fat		INT64,
+		Protein		INT64
+	)
+	"""
+
 }
 
 # Schema Description of all Dining Facility related tables
@@ -127,7 +139,6 @@ create_menu_items_table = {
 		MenuItemID		INT64,
 		HashID			STRING,
 		ItemName		STRING,
-		Nutrition		BYTES,
 		Eggs			BOOL,
 		Fish			BOOL,
 		Gluten			BOOL,

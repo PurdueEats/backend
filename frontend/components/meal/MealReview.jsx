@@ -1,7 +1,7 @@
-import React, { useState, useEffect, Component, Fragment } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import React from "react";
+import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { AirbnbRating} from 'react-native-ratings';
-import { Button, Item, Toast } from 'native-base';
+import { Button, Toast } from 'native-base';
 import SelectMultiple from 'react-native-select-multiple'
 import moment from 'moment';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,15 +9,15 @@ import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
 const meals = [
-    { label: 'Freshly Baked Vegan Cookies', value: 21 },
-    { label: 'Seasoned Chicken Fajita', value: 25 },
-    { label: 'Sausage Links', value: 43 },
-    { label: 'Vegan Salads ', value: 20 },
-    { label: 'Mexican Fiesta Rice', value: 35 },
-    { label: 'Mini Spring Rolls', value: 19 },
-    { label: 'Roast Turkey', value: 6 },
-    { label: 'Fried Tofu Cubes', value: 23 },
-    { label: 'Banana Muffin', value: 47 },
+    { label: 'Bangkok Chicken Wrap', value: 21 },
+    { label: 'Moo Shu Chicken', value: 25 },
+    { label: 'Strawberry Gelatin', value: 43 },
+    { label: 'Waffle Fries', value: 20 },
+    { label: 'Firehouse Chili with Pork', value: 35 },
+    { label: 'Gluten Free Cookies', value: 41 },
+    { label: 'Pineapple Chunks', value: 6 },
+    { label: 'Vegan Pub Fried Fish', value: 23 },
+    { label: 'Brown Rice with Mushrooms', value: 47 },
 ]
 
 function MealReview({route, navigation}) {
