@@ -296,6 +296,28 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     return
 
 
+@app.post("/{UserID}/MealSwipe")
+async def use_meal_swipe(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    user_extra = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
+
+    if len(user_extra) != 1:
+        raise HTTPException(status_code=401, detail='Invalid user')
+
+    user_extra = user_extra[0]
+    user_extra['MealSwipeCount'] -=  1
+
+    runQuery(f"""
+    INSERT INTO UserExtra values (
+        {user_extra['UserID']}, '{user_extra['MealPlanName']}',
+        {user_extra['MealSwipeCount']}, {user_extra['DiningDollarBalance']}
+    )
+    """)
+
+    return
+
+
 @app.post("/{UserID}/Nutrition")
 async def get_user_nutrition(UserID: int = Depends(auth_handler.auth_wrapper)):
 
