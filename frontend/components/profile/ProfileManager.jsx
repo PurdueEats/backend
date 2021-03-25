@@ -12,6 +12,7 @@ function ProfileManager({route, navigation}) {
     const [modalPassword, setModalPassword] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
     const [modalDining, setModalDining] = useState(false);
+    const [modalSwipes, setModalSwipes] = useState(false);
 
     const [name, setName] = useState('');
     const [nameNew, setNameNew] = useState('');
@@ -26,7 +27,8 @@ function ProfileManager({route, navigation}) {
     const [add, setAdd] = useState('Add');
     const [sign, setSign] = useState('+');
 
-
+    var d = new Date();
+    var n = d.getDay();
     const [delBool, setDelBool] = useState(false);
     const [nameBool, setNameBool] = useState(false);
     const [planBool, setPlanBool] = useState(false);
@@ -77,9 +79,22 @@ function ProfileManager({route, navigation}) {
         }
     }
 
+    function handleSwipesExit(subtract) {
+        setModalSwipes(!setModalSwipes);
+        if (add == 'Add') {
+            console.log("in here?")
+            sendSwipes(0 - subtract);
+        } else {
+            console.log("in here?")
+
+            sendSwipes(subtract);
+        }
+    }
+
     function handleAdd() {
         setAdd('Add');
         setSign('+');
+        console.log(n);
     }
 
     function handleSub() {
@@ -147,6 +162,45 @@ function ProfileManager({route, navigation}) {
             body: JSON.stringify({
                 "user_id": route.params.UserID,
                 "transaction_amount": dollars2,
+                "balance": dollars,
+                "timestamp": time
+
+            })
+
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        console.log(dollars2);
+                        setPlanBool(false);
+                        getMealInfo();
+                    } else {
+                        console.log('Meal like there was a problem. Status Code: ' +
+                            response.status);
+                        console.log(dollars2);
+                        setPlanBool(false);
+                        getMealInfo();
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
+    function sendSwipes(swipes2) {
+        // Send Meal Plan Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/Trans`, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+            body: JSON.stringify({
+                "user_id": route.params.UserID,
+                "transaction_amount": swipes2,
                 "balance": dollars,
                 "timestamp": time
 
@@ -382,7 +436,34 @@ function ProfileManager({route, navigation}) {
                     </View>
                 </View>
             </Modal>
-
+            <Modal animationType="slide" transparent={true} visible={modalSwipes}
+                onRequestClose={() => {
+                    setModalSwipes(!modalSwipes);
+                }}
+            >
+                <View>
+                    <View style={styles.modalView}>
+                        <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesExit(transact)}>
+                            <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
+                        </TouchableOpacity>
+                        <View style={styles.rowBetween}>
+                            <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
+                                <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
+                            </TouchableOpacity>
+                            <Text style={styles.modalText}>                </Text>
+                            <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
+                                <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={styles.dollarsText}>How many swipes?</Text>
+                        <View style={styles.rowBetween}>
+                            <Text style={styles.big}>{sign}</Text>
+                            <TextInput style={ styles.textEnter } onChangeText={(transact) => setTransact(transact)} />
+                        </View>
+                        <View style={ styles.modalLine }/>
+                    </View>
+                </View>
+            </Modal>
             <View style={ styles.profileHeader }>
                 <View style={ styles.backImage }>
                     <Text style={ styles.profileWord }>           </Text>
@@ -419,6 +500,11 @@ function ProfileManager({route, navigation}) {
         <View style={styles.colBetween}/>
             <View style={styles.rowBetween}>
                 <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
+                <View style={styles.rowBetween}>
+                    <TouchableOpacity active = { .5 } onPress={() =>  setModalSwipes(true) }>
+                        <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
+                    </TouchableOpacity>
+                </View>
                 <Modal animationType="slide" transparent={true} visible={ModalPlan}
                     onRequestClose={() => {
                         setModalPlan(!ModalPlan);
