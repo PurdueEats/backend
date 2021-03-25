@@ -380,7 +380,7 @@ async def post_user_fav_meals(userFavMeals: UserFavMeals, UserID: int = Depends(
     """)
 
 
-@app.delete("/{UserID}/UserFavMeals", status_code=204)
+@app.delete("/{UserID}/UserFavMeals", response_class=Response, status_code=204)
 async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     runQuery(f"""
