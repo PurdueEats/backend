@@ -69,6 +69,38 @@ async def get_menu_item_nutrition(MenuItemID: int):
     return get_nutrition(MenuItemID)
 
 
+@app.get("/MealPreferences", response_model=List[MenuItem])
+async def get_meal_preferences():
+
+    res = [dict(row) for row in runQuery(
+        f"""SELECT * FROM MenuItems""")]
+    
+    k = min(len(res), 5)
+
+    from random import choices
+
+    res = choices(res, k=k)
+
+    res = [MenuItem.parse_obj({
+        'menu_item_id':   item['MenuItemID'],
+        'hash_id':        item['HashID'],
+        'item_name':      item['ItemName'],
+        'has_eggs':       item['Eggs'],
+        'has_fish':       item['Fish'],
+        'has_gluten':     item['Gluten'],
+        'has_milk':       item['Milk'],
+        'has_peanuts':    item['Peanuts'],
+        'has_shellfish':  item['Shellfish'],
+        'has_soy':        item['Soy'],
+        'has_treenuts':   item['TreeNuts'],
+        'is_vegetarian':  item['Vegetarian'],
+        'is_vegan':       item['Vegan'],
+        'has_wheat':      item['Wheat']
+    }) for item in res]
+
+    return res
+
+
 # Proxy function for nutrition fetching
 def get_nutrition(MenuItemID: int):
 
