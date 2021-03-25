@@ -346,6 +346,7 @@ async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
     res = [dict(row) for row in runQuery(
         f"SELECT * FROM UserFavoriteMenuItems WHERE UserID = {UserID}")]
 
+
     res = [UserFavMeals.parse_obj({
         'user_id':  item['UserID'],
         'meal_id':  item['MenuItemID'],
@@ -361,6 +362,13 @@ async def post_user_fav_meals(userFavMeals: UserFavMeals, UserID: int = Depends(
 
     userFavMeals.user_id = UserID
 
+    res = [dict(row) for row in runQuery(
+        f"SELECT COUNT(*) FROM MenuItems WHERE MenuItemID = {userFavMeals.meal_id}")]
+    
+    if res[0]['f0_'] != 0:
+        raise HTTPException(
+            status_code=401, detail='Invalid Menu Item')
+    
     runQuery(f"""
     DELETE FROM UserFavoriteMenuItems 
     WHERE UserID = {userFavMeals.user_id} AND MenuItemID = {userFavMeals.meal_id}
