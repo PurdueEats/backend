@@ -308,6 +308,8 @@ async def use_meal_swipe(UserID: int = Depends(auth_handler.auth_wrapper)):
     user_extra = user_extra[0]
     user_extra['MealSwipeCount'] -= 1
 
+    runQuery(f"DELTE FROM UserExtra WHERE UserID = {UserID}")
+
     runQuery(f"""
     INSERT INTO UserExtra values (
         {user_extra['UserID']}, '{user_extra['MealPlanName']}',
