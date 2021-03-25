@@ -13,7 +13,9 @@ from API.models.users import (
     UserSchedule,
     UserTransaction,
     UserFavMenuItems,
-    UserOut
+    UserOut,
+    UserNutrition,
+    UserFavMeals
 )
 
 
@@ -289,6 +291,103 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     runQuery(f"""
     INSERT INTO UserTransaction values ({userTransaction.user_id}, {userTransaction.transaction_amount},
     {balance}, '{userTransaction.timestamp}')
+    """)
+
+    return
+
+
+@app.post("/{UserID}/MealSwipe")
+async def use_meal_swipe(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    user_extra = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
+
+    if len(user_extra) != 1:
+        raise HTTPException(status_code=401, detail='Invalid user')
+
+    user_extra = user_extra[0]
+    user_extra['MealSwipeCount'] -= 1
+
+    runQuery(f"DELETE FROM UserExtra WHERE UserID = {UserID}")
+
+    runQuery(f"""
+    INSERT INTO UserExtra values (
+        {user_extra['UserID']}, '{user_extra['MealPlanName']}',
+        {user_extra['MealSwipeCount']}, {user_extra['DiningDollarBalance']}
+    )
+    """)
+
+    return
+
+
+@app.get("/{UserID}/Nutrition")
+async def get_user_nutrition(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    user_nutrition = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserNutrition WHERE UserID = {UserID}")]
+
+    if len(user_nutrition) != 1:
+        raise HTTPException(status_code=401, detail='Invalid user')
+
+    user_nutrition = user_nutrition[0]
+
+    res = UserNutrition.parse_obj({
+        'user_id':  user_nutrition['UserID'],
+        'calories': user_nutrition['Calories'],
+        'carbs':    user_nutrition['Carbs'],
+        'fat':      user_nutrition['Fat'],
+        'protein':  user_nutrition['Protein']
+    })
+
+    return res
+
+
+@app.get("/{UserID}/UserFavMeals", response_model=List[UserFavMeals])
+async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    res = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserFavoriteMenuItems WHERE UserID = {UserID}")]
+
+    res = [UserFavMeals.parse_obj({
+        'user_id':  item['UserID'],
+        'meal_id':  item['MenuItemID'],
+        'toggle':   item['Toggle']
+    })
+        for item in res]
+
+    return res
+
+
+@app.post("/{UserID}/UserFavMeals", status_code=201)
+async def post_user_fav_meals(userFavMeals: UserFavMeals, UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    userFavMeals.user_id = UserID
+
+    res = [dict(row) for row in runQuery(
+        f"SELECT COUNT(*) FROM MenuItems WHERE MenuItemID = {userFavMeals.meal_id}")]
+
+    if res[0]['f0_'] != 1:
+        raise HTTPException(
+            status_code=401, detail='Invalid Menu Item')
+
+    runQuery(f"""
+    DELETE FROM UserFavoriteMenuItems 
+    WHERE UserID = {userFavMeals.user_id} AND MenuItemID = {userFavMeals.meal_id}
+    """)
+
+    runQuery(f"""
+    INSERT INTO UserFavoriteMenuItems values (
+    {userFavMeals.user_id}, {userFavMeals.meal_id}, {userFavMeals.toggle}
+    )
+    """)
+
+
+@app.delete("/{UserID}/UserFavMeals")
+async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    runQuery(f"""
+    DELETE FROM UserFavoriteMenuItems 
+    WHERE UserID = {UserID} AND MenuItemID = {menuItemID}
     """)
 
     return
