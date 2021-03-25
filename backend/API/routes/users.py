@@ -318,7 +318,7 @@ async def use_meal_swipe(UserID: int = Depends(auth_handler.auth_wrapper)):
     return
 
 
-@app.post("/{UserID}/Nutrition")
+@app.get("/{UserID}/Nutrition")
 async def get_user_nutrition(UserID: int = Depends(auth_handler.auth_wrapper)):
 
     user_nutrition = [dict(row) for row in runQuery(
