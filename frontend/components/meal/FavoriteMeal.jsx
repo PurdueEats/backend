@@ -25,6 +25,7 @@ function FavoriteMeals({route, navigation}) {
     const [currentSelection, setCurrentSelection] = useState([]);
     const [removeSelection, setRemoveSelection] = useState([]);
     const [selectedFavMeals, setSelectedFavMeals] = React.useState([]);
+    const [response, setResponse] = React.useState('');
 
     /*function handleNavigate() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token });
@@ -39,9 +40,31 @@ function FavoriteMeals({route, navigation}) {
     }
 
     function handleFavMeal() {
-      const updatedList = currentSelection.concat(selectedFavMeals);
-      setCurrentSelection(updatedList);
-      setSelectedFavMeals([]);
+        const updatedList = currentSelection.concat(selectedFavMeals);
+        setCurrentSelection(updatedList);
+        setSelectedFavMeals([]);
+        selectedFavMeals.map(item => {
+            console.log("hit");
+            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+                method: 'POST',
+                headers : {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + route.params.token
+                },
+                body: JSON.stringify({
+                     "user_id": route.params.UserID.toString(),
+                     "meal_id": item.value,
+                     "toggle": true
+                })
+            })
+                .then((response) => response.text())
+                        .then((responseData) => {
+                         console.log("inside responsejson");
+                         console.log('response object:',responseData);
+            console.log(item.value);
+                         }).done();
+        })
     }
 
     const handleRemoveMeal = () => {
