@@ -3,8 +3,8 @@ import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } fro
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Toast } from 'native-base';
 import moment from 'moment';
-
-
+import {StackActions} from "@react-navigation/native";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 function ProfileManager({route, navigation}) {
     const [modalName, setModalName] = useState(false);
@@ -25,7 +25,6 @@ function ProfileManager({route, navigation}) {
     const [transact, setTransact] = useState('');
     const [add, setAdd] = useState('Add');
     const [sign, setSign] = useState('+');
-
 
     const [delBool, setDelBool] = useState(false);
     const [nameBool, setNameBool] = useState(false);
@@ -362,15 +361,15 @@ function ProfileManager({route, navigation}) {
                 <View>
                     <View style={styles.modalView}>
                         <TouchableOpacity active = { .5 } onPress={() =>  handleDiningExit(transact)}>
-                            <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
+                            <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
                             <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
-                                <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>                </Text>
                             <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
-                                <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
                         </View>
                         <Text style={styles.dollarsText}>How many dollars?</Text>

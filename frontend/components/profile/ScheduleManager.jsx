@@ -42,71 +42,38 @@ function ScheduleManager({route, navigation}) {
     const [sundayDinner, setSundayDinner] = useState("5p");
 
     // Get user's current schedule
-    // useEffect(() => {
-    //     // Fetch current schedule data
-    //     fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Schedule', {
-    //         method: 'POST',
-    //         headers : {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json',
-    //             'Authorization': 'Bearer ' + route.params.token
-    //         },
-    //         body: JSON.stringify({
-    //             "schedule": {
-    //                 "monday": {
-    //                     "breakfast": mondayBreakfast,
-    //                     "lunch": mondayLunch,
-    //                     "dinner": mondayDinner
-    //                 },
-    //                 "tuesday": {
-    //                     "breakfast": tuesdayBreakfast,
-    //                     "lunch": tuesdayLunch,
-    //                     "dinner": tuesdayDinner
-    //                 },
-    //                 "wednesday": {
-    //                     "breakfast": wednesdayBreakfast,
-    //                     "lunch": wednesdayLunch,
-    //                     "dinner": wednesdayDinner
-    //                 },
-    //                 "thursday": {
-    //                     "breakfast": thursdayBreakfast,
-    //                     "lunch": thursdayLunch,
-    //                     "dinner": thursdayDinner
-    //                 },
-    //                 "friday": {
-    //                     "breakfast": fridayBreakfast,
-    //                     "lunch": fridayLunch,
-    //                     "dinner": fridayDinner
-    //                 },
-    //                 "saturday": {
-    //                     "breakfast": saturdayBreakfast,
-    //                     "lunch": saturdayLunch,
-    //                     "dinner": saturdayDinner
-    //                 },
-    //                 "sunday": {
-    //                     "breakfast": sundayBreakfast,
-    //                     "lunch": sundayLunch,
-    //                     "dinner": sundayDinner
-    //                 },
-    //             },
-    //         })
-    //     })
-    //         .then(
-    //             function(response) {
-    //                 if (response.status === 200 || response.status === 201) {
-    //                     // Successful POST
-    //                     console.log("successful update of schedule!")
-    //                 } else {
-    //                     // Examine the text in the response
-    //                     console.log('Loots like there was a problem updating schedule. Status Code: ' +
-    //                         response.status);
-    //                 }
-    //             }
-    //         )
-    //         .catch(function(err) {
-    //             console.log('Fetch Error :-S', err);
-    //         });
-    // }, []);
+    useEffect(() => {
+        console.log(route.params.UserID + " " + route.params.token)
+        // Fetch current schedule data
+        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Schedule', {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        response.json().then(function(data) {
+                            console.log(data)
+                        });
+                    } else {
+                        // Examine the text in the response
+                        console.log('Loots like there was a problem updating schedule. Status Code: ' +
+                            response.status);
+                        response.json().then(function(data) {
+                            console.log(data)
+                        });
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }, []);
 
     function setDate(date, type) {
         const returned = new Date(date);
@@ -114,71 +81,45 @@ function ScheduleManager({route, navigation}) {
         setModalSchedule(true);
     }
 
-    // function handleSubmit() {
-    //     // Submit current schedule data
-    //     fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Schedule', {
-    //         method: 'POST',
-    //         headers : {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json',
-    //             'Authorization': 'Bearer ' + route.params.token
-    //         },
-    //         body: JSON.stringify({
-    //             "schedule": {
-    //                 "monday": {
-    //                     "breakfast": mondayBreakfast,
-    //                     "lunch": mondayLunch,
-    //                     "dinner": mondayDinner
-    //                 },
-    //                 "tuesday": {
-    //                     "breakfast": tuesdayBreakfast,
-    //                     "lunch": tuesdayLunch,
-    //                     "dinner": tuesdayDinner
-    //                 },
-    //                 "wednesday": {
-    //                     "breakfast": wednesdayBreakfast,
-    //                     "lunch": wednesdayLunch,
-    //                     "dinner": wednesdayDinner
-    //                 },
-    //                 "thursday": {
-    //                     "breakfast": thursdayBreakfast,
-    //                     "lunch": thursdayLunch,
-    //                     "dinner": thursdayDinner
-    //                 },
-    //                 "friday": {
-    //                     "breakfast": fridayBreakfast,
-    //                     "lunch": fridayLunch,
-    //                     "dinner": fridayDinner
-    //                 },
-    //                 "saturday": {
-    //                     "breakfast": saturdayBreakfast,
-    //                     "lunch": saturdayLunch,
-    //                     "dinner": saturdayDinner
-    //                 },
-    //                 "sunday": {
-    //                     "breakfast": sundayBreakfast,
-    //                     "lunch": sundayLunch,
-    //                     "dinner": sundayDinner
-    //                 },
-    //             },
-    //         })
-    //     })
-    //         .then(
-    //             function(response) {
-    //                 if (response.status === 200 || response.status === 201) {
-    //                     // Successful POST
-    //                     console.log("successful update of schedule!")
-    //                 } else {
-    //                     // Examine the text in the response
-    //                     console.log('Loots like there was a problem updating schedule. Status Code: ' +
-    //                         response.status);
-    //                 }
-    //             }
-    //         )
-    //         .catch(function(err) {
-    //             console.log('Fetch Error :-S', err);
-    //         });
-    // }
+    function handleSubmit() {
+        const schedule = (mondayBreakfast + mondayLunch + mondayDinner + tuesdayBreakfast + tuesdayLunch + tuesdayDinner +
+            wednesdayBreakfast + wednesdayLunch + wednesdayDinner + thursdayBreakfast + thursdayLunch + thursdayDinner
+            + fridayBreakfast + fridayLunch + fridayDinner + saturdayBreakfast + saturdayLunch + saturdayDinner +
+            sundayBreakfast + sundayLunch + sundayDinner).toString()
+        console.log(schedule)
+        // Submit current schedule data
+        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Schedule', {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+            body: JSON.stringify({
+                "user_id": 0,
+                "schedule": schedule
+            })
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        console.log("successful update of schedule!")
+                        navigation.dispatch(StackActions.pop(1))
+                    } else {
+                        // Examine the text in the response
+                        console.log('Loots like there was a problem updating schedule. Status Code: ' +
+                            response.status);
+                        response.json().then(function(data) {
+                            console.log(data)
+                        });
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
 
     return (
         <View>
@@ -198,7 +139,7 @@ function ScheduleManager({route, navigation}) {
                     restrictMonthNavigation={true}
                     minDate={minDate}
                     maxDate={maxDate}
-                    selectedDayColor="#7300e6"
+                    selectedDayColor="red"
                     selectedDayTextColor="#FFFFFF"
                     onDateChange={(date, type) => setDate(date, type)}
                 />
@@ -729,7 +670,7 @@ function ScheduleManager({route, navigation}) {
             </View>
             <Text style={ styles.directionsText }>Note: these changes will become your new schedule.</Text>
             <View style={ styles.finalButtons }>
-                <Button style={ styles.confirmButtonComponent } onPress={() => navigation.dispatch(StackActions.pop(1))}>
+                <Button style={ styles.confirmButtonComponent } onPress={() => handleSubmit()}>
                     <Text style={ styles.confirmButtonText }>Update Schedule</Text>
                 </Button>
             </View>
