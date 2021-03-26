@@ -82,6 +82,11 @@ function FavoriteMeals({route, navigation}) {
                             <Text style={ styles.favoriteButtonText }>Remove</Text>
                         </Button>
                     </View>
+                    <View style={ styles.notiView }>
+                        <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Notifications") }>
+                            <Text style={ styles.textNormal}>Customize Notifications</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             ): (
                 <View>
@@ -146,6 +151,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         color: "white"
+    },
+    notiView: {
+        marginTop: "10%",
+        marginLeft: "30%",
     },
 });
 

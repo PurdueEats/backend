@@ -18,6 +18,7 @@ import NavBar from "./components/navbar/NavBar";
 import ForgotPassword from "./components/login/ForgotPassword"
 import TrackMeals from "./components/meal/TrackMeals"
 import FavoriteMeal from "./components/meal/FavoriteMeal"
+import Notifications from "./components/meal/Notifications"
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -28,7 +29,7 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
                     headerShown: false
-                }} initialRouteName="Login">
+                }} initialRouteName="Notifications">
                     <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="ForgotPassword" component={ ForgotPassword }/>
                     <Stack.Screen name="Name" component={ Name }/>
@@ -43,6 +44,7 @@ export default function App() {
                     <Stack.Screen name="Profile" component={ ProfileManager }/>
                     <Stack.Screen name="Track" component={ TrackMeals }/>
                     <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
+                    <Stack.Screen name="Notifications" component= { Notifications }/>
                     <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Template" component={ TemplateComponent }/>
                 </Stack.Navigator>
