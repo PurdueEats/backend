@@ -6,7 +6,6 @@ import Logo from "../../resources/logo.png";
 
 function TrackMeals({route, navigation}) {
 
-
     return (
         // Do not remove ScrollView. Adds scrolling to screens.
         <ScrollView showsVerticalScrollIndicator={false}>
