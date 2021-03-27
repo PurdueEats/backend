@@ -238,6 +238,7 @@ async def get_user_schedule(UserID: int = Depends(auth_handler.auth_wrapper)):
     if len(schedule) != 1:
         raise HTTPException(status_code=404, detail='Schedule not found')
 
+    schedule = schedule[0]
     res = [UserSchedule.parse_obj(
         {'user_id': schedule['UserID'], 'schedule': schedule['Schedule']})]
 
