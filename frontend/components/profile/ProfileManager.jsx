@@ -86,8 +86,9 @@ function ProfileManager({route, navigation}) {
             sendSwipes(0 - subtract);
         } else {
             console.log("in here?")
-
-            sendSwipes(subtract);
+            if (swipes - subtract >= 0) {
+                sendSwipes(subtract);
+            }
         }
     }
 
