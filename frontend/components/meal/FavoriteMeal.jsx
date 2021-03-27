@@ -160,12 +160,12 @@ function FavoriteMeals({route, navigation}) {
             });
      }
 
-     // remove request to remove selected menu items from database
+     // DELETE request to remove selected menu items from database
      function removeFavMeal() {
         removeSelection.map(singleMeal => {
             fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals?menuItemID='+ singleMeal.value, {
                  method: 'DELETE',
-                 headers : {
+                 headers: {
                      'Content-Type': 'application/json',
                      'Accept': 'application/json',
                      'Authorization': 'Bearer ' + route.params.token
