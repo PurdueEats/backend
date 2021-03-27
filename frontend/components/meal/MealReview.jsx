@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { AirbnbRating} from 'react-native-ratings';
 import { Button, Toast } from 'native-base';
@@ -8,27 +8,64 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
-const meals = [
-    { label: 'Bangkok Chicken Wrap', value: 21 },
-    { label: 'Moo Shu Chicken', value: 25 },
-    { label: 'Strawberry Gelatin', value: 43 },
-    { label: 'Waffle Fries', value: 20 },
-    { label: 'Firehouse Chili with Pork', value: 35 },
-    { label: 'Gluten Free Cookies', value: 41 },
-    { label: 'Pineapple Chunks', value: 6 },
-    { label: 'Vegan Pub Fried Fish', value: 23 },
-    { label: 'Brown Rice with Mushrooms', value: 47 },
-]
+// const meals = [
+//     { label: 'Bangkok Chicken Wrap', value: 21 },
+//     { label: 'Moo Shu Chicken', value: 25 },
+//     { label: 'Strawberry Gelatin', value: 43 },
+//     { label: 'Waffle Fries', value: 20 },
+//     { label: 'Firehouse Chili with Pork', value: 35 },
+//     { label: 'Gluten Free Cookies', value: 41 },
+//     { label: 'Pineapple Chunks', value: 6 },
+//     { label: 'Vegan Pub Fried Fish', value: 23 },
+//     { label: 'Brown Rice with Mushrooms', value: 47 },
+// ]
 
 function MealReview({route, navigation}) {
   const [ratings, setRatings] = React.useState('');
   const [selectedMeals, setSelectedMeals] = React.useState([]);
   const [response, setResponse] = React.useState('');
+  const [meals, setMeals] = React.useState([]);
   const popAction = StackActions.pop();
+
+    useEffect(() => {
+        getMeals();
+    }, []);
 
   const onSelectionsChange = newSelections => {
     setSelectedMeals(newSelections)
   }
+
+    function getMeals() {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                /* 'Authorization': 'Bearer ' + route.params.token */
+            },
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        // Set Fields to correct values
+                        response.json().then(function(data) {
+                            data.map(menuItem => {
+                                meals.push(menuItem);
+                                // console.log(allData);
+                                // filterData = allData
+                            })
+                        });
+                    } else {
+                        console.log('Getting Menu Items like there was a problem. Status Code: ' +
+                            response.status);
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
 
     function displayError() {
         Toast.show({

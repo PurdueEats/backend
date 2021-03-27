@@ -14,9 +14,20 @@ function DiningFacilities({route, navigation}) {
     const [diningCourt, setDiningCourt] = useState('');
     const [selectedTab, setSelectedTab] = useState(0);
 
-
-    function handleNavigate() {
-        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token });
+    function EarhartNavigation() {
+        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 1});
+    }
+    function HillenbrandNavigation() {
+        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 2});
+    }
+    function FordNavigation() {
+        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 3});
+    }
+    function WindsorNavigation() {
+        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 4});
+    }
+    function WileyNavigation() {
+        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 5});
     }
 
     return (
@@ -43,14 +54,14 @@ function DiningFacilities({route, navigation}) {
                 <View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
-                            <TouchableOpacity onPress={ handleNavigate }>
+                            <TouchableOpacity onPress={ EarhartNavigation }>
                                 <Image source = { Earhart } style = { styles.earhartDiningImage }/>
                                 <Text style={ styles.earhartTitle }>{"Earhart"}</Text>
                                 <Text style={ styles.earhartTime }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity onPress={ handleNavigate }>
+                        <TouchableOpacity onPress={ WileyNavigation }>
                             <Image source = { Wiley } style = { styles.wileyDiningImage }/>
                             <Text style={ styles.wileyTitle }>{"Wiley"}</Text>
                             <Text style={ styles.wileyTime }>{"4:00-10:00 PM"}</Text>
@@ -58,21 +69,21 @@ function DiningFacilities({route, navigation}) {
                     </View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
-                            <TouchableOpacity onPress={ handleNavigate }>
+                            <TouchableOpacity onPress={ HillenbrandNavigation }>
                                 <Image source = { Hillenbrand } style = { styles.hillenbrandDiningImage }/>
                                 <Text style={ styles.hillenbrandTitle }>{"Hillenbrand"}</Text>
                                 <Text style={ styles.hillenbrandTime }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity onPress={ handleNavigate }>
+                        <TouchableOpacity onPress={ WindsorNavigation }>
                             <Image source = { Windsor } style = { styles.windsorDiningImage }/>
                             <Text style={ styles.windsorTitle }>{"Windsor"}</Text>
                             <Text style={ styles.windsorTime }>{"4:00-10:00 PM"}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={ styles.lastDiningCourt }>
-                        <TouchableOpacity onPress={ handleNavigate }>
+                        <TouchableOpacity onPress={ FordNavigation }>
                             <Image source = { Ford } style = { styles.fordDiningImage } />
                             <Text style={ styles.fordTitle }>{"Ford"}</Text>
                             <Text style={ styles.fordTime }>{"4:00-10:00 PM"}</Text>

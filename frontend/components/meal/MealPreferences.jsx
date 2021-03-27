@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
 import { AirbnbRating } from 'react-native-ratings';
 import { Button } from 'native-base';
@@ -6,12 +6,49 @@ import Logo from "../../resources/logo.png";
 
 function MealPreferences({route, navigation}) {
     // const [meals, setMealRating] = useState('');
-    const meals = [ "Hamburger", "Balsamic Chicken", "Hotdog", "Pizza", "Beef Broccoli Stirfry" ]
+    //const meals = [ "Hamburger", "Balsamic Chicken", "Hotdog", "Pizza", "Beef Broccoli Stirfry" ]
+    const [meals, setMeals] = useState([]);
     const ratings = [ 3, 3, 3, 3, 3 ]
 
     // useEffect(() => {
     //     console.log("hit here")
     // })
+
+    useEffect(() => {
+        getMeals();
+    }, []);
+
+    function getMeals() {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/MealPreferences`, {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                /* 'Authorization': 'Bearer ' + route.params.token */
+            },
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        // Set Fields to correct values
+                        response.json().then(function(data) {
+                            data.map(menuItem => {
+                                meals.push(menuItem);
+                                // console.log(allData);
+                                // filterData = allData
+                            })
+                        });
+                    } else {
+                        console.log('Getting Menu Items from Meal Preferences looks like there was a problem. Status Code: ' +
+                            response.status);
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
 
     function handleSubmit() {
         // Sample code for sending package to API
@@ -26,6 +63,7 @@ function MealPreferences({route, navigation}) {
         // 	.then(response => this.setState({ "response" : response }))
         navigation.navigate("NavBar", { UserID: route.params.UserID, token: route.params.token });
     }
+
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
