@@ -19,31 +19,30 @@ function ScheduleManager({route, navigation}) {
     const [selectedTab, setSelectedTab] = useState(0);
 
     // Schedule Data
-    const [mondayBreakfast, setMondayBreakfast] = useState("7a");
-    const [mondayLunch, setMondayLunch] = useState("11a");
-    const [mondayDinner, setMondayDinner] = useState("5p");
-    const [tuesdayBreakfast, setTuesdayBreakfast] = useState("7a");
-    const [tuesdayLunch, setTuesdayLunch] = useState("11a");
-    const [tuesdayDinner, setTuesdayDinner] = useState("5p");
-    const [wednesdayBreakfast, setWednesdayBreakfast] = useState("7a");
-    const [wednesdayLunch, setWednesdayLunch] = useState("11a");
-    const [wednesdayDinner, setWednesdayDinner] = useState("5p");
-    const [thursdayBreakfast, setThursdayBreakfast] = useState("7a");
-    const [thursdayLunch, setThursdayLunch] = useState("11a");
-    const [thursdayDinner, setThursdayDinner] = useState("5p");
-    const [fridayBreakfast, setFridayBreakfast] = useState("7a");
-    const [fridayLunch, setFridayLunch] = useState("11a");
-    const [fridayDinner, setFridayDinner] = useState("5p");
-    const [saturdayBreakfast, setSaturdayBreakfast] = useState("7a");
-    const [saturdayLunch, setSaturdayLunch] = useState("11a");
-    const [saturdayDinner, setSaturdayDinner] = useState("5p");
-    const [sundayBreakfast, setSundayBreakfast] = useState("7a");
-    const [sundayLunch, setSundayLunch] = useState("11a");
-    const [sundayDinner, setSundayDinner] = useState("5p");
+    const [mondayBreakfast, setMondayBreakfast] = useState("07");
+    const [mondayLunch, setMondayLunch] = useState("11");
+    const [mondayDinner, setMondayDinner] = useState("17");
+    const [tuesdayBreakfast, setTuesdayBreakfast] = useState("07");
+    const [tuesdayLunch, setTuesdayLunch] = useState("11");
+    const [tuesdayDinner, setTuesdayDinner] = useState("17");
+    const [wednesdayBreakfast, setWednesdayBreakfast] = useState("07");
+    const [wednesdayLunch, setWednesdayLunch] = useState("11");
+    const [wednesdayDinner, setWednesdayDinner] = useState("17");
+    const [thursdayBreakfast, setThursdayBreakfast] = useState("07");
+    const [thursdayLunch, setThursdayLunch] = useState("11");
+    const [thursdayDinner, setThursdayDinner] = useState("17");
+    const [fridayBreakfast, setFridayBreakfast] = useState("07");
+    const [fridayLunch, setFridayLunch] = useState("11");
+    const [fridayDinner, setFridayDinner] = useState("17");
+    const [saturdayBreakfast, setSaturdayBreakfast] = useState("07");
+    const [saturdayLunch, setSaturdayLunch] = useState("11");
+    const [saturdayDinner, setSaturdayDinner] = useState("17");
+    const [sundayBreakfast, setSundayBreakfast] = useState("07");
+    const [sundayLunch, setSundayLunch] = useState("11");
+    const [sundayDinner, setSundayDinner] = useState("17");
 
     // Get user's current schedule
     useEffect(() => {
-        console.log(route.params.UserID + " " + route.params.token)
         // Fetch current schedule data
         fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Schedule', {
             method: 'GET',
@@ -58,15 +57,32 @@ function ScheduleManager({route, navigation}) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful GET
                         response.json().then(function(data) {
-                            console.log(data)
+                            setSundayBreakfast(data["schedule"].substring(0, 2))
+                            setSundayLunch(data["schedule"].substring(2, 4))
+                            setSundayDinner(data["schedule"].substring(4, 6))
+                            setMondayBreakfast(data["schedule"].substring(6, 8))
+                            setMondayLunch(data["schedule"].substring(8, 10))
+                            setMondayDinner(data["schedule"].substring(10, 12))
+                            setTuesdayBreakfast(data["schedule"].substring(12, 14))
+                            setTuesdayLunch(data["schedule"].substring(14, 16))
+                            setTuesdayDinner(data["schedule"].substring(16, 18))
+                            setWednesdayBreakfast(data["schedule"].substring(18, 20))
+                            setWednesdayLunch(data["schedule"].substring(20, 22))
+                            setWednesdayDinner(data["schedule"].substring(22, 24))
+                            setThursdayBreakfast(data["schedule"].substring(24, 26))
+                            setThursdayLunch(data["schedule"].substring(26, 28))
+                            setThursdayDinner(data["schedule"].substring(28, 30))
+                            setFridayBreakfast(data["schedule"].substring(30, 32))
+                            setFridayLunch(data["schedule"].substring(32, 34))
+                            setFridayDinner(data["schedule"].substring(34, 36))
+                            setSaturdayBreakfast(data["schedule"].substring(36, 38))
+                            setSaturdayLunch(data["schedule"].substring(38, 40))
+                            setSaturdayDinner(data["schedule"].substring(40, 42))
                         });
                     } else {
                         // Examine the text in the response
                         console.log('Loots like there was a problem updating schedule. Status Code: ' +
                             response.status);
-                        response.json().then(function(data) {
-                            console.log(data)
-                        });
                     }
                 }
             )
@@ -82,11 +98,10 @@ function ScheduleManager({route, navigation}) {
     }
 
     function handleSubmit() {
-        const schedule = (mondayBreakfast + mondayLunch + mondayDinner + tuesdayBreakfast + tuesdayLunch + tuesdayDinner +
-            wednesdayBreakfast + wednesdayLunch + wednesdayDinner + thursdayBreakfast + thursdayLunch + thursdayDinner
-            + fridayBreakfast + fridayLunch + fridayDinner + saturdayBreakfast + saturdayLunch + saturdayDinner +
-            sundayBreakfast + sundayLunch + sundayDinner).toString()
-        console.log(schedule)
+        let schedule = (sundayBreakfast + sundayLunch + sundayDinner + mondayBreakfast + mondayLunch + mondayDinner +
+            tuesdayBreakfast + tuesdayLunch + tuesdayDinner + wednesdayBreakfast + wednesdayLunch + wednesdayDinner +
+            thursdayBreakfast + thursdayLunch + thursdayDinner + fridayBreakfast + fridayLunch + fridayDinner +
+            saturdayBreakfast + saturdayLunch + saturdayDinner)
         // Submit current schedule data
         fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Schedule', {
             method: 'POST',
@@ -96,7 +111,7 @@ function ScheduleManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
             body: JSON.stringify({
-                "user_id": 0,
+                "user_id": route.params.UserID,
                 "schedule": schedule
             })
         })
@@ -104,15 +119,11 @@ function ScheduleManager({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        console.log("successful update of schedule!")
                         navigation.dispatch(StackActions.pop(1))
                     } else {
                         // Examine the text in the response
                         console.log('Loots like there was a problem updating schedule. Status Code: ' +
                             response.status);
-                        response.json().then(function(data) {
-                            console.log(data)
-                        });
                     }
                 }
             )
@@ -163,9 +174,9 @@ function ScheduleManager({route, navigation}) {
                                     {selectedTab === 0 ? (
                                         <DropDownPicker
                                             items={[
-                                                {label: '7:00-8:00 am', value: "7a"},
-                                                {label: '8:00-9:00 am', value: "8a"},
-                                                {label: '9:00-10:00 am', value: "8a"},
+                                                {label: '7:00-8:00 am', value: "07"},
+                                                {label: '8:00-9:00 am', value: "08"},
+                                                {label: '9:00-10:00 am', value: "09"},
                                             ]}
                                             containerStyle={{height: 40, width: 200}}
                                             style={{backgroundColor: '#fafafa', zIndex: 1}}
@@ -179,9 +190,9 @@ function ScheduleManager({route, navigation}) {
                                     ) : selectedTab === 1 ? (
                                         <DropDownPicker
                                             items={[
-                                                {label: '11:00-12:00 am', value: "11a"},
-                                                {label: '12:00-1:00 pm', value: "12p"},
-                                                {label: '1:00-2:00 pm', value: "1p"},
+                                                {label: '11:00-12:00 am', value: "11"},
+                                                {label: '12:00-1:00 pm', value: "12"},
+                                                {label: '1:00-2:00 pm', value: "13"},
                                             ]}
                                             containerStyle={{height: 40, width: 200}}
                                             style={{backgroundColor: '#fafafa'}}
@@ -195,10 +206,10 @@ function ScheduleManager({route, navigation}) {
                                     ) : (
                                         <DropDownPicker
                                             items={[
-                                                {label: '5:00-6:00 pm', value: "5p"},
-                                                {label: '6:00-7:00 pm', value: "6p"},
-                                                {label: '7:00-8:00 pm', value: "7p"},
-                                                {label: '8:00-9:00 pm', value: "8p"},
+                                                {label: '5:00-6:00 pm', value: "17"},
+                                                {label: '6:00-7:00 pm', value: "18"},
+                                                {label: '7:00-8:00 pm', value: "19"},
+                                                {label: '8:00-9:00 pm', value: "20"},
                                             ]}
                                             containerStyle={{height: 40, width: 200}}
                                             style={{backgroundColor: '#fafafa'}}
@@ -237,9 +248,9 @@ function ScheduleManager({route, navigation}) {
                                         {selectedTab === 0 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '7:00-8:00 am', value: "7a"},
-                                                    {label: '8:00-9:00 am', value: "8a"},
-                                                    {label: '9:00-10:00 am', value: "8a"},
+                                                    {label: '7:00-8:00 am', value: "07"},
+                                                    {label: '8:00-9:00 am', value: "08"},
+                                                    {label: '9:00-10:00 am', value: "09"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa', zIndex: 1}}
@@ -253,9 +264,9 @@ function ScheduleManager({route, navigation}) {
                                         ) : selectedTab === 1 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '11:00-12:00 am', value: "11a"},
-                                                    {label: '12:00-1:00 pm', value: "12p"},
-                                                    {label: '1:00-2:00 pm', value: "1p"},
+                                                    {label: '11:00-12:00 am', value: "11"},
+                                                    {label: '12:00-1:00 pm', value: "12"},
+                                                    {label: '1:00-2:00 pm', value: "13"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -269,10 +280,10 @@ function ScheduleManager({route, navigation}) {
                                         ) : (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '5:00-6:00 pm', value: "5p"},
-                                                    {label: '6:00-7:00 pm', value: "6p"},
-                                                    {label: '7:00-8:00 pm', value: "7p"},
-                                                    {label: '8:00-9:00 pm', value: "8p"},
+                                                    {label: '5:00-6:00 pm', value: "17"},
+                                                    {label: '6:00-7:00 pm', value: "18"},
+                                                    {label: '7:00-8:00 pm', value: "19"},
+                                                    {label: '8:00-9:00 pm', value: "20"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -311,9 +322,9 @@ function ScheduleManager({route, navigation}) {
                                         {selectedTab === 0 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '7:00-8:00 am', value: "7a"},
-                                                    {label: '8:00-9:00 am', value: "8a"},
-                                                    {label: '9:00-10:00 am', value: "8a"},
+                                                    {label: '7:00-8:00 am', value: "07"},
+                                                    {label: '8:00-9:00 am', value: "08"},
+                                                    {label: '9:00-10:00 am', value: "09"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa', zIndex: 1}}
@@ -327,9 +338,9 @@ function ScheduleManager({route, navigation}) {
                                         ) : selectedTab === 1 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '11:00-12:00 am', value: "11a"},
-                                                    {label: '12:00-1:00 pm', value: "12p"},
-                                                    {label: '1:00-2:00 pm', value: "1p"},
+                                                    {label: '11:00-12:00 am', value: "11"},
+                                                    {label: '12:00-1:00 pm', value: "12"},
+                                                    {label: '1:00-2:00 pm', value: "13"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -343,10 +354,10 @@ function ScheduleManager({route, navigation}) {
                                         ) : (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '5:00-6:00 pm', value: "5p"},
-                                                    {label: '6:00-7:00 pm', value: "6p"},
-                                                    {label: '7:00-8:00 pm', value: "7p"},
-                                                    {label: '8:00-9:00 pm', value: "8p"},
+                                                    {label: '5:00-6:00 pm', value: "17"},
+                                                    {label: '6:00-7:00 pm', value: "18"},
+                                                    {label: '7:00-8:00 pm', value: "19"},
+                                                    {label: '8:00-9:00 pm', value: "20"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -385,9 +396,9 @@ function ScheduleManager({route, navigation}) {
                                         {selectedTab === 0 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '7:00-8:00 am', value: "7a"},
-                                                    {label: '8:00-9:00 am', value: "8a"},
-                                                    {label: '9:00-10:00 am', value: "8a"},
+                                                    {label: '7:00-8:00 am', value: "07"},
+                                                    {label: '8:00-9:00 am', value: "08"},
+                                                    {label: '9:00-10:00 am', value: "09"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa', zIndex: 1}}
@@ -401,9 +412,9 @@ function ScheduleManager({route, navigation}) {
                                         ) : selectedTab === 1 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '11:00-12:00 am', value: "11a"},
-                                                    {label: '12:00-1:00 pm', value: "12p"},
-                                                    {label: '1:00-2:00 pm', value: "1p"},
+                                                    {label: '11:00-12:00 am', value: "11"},
+                                                    {label: '12:00-1:00 pm', value: "12"},
+                                                    {label: '1:00-2:00 pm', value: "13"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -417,10 +428,10 @@ function ScheduleManager({route, navigation}) {
                                         ) : (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '5:00-6:00 pm', value: "5p"},
-                                                    {label: '6:00-7:00 pm', value: "6p"},
-                                                    {label: '7:00-8:00 pm', value: "7p"},
-                                                    {label: '8:00-9:00 pm', value: "8p"},
+                                                    {label: '5:00-6:00 pm', value: "17"},
+                                                    {label: '6:00-7:00 pm', value: "18"},
+                                                    {label: '7:00-8:00 pm', value: "19"},
+                                                    {label: '8:00-9:00 pm', value: "20"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -459,9 +470,9 @@ function ScheduleManager({route, navigation}) {
                                         {selectedTab === 0 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '7:00-8:00 am', value: "7a"},
-                                                    {label: '8:00-9:00 am', value: "8a"},
-                                                    {label: '9:00-10:00 am', value: "8a"},
+                                                    {label: '7:00-8:00 am', value: "07"},
+                                                    {label: '8:00-9:00 am', value: "08"},
+                                                    {label: '9:00-10:00 am', value: "09"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa', zIndex: 1}}
@@ -475,9 +486,9 @@ function ScheduleManager({route, navigation}) {
                                         ) : selectedTab === 1 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '11:00-12:00 am', value: "11a"},
-                                                    {label: '12:00-1:00 pm', value: "12p"},
-                                                    {label: '1:00-2:00 pm', value: "1p"},
+                                                    {label: '11:00-12:00 am', value: "11"},
+                                                    {label: '12:00-1:00 pm', value: "12"},
+                                                    {label: '1:00-2:00 pm', value: "13"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -491,10 +502,10 @@ function ScheduleManager({route, navigation}) {
                                         ) : (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '5:00-6:00 pm', value: "5p"},
-                                                    {label: '6:00-7:00 pm', value: "6p"},
-                                                    {label: '7:00-8:00 pm', value: "7p"},
-                                                    {label: '8:00-9:00 pm', value: "8p"},
+                                                    {label: '5:00-6:00 pm', value: "17"},
+                                                    {label: '6:00-7:00 pm', value: "18"},
+                                                    {label: '7:00-8:00 pm', value: "19"},
+                                                    {label: '8:00-9:00 pm', value: "20"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -533,9 +544,9 @@ function ScheduleManager({route, navigation}) {
                                         {selectedTab === 0 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '7:00-8:00 am', value: "7a"},
-                                                    {label: '8:00-9:00 am', value: "8a"},
-                                                    {label: '9:00-10:00 am', value: "8a"},
+                                                    {label: '7:00-8:00 am', value: "07"},
+                                                    {label: '8:00-9:00 am', value: "08"},
+                                                    {label: '9:00-10:00 am', value: "09"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa', zIndex: 1}}
@@ -549,9 +560,9 @@ function ScheduleManager({route, navigation}) {
                                         ) : selectedTab === 1 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '11:00-12:00 am', value: "11a"},
-                                                    {label: '12:00-1:00 pm', value: "12p"},
-                                                    {label: '1:00-2:00 pm', value: "1p"},
+                                                    {label: '11:00-12:00 am', value: "11"},
+                                                    {label: '12:00-1:00 pm', value: "12"},
+                                                    {label: '1:00-2:00 pm', value: "13"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -565,10 +576,10 @@ function ScheduleManager({route, navigation}) {
                                         ) : (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '5:00-6:00 pm', value: "5p"},
-                                                    {label: '6:00-7:00 pm', value: "6p"},
-                                                    {label: '7:00-8:00 pm', value: "7p"},
-                                                    {label: '8:00-9:00 pm', value: "8p"},
+                                                    {label: '5:00-6:00 pm', value: "17"},
+                                                    {label: '6:00-7:00 pm', value: "18"},
+                                                    {label: '7:00-8:00 pm', value: "19"},
+                                                    {label: '8:00-9:00 pm', value: "20"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -607,9 +618,9 @@ function ScheduleManager({route, navigation}) {
                                         {selectedTab === 0 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '7:00-8:00 am', value: "7a"},
-                                                    {label: '8:00-9:00 am', value: "8a"},
-                                                    {label: '9:00-10:00 am', value: "8a"},
+                                                    {label: '7:00-8:00 am', value: "07"},
+                                                    {label: '8:00-9:00 am', value: "08"},
+                                                    {label: '9:00-10:00 am', value: "09"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa', zIndex: 1}}
@@ -623,9 +634,9 @@ function ScheduleManager({route, navigation}) {
                                         ) : selectedTab === 1 ? (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '11:00-12:00 am', value: "11a"},
-                                                    {label: '12:00-1:00 pm', value: "12p"},
-                                                    {label: '1:00-2:00 pm', value: "1p"},
+                                                    {label: '11:00-12:00 am', value: "11"},
+                                                    {label: '12:00-1:00 pm', value: "12"},
+                                                    {label: '1:00-2:00 pm', value: "13"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
@@ -639,10 +650,10 @@ function ScheduleManager({route, navigation}) {
                                         ) : (
                                             <DropDownPicker
                                                 items={[
-                                                    {label: '5:00-6:00 pm', value: "5p"},
-                                                    {label: '6:00-7:00 pm', value: "6p"},
-                                                    {label: '7:00-8:00 pm', value: "7p"},
-                                                    {label: '8:00-9:00 pm', value: "8p"},
+                                                    {label: '5:00-6:00 pm', value: "17"},
+                                                    {label: '6:00-7:00 pm', value: "18"},
+                                                    {label: '7:00-8:00 pm', value: "19"},
+                                                    {label: '8:00-9:00 pm', value: "20"},
                                                 ]}
                                                 containerStyle={{height: 40, width: 200}}
                                                 style={{backgroundColor: '#fafafa'}}
