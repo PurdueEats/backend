@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, Modal } from "react-na
 import { StackActions } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Logo from "../../resources/logo.png";
-import { Button } from "native-base";
+import {Button, Toast} from "native-base";
 import CalendarPicker from 'react-native-calendar-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import MaterialTabs from "react-native-material-tabs";
@@ -81,7 +81,7 @@ function ScheduleManager({route, navigation}) {
                         });
                     } else {
                         // Examine the text in the response
-                        console.log('Loots like there was a problem updating schedule. Status Code: ' +
+                        console.log('Looks like there was a problem retrieving schedule. Status Code: ' +
                             response.status);
                     }
                 }
@@ -95,6 +95,30 @@ function ScheduleManager({route, navigation}) {
         const returned = new Date(date);
         setDay(returned.getDay());
         setModalSchedule(true);
+    }
+
+    function displayConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Schedule successfully updated.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Update schedule failed. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
     }
 
     function handleSubmit() {
@@ -119,11 +143,12 @@ function ScheduleManager({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        navigation.dispatch(StackActions.pop(1))
+                        displayConfirmation();
                     } else {
                         // Examine the text in the response
-                        console.log('Loots like there was a problem updating schedule. Status Code: ' +
+                        console.log('Looks like there was a problem updating schedule. Status Code: ' +
                             response.status);
+                        displayError();
                     }
                 }
             )
