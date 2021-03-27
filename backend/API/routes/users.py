@@ -250,7 +250,7 @@ async def upload_user_schedule(userSchedule: UserSchedule, UserID: int = Depends
 
     runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
     runQuery(f"""INSERT INTO UserSchedule values 
-        ({userSchedule.user_id}, {userSchedule.schedule}""")
+        ({userSchedule.user_id}, {userSchedule.schedule})""")
 
     return
 
