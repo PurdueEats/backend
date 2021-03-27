@@ -21,10 +21,15 @@ const meals = [
 ]
 
 function MealReview({route, navigation}) {
+  const [meals, setMeals] = React.useState([]);
   const [ratings, setRatings] = React.useState('');
   const [selectedMeals, setSelectedMeals] = React.useState([]);
   const [response, setResponse] = React.useState('');
   const popAction = StackActions.pop();
+
+    useEffect(() => {
+        getMeals();
+    }, []);
 
   const onSelectionsChange = newSelections => {
     setSelectedMeals(newSelections)
@@ -67,6 +72,35 @@ function MealReview({route, navigation}) {
             console.log(item.value);
                          }).done();
         })
+    }
+
+    function getMeals() {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        // Set Fields to correct values
+                        response.json().then(function(data) {
+                            data.map(menuItem => {
+                                menu.push(menuItem);
+                            })
+                        });
+                    } else {
+                        console.log('Getting Menu Items like there was a problem. Status Code: ' +
+                            response.status);
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
     }
 
    function updateRating(rating) {

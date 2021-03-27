@@ -7,22 +7,8 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import { StackActions } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
 
-
-// const meals = [
-//     { label: 'Bangkok Chicken Wrap', value: 21 },
-//     { label: 'Moo Shu Chicken', value: 25 },
-//     { label: 'Strawberry Gelatin', value: 43 },
-//     { label: 'Waffle Fries', value: 20 },
-//     { label: 'Firehouse Chili with Pork', value: 35 },
-//     { label: 'Gluten Free Cookies', value: 41 },
-//     { label: 'Pineapple Chunks', value: 6 },
-//     { label: 'Vegan Pub Fried Fish', value: 23 },
-//     { label: 'Brown Rice with Mushrooms', value: 47 },
-// ]
-
 function FavoriteMeals({route, navigation}) {
     const [meals, selectedMeals] = React.useState([]);
-    const [mealsID, selectedMealsID] = React.useState([]);
     const [selectedTab, setSelectedTab] = React.useState(0);
     const [currentSelection, setCurrentSelection] = React.useState([]);
     const [removeSelection, setRemoveSelection] = React.useState([]);
@@ -48,6 +34,7 @@ function FavoriteMeals({route, navigation}) {
       setRemoveSelection(favSelections);
     }
 
+    // POST request for favorite meal(s)
     function handleFavMeal() {
         const updatedList = currentSelection.concat(selectedFavMeals);
         setCurrentSelection(updatedList);
@@ -64,7 +51,6 @@ function FavoriteMeals({route, navigation}) {
                 body: JSON.stringify({
                      "user_id": route.params.UserID.toString(),
                      "meal_id": item.value,
-//                      "meal_id": item.menu_item_id,
                      "toggle": true
                 })
             })
@@ -77,6 +63,7 @@ function FavoriteMeals({route, navigation}) {
         })
     }
 
+    // GET request to get the ID(s) of the selected favorite item(s)
     function getFavMeal() {
        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
@@ -94,7 +81,6 @@ function FavoriteMeals({route, navigation}) {
                     response.json().then(function(data) {
                         data.map(item => {
                             currentSelectID.push(item.meal_id);
-//                             console.log(currentSelectID);
                         })
                     });
                 } else {
@@ -108,13 +94,10 @@ function FavoriteMeals({route, navigation}) {
         });
     }
 
+    // GET request to convert selected menu item(s) ID(s) to the respective name(s)
      function getFavMealName() {
-//      console.log("here")
-//      console.log(currentSelectID)
        currentSelectID.map(item => {
-//        console.log("enter")
-//        console.log("id val " + item);
-         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
+         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item.toString(), {
                 method: 'GET',
                 headers : {
                     'Content-Type': 'application/json',
@@ -127,7 +110,15 @@ function FavoriteMeals({route, navigation}) {
                             // Successful GET
                             // Set Fields to correct values
                             response.json().then(function(data) {
-                                currentSelection.push(data.item_name);
+                                currentSelection.push({ label: data.item_name, value: item });
+                                const unique = currentSelection
+                                    .map(e => e['value'])
+                                    // store the keys of the unique objects
+                                    .map((e, i, final) => final.indexOf(e) === i && i)
+                                    // eliminate the dead keys & store unique objects
+                                    .filter(e => currentSelection[e]).map(e => currentSelection[e]);
+                                setCurrentSelection(unique);
+                                console.log(currentSelection);
                             });
                         } else {
                             console.log('Getting Menu Items like there was a problem. Status Code: ' +
@@ -141,6 +132,7 @@ function FavoriteMeals({route, navigation}) {
             })
         }
 
+    // GET request to get all of the menu items
      function getMeal() {
            fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/`, {
                 method: 'GET',
@@ -154,10 +146,7 @@ function FavoriteMeals({route, navigation}) {
                     if (response.status === 200 || response.status === 201) {
                         response.json().then(function(data) {
                             data.map(item => {
-                                meals.push(item.item_name);
-                                mealsID.push(item.menu_item_id);
-                                // together if possible
-//                                 console.log(meals);
+                                meals.push({ label: item.item_name, value: item.menu_item_id});
                             })
                         });
                     } else {
@@ -171,10 +160,10 @@ function FavoriteMeals({route, navigation}) {
             });
      }
 
-     function deleteFavMeal() {
+     // remove request to remove selected menu items from database
+     function removeFavMeal() {
         removeSelection.map(singleMeal => {
-        console.log("remove" + removeSelection);
-            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals?menuItemID='+ singleMeal.meal_id, {
+            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals?menuItemID='+ singleMeal.value, {
                  method: 'DELETE',
                  headers : {
                      'Content-Type': 'application/json',
@@ -186,13 +175,12 @@ function FavoriteMeals({route, navigation}) {
                  function(response) {
                      if (response.status === 200 || response.status === 201) {
                          // Successful DELETE
-                         // Set fields to correct values
-//                          response.json().then(function(data) {
-//                              currentSelectID.pop(item.meal_id);
-//                          });
-            //         const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
-                    const filtered = currentSelection.filter(item => !removeSelection.map(i => i.meal_id).includes(item.meal_id));
-                    setCurrentSelection(filtered);
+                         response.json().then(function(data) {
+                             const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
+                             setCurrentSelection(filtered);
+                             currentSelectID.pop(item.meal_id);
+                             setRemoveSelection([]);
+                         });
                      } else {
                          console.log('Auth like there was a problem. Status Code: ' +
                              response.status);
@@ -204,11 +192,6 @@ function FavoriteMeals({route, navigation}) {
              });
          })
      }
-
-//     const handleRemoveMeal = () => {
-//        const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
-//        setCurrentSelection(filtered);
-//       }
 
     return (
         <ScrollView>
@@ -239,7 +222,7 @@ function FavoriteMeals({route, navigation}) {
                           />
                     </View>
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>
-                        <Button style={ styles.favoriteButtonComponent } onPress= { deleteFavMeal }>
+                        <Button style={ styles.favoriteButtonComponent } onPress= { removeFavMeal }>
                             <Text style={ styles.favoriteButtonText }>Remove</Text>
                         </Button>
                     </View>
