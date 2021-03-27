@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { Button } from 'native-base';
 import Logo from "../../resources/logo.png";
@@ -8,24 +8,33 @@ import { StackActions } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
 
 
-const meals = [
-    { label: 'Bangkok Chicken Wrap', value: 21 },
-    { label: 'Moo Shu Chicken', value: 25 },
-    { label: 'Strawberry Gelatin', value: 43 },
-    { label: 'Waffle Fries', value: 20 },
-    { label: 'Firehouse Chili with Pork', value: 35 },
-    { label: 'Gluten Free Cookies', value: 41 },
-    { label: 'Pineapple Chunks', value: 6 },
-    { label: 'Vegan Pub Fried Fish', value: 23 },
-    { label: 'Brown Rice with Mushrooms', value: 47 },
-]
+// const meals = [
+//     { label: 'Bangkok Chicken Wrap', value: 21 },
+//     { label: 'Moo Shu Chicken', value: 25 },
+//     { label: 'Strawberry Gelatin', value: 43 },
+//     { label: 'Waffle Fries', value: 20 },
+//     { label: 'Firehouse Chili with Pork', value: 35 },
+//     { label: 'Gluten Free Cookies', value: 41 },
+//     { label: 'Pineapple Chunks', value: 6 },
+//     { label: 'Vegan Pub Fried Fish', value: 23 },
+//     { label: 'Brown Rice with Mushrooms', value: 47 },
+// ]
 
 function FavoriteMeals({route, navigation}) {
-    const [selectedTab, setSelectedTab] = useState(0);
-    const [currentSelection, setCurrentSelection] = useState([]);
-    const [removeSelection, setRemoveSelection] = useState([]);
+    const [meals, selectedMeals] = React.useState([]);
+    const [mealsID, selectedMealsID] = React.useState([]);
+    const [selectedTab, setSelectedTab] = React.useState(0);
+    const [currentSelection, setCurrentSelection] = React.useState([]);
+    const [removeSelection, setRemoveSelection] = React.useState([]);
     const [selectedFavMeals, setSelectedFavMeals] = React.useState([]);
+    const [currentSelectID, setCurrentSelectID] = React.useState([]);
     const [response, setResponse] = React.useState('');
+
+    useEffect(() => {
+        getFavMeal();
+        getFavMealName();
+        getMeal();
+    },[]);
 
     /*function handleNavigate() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token });
@@ -55,6 +64,7 @@ function FavoriteMeals({route, navigation}) {
                 body: JSON.stringify({
                      "user_id": route.params.UserID.toString(),
                      "meal_id": item.value,
+//                      "meal_id": item.menu_item_id,
                      "toggle": true
                 })
             })
@@ -67,10 +77,138 @@ function FavoriteMeals({route, navigation}) {
         })
     }
 
-    const handleRemoveMeal = () => {
-       const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
-       setCurrentSelection(filtered);
-      }
+    function getFavMeal() {
+       fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+        })
+        .then(
+            function(response) {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful GET
+                    // Set fields to correct values
+                    response.json().then(function(data) {
+                        data.map(item => {
+                            currentSelectID.push(item.meal_id);
+//                             console.log(currentSelectID);
+                        })
+                    });
+                } else {
+                    console.log('Auth like there was a problem. Status Code: ' +
+                        response.status);
+                }
+            }
+        )
+        .catch(function(err) {
+            console.log('Fetch Error :-S', err);
+        });
+    }
+
+     function getFavMealName() {
+//      console.log("here")
+//      console.log(currentSelectID)
+       currentSelectID.map(item => {
+//        console.log("enter")
+//        console.log("id val " + item);
+         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+            })
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful GET
+                            // Set Fields to correct values
+                            response.json().then(function(data) {
+                                currentSelection.push(data.item_name);
+                            });
+                        } else {
+                            console.log('Getting Menu Items like there was a problem. Status Code: ' +
+                                response.status);
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
+            })
+        }
+
+     function getMeal() {
+           fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/`, {
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+            })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        response.json().then(function(data) {
+                            data.map(item => {
+                                meals.push(item.item_name);
+                                mealsID.push(item.menu_item_id);
+                                // together if possible
+//                                 console.log(meals);
+                            })
+                        });
+                    } else {
+                        console.log('Auth like there was a problem. Status Code: ' +
+                            response.status);
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+     }
+
+     function deleteFavMeal() {
+        removeSelection.map(singleMeal => {
+        console.log("remove" + removeSelection);
+            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals?menuItemID='+ singleMeal.meal_id, {
+                 method: 'DELETE',
+                 headers : {
+                     'Content-Type': 'application/json',
+                     'Accept': 'application/json',
+                     'Authorization': 'Bearer ' + route.params.token
+                 },
+             })
+             .then(
+                 function(response) {
+                     if (response.status === 200 || response.status === 201) {
+                         // Successful DELETE
+                         // Set fields to correct values
+//                          response.json().then(function(data) {
+//                              currentSelectID.pop(item.meal_id);
+//                          });
+            //         const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
+                    const filtered = currentSelection.filter(item => !removeSelection.map(i => i.meal_id).includes(item.meal_id));
+                    setCurrentSelection(filtered);
+                     } else {
+                         console.log('Auth like there was a problem. Status Code: ' +
+                             response.status);
+                     }
+                 }
+             )
+             .catch(function(err) {
+                 console.log('Fetch Error :-S', err);
+             });
+         })
+     }
+
+//     const handleRemoveMeal = () => {
+//        const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
+//        setCurrentSelection(filtered);
+//       }
 
     return (
         <ScrollView>
@@ -101,7 +239,7 @@ function FavoriteMeals({route, navigation}) {
                           />
                     </View>
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>
-                        <Button style={ styles.favoriteButtonComponent } onPress= { handleRemoveMeal }>
+                        <Button style={ styles.favoriteButtonComponent } onPress= { deleteFavMeal }>
                             <Text style={ styles.favoriteButtonText }>Remove</Text>
                         </Button>
                     </View>
