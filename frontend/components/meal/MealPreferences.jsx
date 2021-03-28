@@ -7,7 +7,7 @@ import Logo from "../../resources/logo.png";
 function MealPreferences({route, navigation}) {
     // const [meals, setMealRating] = useState('');
     //const meals = [ "Hamburger", "Balsamic Chicken", "Hotdog", "Pizza", "Beef Broccoli Stirfry" ]
-    const [meals, setMeals] = useState([]);
+    const [currMeals, setMeals] = useState([]);
     const ratings = [ 3, 3, 3, 3, 3 ]
 
     // useEffect(() => {
@@ -33,12 +33,14 @@ function MealPreferences({route, navigation}) {
                         // Successful GET
                         // Set Fields to correct values
                         response.json().then(function(data) {
+                            console.log(data)
                             data.map(menuItem => {
-                                meals.push(menuItem);
+                                currMeals.push(menuItem);
                                 // console.log(allData);
                                 // filterData = allData
                             })
                         });
+                        console.log(currMeals);
                     } else {
                         console.log('Getting Menu Items from Meal Preferences looks like there was a problem. Status Code: ' +
                             response.status);
@@ -51,17 +53,20 @@ function MealPreferences({route, navigation}) {
     }
 
     function handleSubmit() {
-        // Sample code for sending package to API
-        // fetch(`/api/db/getBusinessData/` + params, {
-        // 	method: 'GET',
-        // 	headers : {
-        // 		'Content-Type': 'application/json',
-        // 		'Accept': 'application/json'
-        // 	}
-        // })
-        // 	.then(response => response.json())
-        // 	.then(response => this.setState({ "response" : response }))
         navigation.navigate("NavBar", { UserID: route.params.UserID, token: route.params.token });
+    }
+
+    function renderStars() {
+        return (
+            <View
+                style={{
+                    borderBottomColor: '#c4baba',
+                    borderBottomWidth: 1,
+                    marginTop: "2%",
+                    marginBottom: "5%"
+                }}
+            />
+        );
     }
 
 
@@ -71,17 +76,18 @@ function MealPreferences({route, navigation}) {
                 <Image style={ styles.logoImage } source={ Logo } />
                 <Text style={ styles.screenTitle }>Enter your meal preferences</Text>
             </View>
+
             <View style={ styles.screenView }>
-                { meals.length === 0 ? (
+                { currMeals.length === 0 ? (
                     <Text>Error</Text>
                 ) : (
-                    meals.map(function (meal, index) {
+                   currMeals.map(function (meal, index) {
                         function updateRating(rating) {
                             ratings[index] = rating;
                         }
                         return (
                             <View key={index} style={ styles.individualRatingComponents }>
-                                <Text key={index + "Text"} style={ styles.mealText }>{meal}</Text>
+                                <Text key={index + "Text"} style={ styles.mealText }>{meal.item_name}</Text>
                                 <AirbnbRating
                                     key={index + "Rating"}
                                     count={5}

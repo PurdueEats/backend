@@ -51,9 +51,9 @@ function MealReview({route, navigation}) {
                         // Set Fields to correct values
                         response.json().then(function(data) {
                             data.map(menuItem => {
-                                meals.push(menuItem);
-                                // console.log(allData);
-                                // filterData = allData
+                                //console.log(data)
+                                meals.push({ label: menuItem.menu_item.item_name, value: menuItem.menu_item.menu_item_id});                                // console.log(allData);
+                                //console.log(meals);
                             })
                         });
                     } else {
@@ -114,7 +114,7 @@ function MealReview({route, navigation}) {
         setSelectedMeals([]);
     }
     return (
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
               <View style={ [styles.screenView, {flexDirection:"row"}] } >
                   <TouchableOpacity style={ styles.button } onPress={ () => navigation.dispatch(StackActions.pop(1))}>
                       <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
@@ -156,7 +156,7 @@ function MealReview({route, navigation}) {
                     </Button>
                   </View>
               </View>
-          </ScrollView>
+          </View>
     )
 }
 

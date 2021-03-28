@@ -6,6 +6,7 @@ import Modal from 'react-native-modal';
 import { Button} from 'native-base';
 import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
+import {AirbnbRating} from "react-native-ratings";
 
 
 function Menu({route, navigation}) {
@@ -15,7 +16,7 @@ function Menu({route, navigation}) {
 
     // stuff for search filtering
     const [allData, setAllData] = useState([]);
-    const [filterData, setFilterData] = useState([]);
+    let [filterData, setFilterData] = useState([]);
 
     // stuff for drop down filter
     const [vegetarianData, setVegetarianData] = useState([]);
@@ -70,11 +71,15 @@ function Menu({route, navigation}) {
                                 }
                                 if (menuItem.has_peanuts === false && menuItem.has_treenuts === false) {
                                     nutFreeData.push(menuItem);
+                                    //console.log(nutFreeData);
                                     setNutFree(true);
                                 }
                                 allData.push(menuItem);
-                                // console.log(allData);
-                                // filterData = allData
+                                //console.log(allData);
+                                filterData = allData
+                                console.log(filterData);
+
+
                             })
                         });
                     } else {
@@ -118,52 +123,58 @@ function Menu({route, navigation}) {
         );
     }
 
-
-    function renderMenuItem(menuItem) {
+    function renderMenuItem() {
         return (
-            <TouchableOpacity>
-                <View style={{flexDirection: "row"}}>
-                    <Text style={styles.firstItem}>{menuItem.item_name}</Text>
-                    {menuItem.is_vegetarian == true ? (
-                        <View style={styles.icons}>
-                            <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
-                        </View>
-                    ): (
-                        <View>
-                        </View>
-                    )}
-                    {menuItem.has_wheat == false && menuItem.has_gluten == false ? (
-                        <View style={styles.icons}>
-                            <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
-                        </View>
-                    ): (
-                        <View>
-                        </View>
-                    )}
-                    {menuItem.has_milk == false ? (
-                        <View style={styles.icons}>
-                            <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
-                        </View>
-                    ): (
-                        <View>
-                        </View>
-                    )}
-                    {menuItem.has_peanuts == false && menuItem.has_treenuts == false ? (
-                        <View style={styles.icons}>
-                            <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
-                        </View>
-                    ): (
-                        <View>
-                        </View>
-                    )}
-                </View>
-            </TouchableOpacity>
+            <View>
+                { filterData.length === 0 ? (
+                    <Text>Error</Text>
+                ) : (
+                    filterData.map(function (menuItem) {
+                        //console.log(filterData.item_name);
+                        return (
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={styles.firstItem}>{menuItem.item_name}</Text>
+                                {menuItem.is_vegetarian == true ? (
+                                    <View style={styles.icons}>
+                                        <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                                    </View>
+                                ): (
+                                    <View>
+                                    </View>
+                                )}
+                                {menuItem.has_wheat == false && menuItem.has_gluten == false ? (
+                                    <View style={styles.icons}>
+                                        <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
+                                    </View>
+                                ): (
+                                    <View>
+                                    </View>
+                                )}
+                                {menuItem.has_milk == false ? (
+                                    <View style={styles.icons}>
+                                        <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                                    </View>
+                                ): (
+                                    <View>
+                                    </View>
+                                )}
+                                {menuItem.has_peanuts == false && menuItem.has_treenuts == false ? (
+                                    <View style={styles.icons}>
+                                        <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
+                                    </View>
+                                ): (
+                                    <View>
+                                    </View>
+                                )}
+                            </View>
+                        );
+                    }))}
+            </View>
         );
     }
 
     return (
-        <ScrollView>
-            <SafeAreaView style={ styles.screen }>
+            <SafeAreaView style={ styles.screen} >
                 <View style={{flexDirection: "row"}}>
                     <TouchableOpacity onPress={ () => navigation.dispatch(StackActions.pop(1))}>
                         <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
@@ -241,6 +252,7 @@ function Menu({route, navigation}) {
                             {label: 'Gluten Free', value: 'Gluten Free'},
                             {label: 'Vegetarian', value: 'Vegetarian'},
                             {label: 'Dairy Free', value: 'Dairy Free'},
+                            {label: 'Nut Free', value: 'Nut Free'}
                         ]}
                         containerStyle={{height: 40}}
                         style={{backgroundColor: '#fafafa'}}
@@ -252,159 +264,33 @@ function Menu({route, navigation}) {
                     />
 
                 </View>
-                {filter === "Gluten Free" ? (
-                    setFilterData(glutenFreeData)
-                ): (
-                    setFilterData(filterData)
-                )}
-                {filter === "Vegetarian" ? (
-                    setFilterData(vegetarianData)
-                ): (
-                    setFilterData(filterData)
-                )}
-                {filter === "Dairy Free" ? (
-                    setFilterData(dairyFreeData)
-                ): (
-                    setFilterData(filterData)
-                )}
-                {filter === "Nut Free" ? (
-                    setFilterData(nutFreeData)
-                ): (
-                    setFilterData(filterData)
-                )}
-                {filter === "All Items" ? (
-                    setFilterData(allData)
-                ): (
-                    setFilterData(filterData)
-                )}
-                <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={renderMenuItem} keyExtractor={(menuItem, index) => index.toString()}/>
-
-                {/*{filter === "All Items" ? (*/}
-                {/*    <View>*/}
-                {/*        <View style={{flexDirection: "row"}}>*/}
-                {/*            <Text style={styles.firstItem}>Alfredo Pasta</Text>*/}
-                {/*            <View style={styles.icons}>*/}
-                {/*                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>*/}
-                {/*            </View>*/}
-                {/*        </View>*/}
-                {/*        <View*/}
-                {/*            style={{*/}
-                {/*                borderBottomColor: '#c4baba',*/}
-                {/*                borderBottomWidth: 1,*/}
-                {/*                marginTop: "2%",*/}
-                {/*                marginBottom: "5%"*/}
-                {/*            }}*/}
-                {/*        />*/}
-                {/*        <View style={{flexDirection: "row"}}>*/}
-                {/*            <Text style={styles.secondItem}>Chicken Sandwich</Text>*/}
-                {/*        </View>*/}
-                {/*        <View*/}
-                {/*            style={{*/}
-                {/*                borderBottomColor: '#c4baba',*/}
-                {/*                borderBottomWidth: 1,*/}
-                {/*                marginTop: "2%",*/}
-                {/*                marginBottom: "5%"*/}
-                {/*            }}*/}
-                {/*        />*/}
-                {/*        <View style={{flexDirection: "row"}}>*/}
-                {/*            <Text style={styles.thirdItem}>Salad</Text>*/}
-                {/*            <View style={styles.icons}>*/}
-                {/*                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>*/}
-                {/*            </View>*/}
-                {/*        </View>*/}
-                {/*        <View*/}
-                {/*            style={{*/}
-                {/*                borderBottomColor: '#c4baba',*/}
-                {/*                borderBottomWidth: 1,*/}
-                {/*                marginTop: "2%",*/}
-                {/*                marginBottom: "5%"*/}
-                {/*            }}*/}
-                {/*        />*/}
-                {/*        <View style={{flexDirection: "row"}}>*/}
-                {/*            <Text style={styles.fourthItem}>Gluten Free Pasta</Text>*/}
-                {/*            <View style={styles.icons}>*/}
-                {/*                <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>*/}
-                {/*            </View>*/}
-                {/*        </View>*/}
-                {/*        <View*/}
-                {/*            style={{*/}
-                {/*                borderBottomColor: '#c4baba',*/}
-                {/*                borderBottomWidth: 1,*/}
-                {/*                marginTop: "2%",*/}
-                {/*                marginBottom: "5%"*/}
-                {/*            }}*/}
-                {/*        />*/}
-                {/*    </View>*/}
-                {/*    ):(*/}
-                {/*    <View>*/}
-
-                {/*    </View>*/}
-                {/*)}*/}
                 {/*{filter === "Gluten Free" ? (*/}
-                {/*    <View>*/}
-                {/*        <View style={{flexDirection: "row"}}>*/}
-                {/*            <Text style={styles.fourthItem}>Gluten Free Pasta</Text>*/}
-                {/*            <View style={styles.icons}>*/}
-                {/*                <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>*/}
-                {/*            </View>*/}
-                {/*        </View>*/}
-                {/*        <View*/}
-                {/*            style={{*/}
-                {/*                borderBottomColor: '#c4baba',*/}
-                {/*                borderBottomWidth: 1,*/}
-                {/*                marginTop: "2%",*/}
-                {/*                marginBottom: "5%"*/}
-                {/*            }}*/}
-                {/*        />*/}
-                {/*    </View>*/}
-                {/*    ): (*/}
-                {/*        <View>*/}
-
-                {/*        </View>*/}
+                {/*    setFilterData(glutenFreeData)*/}
+                {/*): (*/}
+                {/*    setFilterData(filterData)*/}
                 {/*)}*/}
                 {/*{filter === "Vegetarian" ? (*/}
-                {/*    <View>*/}
-                {/*        <View style={{flexDirection: "row"}}>*/}
-                {/*            <Text style={styles.firstItem}>Alfredo Pasta</Text>*/}
-                {/*            <View style={styles.icons}>*/}
-                {/*                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>*/}
-                {/*            </View>*/}
-                {/*        </View>*/}
-                {/*        <View*/}
-                {/*            style={{*/}
-                {/*                borderBottomColor: '#c4baba',*/}
-                {/*                borderBottomWidth: 1,*/}
-                {/*                marginTop: "2%",*/}
-                {/*                marginBottom: "5%"*/}
-                {/*            }}*/}
-                {/*        />*/}
-                {/*    </View>*/}
+                {/*    setFilterData(vegetarianData)*/}
                 {/*): (*/}
-                {/*    <View />*/}
+                {/*    setFilterData(filterData)*/}
                 {/*)}*/}
                 {/*{filter === "Dairy Free" ? (*/}
-                {/*    <View>*/}
-                {/*        <View style={{flexDirection: "row"}}>*/}
-                {/*            <Text style={styles.thirdItem}>Salad</Text>*/}
-                {/*            <View style={styles.icons}>*/}
-                {/*                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>*/}
-                {/*            </View>*/}
-                {/*        </View>*/}
-                {/*        <View*/}
-                {/*            style={{*/}
-                {/*                borderBottomColor: '#c4baba',*/}
-                {/*                borderBottomWidth: 1,*/}
-                {/*                marginTop: "2%",*/}
-                {/*                marginBottom: "5%"*/}
-                {/*            }}*/}
-                {/*        />*/}
-                {/*    </View>*/}
+                {/*    setFilterData(dairyFreeData)*/}
                 {/*): (*/}
-                {/*    <View>*/}
-                {/*    </View>*/}
+                {/*    setFilterData(filterData)*/}
                 {/*)}*/}
+                {/*{filter === "Nut Free" ? (*/}
+                {/*    setFilterData(nutFreeData)*/}
+                {/*): (*/}
+                {/*    setFilterData(filterData)*/}
+                {/*)}*/}
+                {/*{filter === "All Items" ? (*/}
+                {/*    setFilterData(allData)*/}
+                {/*): (*/}
+                {/*    setFilterData(filterData)*/}
+                {/*)}*/}
+                <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={renderMenuItem} keyExtractor={(menuItem, index) => index.toString()}/>
             </SafeAreaView>
-        </ScrollView>
     );
 }
 
@@ -414,6 +300,7 @@ const styles = StyleSheet.create({
         paddingLeft: "10%",
         paddingRight: "10%",
         paddingBottom: "100%",
+        flex: 1,
     },
     title: {
         fontSize: 25,
