@@ -238,6 +238,7 @@ async def get_user_schedule(UserID: int = Depends(auth_handler.auth_wrapper)):
     if len(schedule) != 1:
         raise HTTPException(status_code=404, detail='Schedule not found')
 
+    schedule = schedule[0]
     res = [UserSchedule.parse_obj(
         {'user_id': schedule['UserID'], 'schedule': schedule['Schedule']})]
 
@@ -250,7 +251,7 @@ async def upload_user_schedule(userSchedule: UserSchedule, UserID: int = Depends
 
     runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
     runQuery(f"""INSERT INTO UserSchedule values 
-        ({userSchedule.user_id}, {userSchedule.schedule}""")
+        ({userSchedule.user_id}, {userSchedule.schedule})""")
 
     return
 
