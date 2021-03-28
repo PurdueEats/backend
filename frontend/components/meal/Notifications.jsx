@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, ScrollView, SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Switch, TouchableOpacity } from 'react-native';
 import { AirbnbRating} from 'react-native-ratings';
 import { Button, Toast } from 'native-base';
@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
+function Notifications({route, navigation}) {
 // const meals = [
 //     { label: 'Bangkok Chicken Wrap', value: 21 },
 //     { label: 'Moo Shu Chicken', value: 25 },
@@ -18,26 +19,20 @@ import Logo from "../../resources/logo.png";
 //     { label: 'Vegan Pub Fried Fish', value: 23 },
 //     { label: 'Brown Rice with Mushrooms', value: 47 },
 // ]
-
-function Notifications({route, navigation}) {
-const meals = [
-    { label: 'Bangkok Chicken Wrap', value: 21 },
-    { label: 'Moo Shu Chicken', value: 25 },
-    { label: 'Strawberry Gelatin', value: 43 },
-    { label: 'Waffle Fries', value: 20 },
-    { label: 'Firehouse Chili with Pork', value: 35 },
-    { label: 'Gluten Free Cookies', value: 41 },
-    { label: 'Pineapple Chunks', value: 6 },
-    { label: 'Vegan Pub Fried Fish', value: 23 },
-    { label: 'Brown Rice with Mushrooms', value: 47 },
-]
   const [ratings, setRatings] = React.useState('');
   const [selectedMeals, setSelectedMeals] = React.useState([]);
   const [response, setResponse] = React.useState('');
   const popAction = StackActions.pop();
+  const [currentSelectID, setCurrentSelectID] = React.useState([]);
+  const [currentSelection, setCurrentSelection] = React.useState([]);
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  useEffect(() => {
+      getFavMeal();
+      getFavMealName();
+  },[]);
 
   const onSelectionsChange = newSelections => {
     setSelectedMeals(newSelections)
@@ -50,6 +45,78 @@ const meals = [
     function handleClearMealReview() {
         setSelectedMeals([]);
     }
+
+    // GET request to get the ID(s) of the selected favorite item(s)
+    function getFavMeal() {
+       fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+        })
+        .then(
+            function(response) {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful GET
+                    // Set fields to correct values
+                    response.json().then(function(data) {
+                        data.map(item => {
+                            currentSelectID.push(item.meal_id);
+                        })
+                    });
+                    console.log(currentSelectID)
+                } else {
+                    console.log('Auth like there was a problem with ID fetching. Status Code: ' +
+                        response.status);
+                }
+            }
+        )
+        .catch(function(err) {
+            console.log('Fetch Error :-S', err);
+        });
+    }
+
+    // GET request to convert selected menu item(s) ID(s) to the respective name(s)
+     function getFavMealName() {
+     console.log("hereeeeee");
+     console.log(currentSelectID);
+       currentSelectID.map(item => {
+         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+            })
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful GET
+                            // Set Fields to correct values
+                            response.json().then(function(data) {
+                                currentSelection.push({ label: data.item_name, value: item });
+                                const unique = currentSelection
+                                    .map(e => e['value'])
+                                    // store the keys of the unique objects
+                                    .map((e, i, final) => final.indexOf(e) === i && i)
+                                    // eliminate the dead keys & store unique objects
+                                    .filter(e => currentSelection[e]).map(e => currentSelection[e]);
+                                setCurrentSelection(unique);
+                            });
+                            console.log(currentSelection);
+                        } else {
+                            console.log('Getting Menu Items like there was a problem. Status Code: ' +
+                                response.status);
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
+            })
+        }
 
 //     function toggleFunction() {
 //       meals.map(item => {
@@ -103,7 +170,7 @@ const meals = [
               <View>
                   <SafeAreaView style={styles.container}>
                     <FlatList
-                      data={meals}
+                      data={currentSelection}
                       renderItem={renderItem}
                       keyExtractor={item => item.value}
                     />

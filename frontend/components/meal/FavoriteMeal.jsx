@@ -83,8 +83,9 @@ function FavoriteMeals({route, navigation}) {
                             currentSelectID.push(item.meal_id);
                         })
                     });
+                    console.log(currentSelectID)
                 } else {
-                    console.log('Auth like there was a problem. Status Code: ' +
+                    console.log('Auth like there was a problem with ID fetching. Status Code: ' +
                         response.status);
                 }
             }
@@ -96,8 +97,10 @@ function FavoriteMeals({route, navigation}) {
 
     // GET request to convert selected menu item(s) ID(s) to the respective name(s)
      function getFavMealName() {
+     console.log("hereeeeee");
+     console.log(currentSelectID);
        currentSelectID.map(item => {
-         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item.toString(), {
+         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
                 method: 'GET',
                 headers : {
                     'Content-Type': 'application/json',
@@ -118,8 +121,8 @@ function FavoriteMeals({route, navigation}) {
                                     // eliminate the dead keys & store unique objects
                                     .filter(e => currentSelection[e]).map(e => currentSelection[e]);
                                 setCurrentSelection(unique);
-                                console.log(currentSelection);
                             });
+                            console.log(currentSelection);
                         } else {
                             console.log('Getting Menu Items like there was a problem. Status Code: ' +
                                 response.status);
@@ -150,7 +153,7 @@ function FavoriteMeals({route, navigation}) {
                             })
                         });
                     } else {
-                        console.log('Auth like there was a problem. Status Code: ' +
+                        console.log('Auth like there was a problem with fetching all menu items. Status Code: ' +
                             response.status);
                     }
                 }
@@ -182,7 +185,7 @@ function FavoriteMeals({route, navigation}) {
                              setRemoveSelection([]);
                          });
                      } else {
-                         console.log('Auth like there was a problem. Status Code: ' +
+                         console.log('Auth like there was a problem with removing items. Status Code: ' +
                              response.status);
                      }
                  }
@@ -227,7 +230,7 @@ function FavoriteMeals({route, navigation}) {
                         </Button>
                     </View>
                     <View style={ styles.notiView }>
-                        <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Notifications") }>
+                        <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Notifications", { UserID: route.params.UserID, token: route.params.token }) }>
                             <Text style={ styles.textNormal}>Customize Notifications</Text>
                         </TouchableOpacity>
                     </View>

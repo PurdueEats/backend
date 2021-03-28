@@ -365,13 +365,13 @@ function ProfileManager({route, navigation}) {
                             <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
-                            <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
-                                <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
-                            </TouchableOpacity>
-                            <Text style={styles.modalText}>                </Text>
-                            <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
-                                <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
-                            </TouchableOpacity>
+{/*                             <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}> */}
+{/*                                 <Image style={ styles.backImage } source={require('../../resources/minus.png')}/> */}
+{/*                             </TouchableOpacity> */}
+{/*                             <Text style={styles.modalText}>                </Text> */}
+{/*                             <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}> */}
+{/*                                 <Image style={ styles.backImage } source={require('../../resources/add.png')}/> */}
+{/*                             </TouchableOpacity> */}
                         </View>
                         <Text style={styles.dollarsText}>How many dollars?</Text>
                         <View style={styles.rowBetween}>
