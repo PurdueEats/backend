@@ -24,7 +24,7 @@ function ProfileManager({route, navigation}) {
     const [password, setPassword] = useState('');
     const [swipes, setSwipes] = useState('');
     const [transact, setTransact] = useState('');
-    const [add, setAdd] = useState('Add');
+    const [add, setAdd] = useState('Subtract');
     const [sign, setSign] = useState('+');
 
     var d = new Date();
@@ -447,15 +447,9 @@ function ProfileManager({route, navigation}) {
                         <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesExit(transact)}>
                             <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
                         </TouchableOpacity>
-                        <View style={styles.rowBetween}>
                             <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
                                 <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
                             </TouchableOpacity>
-                            <Text style={styles.modalText}>                </Text>
-                            <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
-                                <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
-                            </TouchableOpacity>
-                        </View>
                         <Text style={styles.dollarsText}>How many swipes?</Text>
                         <View style={styles.rowBetween}>
                             <Text style={styles.big}>{sign}</Text>
