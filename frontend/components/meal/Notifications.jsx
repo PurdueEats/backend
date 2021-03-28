@@ -80,8 +80,8 @@ function Notifications({route, navigation}) {
 
     // GET request to convert selected menu item(s) ID(s) to the respective name(s)
      function getFavMealName() {
-     console.log("hereeeeee");
-     console.log(currentSelectID);
+     console.log("hereeeeee")
+     console.log(currentSelectID)
        currentSelectID.map(item => {
          fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
                 method: 'GET',

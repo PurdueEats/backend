@@ -58,7 +58,7 @@ function FavoriteMeals({route, navigation}) {
                         .then((responseData) => {
                          console.log("inside responsejson");
                          console.log('response object:',responseData);
-            console.log(item.value);
+                         console.log(item.value);
                          }).done();
         })
     }
@@ -82,7 +82,9 @@ function FavoriteMeals({route, navigation}) {
                         data.map(item => {
                             currentSelectID.push(item.meal_id);
                         })
+//                         setCurrentSelectID(data.map(item => (item.meal_id)));
                     });
+//                     console.log("id")
                     console.log(currentSelectID)
                 } else {
                     console.log('Auth like there was a problem with ID fetching. Status Code: ' +
@@ -114,6 +116,8 @@ function FavoriteMeals({route, navigation}) {
                             // Set Fields to correct values
                             response.json().then(function(data) {
                                 currentSelection.push({ label: data.item_name, value: item });
+//                                 setCurrentSelection({ label: data.item_name, value: item });
+
                                 const unique = currentSelection
                                     .map(e => e['value'])
                                     // store the keys of the unique objects
@@ -122,7 +126,7 @@ function FavoriteMeals({route, navigation}) {
                                     .filter(e => currentSelection[e]).map(e => currentSelection[e]);
                                 setCurrentSelection(unique);
                             });
-                            console.log(currentSelection);
+                            console.log(currentSelection)
                         } else {
                             console.log('Getting Menu Items like there was a problem. Status Code: ' +
                                 response.status);
@@ -148,9 +152,10 @@ function FavoriteMeals({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         response.json().then(function(data) {
-                            data.map(item => {
-                                meals.push({ label: item.item_name, value: item.menu_item_id});
-                            })
+//                             data.map(item => {
+//                                 meals.push({ label: item.item_name, value: item.menu_item_id});
+//                             })
+                            selectedMeals(data.map(menuItem => ({ label: menuItem.item_name, value: menuItem.menu_item_id })));
                         });
                     } else {
                         console.log('Auth like there was a problem with fetching all menu items. Status Code: ' +
