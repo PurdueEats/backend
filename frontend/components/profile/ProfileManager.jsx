@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
 import { Toast } from 'native-base';
-import moment from 'moment';
-import {StackActions} from "@react-navigation/native";
+import { useIsFocused } from '@react-navigation/native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 function ProfileManager({route, navigation}) {
+    // Setup re-render on focus change
+    const isFocused = useIsFocused()
+
+    // Modal attributes
     const [modalName, setModalName] = useState(false);
     const [ModalPlan, setModalPlan] = useState(false);
     const [modalPassword, setModalPassword] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
     const [modalDining, setModalDining] = useState(false);
 
+    // Settings attributes
     const [name, setName] = useState('');
     const [nameNew, setNameNew] = useState('');
     const [passNew, setPassNew] = useState('');
@@ -26,11 +30,13 @@ function ProfileManager({route, navigation}) {
     const [add, setAdd] = useState('Add');
     const [sign, setSign] = useState('+');
 
+    // ?
     const [delBool, setDelBool] = useState(false);
     const [nameBool, setNameBool] = useState(false);
     const [planBool, setPlanBool] = useState(false);
     const [passwordBool, setPasswordBool] = useState(false);
 
+    // Timestamp fields
     var moment = require('moment-timezone');
     var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
@@ -39,7 +45,7 @@ function ProfileManager({route, navigation}) {
             getAuth()
             getMealInfo()
         }
-    }, []);
+    }, [isFocused]);
 
     function handleNameExit() {
         setNameBool(true);
@@ -66,7 +72,7 @@ function ProfileManager({route, navigation}) {
 
     function handleDiningExit(subtract) {
         setModalDining(!setModalDining);
-        if (add == 'Add') {
+        if (add === 'Add') {
             console.log("in here?")
             sendDiningDollars(0 - subtract);
         } else {

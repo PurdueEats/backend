@@ -1,25 +1,28 @@
 import React, {useEffect, useState} from "react";
 import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
-import Logo from "../../resources/logo.png";
-import Earhart from "../../resources/earhart.png"
-import Wiley from "../../resources/wiley.png"
-import Ford from "../../resources/ford.png"
-import Hillenbrand from "../../resources/hillenbrand.png"
-import Windsor from "../../resources/windsor.png"
-import MaterialTabs from 'react-native-material-tabs';
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import { useIsFocused } from '@react-navigation/native';
 import { ProgressChart } from "react-native-chart-kit";
 import { Button } from 'native-base';
+import MaterialTabs from 'react-native-material-tabs';
+import Logo from "../../resources/logo.png";
+import Earhart from "../../resources/earhart.png";
+import Wiley from "../../resources/wiley.png";
+import Ford from "../../resources/ford.png";
+import Hillenbrand from "../../resources/hillenbrand.png";
+import Windsor from "../../resources/windsor.png";
 
 
 function DiningFacilities({route, navigation}) {
+    // Setup re-render on focus change
+    const isFocused = useIsFocused();
+
     // Recommended Meals
     const [calories, setCalories] = useState(0);
     const [carbs, setCarbs] = useState(0);
     const [fat, setFat] = useState(0);
     const [protein, setProtein] = useState(0);
+
     // Dining Courts
-    const [diningCourt, setDiningCourt] = useState('');
     const [selectedTab, setSelectedTab] = useState(0);
 
     useEffect(() => {
@@ -51,25 +54,26 @@ function DiningFacilities({route, navigation}) {
             .catch(function(err) {
                 console.log('Fetch Error :-S', err);
             });
-    }, []);
+    }, [isFocused]);
 
     function EarhartNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 1});
     }
+
     function HillenbrandNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 2});
     }
+
     function FordNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 3});
     }
+
     function WindsorNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 4});
     }
+
     function WileyNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 5});
-    }
-    function handleNavigate() {
-        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token });
     }
 
     return (
