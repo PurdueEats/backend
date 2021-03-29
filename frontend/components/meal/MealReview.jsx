@@ -3,7 +3,6 @@ import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "rea
 import { AirbnbRating} from 'react-native-ratings';
 import { Button, Toast } from 'native-base';
 import SelectMultiple from 'react-native-select-multiple'
-import moment from 'moment';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
@@ -41,8 +40,7 @@ function MealReview({route, navigation}) {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                /* 'Authorization': 'Bearer ' + route.params.token */
+                'Accept': 'application/json'
             },
         })
             .then(
