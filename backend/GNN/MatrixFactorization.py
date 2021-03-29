@@ -79,14 +79,12 @@ if __name__ == "__main__":
     # Num of Features
     K = 3
 
-
     P = numpy.random.rand(N, K)
     Q = numpy.random.rand(M, K)
-
 
     nP, nQ = matrix_factorization(R, P, Q, K)
 
     nR = numpy.dot(nP, nQ.T)
 
     for x in nR:
-        print(nR)
+        print(x)
