@@ -5,20 +5,11 @@ import { Button } from 'native-base';
 import Logo from "../../resources/logo.png";
 
 function MealPreferences({route, navigation}) {
-    // const [meals, setMealRating] = useState('');
-    //const meals = [ "Hamburger", "Balsamic Chicken", "Hotdog", "Pizza", "Beef Broccoli Stirfry" ]
-    const [currMeals, setMeals] = useState([]);
+    const [currMeals, setCurrMeals] = useState([]);
     const ratings = [ 3, 3, 3, 3, 3 ]
 
-    // useEffect(() => {
-    //     console.log("hit here")
-    // })
-
     useEffect(() => {
-        getMeals();
-    }, []);
-
-    function getMeals() {
+        console.log("usereffect");
         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/MealPreferences`, {
             method: 'GET',
             headers : {
@@ -33,14 +24,8 @@ function MealPreferences({route, navigation}) {
                         // Successful GET
                         // Set Fields to correct values
                         response.json().then(function(data) {
-                            console.log(data)
-                            data.map(menuItem => {
-                                currMeals.push(menuItem);
-                                // console.log(allData);
-                                // filterData = allData
-                            })
+                            setCurrMeals(data);
                         });
-                        console.log(currMeals);
                     } else {
                         console.log('Getting Menu Items from Meal Preferences looks like there was a problem. Status Code: ' +
                             response.status);
@@ -50,9 +35,18 @@ function MealPreferences({route, navigation}) {
             .catch(function(err) {
                 console.log('Fetch Error :-S', err);
             });
+    }, []);
+
+    function getMeals() {
+
     }
 
     function handleSubmit() {
+        currMeals.pop();
+        currMeals.pop();
+        currMeals.pop();
+        currMeals.pop();
+        currMeals.pop();
         navigation.navigate("NavBar", { UserID: route.params.UserID, token: route.params.token });
     }
 
@@ -67,8 +61,10 @@ function MealPreferences({route, navigation}) {
                 }}
             />
         );
-    }
 
+    }
+    //test
+    //
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -77,16 +73,19 @@ function MealPreferences({route, navigation}) {
                 <Text style={ styles.screenTitle }>Enter your meal preferences</Text>
             </View>
 
+
             <View style={ styles.screenView }>
-                { currMeals.length === 0 ? (
-                    <Text>Error</Text>
-                ) : (
+                {
                    currMeals.map(function (meal, index) {
-                        function updateRating(rating) {
+                       //console.log("HERE");
+                       //console.log(meal);
+                       function updateRating(rating) {
                             ratings[index] = rating;
                         }
-                        return (
+                       return (
                             <View key={index} style={ styles.individualRatingComponents }>
+                                {/*{console.log(meal)}*/}
+                                {console.log(meal.item_name)}
                                 <Text key={index + "Text"} style={ styles.mealText }>{meal.item_name}</Text>
                                 <AirbnbRating
                                     key={index + "Rating"}
@@ -101,8 +100,9 @@ function MealPreferences({route, navigation}) {
                                     onFinishRating={ updateRating }
                                 />
                             </View>
+                           // <Text>HellO</Text>
                         );
-                    }))}
+                    })}
             </View>
             <View style={ styles.actionView }>
                 <Button style={ styles.submitButtonComponent } onPress={ handleSubmit }>

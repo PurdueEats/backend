@@ -16,7 +16,8 @@ function Menu({route, navigation}) {
 
     // stuff for search filtering
     const [allData, setAllData] = useState([]);
-    let [filterData, setFilterData] = useState([]);
+    const [filterData, setFilterData] = useState([]);
+    //filterData = ["hello", "test", "here"];
 
     // stuff for drop down filter
     const [vegetarianData, setVegetarianData] = useState([]);
@@ -76,11 +77,10 @@ function Menu({route, navigation}) {
                                 }
                                 allData.push(menuItem);
                                 //console.log(allData);
-                                filterData = allData
-                                console.log(filterData);
-
-
+                                //console.log(filterData);
                             })
+                            setFilterData(allData);
+                            //console.log(allData);
                         });
                     } else {
                         console.log('Getting Menu Items like there was a problem. Status Code: ' +
@@ -111,6 +111,7 @@ function Menu({route, navigation}) {
     }
 
     function renderLine() {
+        console.log("render line")
         return (
             <View
                 style={{
@@ -123,52 +124,46 @@ function Menu({route, navigation}) {
         );
     }
 
-    function renderMenuItem() {
+    function renderMenuItem (menuItem)  {
+        //console.log(allData[0]);
+        //console.log(menuItem);
+        //menuItem = menuItem.json();
+       // console.log(menuItem["menu_item"]["menu_item_id"])
         return (
-            <View>
-                { filterData.length === 0 ? (
-                    <Text>Error</Text>
-                ) : (
-                    filterData.map(function (menuItem) {
-                        //console.log(filterData.item_name);
-                        return (
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={styles.firstItem}>{menuItem.item_name}</Text>
-                                {menuItem.is_vegetarian == true ? (
-                                    <View style={styles.icons}>
-                                        <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
-                                    </View>
-                                ): (
-                                    <View>
-                                    </View>
-                                )}
-                                {menuItem.has_wheat == false && menuItem.has_gluten == false ? (
-                                    <View style={styles.icons}>
-                                        <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
-                                    </View>
-                                ): (
-                                    <View>
-                                    </View>
-                                )}
-                                {menuItem.has_milk == false ? (
-                                    <View style={styles.icons}>
-                                        <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
-                                    </View>
-                                ): (
-                                    <View>
-                                    </View>
-                                )}
-                                {menuItem.has_peanuts == false && menuItem.has_treenuts == false ? (
-                                    <View style={styles.icons}>
-                                        <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
-                                    </View>
-                                ): (
-                                    <View>
-                                    </View>
-                                )}
-                            </View>
-                        );
-                    }))}
+            <View style={{flexDirection: "row"}}>
+                <Text style={styles.firstItem}>{menuItem.item.menu_item.item_name}</Text>
+                {menuItem.item.menu_item.is_vegetarian == true ? (
+                    <View >
+                        <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                    </View>
+                ): (
+                    <View>
+                    </View>
+                )}
+                {menuItem.item.menu_item.has_wheat == false && menuItem.item.menu_item.has_gluten == false ? (
+                    <View>
+                        <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
+                    </View>
+                ): (
+                    <View>
+                    </View>
+                )}
+                {menuItem.item.menu_item.has_milk == false ? (
+                    <View>
+                        <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                    </View>
+                ): (
+                    <View>
+                    </View>
+                )}
+                {menuItem.item.menu_item.has_peanuts == false && menuItem.item.menu_item.has_treenuts == false ? (
+                    <View>
+                        <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
+                    </View>
+                ): (
+                    <View>
+                    </View>
+                )}
             </View>
         );
     }
@@ -289,17 +284,19 @@ function Menu({route, navigation}) {
                 {/*): (*/}
                 {/*    setFilterData(filterData)*/}
                 {/*)}*/}
-                <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={renderMenuItem} keyExtractor={(menuItem, index) => index.toString()}/>
+                <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id }/>
             </SafeAreaView>
     );
 }
 
+
+
 const styles = StyleSheet.create({
     screen:{
         paddingTop: "17%",
-        paddingLeft: "10%",
-        paddingRight: "10%",
-        paddingBottom: "100%",
+        paddingLeft: "5%",
+        paddingRight: "5%",
+        paddingBottom: "10%",
         flex: 1,
     },
     title: {

@@ -30,7 +30,6 @@ function MealReview({route, navigation}) {
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                /* 'Authorization': 'Bearer ' + route.params.token */
             },
         })
             .then(
@@ -54,7 +53,7 @@ function MealReview({route, navigation}) {
                     console.log(meals)
                         });
                     } else {
-                        console.log('Getting Dining Menu Items like there was a problem. Status Code: ' +
+                        console.log('Getting Menu Dining Menu Items like there was a problem. Status Code: ' +
                             response.status);
                     }
                 }

@@ -3,8 +3,8 @@ import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } fro
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Toast } from 'native-base';
 import moment from 'moment';
-
-
+import {StackActions} from "@react-navigation/native";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 function ProfileManager({route, navigation}) {
     const [modalName, setModalName] = useState(false);
@@ -25,7 +25,6 @@ function ProfileManager({route, navigation}) {
     const [transact, setTransact] = useState('');
     const [add, setAdd] = useState('Add');
     const [sign, setSign] = useState('+');
-
 
     const [delBool, setDelBool] = useState(false);
     const [nameBool, setNameBool] = useState(false);
@@ -243,7 +242,7 @@ function ProfileManager({route, navigation}) {
     function deleteAccount() {
         setDelBool(true);
         // Deletion route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID, {
             method: 'DELETE',
             headers : {
                 'Content-Type': 'application/json',
@@ -362,16 +361,16 @@ function ProfileManager({route, navigation}) {
                 <View>
                     <View style={styles.modalView}>
                         <TouchableOpacity active = { .5 } onPress={() =>  handleDiningExit(transact)}>
-                            <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
+                            <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
-{/*                             <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}> */}
-{/*                                 <Image style={ styles.backImage } source={require('../../resources/minus.png')}/> */}
-{/*                             </TouchableOpacity> */}
-{/*                             <Text style={styles.modalText}>                </Text> */}
-{/*                             <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}> */}
-{/*                                 <Image style={ styles.backImage } source={require('../../resources/add.png')}/> */}
-{/*                             </TouchableOpacity> */}
+                            <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                            </TouchableOpacity>
+                            <Text style={styles.modalText}>                </Text>
+                            <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                            </TouchableOpacity>
                         </View>
                         <Text style={styles.dollarsText}>How many dollars?</Text>
                         <View style={styles.rowBetween}>
@@ -466,14 +465,16 @@ function ProfileManager({route, navigation}) {
             </View>
         <View style={styles.viewCenter}>
             <View style={ styles.borderLine }/>
-                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Track") }>
+                <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("Track") }>
                     <Text style={ styles.textNormal}>Track Meals</Text>
-                </TouchableOpacity>
-                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("FavoriteMeal", { UserID: route.params.UserID, token: route.params.token }) }>
-                    <Text style={ styles.textNormal}>Favorite Meals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
                     <Text style={ styles.textNormal}>Change Password</Text>
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("EditSchedule", { UserID: route.params.UserID, token: route.params.token }) }>
+                    <Text style={ styles.textNormal}>Change Schedule</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalDelete(true) }>
                     <Text style={ styles.textNormalRed}>Delete Account</Text>

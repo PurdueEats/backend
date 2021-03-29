@@ -15,6 +15,8 @@ function NavBar({route, navigation}) {
             initialRouteName="Dining"
             tabBarOptions={{
                 activeTintColor: 'red',
+                // activeBackgroundColor: '#f2f2f2',
+                // inactiveBackgroundColor: '#f2f2f2'
             }}
         >
             <Stack.Screen
