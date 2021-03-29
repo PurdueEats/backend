@@ -2,12 +2,14 @@ import * as React from "react";
 import { Root } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginManager from "./components/login/LoginManager"
-import ProfileManager from "./components/profile/ProfileManager"
+import LoginManager from "./components/login/LoginManager";
+import ProfileManager from "./components/profile/ProfileManager";
+import ScheduleManager from "./components/profile/ScheduleManager"
 import TemplateComponent from "./components/template/TemplateComponent";
 import MealPreferences from "./components/meal/MealPreferences";
 import DiningCourt from "./components/dining/DiningFacilities";
 import Menu from "./components/dining/Menu";
+import MealNutrition from "./components/meal/MealNutrition";
 import MealReview from "./components/meal/MealReview";
 import Name from "./components/signup/Name";
 import Email from "./components/signup/Email";
@@ -15,8 +17,8 @@ import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
 import MapManager from "./components/map/MapManager";
 import NavBar from "./components/navbar/NavBar";
-import ForgotPassword from "./components/login/ForgotPassword"
-import TrackMeals from "./components/meal/TrackMeals"
+import ForgotPassword from "./components/login/ForgotPassword";
+import TrackMeals from "./components/meal/TrackMeals";
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -37,9 +39,11 @@ export default function App() {
                     <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Menu" component={ Menu }/>
+                    <Stack.Screen name="MealNutrition" component={ MealNutrition } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="MealReview" component={ MealReview }/>
                     <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Profile" component={ ProfileManager }/>
+                    <Stack.Screen name="EditSchedule" component={ ScheduleManager }/>
                     <Stack.Screen name="Track" component={ TrackMeals }/>
                     <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Template" component={ TemplateComponent }/>
