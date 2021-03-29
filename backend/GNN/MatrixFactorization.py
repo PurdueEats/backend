@@ -1,5 +1,6 @@
 import numpy
 
+
 def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
     '''
     R: rating matrix
@@ -18,16 +19,18 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
             for j in range(len(R[i])):
 
                 if R[i][j] > 0:
-                    
+
                     # calculate error
-                    eij = R[i][j] - numpy.dot(P[i,:],Q[:,j])
+                    eij = R[i][j] - numpy.dot(P[i, :], Q[:, j])
 
                     for k in range(K):
                         # calculate gradient with a and beta parameter
-                        P[i][k] = P[i][k] + alpha * (2 * eij * Q[k][j] - beta * P[i][k])
-                        Q[k][j] = Q[k][j] + alpha * (2 * eij * P[i][k] - beta * Q[k][j])
+                        P[i][k] = P[i][k] + alpha * \
+                            (2 * eij * Q[k][j] - beta * P[i][k])
+                        Q[k][j] = Q[k][j] + alpha * \
+                            (2 * eij * P[i][k] - beta * Q[k][j])
 
-        eR = numpy.dot(P,Q)
+        eR = numpy.dot(P, Q)
 
         e = 0
 
@@ -37,14 +40,53 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
 
                 if R[i][j] > 0:
 
-                    e = e + pow(R[i][j] - numpy.dot(P[i,:],Q[:,j]), 2)
+                    e = e + pow(R[i][j] - numpy.dot(P[i, :], Q[:, j]), 2)
 
                     for k in range(K):
 
-                        e = e + (beta/2) * (pow(P[i][k],2) + pow(Q[k][j],2))
+                        e = e + (beta/2) * (pow(P[i][k], 2) + pow(Q[k][j], 2))
         # 0.001: local minimum
         if e < 0.001:
 
             break
 
     return P, Q.T
+
+
+if __name__ == "__main__":
+
+    R = [
+
+        [5, 3, 0, 1],
+
+        [4, 0, 0, 1],
+
+        [1, 1, 0, 5],
+
+        [1, 0, 0, 4],
+
+        [0, 1, 5, 4],
+
+        [2, 1, 3, 0],
+
+    ]
+
+    R = numpy.array(R)
+    # N: num of User
+    N = len(R)
+    # M: num of Movie
+    M = len(R[0])
+    # Num of Features
+    K = 3
+
+
+    P = numpy.random.rand(N, K)
+    Q = numpy.random.rand(M, K)
+
+
+    nP, nQ = matrix_factorization(R, P, Q, K)
+
+    nR = numpy.dot(nP, nQ.T)
+
+    for x in nR:
+        print(nR)
