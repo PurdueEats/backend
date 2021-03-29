@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { Button, Item, Toast } from 'native-base';
+import { Dimensions, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import {StackActions} from "@react-navigation/native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
-import {BarChart, ProgressChart} from "react-native-chart-kit";
+import { ProgressChart } from "react-native-chart-kit";
 
 function MealNutrition({route, navigation}) {
     // Nutritional Information
@@ -25,7 +24,7 @@ function MealNutrition({route, navigation}) {
 
     useEffect(() => {
         // Meal Nutrition Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + 1 + "/Nutrition", {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + route.params.MealID + "/Nutrition", {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -40,7 +39,7 @@ function MealNutrition({route, navigation}) {
                     } else {
                         // Examine the text in the response
                         response.json().then(function(data) {
-                            // Login successful, redirect to MealPreferences
+                            // GET successful, set nutrition data
                             setServingSize(data["Nutrition"][0]["LabelValue"])
                             setCalories(data["Nutrition"][1]["LabelValue"])
                             setFat(data["Nutrition"][3]["LabelValue"])
@@ -70,7 +69,7 @@ function MealNutrition({route, navigation}) {
                 <TouchableOpacity onPress={ () => navigation.dispatch(StackActions.pop(1))}>
                     <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                 </TouchableOpacity>
-                <Text style={ styles.screenTitle }>French Toast Sticks</Text>
+                <Text style={ styles.screenTitle }>{route.params.MealName}</Text>
             </View>
             <View style={ styles.bodyView }>
                 <Text style={ styles.dataHeader }>Nutritional Information</Text>
@@ -91,7 +90,7 @@ function MealNutrition({route, navigation}) {
                                 parseFloat(sodiumValue.slice(0, -1))/100, parseFloat(cholesterolValue.slice(0, -1))/100,
                                 parseFloat(proteinValue.slice(0, -1))/100 ]
                         }}
-                        width={370}
+                        width={Dimensions.get("window").width - 20}
                         height={250}
                         strokeWidth={12}
                         radius={35}
