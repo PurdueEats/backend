@@ -17,6 +17,7 @@ import MapManager from "./components/map/MapManager";
 import NavBar from "./components/navbar/NavBar";
 import ForgotPassword from "./components/login/ForgotPassword"
 import TrackMeals from "./components/meal/TrackMeals"
+import MealHistory from "./components/meal/MealHistory"
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -27,7 +28,7 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
                     headerShown: false
-                }} initialRouteName="Login">
+                }} initialRouteName="MealHistory">
                     <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="ForgotPassword" component={ ForgotPassword }/>
                     <Stack.Screen name="Name" component={ Name }/>
@@ -43,6 +44,7 @@ export default function App() {
                     <Stack.Screen name="Track" component={ TrackMeals }/>
                     <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Template" component={ TemplateComponent }/>
+                    <Stack.Screen name="MealHistory" component={ MealHistory }/>
                 </Stack.Navigator>
             </NavigationContainer>
         </Root>
