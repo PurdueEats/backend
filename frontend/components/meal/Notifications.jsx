@@ -26,7 +26,7 @@ function Notifications({route, navigation}) {
   const [currentSelectID, setCurrentSelectID] = React.useState([]);
   const [currentSelection, setCurrentSelection] = React.useState([]);
 
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   useEffect(() => {

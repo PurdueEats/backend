@@ -8,20 +8,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
-// const meals = [
-//     { label: 'Bangkok Chicken Wrap', value: 21 },
-//     { label: 'Moo Shu Chicken', value: 25 },
-//     { label: 'Strawberry Gelatin', value: 43 },
-//     { label: 'Waffle Fries', value: 20 },
-//     { label: 'Firehouse Chili with Pork', value: 35 },
-//     { label: 'Gluten Free Cookies', value: 41 },
-//     { label: 'Pineapple Chunks', value: 6 },
-//     { label: 'Vegan Pub Fried Fish', value: 23 },
-//     { label: 'Brown Rice with Mushrooms', value: 47 },
-// ]
-
 function MealReview({route, navigation}) {
-  const [ratings, setRatings] = React.useState('');
+  const [ratings, setRatings] = React.useState(3);
   const [selectedMeals, setSelectedMeals] = React.useState([]);
   const [response, setResponse] = React.useState('');
   const [meals, setMeals] = React.useState([]);
@@ -51,8 +39,19 @@ function MealReview({route, navigation}) {
                         // Successful GET
                         // Set Fields to correct values
                         response.json().then(function(data) {
+
                             setMeals(data.map(menuItem => ({ label: menuItem.menu_item.item_name, value: menuItem.menu_item.menu_item_id })));
-//                                                         setMeals(data.map(menuItem => ({ label: menuItem.menu_item.item_name, value: menuItem.menu_item.menu_item_id })));
+                            setMeals(data
+                                .map(e => e.menu_item.menu_item_id)
+                                .map((e, i, final) => final.indexOf(e) === i && i)
+                                .filter(e => data[e])
+                                .map(e => data[e])
+                                .map(menuItem => ({
+                                    label: menuItem.menu_item.item_name,
+                                    value: menuItem.menu_item.menu_item_id
+                                })));
+
+                    console.log(meals)
                         });
                     } else {
                         console.log('Getting Dining Menu Items like there was a problem. Status Code: ' +
@@ -147,7 +146,7 @@ function MealReview({route, navigation}) {
               <View style={ styles.buttonView }>
                   <View style={{ flexDirection:"row" }}>
                     <Button style={ styles.cancelButtonComponent } onPress= { handleClearMealReview }>
-                        <Text style={ styles.cancelButtonText }>Cancel</Text>
+                        <Text style={ styles.cancelButtonText }>Clear</Text>
                     </Button>
                     <Button style={ styles.confirmButtonComponent } onPress={ handleMealReview }>
                         <Text style={ styles.confirmButtonText }>Confirm</Text>
