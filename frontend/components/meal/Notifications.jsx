@@ -26,7 +26,6 @@ function Notifications({route, navigation}) {
   const [currentSelectID, setCurrentSelectID] = React.useState([]);
   const [currentSelection, setCurrentSelection] = React.useState([]);
 
-  const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   useEffect(() => {
@@ -139,7 +138,9 @@ function Notifications({route, navigation}) {
         <Text style={styles.label}>{label}</Text>
       </View>
     );
-    const renderItem = ({ item }) => (
+    function renderItem(item){
+      const [isEnabled, setIsEnabled] = useState(true);
+        return (
         <View style={{flexDirection:"row"}}>
             <View style={{alignItems: 'flex-end'}}>
                 <Item label={item.label} />
@@ -154,7 +155,8 @@ function Notifications({route, navigation}) {
                   />
             </View>
         </View>
-    );
+        );
+    }
 
     return (
           <ScrollView showsVerticalScrollIndicator={false}>

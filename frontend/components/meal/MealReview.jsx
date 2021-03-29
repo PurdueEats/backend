@@ -24,7 +24,6 @@ function MealReview({route, navigation}) {
   }
 
     function getMeals() {
-        console.log(route.params.DiningID);
         fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
             method: 'GET',
             headers : {
@@ -49,8 +48,6 @@ function MealReview({route, navigation}) {
                                     label: menuItem.menu_item.item_name,
                                     value: menuItem.menu_item.menu_item_id
                                 })));
-
-                    console.log(meals)
                         });
                     } else {
                         console.log('Getting Menu Dining Menu Items like there was a problem. Status Code: ' +
