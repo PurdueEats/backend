@@ -96,18 +96,6 @@ function Menu({route, navigation}) {
     }
 
     function searchFiltering (searchText) {
-        if(searchText) {
-            const searchData = allData.filter(function (menuItem)
-            {
-                //console.log(menuItem["menu_item"]["item_name"]);
-                const menuInfo = menuItem["menu_item"]["item_name"] ? menuItem["menu_item"]["item_name"].toUpperCase() : ''.toUpperCase();
-                //const menuInfo = menuItem.item_name.toUpperCase();
-                const textInfo = searchText.toUpperCase();
-                return menuInfo.indexOf(textInfo) > -1;
-            });
-            setFilterData(searchData);
-            setSearched(searchText);
-        }
         if (!searchText) {
             setSearched(searchText);
             if (filter === "Gluten Free") {
@@ -125,6 +113,18 @@ function Menu({route, navigation}) {
             if (filter === "All Items") {
                 setFilterData(allData);
             }
+        }
+        if(searchText) {
+            const searchData = allData.filter(function (menuItem)
+            {
+                //console.log(menuItem["menu_item"]["item_name"]);
+                const menuInfo = menuItem["menu_item"]["item_name"] ? menuItem["menu_item"]["item_name"].toUpperCase() : ''.toUpperCase();
+                //const menuInfo = menuItem.item_name.toUpperCase();
+                const textInfo = searchText.toUpperCase();
+                return menuInfo.indexOf(textInfo) > -1;
+            });
+            setFilterData(searchData);
+            setSearched(searchText);
         }
     }
 
