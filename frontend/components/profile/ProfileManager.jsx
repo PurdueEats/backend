@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
-import { Toast } from 'native-base';
+import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal, ScrollView } from "react-native";
 import { useIsFocused } from '@react-navigation/native';
+import { Toast } from 'native-base';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DropDownPicker from 'react-native-dropdown-picker';
-import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 function ProfileManager({route, navigation}) {
     // Setup re-render on focus change
-    const isFocused = useIsFocused()
+    const isFocused = useIsFocused();
 
     // Modal attributes
     const [modalName, setModalName] = useState(false);
@@ -41,9 +41,11 @@ function ProfileManager({route, navigation}) {
     var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     useEffect(() => {
-        if (!delBool && !nameBool && !planBool && !passwordBool) {
-            getAuth()
-            getMealInfo()
+        if (isFocused) {
+            if (!delBool && !nameBool && !planBool && !passwordBool) {
+                getAuth()
+                getMealInfo()
+            }
         }
     }, [isFocused]);
 
@@ -342,7 +344,7 @@ function ProfileManager({route, navigation}) {
     }
 
     return (
-        <View style={styles.viewFlex}>
+        <ScrollView style={styles.viewFlex}>
             <Modal animationType="slide" transparent={true} visible={modalName}
                 onRequestClose={() => {
                     setModalName(!modalName);
@@ -510,7 +512,7 @@ function ProfileManager({route, navigation}) {
                     </View>
                 </Modal>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 

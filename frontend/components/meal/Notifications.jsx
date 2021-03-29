@@ -47,6 +47,7 @@ function Notifications({route, navigation}) {
 
     // GET request to get the ID(s) of the selected favorite item(s)
     function getFavMeal() {
+      console.log("hit")
        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
             headers : {
@@ -65,7 +66,6 @@ function Notifications({route, navigation}) {
                             currentSelectID.push(item.meal_id);
                         })
                     });
-                    console.log(currentSelectID)
                 } else {
                     console.log('Auth like there was a problem with ID fetching. Status Code: ' +
                         response.status);
@@ -79,8 +79,6 @@ function Notifications({route, navigation}) {
 
     // GET request to convert selected menu item(s) ID(s) to the respective name(s)
      function getFavMealName() {
-     console.log("hereeeeee")
-     console.log(currentSelectID)
        currentSelectID.map(item => {
          fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
                 method: 'GET',
@@ -104,7 +102,6 @@ function Notifications({route, navigation}) {
                                     .filter(e => currentSelection[e]).map(e => currentSelection[e]);
                                 setCurrentSelection(unique);
                             });
-                            console.log(currentSelection);
                         } else {
                             console.log('Getting Menu Items like there was a problem. Status Code: ' +
                                 response.status);
@@ -242,4 +239,5 @@ const styles = StyleSheet.create({
         fontSize: 32,
     },
 });
+
 export default Notifications

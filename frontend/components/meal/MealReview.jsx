@@ -8,19 +8,20 @@ import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
 function MealReview({route, navigation}) {
-  const [ratings, setRatings] = React.useState(3);
-  const [selectedMeals, setSelectedMeals] = React.useState([]);
-  const [response, setResponse] = React.useState('');
-  const [meals, setMeals] = React.useState([]);
-  const popAction = StackActions.pop();
+    const [ratings, setRatings] = React.useState(3);
+    const [selectedMeals, setSelectedMeals] = React.useState([]);
+    const [meals, setMeals] = React.useState([]);
+
+    var moment = require('moment-timezone');
+    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     useEffect(() => {
         getMeals();
     }, []);
 
-  const onSelectionsChange = newSelections => {
-    setSelectedMeals(newSelections)
-  }
+    const onSelectionsChange = newSelections => {
+        setSelectedMeals(newSelections)
+    }
 
     function getMeals() {
         fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
@@ -36,7 +37,6 @@ function MealReview({route, navigation}) {
                         // Successful GET
                         // Set Fields to correct values
                         response.json().then(function(data) {
-
                             setMeals(data.map(menuItem => ({ label: menuItem.menu_item.item_name, value: menuItem.menu_item.menu_item_id })));
                             setMeals(data
                                 .map(e => e.menu_item.menu_item_id)
@@ -59,23 +59,32 @@ function MealReview({route, navigation}) {
             });
     }
 
-    function displayError() {
+    function displayConfirmation() {
         Toast.show({
-            style: { backgroundColor: "red", justifyContent: "center" },
+            style: { backgroundColor: "green", justifyContent: "center" },
             position: "top",
-            text: "Invalid meal selection!",
+            text: "Meals successfully recorded.",
             textStyle: {
                 textAlign: 'center',
             },
             duration: 1500
         });
     }
-    var moment = require('moment-timezone');
-    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
+
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Record meals failed. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
 
     function handleMealReview() {
         selectedMeals.map(item => {
-            console.log("hit")
             fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
                 method: 'POST',
                 headers : {
@@ -89,12 +98,22 @@ function MealReview({route, navigation}) {
                     "timestamp": time
                 })
             })
-                .then((response) => response.text())
-                        .then((responseData) => {
-                         console.log("inside responsejson");
-                         console.log('response object:',responseData);
-            console.log(item.value);
-                         }).done();
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful POST
+                            displayConfirmation();
+                        } else {
+                            // Examine the text in the response
+                            console.log('Looks like there was a problem recording meals. Status Code: ' +
+                                response.status);
+                            displayError();
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
         })
     }
 

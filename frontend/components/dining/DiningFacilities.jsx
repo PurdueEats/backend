@@ -23,37 +23,40 @@ function DiningFacilities({route, navigation}) {
     const [protein, setProtein] = useState(0);
 
     // Dining Courts
+    const [diningCourt, setDiningCourt] = useState('');
     const [selectedTab, setSelectedTab] = useState(0);
 
     useEffect(() => {
-        // User Nutrition Summary Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + "/Nutrition", {
-            method: 'GET',
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + route.params.token
-            }
-        })
-            .then(
-                function(response) {
-                    if (response.status !== 200) {
-                        console.log('Looks like there was a problem. Status Code: ' +
-                            response.status);
-                    } else {
-                        // Examine the text in the response
-                        response.json().then(function(data) {
-                            setCalories(data["calories"])
-                            setCarbs(data["carbs"])
-                            setFat(data["fat"])
-                            setProtein(data["protein"])
-                        });
-                    }
+        if (isFocused) {
+            // User Nutrition Summary Route
+            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + "/Nutrition", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + route.params.token
                 }
-            )
-            .catch(function(err) {
-                console.log('Fetch Error :-S', err);
-            });
+            })
+                .then(
+                    function (response) {
+                        if (response.status !== 200) {
+                            console.log('Looks like there was a problem. Status Code: ' +
+                                response.status);
+                        } else {
+                            // Examine the text in the response
+                            response.json().then(function (data) {
+                                setCalories(data["calories"])
+                                setCarbs(data["carbs"])
+                                setFat(data["fat"])
+                                setProtein(data["protein"])
+                            });
+                        }
+                    }
+                )
+                .catch(function (err) {
+                    console.log('Fetch Error :-S', err);
+                });
+        }
     }, [isFocused]);
 
     function EarhartNavigation() {
@@ -105,7 +108,7 @@ function DiningFacilities({route, navigation}) {
                                 // 14000 1820 490 350
                                 [parseFloat(calories)/14000,
                                 parseFloat(carbs)/1900,
-                                parseFloat(fat)/50,
+                                parseFloat(fat)/200,
                                 parseFloat(protein)/350]
                         }}
                         width={Dimensions.get("window").width - 20}
@@ -128,7 +131,7 @@ function DiningFacilities({route, navigation}) {
                             <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs}g of 1900g
                         </Text>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat}g of 50g
+                            <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat}g of 200g
                         </Text>
                         <Text style={ styles.dataText }>
                             <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein}g of 350g
@@ -149,8 +152,8 @@ function DiningFacilities({route, navigation}) {
                     </Button>
                     <Button style={ styles.mealsButton } onPress={() => navigation.navigate("MealNutrition",
                         { UserID: route.params.UserID, token: route.params.token,
-                            MealID: 51, MealName: "Fried Potatoes"})}>
-                        <Text style={ styles.mealsText }>French Potatoes</Text>
+                            MealID: 101, MealName: "Sausage Gravy"})}>
+                        <Text style={ styles.mealsText }>Sausage Gravy</Text>
                     </Button>
                 </View>
             ): (

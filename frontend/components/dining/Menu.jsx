@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import { SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity, FlatList} from "react-native";
+import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, FlatList} from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
 import { Button} from 'native-base';
 import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
-import {AirbnbRating} from "react-native-ratings";
 
 
 function Menu({route, navigation}) {

@@ -9,7 +9,6 @@ function MealPreferences({route, navigation}) {
     const ratings = [ 3, 3, 3, 3, 3 ]
 
     useEffect(() => {
-        console.log("usereffect");
         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/MealPreferences`, {
             method: 'GET',
             headers : {
@@ -77,15 +76,11 @@ function MealPreferences({route, navigation}) {
             <View style={ styles.screenView }>
                 {
                    currMeals.map(function (meal, index) {
-                       //console.log("HERE");
-                       //console.log(meal);
                        function updateRating(rating) {
                             ratings[index] = rating;
                         }
                        return (
                             <View key={index} style={ styles.individualRatingComponents }>
-                                {/*{console.log(meal)}*/}
-                                {console.log(meal.item_name)}
                                 <Text key={index + "Text"} style={ styles.mealText }>{meal.item_name}</Text>
                                 <AirbnbRating
                                     key={index + "Rating"}
