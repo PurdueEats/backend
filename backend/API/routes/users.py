@@ -2,10 +2,12 @@
 from random import choice
 from string import ascii_uppercase
 from typing import List
+import numpy
 from fastapi import APIRouter, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
 from API.models.MealPlan import MealPlanIn
+from API.models.menu import MenuItem
 from API.models.users import (
     UserBasic,
     UserExtra,
@@ -17,6 +19,8 @@ from API.models.users import (
     UserNutrition,
     UserFavMeals
 )
+from GNN.MatrixFactorization import matrix_factorization
+from GNN.MatrixGen import generate_matrix
 
 
 app = APIRouter()
@@ -392,6 +396,23 @@ async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_hand
     """)
 
     return
+
+
+@app.get("/Predict", response_model=List[MenuItem])
+async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
+    
+    R, user_map = generate_matrix()
+
+    N = len(R)
+    M = len(R[0])
+    K = 3
+
+    P = numpy.random.rand(N, K)
+    Q = numpy.random.rand(M, K)
+
+    nP, nQ = matrix_factorization(R, P, Q, K)
+
+    nR = numpy.dot(nP, nQ.T)
 
 
 @app.post("/ForgotPassword", status_code=201)
