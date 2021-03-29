@@ -58,19 +58,21 @@ function Menu({route, navigation}) {
                         // Set Fields to correct values
                         response.json().then(function(data) {
                             data.map(menuItem => {
-                                if(menuItem.is_vegetarian) {
+                                //console.log(menuItem);
+                                if(menuItem["menu_item"]["is_vegetarian"] === true) {
+                                    //console.log(menuItem["menu_item"]["item_name"] + menuItem["menu_item"]["menu_item_id"])
                                     vegetarianData.push(menuItem);
                                     setVegetarian(true);
                                 }
-                                if(menuItem.has_wheat === false && menuItem.has_gluten === false) {
+                                if(!menuItem["menu_item"]["has_wheat"] && !menuItem["menu_item"]["has_gluten"]) {
                                     glutenFreeData.push(menuItem);
                                     setGlutenFree(true);
                                 }
-                                if(menuItem.has_milk === false) {
+                                if(!menuItem["menu_item"]["has_milk"]) {
                                     dairyFreeData.push(menuItem);
                                     setDairyFree(true);
                                 }
-                                if (menuItem.has_peanuts === false && menuItem.has_treenuts === false) {
+                                if (!menuItem["menu_item"]["has_peanuts"] && !menuItem["menu_item"]["has_treenuts"]) {
                                     nutFreeData.push(menuItem);
                                     //console.log(nutFreeData);
                                     setNutFree(true);
@@ -94,24 +96,40 @@ function Menu({route, navigation}) {
     }
 
     function searchFiltering (searchText) {
-        if (!searchText) {
-            setSearched(searchText);
-            setFilterData(allData);
-        }
         if(searchText) {
             const searchData = allData.filter(function (menuItem)
             {
-                const menuInfo = menuItem.title ? menuItem.title.toUpperCase() : ''.toUpperCase();
+                //console.log(menuItem["menu_item"]["item_name"]);
+                const menuInfo = menuItem["menu_item"]["item_name"] ? menuItem["menu_item"]["item_name"].toUpperCase() : ''.toUpperCase();
+                //const menuInfo = menuItem.item_name.toUpperCase();
                 const textInfo = searchText.toUpperCase();
                 return menuInfo.indexOf(textInfo) > -1;
             });
             setFilterData(searchData);
             setSearched(searchText);
         }
+        if (!searchText) {
+            setSearched(searchText);
+            if (filter === "Gluten Free") {
+                setFilterData(glutenFreeData);
+            }
+            if (filter === "Vegetarian") {
+                setFilterData(vegetarianData);
+            }
+            if (filter === "Dairy Free") {
+                setFilterData(dairyFreeData);
+            }
+            if (filter === "Nut Free") {
+                setFilterData(nutFreeData);
+            }
+            if (filter === "All Items") {
+                setFilterData(allData);
+            }
+        }
     }
 
     function renderLine() {
-        console.log("render line")
+       // console.log("render line")
         return (
             <View
                 style={{
@@ -124,46 +142,67 @@ function Menu({route, navigation}) {
         );
     }
 
+    function handleFilter(filterType) {
+        setFilter(filterType);
+        if (filterType === "Gluten Free") {
+            setFilterData(glutenFreeData);
+        }
+        if (filterType === "Vegetarian") {
+            setFilterData(vegetarianData);
+        }
+        if (filterType === "Dairy Free") {
+            setFilterData(dairyFreeData);
+        }
+        if (filterType === "Nut Free") {
+            setFilterData(nutFreeData);
+        }
+        if (filterType === "All Items") {
+            setFilterData(allData);
+        }
+    }
+
     function renderMenuItem (menuItem)  {
         //console.log(allData[0]);
         //console.log(menuItem);
         //menuItem = menuItem.json();
        // console.log(menuItem["menu_item"]["menu_item_id"])
         return (
-            <View style={{flexDirection: "row"}}>
+            <View style={{flexDirection: "column"}}>
                 <Text style={styles.firstItem}>{menuItem.item.menu_item.item_name}</Text>
-                {menuItem.item.menu_item.is_vegetarian == true ? (
-                    <View >
-                        <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
-                    </View>
-                ): (
-                    <View>
-                    </View>
-                )}
-                {menuItem.item.menu_item.has_wheat == false && menuItem.item.menu_item.has_gluten == false ? (
-                    <View>
-                        <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
-                    </View>
-                ): (
-                    <View>
-                    </View>
-                )}
-                {menuItem.item.menu_item.has_milk == false ? (
-                    <View>
-                        <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
-                    </View>
-                ): (
-                    <View>
-                    </View>
-                )}
-                {menuItem.item.menu_item.has_peanuts == false && menuItem.item.menu_item.has_treenuts == false ? (
-                    <View>
-                        <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
-                    </View>
-                ): (
-                    <View>
-                    </View>
-                )}
+                <View style ={{flexDirection: "row"}}>
+                    {menuItem.item.menu_item.is_vegetarian ? (
+                        <View >
+                            <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                        </View>
+                    ): (
+                        <View>
+                        </View>
+                    )}
+                    {!menuItem.item.menu_item.has_wheat && !menuItem.item.menu_item.has_gluten ? (
+                        <View>
+                            <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
+                        </View>
+                    ): (
+                        <View>
+                        </View>
+                    )}
+                    {!menuItem.item.menu_item.has_milk ? (
+                        <View>
+                            <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                        </View>
+                    ): (
+                        <View>
+                        </View>
+                    )}
+                    {!menuItem.item.menu_item.has_peanuts && !menuItem.item.menu_item.has_treenuts ? (
+                        <View>
+                            <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
+                        </View>
+                    ): (
+                        <View>
+                        </View>
+                    )}
+                </View>
             </View>
         );
     }
@@ -255,35 +294,10 @@ function Menu({route, navigation}) {
                             justifyContent: 'flex-start'
                         }}
                         dropDownStyle={{backgroundColor: '#fafafa'}}
-                        onChangeItem={item => setFilter(item.value)}
+                        onChangeItem={item => handleFilter(item.value)}
                     />
 
                 </View>
-                {/*{filter === "Gluten Free" ? (*/}
-                {/*    setFilterData(glutenFreeData)*/}
-                {/*): (*/}
-                {/*    setFilterData(filterData)*/}
-                {/*)}*/}
-                {/*{filter === "Vegetarian" ? (*/}
-                {/*    setFilterData(vegetarianData)*/}
-                {/*): (*/}
-                {/*    setFilterData(filterData)*/}
-                {/*)}*/}
-                {/*{filter === "Dairy Free" ? (*/}
-                {/*    setFilterData(dairyFreeData)*/}
-                {/*): (*/}
-                {/*    setFilterData(filterData)*/}
-                {/*)}*/}
-                {/*{filter === "Nut Free" ? (*/}
-                {/*    setFilterData(nutFreeData)*/}
-                {/*): (*/}
-                {/*    setFilterData(filterData)*/}
-                {/*)}*/}
-                {/*{filter === "All Items" ? (*/}
-                {/*    setFilterData(allData)*/}
-                {/*): (*/}
-                {/*    setFilterData(filterData)*/}
-                {/*)}*/}
                 <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id }/>
             </SafeAreaView>
     );
