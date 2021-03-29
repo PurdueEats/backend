@@ -15,6 +15,8 @@ function NavBar({route, navigation}) {
             initialRouteName="Dining"
             tabBarOptions={{
                 activeTintColor: 'red',
+                // activeBackgroundColor: '#f2f2f2',
+                // inactiveBackgroundColor: '#f2f2f2'
             }}
         >
             <Stack.Screen
@@ -50,40 +52,6 @@ function NavBar({route, navigation}) {
                     ),
                 }}
             />
-            {/*<Stack.Screen*/}
-            {/*    name="Buddy"*/}
-            {/*    component={FindABuddy}*/}
-            {/*    initialParams={{ UserID: route.params.UserID, token: route.params.token }}*/}
-            {/*    options={{*/}
-            {/*        tabBarLabel: 'Buddy',*/}
-            {/*        tabBarIcon: ({ color, size }) => (*/}
-            {/*            <MaterialCommunityIcons name="account-multiple" color={color} size={size} />*/}
-            {/*        ),*/}
-            {/*    }}*/}
-            {/*/>*/}
-
-            {/*<Stack.Screen*/}
-            {/*    name="Profile"*/}
-            {/*    component={Profile}*/}
-            {/*    initialParams={{ UserID: route.params.UserID, token: route.params.token }}*/}
-            {/*    options={{*/}
-            {/*        tabBarLabel: 'Profile',*/}
-            {/*        tabBarIcon: ({ color, size }) => (*/}
-            {/*            <MaterialCommunityIcons name="account-circle" color={color} size={size} />*/}
-            {/*        ),*/}
-            {/*    }}*/}
-            {/*/>*/}
-            {/*<Stack.Screen*/}
-            {/*    name="Settings"*/}
-            {/*    component={Settings}*/}
-            {/*    initialParams={{ UserID: route.params.UserID, token: route.params.token }}*/}
-            {/*    options={{*/}
-            {/*        tabBarLabel: 'Settings',*/}
-            {/*        tabBarIcon: ({ color, size }) => (*/}
-            {/*            <MaterialCommunityIcons name="cog" color={color} size={size} />*/}
-            {/*        ),*/}
-            {/*    }}*/}
-            {/*/>*/}
         </Tab.Navigator>
     );
 }

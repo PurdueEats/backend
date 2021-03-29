@@ -3,37 +3,25 @@ import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "rea
 import { AirbnbRating} from 'react-native-ratings';
 import { Button, Toast } from 'native-base';
 import SelectMultiple from 'react-native-select-multiple'
-import moment from 'moment';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
-// const meals = [
-//     { label: 'Bangkok Chicken Wrap', value: 21 },
-//     { label: 'Moo Shu Chicken', value: 25 },
-//     { label: 'Strawberry Gelatin', value: 43 },
-//     { label: 'Waffle Fries', value: 20 },
-//     { label: 'Firehouse Chili with Pork', value: 35 },
-//     { label: 'Gluten Free Cookies', value: 41 },
-//     { label: 'Pineapple Chunks', value: 6 },
-//     { label: 'Vegan Pub Fried Fish', value: 23 },
-//     { label: 'Brown Rice with Mushrooms', value: 47 },
-// ]
-
 function MealReview({route, navigation}) {
-  const [ratings, setRatings] = React.useState('');
-  const [selectedMeals, setSelectedMeals] = React.useState([]);
-  const [response, setResponse] = React.useState('');
-  const [meals, setMeals] = React.useState([]);
-  const popAction = StackActions.pop();
+    const [ratings, setRatings] = React.useState(3);
+    const [selectedMeals, setSelectedMeals] = React.useState([]);
+    const [meals, setMeals] = React.useState([]);
+
+    var moment = require('moment-timezone');
+    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     useEffect(() => {
         getMeals();
     }, []);
 
-  const onSelectionsChange = newSelections => {
-    setSelectedMeals(newSelections)
-  }
+    const onSelectionsChange = newSelections => {
+        setSelectedMeals(newSelections)
+    }
 
     function getMeals() {
         fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
@@ -41,7 +29,6 @@ function MealReview({route, navigation}) {
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                /* 'Authorization': 'Bearer ' + route.params.token */
             },
         })
             .then(
@@ -50,14 +37,19 @@ function MealReview({route, navigation}) {
                         // Successful GET
                         // Set Fields to correct values
                         response.json().then(function(data) {
-                            data.map(menuItem => {
-                                //console.log(data)
-                                meals.push({ label: menuItem.menu_item.item_name, value: menuItem.menu_item.menu_item_id});                                // console.log(allData);
-                                //console.log(meals);
-                            })
+                            setMeals(data.map(menuItem => ({ label: menuItem.menu_item.item_name, value: menuItem.menu_item.menu_item_id })));
+                            setMeals(data
+                                .map(e => e.menu_item.menu_item_id)
+                                .map((e, i, final) => final.indexOf(e) === i && i)
+                                .filter(e => data[e])
+                                .map(e => data[e])
+                                .map(menuItem => ({
+                                    label: menuItem.menu_item.item_name,
+                                    value: menuItem.menu_item.menu_item_id
+                                })));
                         });
                     } else {
-                        console.log('Getting Menu Items like there was a problem. Status Code: ' +
+                        console.log('Getting Menu Dining Menu Items like there was a problem. Status Code: ' +
                             response.status);
                     }
                 }
@@ -67,23 +59,32 @@ function MealReview({route, navigation}) {
             });
     }
 
-    function displayError() {
+    function displayConfirmation() {
         Toast.show({
-            style: { backgroundColor: "red", justifyContent: "center" },
+            style: { backgroundColor: "green", justifyContent: "center" },
             position: "top",
-            text: "Invalid meal selection!",
+            text: "Meals successfully recorded.",
             textStyle: {
                 textAlign: 'center',
             },
             duration: 1500
         });
     }
-    var moment = require('moment-timezone');
-    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
+
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Record meals failed. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
 
     function handleMealReview() {
         selectedMeals.map(item => {
-            console.log("hit");
             fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
                 method: 'POST',
                 headers : {
@@ -97,16 +98,26 @@ function MealReview({route, navigation}) {
                     "timestamp": time
                 })
             })
-                .then((response) => response.text())
-                        .then((responseData) => {
-                         console.log("inside responsejson");
-                         console.log('response object:',responseData);
-            console.log(item.value);
-                         }).done();
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful POST
+                            displayConfirmation();
+                        } else {
+                            // Examine the text in the response
+                            console.log('Looks like there was a problem recording meals. Status Code: ' +
+                                response.status);
+                            displayError();
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
         })
     }
 
-   function updateRating(rating) {
+    function updateRating(rating) {
         setRatings(rating);
     }
 
@@ -114,17 +125,17 @@ function MealReview({route, navigation}) {
         setSelectedMeals([]);
     }
     return (
-          <View>
-              <View style={ [styles.screenView, {flexDirection:"row"}] } >
-                  <TouchableOpacity style={ styles.button } onPress={ () => navigation.dispatch(StackActions.pop(1))}>
-                      <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
-                  </TouchableOpacity>
-                  <Image style={ styles.logoImage } source={ Logo } />
-              </View>
-              <View>
-                    <Text style={ styles.screenTitle }>Record Meal</Text>
-              </View>
-              <View style={ styles.ratingView }>
+        <ScrollView>
+            <View style={ [styles.screenView, {flexDirection:"row"}] } >
+                <TouchableOpacity style={ styles.button } onPress={ () => navigation.dispatch(StackActions.pop(1))}>
+                    <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                </TouchableOpacity>
+                <Image style={ styles.logoImage } source={ Logo } />
+            </View>
+            <View>
+                <Text style={ styles.screenTitle }>Record Meal</Text>
+            </View>
+            <View style={ styles.ratingView }>
                 <AirbnbRating
                     count={5}
                     reviews={["Terrible", "Meh", "OK", "Good", "Amazing"]}
@@ -136,27 +147,27 @@ function MealReview({route, navigation}) {
                     size={25}
                     onFinishRating={ updateRating }
                 />
-              </View>
-              <View>
+            </View>
+            <View>
                 <View style={ styles.selectMultipleView }>
                     <SelectMultiple
-                      items={meals}
-                      selectedItems={selectedMeals}
-                      onSelectionsChange={onSelectionsChange}
-                      />
+                        items={meals}
+                        selectedItems={selectedMeals}
+                        onSelectionsChange={onSelectionsChange}
+                    />
                 </View>
-              </View>
-              <View style={ styles.buttonView }>
-                  <View style={{ flexDirection:"row" }}>
+            </View>
+            <View style={ styles.buttonView }>
+                <View style={{ flexDirection:"row" }}>
                     <Button style={ styles.cancelButtonComponent } onPress= { handleClearMealReview }>
-                        <Text style={ styles.cancelButtonText }>Cancel</Text>
+                        <Text style={ styles.cancelButtonText }>Clear</Text>
                     </Button>
                     <Button style={ styles.confirmButtonComponent } onPress={ handleMealReview }>
                         <Text style={ styles.confirmButtonText }>Confirm</Text>
                     </Button>
-                  </View>
-              </View>
-          </View>
+                </View>
+            </View>
+        </ScrollView>
     )
 }
 

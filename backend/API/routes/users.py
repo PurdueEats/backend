@@ -13,7 +13,9 @@ from API.models.users import (
     UserSchedule,
     UserTransaction,
     UserFavMenuItems,
-    UserOut
+    UserOut,
+    UserNutrition,
+    UserFavMeals
 )
 
 
@@ -51,6 +53,11 @@ async def create_user(userBasic: UserBasic):
     ({user_id[0]['UserID']}, '{userBasic.name}',
      '{userBasic.email}', '{hashed_password}')
      """)
+
+    runQuery(f"""
+    INSERT INTO UserNutrition values
+    ({user_id[0]['UserID']}, 0, 0, 0, 0)
+    """)
 
     return {'UserID': str(user_id[0]['UserID'])}
 
@@ -92,7 +99,9 @@ async def delete_user(UserID: int = Depends(auth_handler.auth_wrapper)):
     runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserTransaction WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM UserFavoriteMenuItems WHERE UserID = {UserID}")
+    runQuery(f"DELETE FROM UserNutrition WHERE UserID = {UserID}")
     runQuery(f"DELETE FROM MenuItemsReviews WHERE UserID = {UserID}")
+
     # Add delete Dinning Review and Dinning Review
 
     return
@@ -116,7 +125,7 @@ async def return_auth(UserID: int = Depends(auth_handler.auth_wrapper)):
     return res
 
 
-#Password Reset route
+# Password Reset route
 @app.post("/{UserID}/Auth", status_code=201)
 async def update_auth(userBasic: UserBasic, UserID: int = Depends(auth_handler.auth_wrapper)):
 
@@ -130,7 +139,7 @@ async def update_auth(userBasic: UserBasic, UserID: int = Depends(auth_handler.a
     user = user[0]
     hashed_password = user['Password']
     userBasic.user_id = UserID
-    
+
     if userBasic.password != "":
         hashed_password = auth_handler.get_password_hash(userBasic.password)
 
@@ -168,7 +177,6 @@ async def assign_meal_plan(mealPlanName: MealPlanIn, UserID: int = Depends(auth_
     meal_plan = [dict(row) for row in runQuery(
         f"SELECT * FROM MealPlan WHERE MealPlanName = '{mealPlanName}'")]
 
-
     if len(meal_plan) != 1:
         raise HTTPException(status_code=404, detail='Meal Plan not found')
 
@@ -181,7 +189,6 @@ async def assign_meal_plan(mealPlanName: MealPlanIn, UserID: int = Depends(auth_
 
     for trans in transactions:
         meal_plan['DiningDollars'] - trans['TransactionAmount']
-
 
     runQuery(f"DELETE from UserExtra WHERE UserID = {UserID}")
 
@@ -231,6 +238,7 @@ async def get_user_schedule(UserID: int = Depends(auth_handler.auth_wrapper)):
     if len(schedule) != 1:
         raise HTTPException(status_code=404, detail='Schedule not found')
 
+    schedule = schedule[0]
     res = [UserSchedule.parse_obj(
         {'user_id': schedule['UserID'], 'schedule': schedule['Schedule']})]
 
@@ -243,7 +251,7 @@ async def upload_user_schedule(userSchedule: UserSchedule, UserID: int = Depends
 
     runQuery(f"DELETE FROM UserSchedule WHERE UserID = {UserID}")
     runQuery(f"""INSERT INTO UserSchedule values 
-        ({userSchedule.user_id}, {userSchedule.schedule}""")
+        ({userSchedule.user_id}, {userSchedule.schedule})""")
 
     return
 
@@ -271,7 +279,7 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     user_extra = user_extra[0]
     balance = user_extra['DiningDollarBalance'] - \
         userTransaction.transaction_amount
-    
+
     runQuery(f"DELETE FROM UserExtra WHERE UserID = {UserID}")
 
     runQuery(f"""
@@ -284,6 +292,103 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
     runQuery(f"""
     INSERT INTO UserTransaction values ({userTransaction.user_id}, {userTransaction.transaction_amount},
     {balance}, '{userTransaction.timestamp}')
+    """)
+
+    return
+
+
+@app.post("/{UserID}/MealSwipe")
+async def use_meal_swipe(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    user_extra = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserExtra WHERE UserID = {UserID}")]
+
+    if len(user_extra) != 1:
+        raise HTTPException(status_code=401, detail='Invalid user')
+
+    user_extra = user_extra[0]
+    user_extra['MealSwipeCount'] -= 1
+
+    runQuery(f"DELETE FROM UserExtra WHERE UserID = {UserID}")
+
+    runQuery(f"""
+    INSERT INTO UserExtra values (
+        {user_extra['UserID']}, '{user_extra['MealPlanName']}',
+        {user_extra['MealSwipeCount']}, {user_extra['DiningDollarBalance']}
+    )
+    """)
+
+    return
+
+
+@app.get("/{UserID}/Nutrition")
+async def get_user_nutrition(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    user_nutrition = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserNutrition WHERE UserID = {UserID}")]
+
+    if len(user_nutrition) != 1:
+        raise HTTPException(status_code=401, detail='Invalid user')
+
+    user_nutrition = user_nutrition[0]
+
+    res = UserNutrition.parse_obj({
+        'user_id':  user_nutrition['UserID'],
+        'calories': user_nutrition['Calories'],
+        'carbs':    user_nutrition['Carbs'],
+        'fat':      user_nutrition['Fat'],
+        'protein':  user_nutrition['Protein']
+    })
+
+    return res
+
+
+@app.get("/{UserID}/UserFavMeals", response_model=List[UserFavMeals])
+async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    res = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserFavoriteMenuItems WHERE UserID = {UserID}")]
+
+    res = [UserFavMeals.parse_obj({
+        'user_id':  item['UserID'],
+        'meal_id':  item['MenuItemID'],
+        'toggle':   item['Toggle']
+    })
+        for item in res]
+
+    return res
+
+
+@app.post("/{UserID}/UserFavMeals", status_code=201)
+async def post_user_fav_meals(userFavMeals: UserFavMeals, UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    userFavMeals.user_id = UserID
+
+    res = [dict(row) for row in runQuery(
+        f"SELECT COUNT(*) FROM MenuItems WHERE MenuItemID = {userFavMeals.meal_id}")]
+
+    if res[0]['f0_'] != 1:
+        raise HTTPException(
+            status_code=401, detail='Invalid Menu Item')
+
+    runQuery(f"""
+    DELETE FROM UserFavoriteMenuItems 
+    WHERE UserID = {userFavMeals.user_id} AND MenuItemID = {userFavMeals.meal_id}
+    """)
+
+    runQuery(f"""
+    INSERT INTO UserFavoriteMenuItems values (
+    {userFavMeals.user_id}, {userFavMeals.meal_id}, {userFavMeals.toggle}
+    )
+    """)
+
+
+@app.delete("/{UserID}/UserFavMeals")
+async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    runQuery(f"""
+    DELETE FROM UserFavoriteMenuItems 
+    WHERE UserID = {UserID} AND MenuItemID = {menuItemID}
     """)
 
     return
@@ -304,7 +409,6 @@ async def forgot_password(email: str):
     hashed_password = auth_handler.get_password_hash(new_password)
     user['Password'] = hashed_password
 
-
     runQuery(f"DELETE FROM UserBasic WHERE Email = '{email}'")
 
     runQuery(f"""
@@ -316,12 +420,12 @@ async def forgot_password(email: str):
     import requests
 
     r = requests.post(
-		"https://api.mailgun.net/v3/sandbox459d6d8b3208457c8613631ae018378a.mailgun.org/messages",
-		auth=("api", fetch_api_key()),
-		data={"from": "Excited User <mailgun@sandbox459d6d8b3208457c8613631ae018378a.mailgun.org>",
-			"to": [email],
-			"subject": "Hello",
-			"text": "Your new password is: " + new_password})
+        "https://api.mailgun.net/v3/sandbox459d6d8b3208457c8613631ae018378a.mailgun.org/messages",
+        auth=("api", fetch_api_key()),
+        data={"from": "Excited User <mailgun@sandbox459d6d8b3208457c8613631ae018378a.mailgun.org>",
+                      "to": [email],
+                      "subject": "Hello",
+              "text": "Your new password is: " + new_password})
 
     print(r.text)
 

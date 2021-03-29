@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal, ScrollView } from "react-native";
+import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'native-base';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 function ProfileManager({route, navigation}) {
+    // Setup re-render on focus change
+    const isFocused = useIsFocused();
+
+    // Modal attributes
     const [modalName, setModalName] = useState(false);
     const [ModalPlan, setModalPlan] = useState(false);
     const [modalPassword, setModalPassword] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
+    const [modalDining, setModalDining] = useState(false);
 
+    // Settings attributes
     const [name, setName] = useState('');
     const [nameNew, setNameNew] = useState('');
     const [passNew, setPassNew] = useState('');
@@ -18,18 +26,28 @@ function ProfileManager({route, navigation}) {
     const [dollars, setDollars] = useState('');
     const [password, setPassword] = useState('');
     const [swipes, setSwipes] = useState('');
+    const [transact, setTransact] = useState('');
+    const [add, setAdd] = useState('Add');
+    const [sign, setSign] = useState('+');
 
+    // ?
     const [delBool, setDelBool] = useState(false);
     const [nameBool, setNameBool] = useState(false);
     const [planBool, setPlanBool] = useState(false);
     const [passwordBool, setPasswordBool] = useState(false);
 
+    // Timestamp fields
+    var moment = require('moment-timezone');
+    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
+
     useEffect(() => {
-        if (!delBool && !nameBool && !planBool && !passwordBool) {
-            getAuth()
-            getMealInfo()
+        if (isFocused) {
+            if (!delBool && !nameBool && !planBool && !passwordBool) {
+                getAuth()
+                getMealInfo()
+            }
         }
-    }, []);
+    }, [isFocused]);
 
     function handleNameExit() {
         setNameBool(true);
@@ -52,6 +70,28 @@ function ProfileManager({route, navigation}) {
         setPasswordBool(true);
         setModalPassword(!setModalPassword);
         changePassword(password2);
+    }
+
+    function handleDiningExit(subtract) {
+        setModalDining(!setModalDining);
+        if (add === 'Add') {
+            console.log("in here?")
+            sendDiningDollars(0 - subtract);
+        } else {
+            console.log("in here?")
+
+            sendDiningDollars(subtract);
+        }
+    }
+
+    function handleAdd() {
+        setAdd('Add');
+        setSign('+');
+    }
+
+    function handleSub() {
+        setAdd('Subtract');
+        setSign('-');
     }
 
     function handleLogout() {
@@ -92,6 +132,45 @@ function ProfileManager({route, navigation}) {
                     } else {
                         console.log('Meal like there was a problem. Status Code: ' +
                             response.status);
+                        setPlanBool(false);
+                        getMealInfo();
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
+    function sendDiningDollars(dollars2) {
+        // Send Meal Plan Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/Trans`, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+            body: JSON.stringify({
+                "user_id": route.params.UserID,
+                "transaction_amount": dollars2,
+                "balance": dollars,
+                "timestamp": time
+
+            })
+
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        console.log(dollars2);
+                        setPlanBool(false);
+                        getMealInfo();
+                    } else {
+                        console.log('Meal like there was a problem. Status Code: ' +
+                            response.status);
+                        console.log(dollars2);
                         setPlanBool(false);
                         getMealInfo();
                     }
@@ -171,7 +250,7 @@ function ProfileManager({route, navigation}) {
     function deleteAccount() {
         setDelBool(true);
         // Deletion route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID, {
             method: 'DELETE',
             headers : {
                 'Content-Type': 'application/json',
@@ -265,7 +344,7 @@ function ProfileManager({route, navigation}) {
     }
 
     return (
-        <View style={styles.viewFlex}>
+        <ScrollView style={styles.viewFlex}>
             <Modal animationType="slide" transparent={true} visible={modalName}
                 onRequestClose={() => {
                     setModalName(!modalName);
@@ -282,6 +361,35 @@ function ProfileManager({route, navigation}) {
                     </View>
                 </View>
             </Modal>
+            <Modal animationType="slide" transparent={true} visible={modalDining}
+                onRequestClose={() => {
+                    setModalDining(!modalDining);
+                }}
+            >
+                <View>
+                    <View style={styles.modalView}>
+                        <TouchableOpacity active = { .5 } onPress={() =>  handleDiningExit(transact)}>
+                            <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                        </TouchableOpacity>
+                        <View style={styles.rowBetween}>
+                            <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                            </TouchableOpacity>
+                            <Text style={styles.modalText}>                </Text>
+                            <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={styles.dollarsText}>How many dollars?</Text>
+                        <View style={styles.rowBetween}>
+                            <Text style={styles.big}>{sign}</Text>
+                            <TextInput style={ styles.textEnter } onChangeText={(transact) => setTransact(transact)} />
+                        </View>
+                        <View style={ styles.modalLine }/>
+                    </View>
+                </View>
+            </Modal>
+
             <View style={ styles.profileHeader }>
                 <View style={ styles.backImage }>
                     <Text style={ styles.profileWord }>           </Text>
@@ -292,7 +400,6 @@ function ProfileManager({route, navigation}) {
             <View style={ styles.viewCenter }>
                 <Image style={ styles.profileImage } source={require('../../resources/train.jpg')}/>
             </View>
-
             <View style={styles.rowBetween}>
                 <Text style={ styles.textNormal }>   {name} </Text>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalName(true) }>
@@ -305,27 +412,30 @@ function ProfileManager({route, navigation}) {
             <View style={ styles.borderLine }/>
         <View/>
         <View style={styles.rowBetween}>
-        <Text style={ styles.textNormal }>   {plan} </Text>
-        <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
-            <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
-        </TouchableOpacity>
+            <Text style={ styles.textNormal }>   {plan} </Text>
+            <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
+                <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
+            </TouchableOpacity>
         </View>
         <View style={styles.rowBetween}>
             <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
+            <TouchableOpacity active = { .5 } onPress={() =>  setModalDining(true) }>
+                <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
+            </TouchableOpacity>
         </View>
         <View style={styles.colBetween}/>
             <View style={styles.rowBetween}>
                 <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
                 <Modal animationType="slide" transparent={true} visible={ModalPlan}
                     onRequestClose={() => {
-                        setModalName(!ModalPlan);
+                        setModalPlan(!ModalPlan);
                     }}
                 >
                     <View>
                         <View style={styles.modalView}>
                             <TouchableOpacity active = { .5 } onPress={() => handlePlanExit(planNew) }>
                                 <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
-                            </TouchableOpacity >
+                            </TouchableOpacity>
                             <DropDownPicker
                                 items={[
                                     {label: '10 Meal Plan + 100', value: '10 Meal Plan +100'},
@@ -363,11 +473,19 @@ function ProfileManager({route, navigation}) {
             </View>
         <View style={styles.viewCenter}>
             <View style={ styles.borderLine }/>
-                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Track") }>
+                <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("Track") }>
                     <Text style={ styles.textNormal}>Track Meals</Text>
                 </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("FavoriteMeal", { UserID: route.params.UserID, token: route.params.token }) }>
+                     <Text style={ styles.textNormal}>Favorite Meals</Text>
+                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
                     <Text style={ styles.textNormal}>Change Password</Text>
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("EditSchedule", { UserID: route.params.UserID, token: route.params.token }) }>
+                    <Text style={ styles.textNormal}>Change Schedule</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalDelete(true) }>
                     <Text style={ styles.textNormalRed}>Delete Account</Text>
@@ -394,7 +512,7 @@ function ProfileManager({route, navigation}) {
                     </View>
                 </Modal>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -536,6 +654,16 @@ const styles = StyleSheet.create({
         color: "black",
         marginBottom: "5%",
 
+        },
+    dollarsText: {
+        color: "black",
+        marginBottom: "1%",
+
+        },
+
+    big: {
+        color: "black",
+        fontSize: 20,
         },
 
     modalView: {

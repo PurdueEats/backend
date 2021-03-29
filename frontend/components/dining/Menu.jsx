@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from "react";
+
 import { SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity, FlatList} from "react-native";
+
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
@@ -7,6 +10,7 @@ import { Button} from 'native-base';
 import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
 import {AirbnbRating} from "react-native-ratings";
+
 
 
 function Menu({route, navigation}) {
@@ -73,6 +77,7 @@ function Menu({route, navigation}) {
                                     setDairyFree(true);
                                 }
                                 if (!menuItem["menu_item"]["has_peanuts"] && !menuItem["menu_item"]["has_treenuts"]) {
+
                                     nutFreeData.push(menuItem);
                                     //console.log(nutFreeData);
                                     setNutFree(true);
@@ -113,6 +118,7 @@ function Menu({route, navigation}) {
             if (filter === "All Items") {
                 setFilterData(allData);
             }
+            setFilterData(allData);
         }
         if(searchText) {
             const searchData = allData.filter(function (menuItem)
@@ -120,6 +126,7 @@ function Menu({route, navigation}) {
                 //console.log(menuItem["menu_item"]["item_name"]);
                 const menuInfo = menuItem["menu_item"]["item_name"] ? menuItem["menu_item"]["item_name"].toUpperCase() : ''.toUpperCase();
                 //const menuInfo = menuItem.item_name.toUpperCase();
+                //const menuInfo = menuItem.title ? menuItem.title.toUpperCase() : ''.toUpperCase();
                 const textInfo = searchText.toUpperCase();
                 return menuInfo.indexOf(textInfo) > -1;
             });
@@ -129,7 +136,6 @@ function Menu({route, navigation}) {
     }
 
     function renderLine() {
-       // console.log("render line")
         return (
             <View
                 style={{

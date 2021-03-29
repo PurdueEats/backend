@@ -7,15 +7,11 @@ import Logo from "../../resources/logo.png";
 function MealPreferences({route, navigation}) {
     // const [meals, setMealRating] = useState('');
     //const meals = [ "Hamburger", "Balsamic Chicken", "Hotdog", "Pizza", "Beef Broccoli Stirfry" ]
+
     const [currMeals, setCurrMeals] = useState([]);
     const ratings = [ 3, 3, 3, 3, 3 ]
 
-    // useEffect(() => {
-    //     console.log("hit here")
-    // })
-
     useEffect(() => {
-        console.log("usereffect");
         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/MealPreferences`, {
             method: 'GET',
             headers : {
@@ -29,30 +25,9 @@ function MealPreferences({route, navigation}) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful GET
                         // Set Fields to correct values
-
-                        //const meals = new Array (5);
                         response.json().then(function(data) {
-                            // console.log(data)
-                            // data.map(menuItem => {
-                            //     meals.push(menuItem);
-                            //
-                            //     // console.log(allData);
-                            //     // filterData = allData
-                            // })
-                            // meals[0] = data[0];
-                            // meals[1] = data[1];
-                            // meals[2] = data[2];
-                            // meals[3] = data[3];
-                            // meals[4] = data[4];
-                            // currMeals.push(data[0])
-                            // currMeals.push(data[1])
-                            // currMeals.push(data[2])
-                            // currMeals.push(data[3])
-                            // currMeals.push(data[4])
                             setCurrMeals(data);
                         });
-                        //console.log(currMeals[0]);
-                        //setCurrMeals(meals);
                     } else {
                         console.log('Getting Menu Items from Meal Preferences looks like there was a problem. Status Code: ' +
                             response.status);
@@ -63,10 +38,6 @@ function MealPreferences({route, navigation}) {
                 console.log('Fetch Error :-S', err);
             });
     }, []);
-
-    function getMeals() {
-
-    }
 
     function handleSubmit() {
         currMeals.pop();
@@ -104,15 +75,12 @@ function MealPreferences({route, navigation}) {
             <View style={ styles.screenView }>
                 {
                    currMeals.map(function (meal, index) {
-                       //console.log("HERE");
-                       //console.log(meal);
+
                        function updateRating(rating) {
                             ratings[index] = rating;
                         }
                        return (
                             <View key={index} style={ styles.individualRatingComponents }>
-                                {/*{console.log(meal)}*/}
-                                {console.log(meal.item_name)}
                                 <Text key={index + "Text"} style={ styles.mealText }>{meal.item_name}</Text>
                                 <AirbnbRating
                                     key={index + "Rating"}
