@@ -383,7 +383,7 @@ async def post_user_fav_meals(userFavMeals: UserFavMeals, UserID: int = Depends(
 
     runQuery(f"""
     INSERT INTO UserFavoriteMenuItems values (
-    {userFavMeals.user_id}, {userFavMeals.meal_id}, {userFavMeals.toggle}
+    {userFavMeals.user_id}, {userFavMeals.meal_id}, {userFavMeals.name}, {userFavMeals.toggle}
     )
     """)
 
