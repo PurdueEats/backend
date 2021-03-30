@@ -416,7 +416,7 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
 
     recommend_list = list(nR[user_map[str(UserID)]])
     recommend_list = [(x, i) for i,x in enumerate(recommend_list)]
-    recommend_list.sort()
+    recommend_list.sort(reverse=True)
     recommend_list = recommend_list[:5]
 
     res = [dict(row) for row in runQuery(
