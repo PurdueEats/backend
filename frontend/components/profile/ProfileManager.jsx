@@ -342,6 +342,9 @@ function ProfileManager({route, navigation}) {
             console.log('Fetch Error :-S', err);
         });
     }
+    function uploadPicture(){
+
+    }
 
     return (
         <ScrollView style={styles.viewFlex}>
@@ -482,6 +485,9 @@ function ProfileManager({route, navigation}) {
                  </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
                     <Text style={ styles.textNormal}>Change Password</Text>
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>  uploadPicture() }>
+                    <Text style={ styles.textNormal}>Change Profile Picture</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>
                     navigation.navigate("EditSchedule", { UserID: route.params.UserID, token: route.params.token }) }>
