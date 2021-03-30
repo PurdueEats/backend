@@ -414,9 +414,19 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
 
     nR = numpy.dot(nP, nQ.T)
 
-    recommend_list = list(nR[user_map(str(UserID))])
+    recommend_list = list(nR[user_map[str(UserID)]])
     recommend_list = [(x, i) for i,x in enumerate(recommend_list)]
-    recommend_list = sort(recommend_list)
+    recommend_list.sort()
+    recommend_list = recommend_list[:5]
+
+    res = [dict(row) for row in runQuery(
+        f"""SELECT * FROM MenuItems 
+        WHERE 
+        MenuItemID = {recommend_list[0][1]} OR
+        MenuItemID = {recommend_list[1][1]} OR
+        MenuItemID = {recommend_list[2][1]} OR
+        MenuItemID = {recommend_list[3][1]} OR
+        MenuItemID = {recommend_list[4][1]}""")]
 
     res = [MenuItem.parse_obj({
         'menu_item_id':   item['MenuItemID'],
@@ -433,7 +443,7 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
         'is_vegetarian':  item['Vegetarian'],
         'is_vegan':       item['Vegan'],
         'has_wheat':      item['Wheat']
-    }) for item in recommend_list[:5]]
+    }) for item in res]
 
     return res
 
