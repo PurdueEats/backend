@@ -79,7 +79,7 @@ function MealNutrition({route, navigation}) {
                 </View>
                 <View style={ styles.sameLineDataView }>
                     <Text style={ styles.data }>Calories </Text>
-                    <Text style={ styles.data }>{calories}</Text>
+                    <Text style={ styles.data }>{calories.toLocaleString()}</Text>
                 </View>
                 <Text style={ styles.dataHeader }>Macros % of Daily Value</Text>
                 <View style={{ marginTop: "5%" }}>

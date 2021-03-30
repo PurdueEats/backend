@@ -11,7 +11,6 @@ import Ford from "../../resources/ford.png";
 import Hillenbrand from "../../resources/hillenbrand.png";
 import Windsor from "../../resources/windsor.png";
 
-
 function DiningFacilities({route, navigation}) {
     // Setup re-render on focus change
     const isFocused = useIsFocused();
@@ -152,16 +151,16 @@ function DiningFacilities({route, navigation}) {
                     />
                     <View style={ styles.dataView }>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories} of 14,000
+                            <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories.toLocaleString()} of 14,000
                         </Text>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs}g of 1900g
+                            <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs.toLocaleString()}g of 1,900g
                         </Text>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat}g of 200g
+                            <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat.toLocaleString()}g of 200g
                         </Text>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein}g of 350g
+                            <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein.toLocaleString()}g of 350g
                         </Text>
                     </View>
                     <View style={ styles.recommendedView }>
