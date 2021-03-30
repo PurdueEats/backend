@@ -27,69 +27,183 @@ function ProfileManager({route, navigation}) {
     const [add, setAdd] = useState('Subtract');
     const [sign, setSign] = useState('+');
 
+
     var d = new Date();
     var n = d.getDay();
     const [delBool, setDelBool] = useState(false);
     const [nameBool, setNameBool] = useState(false);
     const [planBool, setPlanBool] = useState(false);
     const [passwordBool, setPasswordBool] = useState(false);
+    const [dollarsBool, setDollarsBool] = useState(false);
+    const [swipesBool, setSwipesBool] = useState(false);
 
     var moment = require('moment-timezone');
     var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     useEffect(() => {
-        if (!delBool && !nameBool && !planBool && !passwordBool) {
+        if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
             getAuth()
             getMealInfo()
         }
     }, []);
 
     function handleNameExit() {
-        setNameBool(true);
-        if (name !== nameNew) {
-            setName(nameNew);
-            putName(nameNew);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
+
+            setNameBool(true);
+            if (name !== nameNew) {
+                setName(nameNew);
+                putName(nameNew);
+            }
+            setModalName(!setModalName);
+        } else {
+             Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
+
+
         }
-        setModalName(!setModalName);
     }
 
     function handlePlanExit(newPlan) {
-        setPlanBool(true);
-        setModalPlan(!setModalPlan);
-        if (plan !== newPlan) {
-            setPlan(newPlan);
-            sendMealPlan(newPlan);
-        }
+        if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
+            setModalPlan(!setModalPlan);
+            if (plan !== newPlan) {
+                setPlanBool(true);
+                setPlan(newPlan);
+                sendMealPlan(newPlan);
+            }
+        } else {
+             Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
+
+
+                }
     }
     function handlePassExit(password2) {
-        setPasswordBool(true);
-        setModalPassword(!setModalPassword);
-        changePassword(password2);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
+            setPasswordBool(true);
+            setModalPassword(!setModalPassword);
+            changePassword(password2);
+        } else {
+            Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
+        }
+
     }
 
     function handleDiningExit(subtract) {
         setModalDining(!setModalDining);
-        if (add == 'Add') {
-            console.log("in here?")
-            sendDiningDollars(0 - subtract);
-        } else {
-            console.log("in here?")
+        if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
 
-            sendDiningDollars(subtract);
+            if (add == 'Add') {
+                if ((dollars + subtract) > 999999999) {
+                    Toast.show({
+                        style: { backgroundColor: "red", justifyContent: "center" },
+                        position: "top",
+                        text: "Too many dining dollars to add",
+                        textStyle: {
+                            textAlign: 'center',
+                        },
+                        duration: 3000
+                    });
+                    return
+
+                    }
+
+
+                setDollarsBool(true);
+                console.log("in here?")
+                sendDiningDollars(0 - subtract);
+            } else {
+                if ((dollars - subtract) < 0) {
+                    Toast.show({
+                        style: { backgroundColor: "red", justifyContent: "center" },
+                        position: "top",
+                        text: "Invalid dollar subtraction amount",
+                        textStyle: {
+                            textAlign: 'center',
+                        },
+                        duration: 3000
+                    });
+
+                    return;
+
+
+                }
+                setDollarsBool(true);
+                console.log("in here?")
+                sendDiningDollars(subtract);
+            }
+        } else {
+                Toast.show({
+                    style: { backgroundColor: "red", justifyContent: "center" },
+                    position: "top",
+                    text: "Wait for information to update",
+                    textStyle: {
+                        textAlign: 'center',
+                    },
+                    duration: 3000
+                });
+
+
         }
     }
 
-    function handleSwipesExit(subtract) {
+    function handleSwipesSub() {
         setModalSwipes(!setModalSwipes);
-        if (add == 'Add') {
-            console.log("in here?")
-            sendSwipes(0 - subtract);
-        } else {
-            console.log("in here?")
-            if (swipes - subtract >= 0) {
-                sendSwipes(subtract);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
+
+            if (swipes > 0) {
+               setSwipesBool(true);
+               useSwipe();
+            } else {
+            Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "You are already out of swipes for the week",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
             }
-        }
+        } else {
+               Toast.show({
+                   style: { backgroundColor: "red", justifyContent: "center" },
+                   position: "top",
+                   text: "Wait for information to update",
+                   textStyle: {
+                       textAlign: 'center',
+                   },
+                   duration: 3000
+               });
+               }
+
+    }
+
+     function handleSwipesExit(subtract) {
+        setModalSwipes(!setModalSwipes);
     }
 
     function handleAdd() {
@@ -104,7 +218,7 @@ function ProfileManager({route, navigation}) {
     }
 
     function handleLogout() {
-        if (!delBool && !nameBool && !planBool && !passwordBool) {
+        if (!delBool && !nameBool && !planBool && !passwordBool && swipesBool && dollarsBool) {
             navigation.navigate("Login")
         }
         else Toast.show({
@@ -174,13 +288,13 @@ function ProfileManager({route, navigation}) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
                         console.log(dollars2);
-                        setPlanBool(false);
+                        setDollarsBool(false);
                         getMealInfo();
                     } else {
                         console.log('Meal like there was a problem. Status Code: ' +
                             response.status);
                         console.log(dollars2);
-                        setPlanBool(false);
+                        setDollarsBool(false);
                         getMealInfo();
                     }
                 }
@@ -190,36 +304,27 @@ function ProfileManager({route, navigation}) {
             });
     }
 
-    function sendSwipes(swipes2) {
+    function useSwipe() {
         // Send Meal Plan Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/Trans`, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/MealSwipe`, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + route.params.token
             },
-            body: JSON.stringify({
-                "user_id": route.params.UserID,
-                "transaction_amount": swipes2,
-                "balance": dollars,
-                "timestamp": time
-
-            })
 
         })
             .then(
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        console.log(dollars2);
-                        setPlanBool(false);
+                        setSwipesBool(false);
                         getMealInfo();
                     } else {
                         console.log('Meal like there was a problem. Status Code: ' +
                             response.status);
-                        console.log(dollars2);
-                        setPlanBool(false);
+                        setSwipesBool(false);
                         getMealInfo();
                     }
                 }
@@ -444,18 +549,16 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesExit(transact)}>
+                        <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesExit()}>
                             <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
                         </TouchableOpacity>
-                            <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
-                                <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
-                            </TouchableOpacity>
-                        <Text style={styles.dollarsText}>How many swipes?</Text>
+                        <Text style={styles.dollarsText}>Subtract a swipe from your total?</Text>
+                        <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesSub()}>
+                            <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
+                        </TouchableOpacity>
                         <View style={styles.rowBetween}>
-                            <Text style={styles.big}>{sign}</Text>
-                            <TextInput style={ styles.textEnter } onChangeText={(transact) => setTransact(transact)} />
+
                         </View>
-                        <View style={ styles.modalLine }/>
                     </View>
                 </View>
             </Modal>
@@ -662,8 +765,7 @@ const styles = StyleSheet.create({
     textEnter: {
         color: "black",
         width: "60%",
-        flexDirection: "row",
-    },
+        flexDirection: "row",    },
 
 
     textNormalRed: {
