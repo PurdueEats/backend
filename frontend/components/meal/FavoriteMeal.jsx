@@ -6,6 +6,8 @@ import MaterialTabs from 'react-native-material-tabs';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import { StackActions } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
+import { SearchBar } from 'react-native-elements';
+
 
 function FavoriteMeals({route, navigation}) {
     const [meals, selectedMeals] = React.useState([]);
@@ -15,6 +17,8 @@ function FavoriteMeals({route, navigation}) {
     const [selectedFavMeals, setSelectedFavMeals] = React.useState([]);
     const [currentSelectID, setCurrentSelectID] = React.useState([]);
     const [response, setResponse] = React.useState('');
+    const [searched, setSearched] = useState('');
+
 
     useEffect(() => {
         getFavMeal();
@@ -32,6 +36,24 @@ function FavoriteMeals({route, navigation}) {
 
     const onFavSelectionsChange = favSelections => {
       setRemoveSelection(favSelections);
+    }
+
+    function searchFiltering (searchText) {
+        if (!searchText) {
+            setSearched(searchText);
+            selectedMeals(meals);
+
+        }
+        if(searchText) {
+            const searchData = meals.filter(function (menuItem)
+            {
+                const menuInfo = menuItem.label ? menuItem.label.toUpperCase() : ''.toUpperCase();
+                const textInfo = searchText.toUpperCase();
+                return menuInfo.indexOf(textInfo) > -1;
+            });
+            selectedMeals(searchData);
+            setSearched(searchText);
+        }
     }
 
     // POST request for favorite meal(s)
@@ -242,6 +264,15 @@ function FavoriteMeals({route, navigation}) {
                 </View>
             ): (
                 <View>
+                    <SearchBar
+                        round
+                        searchIcon={{ size: 20 }}
+                        placeholder="Look for an item here"
+                        value={searched}
+                        lightTheme = "true"
+                        onChangeText={(searchText) => searchFiltering(searchText)}
+                        onClear={(searchText) => searchFiltering('')}
+                    />
                     <View style={ styles.selectMultipleView }>
                         <SelectMultiple
                           items={meals}
