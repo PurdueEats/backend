@@ -2,10 +2,12 @@
 from random import choice
 from string import ascii_uppercase
 from typing import List
+import numpy
 from fastapi import APIRouter, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
 from API.models.MealPlan import MealPlanIn
+from API.models.menu import MenuItem
 from API.models.users import (
     UserBasic,
     UserExtra,
@@ -17,6 +19,8 @@ from API.models.users import (
     UserNutrition,
     UserFavMeals
 )
+from GNN.MatrixFactorization import matrix_factorization
+from GNN.MatrixGen import generate_matrix
 
 
 app = APIRouter()
@@ -392,6 +396,56 @@ async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_hand
     """)
 
     return
+
+
+@app.get("/Predict", response_model=List[MenuItem])
+async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
+    
+    R, user_map = generate_matrix()
+
+    N = len(R)
+    M = len(R[0])
+    K = 3
+
+    P = numpy.random.rand(N, K)
+    Q = numpy.random.rand(M, K)
+
+    nP, nQ = matrix_factorization(R, P, Q, K)
+
+    nR = numpy.dot(nP, nQ.T)
+
+    recommend_list = list(nR[user_map[str(UserID)]])
+    recommend_list = [(x, i) for i,x in enumerate(recommend_list)]
+    recommend_list.sort()
+    recommend_list = recommend_list[:5]
+
+    res = [dict(row) for row in runQuery(
+        f"""SELECT * FROM MenuItems 
+        WHERE 
+        MenuItemID = {recommend_list[0][1]} OR
+        MenuItemID = {recommend_list[1][1]} OR
+        MenuItemID = {recommend_list[2][1]} OR
+        MenuItemID = {recommend_list[3][1]} OR
+        MenuItemID = {recommend_list[4][1]}""")]
+
+    res = [MenuItem.parse_obj({
+        'menu_item_id':   item['MenuItemID'],
+        'hash_id':        item['HashID'],
+        'item_name':      item['ItemName'],
+        'has_eggs':       item['Eggs'],
+        'has_fish':       item['Fish'],
+        'has_gluten':     item['Gluten'],
+        'has_milk':       item['Milk'],
+        'has_peanuts':    item['Peanuts'],
+        'has_shellfish':  item['Shellfish'],
+        'has_soy':        item['Soy'],
+        'has_treenuts':   item['TreeNuts'],
+        'is_vegetarian':  item['Vegetarian'],
+        'is_vegan':       item['Vegan'],
+        'has_wheat':      item['Wheat']
+    }) for item in res]
+
+    return res
 
 
 @app.post("/ForgotPassword", status_code=201)
