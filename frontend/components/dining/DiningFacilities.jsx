@@ -152,7 +152,7 @@ function DiningFacilities({route, navigation}) {
                     />
                     <View style={ styles.dataView }>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories} of 14,000
+                            <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories} of 14000
                         </Text>
                         <Text style={ styles.dataText }>
                             <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs}g of 1900g
