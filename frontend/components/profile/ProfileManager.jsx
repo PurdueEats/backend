@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal, ScrollView } from "react-native";
+import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'native-base';
-import moment from 'moment';
-
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 function ProfileManager({route, navigation}) {
+    // Setup re-render on focus change
+    const isFocused = useIsFocused();
+
+    // Modal attributes
     const [modalName, setModalName] = useState(false);
     const [ModalPlan, setModalPlan] = useState(false);
     const [modalPassword, setModalPassword] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
     const [modalDining, setModalDining] = useState(false);
 
+    // Settings attributes
     const [name, setName] = useState('');
     const [nameNew, setNameNew] = useState('');
     const [passNew, setPassNew] = useState('');
@@ -26,21 +30,24 @@ function ProfileManager({route, navigation}) {
     const [add, setAdd] = useState('Add');
     const [sign, setSign] = useState('+');
 
-
+    // ?
     const [delBool, setDelBool] = useState(false);
     const [nameBool, setNameBool] = useState(false);
     const [planBool, setPlanBool] = useState(false);
     const [passwordBool, setPasswordBool] = useState(false);
 
+    // Timestamp fields
     var moment = require('moment-timezone');
     var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     useEffect(() => {
-        if (!delBool && !nameBool && !planBool && !passwordBool) {
-            getAuth()
-            getMealInfo()
+        if (isFocused) {
+            if (!delBool && !nameBool && !planBool && !passwordBool) {
+                getAuth()
+                getMealInfo()
+            }
         }
-    }, []);
+    }, [isFocused]);
 
     function handleNameExit() {
         setNameBool(true);
@@ -67,7 +74,7 @@ function ProfileManager({route, navigation}) {
 
     function handleDiningExit(subtract) {
         setModalDining(!setModalDining);
-        if (add == 'Add') {
+        if (add === 'Add') {
             console.log("in here?")
             sendDiningDollars(0 - subtract);
         } else {
@@ -243,7 +250,7 @@ function ProfileManager({route, navigation}) {
     function deleteAccount() {
         setDelBool(true);
         // Deletion route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID, {
             method: 'DELETE',
             headers : {
                 'Content-Type': 'application/json',
@@ -337,7 +344,7 @@ function ProfileManager({route, navigation}) {
     }
 
     return (
-        <View style={styles.viewFlex}>
+        <ScrollView style={styles.viewFlex}>
             <Modal animationType="slide" transparent={true} visible={modalName}
                 onRequestClose={() => {
                     setModalName(!modalName);
@@ -362,15 +369,15 @@ function ProfileManager({route, navigation}) {
                 <View>
                     <View style={styles.modalView}>
                         <TouchableOpacity active = { .5 } onPress={() =>  handleDiningExit(transact)}>
-                            <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
+                            <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
                             <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
-                                <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>                </Text>
                             <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
-                                <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
                         </View>
                         <Text style={styles.dollarsText}>How many dollars?</Text>
@@ -466,11 +473,19 @@ function ProfileManager({route, navigation}) {
             </View>
         <View style={styles.viewCenter}>
             <View style={ styles.borderLine }/>
-                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Track") }>
+                <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("Track") }>
                     <Text style={ styles.textNormal}>Track Meals</Text>
                 </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("FavoriteMeal", { UserID: route.params.UserID, token: route.params.token }) }>
+                     <Text style={ styles.textNormal}>Favorite Meals</Text>
+                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
                     <Text style={ styles.textNormal}>Change Password</Text>
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("EditSchedule", { UserID: route.params.UserID, token: route.params.token }) }>
+                    <Text style={ styles.textNormal}>Change Schedule</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalDelete(true) }>
                     <Text style={ styles.textNormalRed}>Delete Account</Text>
@@ -497,7 +512,7 @@ function ProfileManager({route, navigation}) {
                     </View>
                 </Modal>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
