@@ -4,6 +4,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'native-base';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as ImagePicker from 'react-native-image-picker';
+
 
 function ProfileManager({route, navigation}) {
     // Setup re-render on focus change
@@ -35,6 +37,7 @@ function ProfileManager({route, navigation}) {
     const [nameBool, setNameBool] = useState(false);
     const [planBool, setPlanBool] = useState(false);
     const [passwordBool, setPasswordBool] = useState(false);
+
 
     // Timestamp fields
     var moment = require('moment-timezone');
