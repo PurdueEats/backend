@@ -15,7 +15,8 @@ import {AirbnbRating} from "react-native-ratings";
 
 function Menu({route, navigation}) {
     const [filter, setFilter] = useState('');
-    const [modalVisible, setModalVisible] = useState(false);
+    const [legendModalVisible, setLegendModalVisible] = useState(false);
+    const [filterModalVisible, setFilterModalVisible] = useState(false);
     const [searched, setSearched] = useState('');
 
     // stuff for search filtering
@@ -149,6 +150,7 @@ function Menu({route, navigation}) {
     }
 
     function handleFilter(filterType) {
+        setFilter([]);
         setFilter(filterType);
         if (filterType === "Gluten Free") {
             setFilterData(glutenFreeData);
@@ -165,6 +167,30 @@ function Menu({route, navigation}) {
         if (filterType === "All Items") {
             setFilterData(allData);
         }
+    }
+
+    function showDropDown() {
+        return (
+            <View style={styles.dropDownStyle}>
+                <DropDownPicker
+                    items={[
+                        {label: 'All Items', value: 'All Items'},
+                        {label: 'Gluten Free', value: 'Gluten Free'},
+                        {label: 'Vegetarian', value: 'Vegetarian'},
+                        {label: 'Dairy Free', value: 'Dairy Free'},
+                        {label: 'Nut Free', value: 'Nut Free'}
+                    ]}
+                    containerStyle={{height: 40}}
+                    style={{backgroundColor: '#fafafa'}}
+                    itemStyle={{
+                        justifyContent: 'flex-start'
+                    }}
+                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                    onChangeItem={item => handleFilter(item.value)}
+                />
+
+            </View>
+        )
     }
 
     function renderMenuItem (menuItem)  {
@@ -220,20 +246,20 @@ function Menu({route, navigation}) {
                         <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                     </TouchableOpacity>
                     <Text style={styles.title}>Menu</Text>
-                    <TouchableOpacity active = { .5 } onPress={() => setModalVisible(true) }>
+                    <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(true) }>
                         <MaterialCommunityIcons name="help-circle-outline" color="red" size={30}/>
                     </TouchableOpacity>
                     <Modal
                         animationType="slide"
                         transparent={true}
-                        visible={modalVisible}
+                        visible={legendModalVisible}
                         onRequestClose={() => {
-                            setModalVisible(!modalVisible);
+                            setLegendModalVisible(!legendModalVisible);
                         }}
                     >
                         <View>
                             <View style={styles.modalView}>
-                                <TouchableOpacity active = { .5 } onPress={() => setModalVisible(!modalVisible) }>
+                                <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(!legendModalVisible) }>
                                     <View style={styles.closeButton}>
                                         <MaterialCommunityIcons name="close" color="red" size={20}/>
                                     </View>
@@ -285,25 +311,64 @@ function Menu({route, navigation}) {
                     onChangeText={(searchText) => searchFiltering(searchText)}
                     onClear={(searchText) => searchFiltering('')}
                 />
-                <View style={styles.dropDownStyle}>
-                    <DropDownPicker
-                        items={[
-                            {label: 'All Items', value: 'All Items'},
-                            {label: 'Gluten Free', value: 'Gluten Free'},
-                            {label: 'Vegetarian', value: 'Vegetarian'},
-                            {label: 'Dairy Free', value: 'Dairy Free'},
-                            {label: 'Nut Free', value: 'Nut Free'}
-                        ]}
-                        containerStyle={{height: 40}}
-                        style={{backgroundColor: '#fafafa'}}
-                        itemStyle={{
-                            justifyContent: 'flex-start'
-                        }}
-                        dropDownStyle={{backgroundColor: '#fafafa'}}
-                        onChangeItem={item => handleFilter(item.value)}
-                    />
+                <Button style={ styles.filterButton } onPress={() => setFilterModalVisible(true) }>
+                    <Text style={ styles.filterText }>Filter</Text>
+                </Button>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={filterModalVisible}
+                    onRequestClose={() => {
+                        setFilterModalVisible(!filterModalVisible);
+                    }}
+                >
+                    <View>
+                        <View style={styles.filterModalView}>
+                            <TouchableOpacity active = { .5 } onPress={() => setFilterModalVisible(!filterModalVisible) }>
+                                <View style={styles.closeButton}>
+                                    <MaterialCommunityIcons name="close" color="red" size={20}/>
+                                </View>
+                            </TouchableOpacity >
+                            <View style={styles.dropDownStyle}>
+                                <DropDownPicker
+                                    items={[
+                                        {label: 'All Items', value: 'All Items'},
+                                        {label: 'Gluten Free', value: 'Gluten Free'},
+                                        {label: 'Vegetarian', value: 'Vegetarian'},
+                                        {label: 'Dairy Free', value: 'Dairy Free'},
+                                        {label: 'Nut Free', value: 'Nut Free'}
+                                    ]}
+                                    containerStyle={{height: 40}}
+                                    style={{backgroundColor: '#fafafa'}}
+                                    itemStyle={{
+                                        justifyContent: 'flex-start'
+                                    }}
+                                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                                    onChangeItem={item => handleFilter(item.value)}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+                {/*<View style={styles.dropDownStyle}>*/}
+                {/*    <DropDownPicker*/}
+                {/*        items={[*/}
+                {/*            {label: 'All Items', value: 'All Items'},*/}
+                {/*            {label: 'Gluten Free', value: 'Gluten Free'},*/}
+                {/*            {label: 'Vegetarian', value: 'Vegetarian'},*/}
+                {/*            {label: 'Dairy Free', value: 'Dairy Free'},*/}
+                {/*            {label: 'Nut Free', value: 'Nut Free'}*/}
+                {/*        ]}*/}
+                {/*        containerStyle={{height: 40}}*/}
+                {/*        style={{backgroundColor: '#fafafa'}}*/}
+                {/*        itemStyle={{*/}
+                {/*            justifyContent: 'flex-start'*/}
+                {/*        }}*/}
+                {/*        dropDownStyle={{backgroundColor: '#fafafa'}}*/}
+                {/*        onChangeItem={item => handleFilter(item.value)}*/}
+                {/*    />*/}
 
-                </View>
+                {/*</View>*/}
                 <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id }/>
             </SafeAreaView>
     );
@@ -327,7 +392,8 @@ const styles = StyleSheet.create({
         marginRight: "30%"
     },
     dropDownStyle: {
-        marginTop: "3%"
+        marginTop: "3%",
+        width: "50%"
     },
     firstItem: {
         fontSize: 20,
@@ -356,9 +422,26 @@ const styles = StyleSheet.create({
     },
     modalView: {
         margin: 20,
+        height: "10%",
         backgroundColor: "white",
         borderRadius: 20,
         padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    filterModalView: {
+        margin: 5,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        height: "70%",
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
@@ -387,7 +470,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         color: "white"
-    }
+    },
+    filterButton: {
+        width: '100%',
+        backgroundColor: "red",
+        borderRadius: 10,
+        justifyContent: 'center',
+    },
+    filterText: {
+        fontSize: 15,
+        fontWeight: "bold",
+        color: "white"
+    },
 });
 
 export default Menu;
