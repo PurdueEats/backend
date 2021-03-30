@@ -44,15 +44,11 @@ def graph_gen():
         {('menuItem', 'rating', 'user'): (np.concatenate([src, dst]), np.concatenate([dst, src]))})
     ratings.edges['rating'].data['label'] = torch.from_numpy(rating)
 
-<<<<<<< HEAD
     print("Graph construction complete at {}......".format(time_elapsed(time.time() - start_time)))
 
     save_graphs("./GNN/graph.dgl", [ratings])
 
     print("Graph saved complete at {}......".format(time_elapsed(time.time() - start_time)))
-=======
-    print("Graph conostruction complete at {}......".format(time_elapsed(time.time() - start_time)))
->>>>>>> e04f74ac6fc55265b74610f60a3e04acb30f13a8
 
 
 def time_elapsed(diff: float):
