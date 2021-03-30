@@ -56,4 +56,5 @@ class UserNutrition(BaseModel):
 class UserFavMeals(BaseModel):
     user_id:    int
     meal_id:    int
+    name:       str
     toggle:     bool

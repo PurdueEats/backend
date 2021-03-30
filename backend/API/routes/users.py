@@ -356,6 +356,7 @@ async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
     res = [UserFavMeals.parse_obj({
         'user_id':  item['UserID'],
         'meal_id':  item['MenuItemID'],
+        'name'  :   item['Name'], 
         'toggle':   item['Toggle']
     })
         for item in res]
