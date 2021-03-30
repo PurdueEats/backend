@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
 import { AirbnbRating } from 'react-native-ratings';
-import { Button } from 'native-base';
+import { Button, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
 
 function MealPreferences({route, navigation}) {
     const [currMeals, setCurrMeals] = useState([]);
-    const ratings = [ 3, 3, 3, 3, 3 ]
+    const ratings = [ 3, 3, 3, 3, 3 ];
+    var moment = require('moment-timezone');
+    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     useEffect(() => {
         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/MealPreferences`, {
@@ -36,16 +38,8 @@ function MealPreferences({route, navigation}) {
             });
     }, []);
 
-    function getMeals() {
-
-    }
-
     function handleSubmit() {
-        currMeals.pop();
-        currMeals.pop();
-        currMeals.pop();
-        currMeals.pop();
-        currMeals.pop();
+        handleMealPreferences();
         navigation.navigate("NavBar", { UserID: route.params.UserID, token: route.params.token });
     }
 
@@ -62,8 +56,65 @@ function MealPreferences({route, navigation}) {
         );
 
     }
-    //test
-    //
+
+    function handleMealPreferences() {
+        let index = 0;
+        currMeals.map(item => {
+            fetch("https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/", {
+                method: 'POST',
+                    headers : {
+                    'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "user_id": route.params.UserID,
+                    "menu_item_id": item.menu_item_id,
+                    "rating": ratings[index],
+                    "timestamp": time
+                })
+            })
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful POST
+                            displayConfirmation();
+                        } else {
+                            // Examine the text in the response
+                            console.log('Looks like there was a problem recording meals. Status Code: ' +
+                                response.status);
+                            displayError();
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
+             index++;
+        })
+    }
+    function displayConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Meal Preferences successfully recorded.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Meal Preferences could not be recorded. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -76,6 +127,7 @@ function MealPreferences({route, navigation}) {
             <View style={ styles.screenView }>
                 {
                    currMeals.map(function (meal, index) {
+
                        function updateRating(rating) {
                             ratings[index] = rating;
                         }
