@@ -414,6 +414,29 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
 
     nR = numpy.dot(nP, nQ.T)
 
+    recommend_list = list(nR[user_map(str(UserID))])
+    recommend_list = [(x, i) for i,x in enumerate(recommend_list)]
+    recommend_list = sort(recommend_list)
+
+    res = [MenuItem.parse_obj({
+        'menu_item_id':   item['MenuItemID'],
+        'hash_id':        item['HashID'],
+        'item_name':      item['ItemName'],
+        'has_eggs':       item['Eggs'],
+        'has_fish':       item['Fish'],
+        'has_gluten':     item['Gluten'],
+        'has_milk':       item['Milk'],
+        'has_peanuts':    item['Peanuts'],
+        'has_shellfish':  item['Shellfish'],
+        'has_soy':        item['Soy'],
+        'has_treenuts':   item['TreeNuts'],
+        'is_vegetarian':  item['Vegetarian'],
+        'is_vegan':       item['Vegan'],
+        'has_wheat':      item['Wheat']
+    }) for item in recommend_list[:5]]
+
+    return res
+
 
 @app.post("/ForgotPassword", status_code=201)
 async def forgot_password(email: str):
