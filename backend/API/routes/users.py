@@ -2,7 +2,7 @@
 from random import choice
 from string import ascii_uppercase
 from typing import List
-import numpy
+import tinynumpy
 from fastapi import APIRouter, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
@@ -408,12 +408,12 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     M = len(R[0])
     K = 3
 
-    P = numpy.random.rand(N, K)
-    Q = numpy.random.rand(M, K)
+    P = tinynumpy.random.rand(N, K)
+    Q = tinynumpy.random.rand(M, K)
 
     nP, nQ = matrix_factorization(R, P, Q, K)
 
-    nR = numpy.dot(nP, nQ.T)
+    nR = tinynumpy.dot(nP, nQ.T)
 
     recommend_list = list(nR[user_map[str(UserID)]])
     recommend_list = [(x, i) for i,x in enumerate(recommend_list)]
