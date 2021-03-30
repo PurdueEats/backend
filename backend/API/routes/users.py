@@ -2,7 +2,7 @@
 from random import choice
 from string import ascii_uppercase
 from typing import List
-import tinynumpy
+from tinynumpy import tinynumpy as tnp
 from fastapi import APIRouter, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
@@ -402,18 +402,20 @@ async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_hand
 @app.get("/Predict", response_model=List[MenuItem])
 async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     
-    R, user_map = generate_matrix()
-
+    
+    s = generate_matrix()
+    R, user_map  = s
     N = len(R)
     M = len(R[0])
     K = 3
 
-    P = tinynumpy.random.rand(N, K)
-    Q = tinynumpy.random.rand(M, K)
+    import random
+    P = tnp.array([[random.random() for i in range(K)] for j in range(N)])
+    Q = tnp.array([[random.random() for i in range(K)] for j in range(M)])
 
     nP, nQ = matrix_factorization(R, P, Q, K)
 
-    nR = tinynumpy.dot(nP, nQ.T)
+    nR = tnp.dot(nP, nQ.T)
 
     recommend_list = list(nR[user_map[str(UserID)]])
     recommend_list = [(x, i) for i,x in enumerate(recommend_list)]

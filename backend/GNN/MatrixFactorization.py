@@ -1,5 +1,4 @@
-import tinynumpy as tnp
-
+from tinynumpy import tinynumpy as tnp
 
 def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
     '''
@@ -30,6 +29,7 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
                         Q[k][j] = Q[k][j] + alpha * \
                             (2 * eij * P[i][k] - beta * Q[k][j])
 
+        print(P.shape, Q.shape)
         eR = tnp.dot(P, Q)
 
         e = 0
