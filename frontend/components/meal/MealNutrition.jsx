@@ -24,6 +24,7 @@ function MealNutrition({route, navigation}) {
 
     useEffect(() => {
         // Meal Nutrition Route
+        console.log(route.params.MealID);
         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + route.params.MealID + "/Nutrition", {
             method: 'GET',
             headers : {
