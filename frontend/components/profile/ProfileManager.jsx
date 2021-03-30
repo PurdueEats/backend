@@ -97,7 +97,6 @@ function ProfileManager({route, navigation}) {
 
 
                 setDollarsBool(true);
-                console.log("in here?")
                 sendDiningDollars(0 - subtract);
             } else {
                 if ((dollars - subtract) < 0) {
@@ -116,7 +115,6 @@ function ProfileManager({route, navigation}) {
 
                 }
                 setDollarsBool(true);
-                console.log("in here?")
                 sendDiningDollars(subtract);
             }
         } else {
@@ -173,7 +171,6 @@ function ProfileManager({route, navigation}) {
     function handleAdd() {
         setAdd('Add');
         setSign('+');
-        console.log(n);
     }
 
     function handleSub() {
@@ -217,15 +214,12 @@ function ProfileManager({route, navigation}) {
                         setPlanBool(false);
                         getMealInfo();
                     } else {
-                        console.log('Meal like there was a problem. Status Code: ' +
-                            response.status);
                         setPlanBool(false);
                         getMealInfo();
                     }
                 }
             )
             .catch(function(err) {
-                console.log('Fetch Error :-S', err);
             });
     }
 
@@ -251,20 +245,15 @@ function ProfileManager({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        console.log(dollars2);
                         setDollarsBool(false);
                         getMealInfo();
                     } else {
-                        console.log('Meal like there was a problem. Status Code: ' +
-                            response.status);
-                        console.log(dollars2);
                         setDollarsBool(false);
                         getMealInfo();
                     }
                 }
             )
             .catch(function(err) {
-                console.log('Fetch Error :-S', err);
             });
     }
 
@@ -286,15 +275,12 @@ function ProfileManager({route, navigation}) {
                         setSwipesBool(false);
                         getMealInfo();
                     } else {
-                        console.log('Meal like there was a problem. Status Code: ' +
-                            response.status);
                         setSwipesBool(false);
                         getMealInfo();
                     }
                 }
             )
             .catch(function(err) {
-                console.log('Fetch Error :-S', err);
             });
     }
 
@@ -320,14 +306,11 @@ function ProfileManager({route, navigation}) {
                         setPassword(data.password);
                     });
                 } else {
-                    console.log('Auth like there was a problem. Status Code: ' +
-                        response.status);
                     navigation.navigate("Login");
                 }
             }
         )
         .catch(function(err) {
-            console.log('Fetch Error :-S', err);
         });
     }
 
@@ -353,13 +336,10 @@ function ProfileManager({route, navigation}) {
                         setSwipes(data.meal_swipe_count);
                     });
                 } else {
-                    console.log('GetMeal like there was a problem. Status Code: ' +
-                        response.status);
                 }
             }
         )
         .catch(function(err) {
-            console.log('Fetch Error :-S', err);
         });
     }
 
@@ -382,13 +362,10 @@ function ProfileManager({route, navigation}) {
                     // Navigates back to login
                     navigation.navigate("Login");
                 } else {
-                    console.log('Delete like there was a problem. Status Code: ' +
-                        response.status);
                 }
             }
         )
         .catch(function(err) {
-            console.log('Fetch Error :-S', err);
         });
     }
 
@@ -414,14 +391,11 @@ function ProfileManager({route, navigation}) {
                     // Successful POST
                     setNameBool(false);
                 } else {
-                    console.log('Looks like there was a problem. Status Code: ' +
-                        response.status);
                     setNameBool(false);
                  }
              }
         )
         .catch(function(err) {
-            console.log('Fetch Error :-S', err);
         });
     }
 
@@ -449,15 +423,11 @@ function ProfileManager({route, navigation}) {
                     setPasswordBool(false);
                 } else {
                     // Examine the text in the response
-                    console.log('PutName like there was a problem. Status Code: ' +
-                        response.status);
                     setPasswordBool(false);
                 }
             }
         )
-        .catch(function(err) {
-            console.log('Fetch Error :-S', err);
-        });
+        .catch(function(err) {        });
     }
 
     return (
