@@ -431,7 +431,7 @@ function ProfileManager({route, navigation}) {
     }
 
     return (
-        <View style={styles.viewFlex}>
+        <ScrollView style={styles.viewFlex}>
             <Modal animationType="slide" transparent={true} visible={modalName}
                 onRequestClose={() => {
                     setModalName(!modalName);
