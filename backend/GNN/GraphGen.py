@@ -20,7 +20,8 @@ def graph_gen():
     kaggle.api.dataset_download_files(
         DATASET, path=FILENAME, unzip=True)
 
-    print("Dataset fetched at {}......".format(time_elapsed(time.time() - start_time)))
+    print("Dataset fetched at {}......".format(
+        time_elapsed(time.time() - start_time)))
 
     reviews = pd.read_csv("temp/clean_reviews.csv")
 
@@ -36,7 +37,7 @@ def graph_gen():
 
     for index in range(reviews.shape[0]):
         rating[reviews.shape[0] + index] = rating[index]
-    
+
     print("Conversion complete at {}......".format(
           time_elapsed(time.time() - start_time)))
 
@@ -44,11 +45,13 @@ def graph_gen():
         {('menuItem', 'rating', 'user'): (np.concatenate([src, dst]), np.concatenate([dst, src]))})
     ratings.edges['rating'].data['label'] = torch.from_numpy(rating)
 
-    print("Graph construction complete at {}......".format(time_elapsed(time.time() - start_time)))
+    print("Graph construction complete at {}......".format(
+        time_elapsed(time.time() - start_time)))
 
     save_graphs("./GNN/graph.dgl", [ratings])
 
-    print("Graph saved complete at {}......".format(time_elapsed(time.time() - start_time)))
+    print("Graph saved complete at {}......".format(
+        time_elapsed(time.time() - start_time)))
 
 
 def time_elapsed(diff: float):
@@ -61,7 +64,3 @@ def time_elapsed(diff: float):
 
 if __name__ == "__main__":
     graph_gen()
-<<<<<<< HEAD
-
-=======
->>>>>>> e04f74ac6fc55265b74610f60a3e04acb30f13a8
