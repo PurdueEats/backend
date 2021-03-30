@@ -30,6 +30,7 @@ function DiningFacilities({route, navigation}) {
     // Dining Courts
     const [selectedTab, setSelectedTab] = useState(0);
 
+
     useEffect(() => {
         if (isFocused) {
             // User Nutrition Summary Route
