@@ -97,8 +97,19 @@ def test_dining_facility_menu():
 
 
 def test_dining_facility_menu_incorrect():
-    pass
+    
+    import random
+    index = -1
 
+    while True:
+        index = random.randrange(-100,100)
+        if index > 5 or index < 0:
+            break
+    
+    response = client.get(f"DF/{index}/Menu")
 
+    assert response.status_code == 404
+    assert 'detail' in response.json()
+    assert response.json()['detail'] == 'Dining Facility not found'
 
 
