@@ -411,12 +411,12 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     K = 3
 
     import random
-    P = tnp.array([[random.random() for i in range(K)] for j in range(N)])
-    Q = tnp.array([[random.random() for i in range(K)] for j in range(M)])
+    P = np.array([[random.random() for i in range(K)] for j in range(N)])
+    Q = np.array([[random.random() for i in range(K)] for j in range(M)])
 
     nP, nQ = matrix_factorization(R, P, Q, K)
 
-    nR = tnp.dot(nP, nQ.T)
+    nR = np.dot(nP, nQ.T)
 
     recommend_list = list(nR[user_map[str(UserID)]])
     recommend_list = [(x, i) for i,x in enumerate(recommend_list)]

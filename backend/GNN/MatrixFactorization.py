@@ -29,7 +29,6 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
                         Q[k][j] = Q[k][j] + alpha * \
                             (2 * eij * P[i][k] - beta * Q[k][j])
 
-        print(P.shape, Q.shape)
         eR = np.dot(P, Q)
 
         e = 0
@@ -51,7 +50,7 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
             break
         
         if step%5 == 0:
-            print(f"At epoch {e}, loss: {e}")
+            print(f"At epoch {step}, loss: {e}")
 
     return P, Q.T
 
