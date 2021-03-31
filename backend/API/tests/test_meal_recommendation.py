@@ -7,13 +7,40 @@ from GNN.MatrixFactorization import matrix_factorization
 
 client = TestClient(router)
 
-
+"""
 def test_graph_gen():
-    pass
+    
+    graph_gen()
 
+    import os
+    
+    import sys
+
+    PATH = sys.path[0] + '/backend/'
+    DGL = 'GNN/graph.dgl'
+    TEMP = 'temp'
+    FILES = ['recipes.csv', 'reviews.csv', 'clean_recipes.csv', 'clean_reviews.csv']
+
+    assert os.path.isfile(PATH + DGL)  == True
+    assert os.path.isdir(PATH + TEMP)  == True
+
+    for file in FILES:
+        assert os.path.isfile(PATH + TEMP + '/' + file) == True
+    
+    os.remove(PATH + DGL)
+
+    import shutil
+    shutil.rmtree(PATH + TEMP)
+"""
 
 def test_generate_matrix():
-    pass
+    
+    M, user_map = generate_matrix()
+    print(user_map)
+    print(M[0])
+    assert True
+
+
 
 
 def test_matrix_factorization():

@@ -1,5 +1,5 @@
 from DB.Util import runQuery
-from tinynumpy import tinynumpy as tnp
+import numpy as np
 
 def generate_matrix():
 
@@ -18,9 +18,9 @@ def generate_matrix():
     for user in users:
         user_map[str(user['UserID'])] = i
         i += 1
-        matrix.append(tnp.zeros((menu_items,)))
+        matrix.append(np.zeros((menu_items,)))
 
-    matrix = tnp.array(matrix)
+    matrix = np.array(matrix)
 
     for review in menu_item_reviews:
         matrix[user_map[str(review['UserID'])], review['MenuItemID']] = review['Rating']
