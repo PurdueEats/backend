@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager";
 import ProfileManager from "./components/profile/ProfileManager";
 import ScheduleManager from "./components/profile/ScheduleManager"
-import TemplateComponent from "./components/template/TemplateComponent";
 import MealPreferences from "./components/meal/MealPreferences";
 import DiningCourt from "./components/dining/DiningFacilities";
 import Menu from "./components/dining/Menu";
@@ -50,7 +49,6 @@ export default function App() {
                     <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
                     <Stack.Screen name="Notifications" component= { Notifications }/>
                     <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
-                    <Stack.Screen name="Template" component={ TemplateComponent }/>
                 </Stack.Navigator>
             </NavigationContainer>
         </Root>
