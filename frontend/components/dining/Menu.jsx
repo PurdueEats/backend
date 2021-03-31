@@ -28,6 +28,7 @@ function Menu({route, navigation}) {
     const [glutenFreeData, setGlutenFreeData] = useState([]);
     const [dairyFreeData, setDairyFreeData] = useState([]);
     const [nutFreeData, setNutFreeData] = useState([]);
+    const [favData, setFavData] = useState([]);
 
     //
     const [vegetarian, setVegetarian] = useState(false);
@@ -35,15 +36,48 @@ function Menu({route, navigation}) {
     const [dairyFree, setDairyFree] = useState(false);
     const [nutFree, setNutFree] = useState(false);
 
+    //fav meal fetch
+    const [currentSelection, setCurrentSelection] = React.useState([]);
+
     const popAction = StackActions.pop();
 
     useEffect(() => {
         getMeals();
+        getFavMeal();
     }, []);
 
 
     function handleNavigate() {
         navigation.navigate("MealReview", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
+    }
+
+    // GET request to get the selected favorite item(s)
+    function getFavMeal() {
+       fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+        })
+        .then(
+            function(response) {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful GET
+                    // Set fields to correct values
+                    response.json().then(function(data) {
+                        setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
+                    });
+                } else {
+                    console.log('Auth like there was a problem with fetching fav meals. Status Code: ' +
+                        response.status);
+                }
+            }
+        )
+        .catch(function(err) {
+            console.log('Fetch Error :-S', err);
+        });
     }
 
     function getMeals() {
@@ -98,6 +132,19 @@ function Menu({route, navigation}) {
             });
     }
 
+    // seeing if there are fav meals
+    function getFilterFavMeal() {
+        allData.forEach((mealList) => {
+            currentSelection.forEach((mealList2) => {
+                if (mealList.menu_item_id === mealList2.value) {
+//                     setMatchList();
+                       favData.push(mealList);
+                }
+            });
+        });
+        setFavData(favData);
+    }
+
     function searchFiltering (searchText) {
         if (!searchText) {
             setSearched(searchText);
@@ -115,6 +162,9 @@ function Menu({route, navigation}) {
             }
             if (filter === "All Items") {
                 setFilterData(allData);
+            }
+            if (filter === "Favorite Items") {
+                setFilterData(favData);
             }
             setFilterData(allData);
         }
@@ -160,6 +210,9 @@ function Menu({route, navigation}) {
         }
         if (filterType === "All Items") {
             setFilterData(allData);
+        }
+        if (filterType === "Favorite Items") {
+            setFilterData(favData);
         }
     }
 
@@ -256,6 +309,10 @@ function Menu({route, navigation}) {
                                     <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={20}/>
                                     <Text style={styles.modalText}>Nut Free Item</Text>
                                 </View>
+                                 <View style={{flexDirection: "row"}}>
+                                    <MaterialCommunityIcons name="star" color="red" size={20}/>
+                                    <Text style={styles.modalText}>Favorite Item</Text>
+                                 </View>
                             </View>
                         </View>
                     </Modal>
@@ -312,7 +369,8 @@ function Menu({route, navigation}) {
                                         {label: 'Gluten Free', value: 'Gluten Free'},
                                         {label: 'Vegetarian', value: 'Vegetarian'},
                                         {label: 'Dairy Free', value: 'Dairy Free'},
-                                        {label: 'Nut Free', value: 'Nut Free'}
+                                        {label: 'Nut Free', value: 'Nut Free'},
+                                        {label: 'Favorite Items', value: 'Favorite Items'}
                                     ]}
                                     containerStyle={{height: 40}}
                                     style={{backgroundColor: '#fafafa'}}
@@ -420,7 +478,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop:"0%",
         marginBottom: "3%",
-        height: "60%",
+        height: "70%",
         marginLeft: "32%"
     },
     recordText: {
