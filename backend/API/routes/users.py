@@ -356,6 +356,7 @@ async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
     res = [UserFavMeals.parse_obj({
         'user_id':  item['UserID'],
         'meal_id':  item['MenuItemID'],
+        'name'  :   item['Name'], 
         'toggle':   item['Toggle']
     })
         for item in res]
@@ -382,7 +383,7 @@ async def post_user_fav_meals(userFavMeals: UserFavMeals, UserID: int = Depends(
 
     runQuery(f"""
     INSERT INTO UserFavoriteMenuItems values (
-    {userFavMeals.user_id}, {userFavMeals.meal_id}, {userFavMeals.toggle}
+    {userFavMeals.user_id}, {userFavMeals.meal_id}, {userFavMeals.name}, {userFavMeals.toggle}
     )
     """)
 
@@ -417,7 +418,7 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
 
     recommend_list = list(nR[user_map[str(UserID)]])
     recommend_list = [(x, i) for i,x in enumerate(recommend_list)]
-    recommend_list.sort()
+    recommend_list.sort(reverse=True)
     recommend_list = recommend_list[:5]
 
     res = [dict(row) for row in runQuery(
