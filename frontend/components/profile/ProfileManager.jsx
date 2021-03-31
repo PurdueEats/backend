@@ -91,11 +91,8 @@ function ProfileManager({route, navigation}) {
     function handleDiningExit(subtract) {
         setModalDining(!setModalDining);
         if (add === 'Add') {
-            console.log("in here?")
             sendDiningDollars(0 - subtract);
         } else {
-            console.log("in here?")
-
             sendDiningDollars(subtract);
         }
     }
@@ -180,13 +177,11 @@ function ProfileManager({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        console.log(dollars2);
                         setPlanBool(false);
                         getMealInfo();
                     } else {
                         console.log('Meal like there was a problem. Status Code: ' +
                             response.status);
-                        console.log(dollars2);
                         setPlanBool(false);
                         getMealInfo();
                     }
@@ -394,7 +389,6 @@ function ProfileManager({route, navigation}) {
                     } else {
                         console.log('Looks like there was a problem with getting the picture. Status Code: ' +
                             response.status);
-                        console.log(response)
                     }
                 }
             )
