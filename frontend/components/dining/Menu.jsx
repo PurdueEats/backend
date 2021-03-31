@@ -1,17 +1,12 @@
 import React, {useEffect, useState} from "react";
-
-import { SafeAreaView, ScrollView, StyleSheet, View, Text, TouchableOpacity, FlatList} from "react-native";
-
-
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Modal from 'react-native-modal';
-import { Button} from 'native-base';
+import { Button } from 'native-base';
 import { StackActions } from '@react-navigation/native';
 import { SearchBar } from 'react-native-elements';
-import {AirbnbRating} from "react-native-ratings";
-
-
+import { AirbnbRating } from "react-native-ratings";
 
 function Menu({route, navigation}) {
     const [filter, setFilter] = useState('');
@@ -52,7 +47,7 @@ function Menu({route, navigation}) {
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-               /* 'Authorization': 'Bearer ' + route.params.token */
+                /* 'Authorization': 'Bearer ' + route.params.token */
             },
         })
             .then(
@@ -136,8 +131,6 @@ function Menu({route, navigation}) {
                 style={{
                     borderBottomColor: '#c4baba',
                     borderBottomWidth: 1,
-                    marginTop: "2%",
-                    marginBottom: "5%"
                 }}
             />
         );
@@ -166,9 +159,9 @@ function Menu({route, navigation}) {
 
     function renderMenuItem (menuItem)  {
         return (
-            <TouchableOpacity onPress={() =>  navigation.navigate("MealNutrition", { UserID: route.params.UserID, token: route.params.token,
-                                                                                    MealName: menuItem.item.menu_item.item_name,
-                                                                                     MealID: menuItem.item.menu_item.menu_item_id}) }>
+            <TouchableOpacity style={{ marginTop: "3%", marginBottom: "3%" }} onPress={() =>  navigation.navigate("MealNutrition", { UserID: route.params.UserID, token: route.params.token,
+                MealName: menuItem.item.menu_item.item_name,
+                MealID: menuItem.item.menu_item.menu_item_id}) }>
                 <View style={{flexDirection: "column"}}>
                     <View style = {{flexDirection: "row"}}>
                         <Text style={styles.firstItem}>{menuItem.item.menu_item.item_name}</Text>
@@ -216,137 +209,146 @@ function Menu({route, navigation}) {
     }
 
     return (
-            <SafeAreaView style={ styles.screen} >
-                <View style={{flexDirection: "row"}}>
-                    <TouchableOpacity onPress={ () => navigation.dispatch(StackActions.pop(1))}>
-                        <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
-                    </TouchableOpacity>
-                    <Text style={styles.title}>Menu</Text>
-                    <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(true) }>
-                        <MaterialCommunityIcons name="help-circle-outline" color="red" size={30}/>
-                    </TouchableOpacity>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={legendModalVisible}
-                        onRequestClose={() => {
-                            setLegendModalVisible(!legendModalVisible);
-                        }}
-                    >
-                        <View>
-                            <View style={styles.modalView}>
-                                <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(!legendModalVisible) }>
-                                    <View style={styles.closeButton}>
-                                        <MaterialCommunityIcons name="close" color="red" size={20}/>
-                                    </View>
-                                </TouchableOpacity >
-                                <View style={{flexDirection: "row"}}>
-                                    <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={20}/>
-                                    <Text style={styles.modalText}>Vegetarian Item</Text>
-                                </View>
-                                <View style={{flexDirection: "row"}}>
-                                    <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={20}/>
-                                    <Text style={styles.modalText}>Gluten Free Item</Text>
-                                </View>
-                                <View style={{flexDirection: "row"}}>
-                                    <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={20}/>
-                                    <Text style={styles.modalText}>Dairy Free Item</Text>
-                                </View>
-                                <View style={{flexDirection: "row"}}>
-                                    <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={20}/>
-                                    <Text style={styles.modalText}>Nut Free Item</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
-                <View
-                    style={{
-                        borderBottomColor: '#c4baba',
-                        borderBottomWidth: 1,
-                        marginTop: "2%",
-                        marginBottom: "5%"
-                    }}
-                />
-                <View style={{flexDirection: "row"}}>
-                    <MaterialCommunityIcons name="star" color="red" size={20}/>
-                    <MaterialCommunityIcons name="star" color="red" size={20}/>
-                    <MaterialCommunityIcons name="star" color="red" size={20}/>
-                    <MaterialCommunityIcons name="star" color="red" size={20}/>
-                    <MaterialCommunityIcons name="star" color="red" size={20}/>
-                    <Button style={ styles.recordButton } onPress={ handleNavigate }>
-                        <Text style={ styles.recordText } >Record Meal</Text>
-                    </Button>
-                </View>
-                <SearchBar
-                    round
-                    searchIcon={{ size: 20 }}
-                    placeholder="Look for an item here"
-                    value={searched}
-                    lightTheme = "true"
-                    onChangeText={(searchText) => searchFiltering(searchText)}
-                    onClear={(searchText) => searchFiltering('')}
-                />
-                <Button style={ styles.filterButton } onPress={() => setFilterModalVisible(true) }>
-                    <Text style={ styles.filterText }>Filter</Text>
-                </Button>
+        <ScrollView>
+            <View style={ styles.topView } >
+                <TouchableOpacity onPress={() => navigation.dispatch(StackActions.pop(1))}>
+                    <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                </TouchableOpacity>
+                <Text style={ styles.screenTitle }>Menu</Text>
+                <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(true) }>
+                    <MaterialCommunityIcons name="help-circle-outline" color="red" size={30}/>
+                </TouchableOpacity>
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={filterModalVisible}
+                    visible={legendModalVisible}
                     onRequestClose={() => {
-                        setFilterModalVisible(!filterModalVisible);
+                        setLegendModalVisible(!legendModalVisible);
                     }}
                 >
                     <View>
-                        <View style={styles.filterModalView}>
-                            <TouchableOpacity active = { .5 } onPress={() => setFilterModalVisible(!filterModalVisible) }>
-                                <View style={styles.closeButton}>
+                        <View style={styles.modalView}>
+                            <TouchableOpacity onPress={() => setLegendModalVisible(!legendModalVisible)}>
+                                <View style={styles.modalCloseButton}>
                                     <MaterialCommunityIcons name="close" color="red" size={20}/>
                                 </View>
                             </TouchableOpacity >
-                            <View style={styles.dropDownStyle}>
-                                <DropDownPicker
-                                    items={[
-                                        {label: 'All Items', value: 'All Items'},
-                                        {label: 'Gluten Free', value: 'Gluten Free'},
-                                        {label: 'Vegetarian', value: 'Vegetarian'},
-                                        {label: 'Dairy Free', value: 'Dairy Free'},
-                                        {label: 'Nut Free', value: 'Nut Free'}
-                                    ]}
-                                    containerStyle={{height: 40}}
-                                    style={{backgroundColor: '#fafafa'}}
-                                    itemStyle={{
-                                        justifyContent: 'flex-start'
-                                    }}
-                                    dropDownStyle={{backgroundColor: '#fafafa'}}
-                                    onChangeItem={item => handleFilter(item.value)}
-                                />
+                            <View style={{flexDirection: "row"}}>
+                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={20}/>
+                                <Text style={styles.modalText}>Vegetarian Item</Text>
+                            </View>
+                            <View style={{flexDirection: "row"}}>
+                                <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={20}/>
+                                <Text style={styles.modalText}>Gluten Free Item</Text>
+                            </View>
+                            <View style={{flexDirection: "row"}}>
+                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={20}/>
+                                <Text style={styles.modalText}>Dairy Free Item</Text>
+                            </View>
+                            <View style={{flexDirection: "row"}}>
+                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={20}/>
+                                <Text style={styles.modalText}>Nut Free Item</Text>
                             </View>
                         </View>
                     </View>
                 </Modal>
-                <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id }/>
-            </SafeAreaView>
+            </View>
+            <View style={{ marginLeft: "2%", marginRight: "2%" }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: "2%" }}>
+                    <AirbnbRating
+                        key={"Rating"}
+                        count={5}
+                        reviews={["Terrible", "Meh", "OK", "Good", "Amazing"]}
+                        type={"custom"}
+                        showRating={false}
+                        selectedColor={"#ff0000"}
+                        defaultRating={3}
+                        reviewSize={20}
+                        size={25}
+                        // onFinishRating={ updateRating }
+                    />
+                    <Button style={ styles.recordButton } onPress={ handleNavigate }>
+                        <Text style={ styles.recordText }>Record Meal</Text>
+                    </Button>
+                </View>
+                <View style={{ marginBottom: "2%" }}>
+                    <SearchBar
+                        round
+                        containerStyle={{backgroundColor: '#f2f2f2', borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
+                        searchIcon={{ size: 20 }}
+                        placeholder="Look for an item here"
+                        value={searched}
+                        lightTheme = "true"
+                        onChangeText={(searchText) => searchFiltering(searchText)}
+                        onClear={(searchText) => searchFiltering('')}
+                    />
+                </View>
+                <Button style={ styles.filterButton } onPress={() => setFilterModalVisible(true) }>
+                    <Text style={ styles.filterText }>Filter</Text>
+                </Button>
+            </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={filterModalVisible}
+                onRequestClose={() => {
+                    setFilterModalVisible(!filterModalVisible);
+                }}
+            >
+                <View>
+                    <View style={styles.filterModalView}>
+                        <TouchableOpacity active = { .5 } onPress={() => setFilterModalVisible(!filterModalVisible) }>
+                            <View style={styles.closeButton}>
+                                <MaterialCommunityIcons name="close" color="red" size={20}/>
+                            </View>
+                        </TouchableOpacity >
+                        <View style={styles.dropDownStyle}>
+                            <DropDownPicker
+                                items={[
+                                    {label: 'All Items', value: 'All Items'},
+                                    {label: 'Gluten Free', value: 'Gluten Free'},
+                                    {label: 'Vegetarian', value: 'Vegetarian'},
+                                    {label: 'Dairy Free', value: 'Dairy Free'},
+                                    {label: 'Nut Free', value: 'Nut Free'}
+                                ]}
+                                containerStyle={{height: 40}}
+                                style={{backgroundColor: '#fafafa'}}
+                                itemStyle={{
+                                    justifyContent: 'flex-start'
+                                }}
+                                dropDownStyle={{backgroundColor: '#fafafa'}}
+                                onChangeItem={item => handleFilter(item.value)}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+            <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id }/>
+        </ScrollView>
     );
 }
 
 
 
 const styles = StyleSheet.create({
-    screen:{
-        paddingTop: "17%",
+    pageView: {
         paddingLeft: "5%",
-        paddingRight: "5%",
-        paddingBottom: "10%",
-        flex: 1,
+        paddingRight: "5%"
     },
-    title: {
-        fontSize: 25,
+    topView: {
+        marginLeft: "3%",
+        marginRight: "3%",
+        marginTop: "10%",
+        marginBottom: "5%",
+        flexDirection: "row"
+    },
+    screenTitle: {
+        fontSize: 30,
         fontWeight: "bold",
-        textAlign: 'center',
-        marginLeft: "30%",
-        marginRight: "30%"
+        alignItems: "center",
+        marginLeft: "auto",
+        marginRight: "auto",
+        justifyContent: "center"
     },
     dropDownStyle: {
         marginTop: "3%",
@@ -375,14 +377,13 @@ const styles = StyleSheet.create({
     modalText: {
         color: "black",
         marginBottom: "5%",
-
     },
     modalView: {
-        margin: 20,
-        height: "10%",
+        height: "55%",
         backgroundColor: "white",
         borderRadius: 20,
-        padding: 35,
+        paddingTop: "5%",
+        paddingLeft: "2%",
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
@@ -409,8 +410,11 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5
     },
+    modalCloseButton: {
+        alignItems: "flex-start",
+        marginBottom: "5%"
+    },
     closeButton: {
-        marginRight: "90%",
         marginBottom: "10%"
     },
     recordButton: {
@@ -418,10 +422,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "red",
         borderRadius: 10,
-        marginTop:"0%",
-        marginBottom: "3%",
-        height: "60%",
-        marginLeft: "32%"
     },
     recordText: {
         fontSize: 16,
@@ -429,7 +429,9 @@ const styles = StyleSheet.create({
         color: "white"
     },
     filterButton: {
-        width: '100%',
+        marginLeft: "10%",
+        marginBottom: "1%",
+        width: '80%',
         backgroundColor: "red",
         borderRadius: 10,
         justifyContent: 'center',
