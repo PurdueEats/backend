@@ -5,6 +5,7 @@ from GNN.MatrixGen import generate_matrix
 from GNN.MatrixFactorization import matrix_factorization
 import numpy
 
+
 client = TestClient(router)
 
 
@@ -81,14 +82,53 @@ def test_matrix_factorization():
     assert nP.shape == P.shape
     assert nQ.shape == Q.shape
     assert nR.shape == R.shape
-    
+
     for i in range(R.shape[0]):
         for j in range(R.shape[1]):
-            
+
             if R[i][j] != 0:
 
                 assert abs(R[i][j] - nR[i][j]) < 0.3
 
 
 def test_user_predict():
-    pass
+
+    login = client.post(
+        '/Users/Login',
+        json={
+            "user_id": 0,
+            "name": "string",
+            "email": "vaas@gmail.com",
+            "password": "abcdefghi"
+        }
+    )
+
+    assert login.status_code == 200
+    assert 'UserID' in login.json()
+    assert 'token' in login.json()
+
+    token = login.json()['token']
+
+    predict = client.get(
+        '/Users/Predict',
+        headers={'Authorization': 'Bearer ' + token}
+    )
+
+    assert predict.status_code == 200
+
+    for fields in predict.json():
+
+        assert 'menu_item_id'   in fields
+        assert 'hash_id'        in fields
+        assert 'item_name'      in fields
+        assert 'has_eggs'       in fields
+        assert 'has_fish'       in fields
+        assert 'has_gluten'     in fields
+        assert 'has_milk'       in fields
+        assert 'has_peanuts'    in fields
+        assert 'has_shellfish'  in fields
+        assert 'has_soy'        in fields
+        assert 'has_treenuts'   in fields
+        assert 'is_vegetarian'  in fields
+        assert 'is_vegan'       in fields
+        assert 'has_wheat'      in fields
