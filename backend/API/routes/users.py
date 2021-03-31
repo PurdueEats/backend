@@ -19,8 +19,8 @@ from API.models.users import (
     UserNutrition,
     UserFavMeals
 )
-from GNN.MatrixFactorization import matrix_factorization
-from GNN.MatrixGen import generate_matrix
+#from GNN.MatrixFactorization import matrix_factorization
+#from GNN.MatrixGen import generate_matrix
 
 
 app = APIRouter()
