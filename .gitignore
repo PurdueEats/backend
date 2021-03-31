@@ -1,4 +1,22 @@
-prototypes/_*
+#Python Compilation
+**/__pycache__/
+
+#Package-lock
+**/package-lock.json
+
+#VSCode
+**/.vscode/
+
+#Setup Files
+**/dist/
+**/PurdueEats.egg-info/
+**/build/
 
 # IntelliJ
+CS307.iml
+PurdueEats.iml
 .idea
+/venv
+
+*/__pycache__
+/gen

@@ -1,64 +1,114 @@
-import React, { Component } from "react";
-import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
-import { Button, Item } from 'native-base';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import Logo from "../../resources/logo.png";
+import { Button, Item, Toast } from 'native-base';
 
-class LoginManager extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: "",
-            password: ""
-        };
+function LoginManager({navigation}) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    // Add use effect to clear email and password on re-render
+
+    function tokenManager() {
+        // TODO add check for token expiration
     }
-    async forgotPwd() {}
 
-    render() {
-        return (
-            <View>
-                <View style={ styles.iconPosition }>
-                    <Image source = {require("../../resources/logo.png")} />
-                    <Text style={ styles.appName }>PurdueEats</Text>
-                </View>
-                <View style={ styles.content }>
-                    <TouchableOpacity active = { .5 } onPress={() => this.props.navigation.navigate('Profile') }>
-                    <Text style={ styles.signInContent }>Sign In</Text>
-                    </TouchableOpacity>
-                    <Text style={ styles.sectionHeader }>Email</Text>
-                    <Item style={ styles.emailContent }>
-                        <TextInput style={ styles.textInput } onChangeText={(email) => this.setState(email)} />
-                    </Item>
-                    <Text style={ styles.sectionHeader }>Password</Text>
-                    <Item style={ styles.passwordContent }>
-                        <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => this.setState(password)} />
-                    </Item>
-                </View>
-                <View style={ styles.buttons }>
-                    <Button style={ styles.signInButton }>
-                            <Text style={ styles.signInText }>Sign In</Text>
-                    </Button>
-                    <View style={ styles.optionText }>
-                        <View>
-                            <TouchableOpacity>
-                                <Text style={ styles.forgotPasswordText } >Forgot Password?</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View>
-                            <TouchableOpacity active = { .5 } onPress={() => this.props.navigation.navigate('Profile') }>
-                                <Text style={ styles.signUpText }>Sign Up</Text>
-                            </TouchableOpacity>
-                        </View>
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Incorrect username/password combination.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function handleLogin() {
+        // Login Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
+        	method: 'POST',
+        	headers : {
+        		'Content-Type': 'application/json',
+        		'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "user_id": "0",
+                "name": "string",
+                "email": email,
+                "password": password
+            })
+        })
+            .then(
+                function(response) {
+                    if (response.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        displayError();
+                    } else {
+                        // Examine the text in the response
+                        response.json().then(function(data) {
+                            // Login successful, redirect to MealPreferences
+                            navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
+                        });
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
+    function handleForgotPassword() {
+        navigation.navigate("ForgotPassword")
+    }
+
+    function handleSignUp() {
+        navigation.navigate("Name")
+    }
+
+    return (
+        <ScrollView>
+            <View style={ styles.iconPosition }>
+                <Image source = { Logo } />
+                <Text style={ styles.appName }>PurdueEats</Text>
+            </View>
+            <View style={ styles.content }>
+                <Text style={ styles.signInContent }>Sign In</Text>
+                <Text style={ styles.sectionHeader }>Email</Text>
+                <Item style={ styles.emailContent }>
+                    <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
+                </Item>
+                <Text style={ styles.sectionHeader }>Password</Text>
+                <Item style={ styles.passwordContent }>
+                    <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
+                </Item>
+            </View>
+            <View style={ styles.buttons }>
+                <Button style={ styles.signInButton } onPress={ handleLogin }>
+                        <Text style={ styles.signInText }>Sign In</Text>
+                </Button>
+                <View style={ styles.optionText }>
+                    <View>
+                        <TouchableOpacity onPress={ handleForgotPassword }>
+                            <Text style={ styles.forgotPasswordText } >Forgot Password?</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity onPress={ handleSignUp }>
+                            <Text style={ styles.signUpText }>Sign Up</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
-        );
-    }
+        </ScrollView>
+    );
 }
-
 
 const styles = StyleSheet.create({
     iconPosition: {
-        paddingTop: "15%",
+        paddingTop: "12%",
         marginBottom: "5%",
         alignItems: "center"
     },
@@ -113,8 +163,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "gray",
         alignItems: "center",
-        paddingTop: "10%",
-        paddingBottom: "10%",
+        paddingTop: "8%",
+        paddingBottom: "8%",
     },
     signUpText: {
         fontSize: 15,
