@@ -179,7 +179,7 @@ function ProfileManager({route, navigation}) {
     }
 
     function handleLogout() {
-        if (!delBool && !nameBool && !planBool && !passwordBool && swipesBool && dollarsBool) {
+        if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
             navigation.navigate("Login")
         }
         else Toast.show({
@@ -431,7 +431,7 @@ function ProfileManager({route, navigation}) {
     }
 
     return (
-        <View style={styles.viewFlex}>
+        <ScrollView style={styles.viewFlex}>
             <Modal animationType="slide" transparent={true} visible={modalName}
                 onRequestClose={() => {
                     setModalName(!modalName);
@@ -585,7 +585,7 @@ function ProfileManager({route, navigation}) {
         <View style={styles.viewCenter}>
             <View style={ styles.borderLine }/>
                 <TouchableOpacity active = { .5 } onPress={() =>
-                    navigation.navigate("Track") }>
+                    navigation.navigate("Track", { UserID: route.params.UserID, token: route.params.token }) }>
                     <Text style={ styles.textNormal}>Track Meals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("FavoriteMeal", { UserID: route.params.UserID, token: route.params.token }) }>
