@@ -11,7 +11,6 @@ import Ford from "../../resources/ford.png";
 import Hillenbrand from "../../resources/hillenbrand.png";
 import Windsor from "../../resources/windsor.png";
 
-
 function DiningFacilities({route, navigation}) {
     // Setup re-render on focus change
     const isFocused = useIsFocused();
@@ -22,8 +21,13 @@ function DiningFacilities({route, navigation}) {
     const [fat, setFat] = useState(0);
     const [protein, setProtein] = useState(0);
 
+    // Chart Data
+    const [chartCalories, setChartCalories] = useState(0);
+    const [chartCarbs, setChartCarbs] = useState(0);
+    const [chartFat, setChartFat] = useState(0);
+    const [chartProtein, setChartProtein] = useState(0);
+
     // Dining Courts
-    const [diningCourt, setDiningCourt] = useState('');
     const [selectedTab, setSelectedTab] = useState(0);
 
 
@@ -40,16 +44,43 @@ function DiningFacilities({route, navigation}) {
             })
                 .then(
                     function (response) {
-                        if (response.status !== 200) {
+                        if (response.status !== 200 && response.status !== 201) {
                             console.log('Looks like there was a problem. Status Code: ' +
                                 response.status);
                         } else {
                             // Examine the text in the response
                             response.json().then(function (data) {
-                                setCalories(data["calories"])
-                                setCarbs(data["carbs"])
-                                setFat(data["fat"])
-                                setProtein(data["protein"])
+                                // Set data fields
+                                setCalories(data["calories"]);
+                                setCarbs(data["carbs"]);
+                                setFat(data["fat"]);
+                                setProtein(data["protein"]);
+
+                                // Set chartData
+                                // Calories
+                                if (parseFloat(data["calories"]) > 14000) {
+                                    setChartCalories(14000);
+                                } else {
+                                    setChartCalories(parseFloat(data["calories"]));
+                                }
+                                // Carbs
+                                if (parseFloat(data["carbs"]) > 1900) {
+                                    setChartCarbs(1900);
+                                } else {
+                                    setChartCarbs(parseFloat(data["carbs"]));
+                                }
+                                // Fat
+                                if (parseFloat(data["fat"]) > 200) {
+                                    setChartFat(200);
+                                } else {
+                                    setChartFat(parseFloat(data["fat"]));
+                                }
+                                // Protein
+                                if (parseFloat(data["protein"]) > 350) {
+                                    setChartProtein(350);
+                                } else {
+                                    setChartProtein(parseFloat(data["protein"]));
+                                }
                             });
                         }
                     }
@@ -105,12 +136,7 @@ function DiningFacilities({route, navigation}) {
                     <ProgressChart
                         data={{
                             labels: ["Calories", "Carbs.", "Fat", "Protein"],
-                            data:
-                                // 14000 1820 490 350
-                                [parseFloat(calories)/14000,
-                                parseFloat(carbs)/1900,
-                                parseFloat(fat)/200,
-                                parseFloat(protein)/350]
+                            data: [chartCalories / 14000, chartCarbs / 1900, chartFat / 200, chartProtein / 350]
                         }}
                         width={Dimensions.get("window").width - 20}
                         height={250}
@@ -126,16 +152,16 @@ function DiningFacilities({route, navigation}) {
                     />
                     <View style={ styles.dataView }>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories} of 14,000
+                            <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories.toLocaleString()} of 14,000
                         </Text>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs}g of 1900g
+                            <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs.toLocaleString()}g of 1,900g
                         </Text>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat}g of 200g
+                            <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat.toLocaleString()}g of 200g
                         </Text>
                         <Text style={ styles.dataText }>
-                            <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein}g of 350g
+                            <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein.toLocaleString()}g of 350g
                         </Text>
                     </View>
                     <View style={ styles.recommendedView }>

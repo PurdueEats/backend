@@ -15,15 +15,15 @@ import {AirbnbRating} from "react-native-ratings";
 
 function Menu({route, navigation}) {
     const [filter, setFilter] = useState('');
-    const [modalVisible, setModalVisible] = useState(false);
+    const [legendModalVisible, setLegendModalVisible] = useState(false);
+    const [filterModalVisible, setFilterModalVisible] = useState(false);
     const [searched, setSearched] = useState('');
 
-    // stuff for search filtering
+    // search filtering
     const [allData, setAllData] = useState([]);
     const [filterData, setFilterData] = useState([]);
-    //filterData = ["hello", "test", "here"];
 
-    // stuff for drop down filter
+    //drop down filter
     const [vegetarianData, setVegetarianData] = useState([]);
     const [glutenFreeData, setGlutenFreeData] = useState([]);
     const [dairyFreeData, setDairyFreeData] = useState([]);
@@ -61,10 +61,12 @@ function Menu({route, navigation}) {
                         // Successful GET
                         // Set Fields to correct values
                         response.json().then(function(data) {
+                            data = data.map(e => e["menu_item"]["menu_item_id"])
+                                .map((e, i, final) => final.indexOf(e) === i && i)
+                                .filter(e => data[e])
+                                .map(e => data[e])
                             data.map(menuItem => {
-                                //console.log(menuItem);
                                 if(menuItem["menu_item"]["is_vegetarian"] === true) {
-                                    //console.log(menuItem["menu_item"]["item_name"] + menuItem["menu_item"]["menu_item_id"])
                                     vegetarianData.push(menuItem);
                                     setVegetarian(true);
                                 }
@@ -77,17 +79,13 @@ function Menu({route, navigation}) {
                                     setDairyFree(true);
                                 }
                                 if (!menuItem["menu_item"]["has_peanuts"] && !menuItem["menu_item"]["has_treenuts"]) {
-
                                     nutFreeData.push(menuItem);
-                                    //console.log(nutFreeData);
                                     setNutFree(true);
                                 }
                                 allData.push(menuItem);
-                                //console.log(allData);
-                                //console.log(filterData);
+
                             })
                             setFilterData(allData);
-                            //console.log(allData);
                         });
                     } else {
                         console.log('Getting Menu Items like there was a problem. Status Code: ' +
@@ -123,10 +121,7 @@ function Menu({route, navigation}) {
         if(searchText) {
             const searchData = allData.filter(function (menuItem)
             {
-                //console.log(menuItem["menu_item"]["item_name"]);
                 const menuInfo = menuItem["menu_item"]["item_name"] ? menuItem["menu_item"]["item_name"].toUpperCase() : ''.toUpperCase();
-                //const menuInfo = menuItem.item_name.toUpperCase();
-                //const menuInfo = menuItem.title ? menuItem.title.toUpperCase() : ''.toUpperCase();
                 const textInfo = searchText.toUpperCase();
                 return menuInfo.indexOf(textInfo) > -1;
             });
@@ -149,6 +144,7 @@ function Menu({route, navigation}) {
     }
 
     function handleFilter(filterType) {
+        setFilter([]);
         setFilter(filterType);
         if (filterType === "Gluten Free") {
             setFilterData(glutenFreeData);
@@ -167,49 +163,55 @@ function Menu({route, navigation}) {
         }
     }
 
+
     function renderMenuItem (menuItem)  {
-        //console.log(allData[0]);
-        //console.log(menuItem);
-        //menuItem = menuItem.json();
-       // console.log(menuItem["menu_item"]["menu_item_id"])
         return (
-            <View style={{flexDirection: "column"}}>
-                <Text style={styles.firstItem}>{menuItem.item.menu_item.item_name}</Text>
-                <View style ={{flexDirection: "row"}}>
-                    {menuItem.item.menu_item.is_vegetarian ? (
-                        <View >
-                            <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+            <TouchableOpacity onPress={() =>  navigation.navigate("MealNutrition", { UserID: route.params.UserID, token: route.params.token,
+                                                                                    MealName: menuItem.item.menu_item.item_name,
+                                                                                     MealID: menuItem.item.menu_item.menu_item_id}) }>
+                <View style={{flexDirection: "column"}}>
+                    <View style = {{flexDirection: "row"}}>
+                        <Text style={styles.firstItem}>{menuItem.item.menu_item.item_name}</Text>
+                        <View style={{position: 'absolute', right: 10, bottom: -15}}>
+                            <MaterialCommunityIcons name="arrow-right" color="red" size={30}/>
                         </View>
-                    ): (
-                        <View>
-                        </View>
-                    )}
-                    {!menuItem.item.menu_item.has_wheat && !menuItem.item.menu_item.has_gluten ? (
-                        <View>
-                            <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
-                        </View>
-                    ): (
-                        <View>
-                        </View>
-                    )}
-                    {!menuItem.item.menu_item.has_milk ? (
-                        <View>
-                            <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
-                        </View>
-                    ): (
-                        <View>
-                        </View>
-                    )}
-                    {!menuItem.item.menu_item.has_peanuts && !menuItem.item.menu_item.has_treenuts ? (
-                        <View>
-                            <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
-                        </View>
-                    ): (
-                        <View>
-                        </View>
-                    )}
+                    </View>
+                    <View style ={{flexDirection: "row", marginLeft: "2%"}}>
+                        {menuItem.item.menu_item.is_vegetarian ? (
+                            <View >
+                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                            </View>
+                        ): (
+                            <View>
+                            </View>
+                        )}
+                        {!menuItem.item.menu_item.has_wheat && !menuItem.item.menu_item.has_gluten ? (
+                            <View>
+                                <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={30}/>
+                            </View>
+                        ): (
+                            <View>
+                            </View>
+                        )}
+                        {!menuItem.item.menu_item.has_milk ? (
+                            <View>
+                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                            </View>
+                        ): (
+                            <View>
+                            </View>
+                        )}
+                        {!menuItem.item.menu_item.has_peanuts && !menuItem.item.menu_item.has_treenuts ? (
+                            <View>
+                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
+                            </View>
+                        ): (
+                            <View>
+                            </View>
+                        )}
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 
@@ -220,20 +222,20 @@ function Menu({route, navigation}) {
                         <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                     </TouchableOpacity>
                     <Text style={styles.title}>Menu</Text>
-                    <TouchableOpacity active = { .5 } onPress={() => setModalVisible(true) }>
+                    <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(true) }>
                         <MaterialCommunityIcons name="help-circle-outline" color="red" size={30}/>
                     </TouchableOpacity>
                     <Modal
                         animationType="slide"
                         transparent={true}
-                        visible={modalVisible}
+                        visible={legendModalVisible}
                         onRequestClose={() => {
-                            setModalVisible(!modalVisible);
+                            setLegendModalVisible(!legendModalVisible);
                         }}
                     >
                         <View>
                             <View style={styles.modalView}>
-                                <TouchableOpacity active = { .5 } onPress={() => setModalVisible(!modalVisible) }>
+                                <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(!legendModalVisible) }>
                                     <View style={styles.closeButton}>
                                         <MaterialCommunityIcons name="close" color="red" size={20}/>
                                     </View>
@@ -285,25 +287,45 @@ function Menu({route, navigation}) {
                     onChangeText={(searchText) => searchFiltering(searchText)}
                     onClear={(searchText) => searchFiltering('')}
                 />
-                <View style={styles.dropDownStyle}>
-                    <DropDownPicker
-                        items={[
-                            {label: 'All Items', value: 'All Items'},
-                            {label: 'Gluten Free', value: 'Gluten Free'},
-                            {label: 'Vegetarian', value: 'Vegetarian'},
-                            {label: 'Dairy Free', value: 'Dairy Free'},
-                            {label: 'Nut Free', value: 'Nut Free'}
-                        ]}
-                        containerStyle={{height: 40}}
-                        style={{backgroundColor: '#fafafa'}}
-                        itemStyle={{
-                            justifyContent: 'flex-start'
-                        }}
-                        dropDownStyle={{backgroundColor: '#fafafa'}}
-                        onChangeItem={item => handleFilter(item.value)}
-                    />
-
-                </View>
+                <Button style={ styles.filterButton } onPress={() => setFilterModalVisible(true) }>
+                    <Text style={ styles.filterText }>Filter</Text>
+                </Button>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={filterModalVisible}
+                    onRequestClose={() => {
+                        setFilterModalVisible(!filterModalVisible);
+                    }}
+                >
+                    <View>
+                        <View style={styles.filterModalView}>
+                            <TouchableOpacity active = { .5 } onPress={() => setFilterModalVisible(!filterModalVisible) }>
+                                <View style={styles.closeButton}>
+                                    <MaterialCommunityIcons name="close" color="red" size={20}/>
+                                </View>
+                            </TouchableOpacity >
+                            <View style={styles.dropDownStyle}>
+                                <DropDownPicker
+                                    items={[
+                                        {label: 'All Items', value: 'All Items'},
+                                        {label: 'Gluten Free', value: 'Gluten Free'},
+                                        {label: 'Vegetarian', value: 'Vegetarian'},
+                                        {label: 'Dairy Free', value: 'Dairy Free'},
+                                        {label: 'Nut Free', value: 'Nut Free'}
+                                    ]}
+                                    containerStyle={{height: 40}}
+                                    style={{backgroundColor: '#fafafa'}}
+                                    itemStyle={{
+                                        justifyContent: 'flex-start'
+                                    }}
+                                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                                    onChangeItem={item => handleFilter(item.value)}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
                 <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id }/>
             </SafeAreaView>
     );
@@ -327,11 +349,12 @@ const styles = StyleSheet.create({
         marginRight: "30%"
     },
     dropDownStyle: {
-        marginTop: "3%"
+        marginTop: "3%",
+        width: "50%"
     },
     firstItem: {
         fontSize: 20,
-        marginRight: "53%",
+        marginLeft: "2%",
     },
     secondItem: {
         fontSize: 20,
@@ -356,9 +379,26 @@ const styles = StyleSheet.create({
     },
     modalView: {
         margin: 20,
+        height: "10%",
         backgroundColor: "white",
         borderRadius: 20,
         padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    filterModalView: {
+        margin: 5,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        height: "70%",
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
@@ -387,7 +427,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         color: "white"
-    }
+    },
+    filterButton: {
+        width: '100%',
+        backgroundColor: "red",
+        borderRadius: 10,
+        justifyContent: 'center',
+    },
+    filterText: {
+        fontSize: 15,
+        fontWeight: "bold",
+        color: "white"
+    },
 });
 
 export default Menu;
