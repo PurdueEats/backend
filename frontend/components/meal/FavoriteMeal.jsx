@@ -22,7 +22,7 @@ function FavoriteMeals({route, navigation}) {
 
     useEffect(() => {
         getFavMeal();
-        getFavMealName();
+//         getFavMealName();
         getMeal();
     },[]);
 
@@ -73,6 +73,7 @@ function FavoriteMeals({route, navigation}) {
                 body: JSON.stringify({
                      "user_id": route.params.UserID.toString(),
                      "meal_id": item.value,
+                     "name": item.label,
                      "toggle": true
                 })
             })
@@ -85,7 +86,7 @@ function FavoriteMeals({route, navigation}) {
         })
     }
 
-    // GET request to get the ID(s) of the selected favorite item(s)
+    // GET request to get the selected favorite item(s)
     function getFavMeal() {
        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
@@ -101,15 +102,14 @@ function FavoriteMeals({route, navigation}) {
                     // Successful GET
                     // Set fields to correct values
                     response.json().then(function(data) {
-                        data.map(item => {
-                            currentSelectID.push(item.meal_id);
-                        })
-//                         setCurrentSelectID(data.map(item => (item.meal_id)));
+//                         data.map(item => {
+//                             currentSelectID.push(item.meal_id);
+//                         })
+                        setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
                     });
-//                     console.log("id")
-                    console.log(currentSelectID)
+//                     console.log(currentSelectID)
                 } else {
-                    console.log('Auth like there was a problem with ID fetching. Status Code: ' +
+                    console.log('Auth like there was a problem with favorite meals fetching. Status Code: ' +
                         response.status);
                 }
             }
@@ -120,46 +120,46 @@ function FavoriteMeals({route, navigation}) {
     }
 
     // GET request to convert selected menu item(s) ID(s) to the respective name(s)
-     function getFavMealName() {
-     console.log("hereeeeee");
-     console.log(currentSelectID);
-       currentSelectID.map(item => {
-         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
-                method: 'GET',
-                headers : {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-            })
-                .then(
-                    function(response) {
-                        if (response.status === 200 || response.status === 201) {
-                            // Successful GET
-                            // Set Fields to correct values
-                            response.json().then(function(data) {
-                                currentSelection.push({ label: data.item_name, value: item });
-//                                 setCurrentSelection({ label: data.item_name, value: item });
-
-                                const unique = currentSelection
-                                    .map(e => e['value'])
-                                    // store the keys of the unique objects
-                                    .map((e, i, final) => final.indexOf(e) === i && i)
-                                    // eliminate the dead keys & store unique objects
-                                    .filter(e => currentSelection[e]).map(e => currentSelection[e]);
-                                setCurrentSelection(unique);
-                            });
-                            console.log(currentSelection)
-                        } else {
-                            console.log('Getting Menu Items like there was a problem. Status Code: ' +
-                                response.status);
-                        }
-                    }
-                )
-                .catch(function(err) {
-                    console.log('Fetch Error :-S', err);
-                });
-            })
-        }
+//      function getFavMealName() {
+//      console.log("hereeeeee");
+//      console.log(currentSelectID);
+//        currentSelectID.map(item => {
+//          fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
+//                 method: 'GET',
+//                 headers : {
+//                     'Content-Type': 'application/json',
+//                     'Accept': 'application/json',
+//                 },
+//             })
+//                 .then(
+//                     function(response) {
+//                         if (response.status === 200 || response.status === 201) {
+//                             // Successful GET
+//                             // Set Fields to correct values
+//                             response.json().then(function(data) {
+//                                 currentSelection.push({ label: data.item_name, value: item });
+// //                                 setCurrentSelection({ label: data.item_name, value: item });
+//
+//                                 const unique = currentSelection
+//                                     .map(e => e['value'])
+//                                     // store the keys of the unique objects
+//                                     .map((e, i, final) => final.indexOf(e) === i && i)
+//                                     // eliminate the dead keys & store unique objects
+//                                     .filter(e => currentSelection[e]).map(e => currentSelection[e]);
+//                                 setCurrentSelection(unique);
+//                             });
+//                             console.log(currentSelection)
+//                         } else {
+//                             console.log('Getting Menu Items like there was a problem. Status Code: ' +
+//                                 response.status);
+//                         }
+//                     }
+//                 )
+//                 .catch(function(err) {
+//                     console.log('Fetch Error :-S', err);
+//                 });
+//             })
+//         }
 
     // GET request to get all of the menu items
      function getMeal() {

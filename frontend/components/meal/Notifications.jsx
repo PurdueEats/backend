@@ -30,7 +30,6 @@ function Notifications({route, navigation}) {
 
   useEffect(() => {
       getFavMeal();
-      getFavMealName();
   },[]);
 
   const onSelectionsChange = newSelections => {
@@ -45,9 +44,8 @@ function Notifications({route, navigation}) {
         setSelectedMeals([]);
     }
 
-    // GET request to get the ID(s) of the selected favorite item(s)
+    // GET request to get the selected favorite item(s)
     function getFavMeal() {
-      console.log("hit")
        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
             headers : {
@@ -62,12 +60,14 @@ function Notifications({route, navigation}) {
                     // Successful GET
                     // Set fields to correct values
                     response.json().then(function(data) {
-                        data.map(item => {
-                            currentSelectID.push(item.meal_id);
-                        })
+//                         data.map(item => {
+//                             currentSelectID.push(item.meal_id);
+//                         })
+                        setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
                     });
+//                     console.log(currentSelectID)
                 } else {
-                    console.log('Auth like there was a problem with ID fetching. Status Code: ' +
+                    console.log('Auth like there was a problem with fav meals fetching. Status Code: ' +
                         response.status);
                 }
             }
@@ -76,59 +76,6 @@ function Notifications({route, navigation}) {
             console.log('Fetch Error :-S', err);
         });
     }
-
-    // GET request to convert selected menu item(s) ID(s) to the respective name(s)
-     function getFavMealName() {
-       currentSelectID.map(item => {
-         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
-                method: 'GET',
-                headers : {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-            })
-                .then(
-                    function(response) {
-                        if (response.status === 200 || response.status === 201) {
-                            // Successful GET
-                            // Set Fields to correct values
-                            response.json().then(function(data) {
-                                currentSelection.push({ label: data.item_name, value: item });
-                                const unique = currentSelection
-                                    .map(e => e['value'])
-                                    // store the keys of the unique objects
-                                    .map((e, i, final) => final.indexOf(e) === i && i)
-                                    // eliminate the dead keys & store unique objects
-                                    .filter(e => currentSelection[e]).map(e => currentSelection[e]);
-                                setCurrentSelection(unique);
-                            });
-                        } else {
-                            console.log('Getting Menu Items like there was a problem. Status Code: ' +
-                                response.status);
-                        }
-                    }
-                )
-                .catch(function(err) {
-                    console.log('Fetch Error :-S', err);
-                });
-            })
-        }
-
-//     function toggleFunction() {
-//       meals.map(item => {
-//       <View>
-//         <View>
-//             <Switch
-//                 trackColor={{ false: "#767577", true: "#81b0ff" }}
-//                 thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-//                 ios_backgroundColor="#3e3e3e"
-//                 onValueChange={toggleSwitch}
-//                 value={isEnabled}
-//               />
-//           </View>
-//       </View>
-//       })
-//     }
 
     const Item = ({ label }) => (
       <View style={styles.item}>
