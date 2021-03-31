@@ -2,7 +2,7 @@
 from random import choice
 from string import ascii_uppercase
 from typing import List
-from tinynumpy import tinynumpy as tnp
+#import numpy
 from fastapi import APIRouter, Depends, HTTPException
 from API.routes.auth import AuthHandler
 from DB.Util import runQuery
@@ -402,9 +402,9 @@ async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_hand
 @app.get("/Predict", response_model=List[MenuItem])
 async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     
-    
-    s = generate_matrix()
-    R, user_map  = s
+    """
+    R, user_map = generate_matrix()
+
     N = len(R)
     M = len(R[0])
     K = 3
@@ -423,13 +423,13 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     recommend_list = recommend_list[:5]
 
     res = [dict(row) for row in runQuery(
-        f"""SELECT * FROM MenuItems 
+        f\"""SELECT * FROM MenuItems 
         WHERE 
         MenuItemID = {recommend_list[0][1]} OR
         MenuItemID = {recommend_list[1][1]} OR
         MenuItemID = {recommend_list[2][1]} OR
         MenuItemID = {recommend_list[3][1]} OR
-        MenuItemID = {recommend_list[4][1]}""")]
+        MenuItemID = {recommend_list[4][1]}\""")]
 
     res = [MenuItem.parse_obj({
         'menu_item_id':   item['MenuItemID'],
@@ -449,6 +449,9 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     }) for item in res]
 
     return res
+    """
+
+    return []
 
 
 @app.post("/ForgotPassword", status_code=201)
