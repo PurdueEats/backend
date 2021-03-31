@@ -368,10 +368,9 @@ function ProfileManager({route, navigation}) {
             base64: true
         });
 
-
         if (!result.cancelled) {
             setPicture(result.base64);
-            submitProfilePicture();
+            submitProfilePicture(result.base64.toString());
         }
     };
 
@@ -395,6 +394,7 @@ function ProfileManager({route, navigation}) {
                     } else {
                         console.log('Looks like there was a problem with getting the picture. Status Code: ' +
                             response.status);
+                        console.log(response)
                     }
                 }
             )
@@ -403,8 +403,7 @@ function ProfileManager({route, navigation}) {
             });
     }
 
-    function submitProfilePicture() {
-        const image = picture;
+    function submitProfilePicture(directString) {
         // Submit current schedule data
         fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/ProfilePic', {
             method: 'POST',
@@ -415,7 +414,7 @@ function ProfileManager({route, navigation}) {
             },
             body: JSON.stringify({
                 "user_id": route.params.UserID,
-                "profile_pic": image
+                "profile_pic": directString
             })
         })
             .then(
@@ -425,7 +424,7 @@ function ProfileManager({route, navigation}) {
                         displayConfirmation();
                     } else {
                         // Examine the text in the response
-                        console.log('Looks like there was a problem submitting the schedule. Status Code: ' +
+                        console.log('Looks like there was a problem submitting the picture. Status Code: ' +
                             response.status);
                         displayError();
                     }
