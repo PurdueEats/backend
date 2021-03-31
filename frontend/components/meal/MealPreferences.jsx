@@ -77,12 +77,11 @@ function MealPreferences({route, navigation}) {
                     function(response) {
                         if (response.status === 200 || response.status === 201) {
                             // Successful POST
-                            displayConfirmation();
+
                         } else {
                             // Examine the text in the response
                             console.log('Looks like there was a problem recording meals. Status Code: ' +
                                 response.status);
-                            displayError();
                         }
                     }
                 )
@@ -147,7 +146,6 @@ function MealPreferences({route, navigation}) {
                                     onFinishRating={ updateRating }
                                 />
                             </View>
-                           // <Text>HellO</Text>
                         );
                     })}
             </View>
