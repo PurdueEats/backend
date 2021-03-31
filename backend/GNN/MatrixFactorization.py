@@ -49,6 +49,9 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
         if e < 0.001:
 
             break
+        
+        if step%5 == 0:
+            print(f"At epoch {e}, loss: {e}")
 
     return P, Q.T
 

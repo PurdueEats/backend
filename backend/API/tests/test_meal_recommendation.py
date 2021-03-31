@@ -7,7 +7,7 @@ from GNN.MatrixFactorization import matrix_factorization
 
 client = TestClient(router)
 
-"""
+    
 def test_graph_gen():
     
     graph_gen()
@@ -31,16 +31,24 @@ def test_graph_gen():
 
     import shutil
     shutil.rmtree(PATH + TEMP)
-"""
+
 
 def test_generate_matrix():
     
     M, user_map = generate_matrix()
-    print(user_map)
-    print(M[0])
-    assert True
+    assert len(user_map) == M.shape[0]
 
+    indexes = set(user_map.values())
 
+    for i in range(len(user_map)):
+
+        assert i in indexes
+        indexes.remove(i)
+    
+    for i in range(M.shape[0]):
+        for j in range(M.shape[1]):
+            
+            assert M[i][j] >= 0 and M[i][j] <= 5
 
 
 def test_matrix_factorization():

@@ -25,8 +25,6 @@ def generate_matrix():
     for review in menu_item_reviews:
         matrix[user_map[str(review['UserID'])], review['MenuItemID']] = review['Rating']
     
-    print(matrix)
-    print(user_map)
     return matrix, user_map
 
 
