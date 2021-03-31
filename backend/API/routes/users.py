@@ -19,8 +19,8 @@ from API.models.users import (
     UserNutrition,
     UserFavMeals
 )
-from GNN.MatrixFactorization import matrix_factorization
-from GNN.MatrixGen import generate_matrix
+#from GNN.MatrixFactorization import matrix_factorization
+#from GNN.MatrixGen import generate_matrix
 
 
 app = APIRouter()
@@ -410,12 +410,13 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     M = len(R[0])
     K = 3
 
-    P = numpy.random.rand(N, K)
-    Q = numpy.random.rand(M, K)
+    import random
+    P = tnp.array([[random.random() for i in range(K)] for j in range(N)])
+    Q = tnp.array([[random.random() for i in range(K)] for j in range(M)])
 
     nP, nQ = matrix_factorization(R, P, Q, K)
 
-    nR = numpy.dot(nP, nQ.T)
+    nR = tnp.dot(nP, nQ.T)
 
     recommend_list = list(nR[user_map[str(UserID)]])
     recommend_list = [(x, i) for i,x in enumerate(recommend_list)]

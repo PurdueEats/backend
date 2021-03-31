@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import {StackActions} from "@react-navigation/native";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import { StackActions } from "@react-navigation/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ProgressChart } from "react-native-chart-kit";
 
 function MealNutrition({route, navigation}) {
     // Nutritional Information
     const [servingSize, setServingSize] = useState('');
     const [calories, setCalories] = useState('');
+
     // Macros
     const [fat, setFat] =  useState('');
     const [fatValue, setFatValue] = useState('0%');
@@ -24,7 +25,6 @@ function MealNutrition({route, navigation}) {
 
     useEffect(() => {
         // Meal Nutrition Route
-        console.log(route.params.MealID);
         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + route.params.MealID + "/Nutrition", {
             method: 'GET',
             headers : {
@@ -149,7 +149,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignItems: "center",
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+        justifyContent: "center"
     },
     bodyView: {
         marginLeft: "5%",
