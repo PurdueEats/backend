@@ -5,6 +5,7 @@ import { Toast } from 'native-base';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
+import * as ImagePicker from 'expo-image-picker';
 
 function ProfileManager({route, navigation}) {
     // Setup re-render on focus change
@@ -40,6 +41,7 @@ function ProfileManager({route, navigation}) {
     const [dollarsBool, setDollarsBool] = useState(false);
     const [swipesBool, setSwipesBool] = useState(false);
 
+    const [picture, setPicture] = useState(null);
     // Timestamp fields
     var moment = require('moment-timezone');
     var time = moment().tz('America/New_York').utcOffset("−05:00").format();
@@ -49,9 +51,23 @@ function ProfileManager({route, navigation}) {
             if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
                 getAuth()
                 getMealInfo()
+                getProfilePicture()
             }
         }
     }, [isFocused]);
+
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!');
+                }
+            }
+        })();
+    }, []);
+
+
 
     function handleNameExit() {
         setModalName(!setModalName);
@@ -168,8 +184,6 @@ function ProfileManager({route, navigation}) {
                     },
                     duration: 3000
                 });
-
-
         }
     }
 
@@ -471,6 +485,105 @@ function ProfileManager({route, navigation}) {
         .catch(function(err) {        });
     }
 
+    const pickProfilePicture = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            base64: true
+        });
+
+        if (!result.cancelled) {
+            setPicture(result.base64);
+            submitProfilePicture(result.base64.toString());
+        }
+    };
+
+    function getProfilePicture() {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + `/ProfilePic`, {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        // Set Fields to correct values
+                        response.json().then(function(data) {
+                            setPicture(data["profile_pic"]);
+                        });
+                    } else {
+                        console.log('Looks like there was a problem with getting the picture. Status Code: ' +
+                            response.status);
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
+    function submitProfilePicture(directString) {
+        // Submit current schedule data
+        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/ProfilePic', {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+            body: JSON.stringify({
+                "user_id": route.params.UserID,
+                "profile_pic": directString
+            })
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        displayConfirmation();
+                    } else {
+                        // Examine the text in the response
+                        console.log('Looks like there was a problem submitting the picture. Status Code: ' +
+                            response.status);
+                        displayError();
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+    function displayConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Profile picture successfully updated.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Profile Picture upload failed. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+
     return (
         <ScrollView style={styles.viewFlex}>
             <Modal animationType="slide" transparent={true} visible={modalName}
@@ -545,7 +658,8 @@ function ProfileManager({route, navigation}) {
                 <Text style={ styles.profileWord }>           </Text>
             </View>
             <View style={ styles.viewCenter }>
-                <Image style={ styles.profileImage } source={require('../../resources/train.jpg')}/>
+                <Image style={ styles.profileImage } defaultSource={require('../../resources/train.jpg')} source={{uri: 'data:image/jpeg;base64,' + picture}}
+                />
             </View>
             <View style={styles.rowBetween}>
                 <Text style={ styles.textNormal }>   {name} </Text>
@@ -634,6 +748,9 @@ function ProfileManager({route, navigation}) {
                  </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
                     <Text style={ styles.textNormal}>Change Password</Text>
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>  pickProfilePicture() }>
+                    <Text style={ styles.textNormal}>Change Profile Picture</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>
                     navigation.navigate("EditSchedule", { UserID: route.params.UserID, token: route.params.token }) }>
