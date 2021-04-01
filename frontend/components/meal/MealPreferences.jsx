@@ -60,16 +60,16 @@ function MealPreferences({route, navigation}) {
     function handleMealPreferences() {
         // console.log(currMeals.length)
         // for (let i = 0; i < currMeals.length; i++) {
-        //     sendPosts(i);
+        //     sendMealPreference(i);
         // }
-        sendPosts(0);
-        // sendPosts(1);
-        // sendPosts(2);
-        // sendPosts(3);
-        // sendPosts(4);
+        sendMealPreference(0);
+        // sendMealPreference(1);
+        // sendMealPreference(2);
+        // sendMealPreference(3);
+        // sendMealPreference(4);
     }
 
-    function sendPosts(index) {
+    function sendMealPreference(index) {
         fetch("https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/", {
             method: 'POST',
             headers : {
