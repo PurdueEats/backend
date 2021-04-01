@@ -1,6 +1,9 @@
 #Python Compilation
 **/__pycache__/
 
+#Notebook Checkpoints
+**/.ipynb_checkpoints
+
 #Package-lock
 **/package-lock.json
 
