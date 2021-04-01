@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity, FlatList } from "react-native";
+import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Button, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
 import MaterialTabs from 'react-native-material-tabs';
@@ -19,8 +19,6 @@ function FavoriteMeals({route, navigation}) {
     const [removeSelection, setRemoveSelection] = React.useState([]);
     //List of fav meals to be added
     const [selectedFavMeals, setSelectedFavMeals] = React.useState([]);
-    //Response status
-    const [response, setResponse] = React.useState('');
     //Search bar
     const [searched, setSearched] = useState('');
 
@@ -291,6 +289,7 @@ function FavoriteMeals({route, navigation}) {
                 <View>
                     <SearchBar
                         round
+                        containerStyle={{backgroundColor: '#f2f2f2', borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
                         searchIcon={{ size: 20 }}
                         placeholder="Look for an item here"
                         value={searched}
@@ -298,13 +297,11 @@ function FavoriteMeals({route, navigation}) {
                         onChangeText={(searchText) => searchFiltering(searchText)}
                         onClear={(searchText) => searchFiltering('')}
                     />
-                    <View style={ styles.selectMultipleView }>
-                        <SelectMultiple
-                          items={meals}
-                          selectedItems={selectedFavMeals}
-                          onSelectionsChange={onSelectionsChange}
-                          />
-                    </View>
+                    <SelectMultiple
+                      items={meals}
+                      selectedItems={selectedFavMeals}
+                      onSelectionsChange={onSelectionsChange}
+                      />
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>
                         <Button style={ styles.favoriteButtonComponent } onPress= { handleFavMeal }>
                             <Text style={ styles.favoriteButtonText }>Favorite!</Text>
@@ -341,8 +338,7 @@ const styles = StyleSheet.create({
         marginTop: "-50%"
     },
     selectMultipleView: {
-//         position: 'absolute',
-        marginTop: "5%",
+        marginTop: "5%"
     },
     buttonView: {
         marginTop: "5%",

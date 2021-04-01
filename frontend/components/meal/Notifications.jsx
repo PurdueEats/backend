@@ -3,7 +3,7 @@ import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "reac
 import { Button, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
 import MaterialTabs from 'react-native-material-tabs';
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackActions } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
 
@@ -14,8 +14,6 @@ function Notifications({route, navigation}) {
     const [notiOn, setNotiOn] = React.useState([]);
     //Current fav meals w/o notifications on
     const [notiOff, setNotiOff] = React.useState([]);
-    //Response status
-    const [response, setResponse] = React.useState('');
     //Current Selection of Notifications On
     const [currentSelection, setCurrentSelection] = React.useState([]);
     //Current Selection of Notifications Off

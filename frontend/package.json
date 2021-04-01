@@ -8,11 +8,12 @@
     "@react-navigation/stack": "^5.14.3",
     "expo": "^40.0.1",
     "expo-cli": "^4.2.1",
+    "expo-image-picker": "^9.2.1",
     "geolib": "^3.3.1",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "native-base": "^2.15.2",
-    "react": "17.0.1",
+    "react": "^17.0.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
     "react-native-calendar-picker": "^7.1.1",
     "react-native-chart-kit": "^6.11.0",
@@ -28,8 +29,7 @@
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "^2.18.0",
     "react-native-select-multiple": "^2.1.0",
-    "react-native-svg": "^12.1.0",
-    "expo-image-picker": "~9.2.0"
+    "react-native-svg": "^12.1.0"
   },
   "devDependencies": {},
   "scripts": {
