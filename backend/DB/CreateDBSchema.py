@@ -58,6 +58,7 @@ create_user_tables = {
 	(
 		UserID			INT64,
 		MenuItemID		INT64,
+		Name			STRING,
 		Toggle			BOOL
 	)
 	""",

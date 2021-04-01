@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity, Alert} from "react-native";
+import React, { useState } from "react";
+import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import Logo from "../../resources/logo.png";
 import { Button, Item, Toast } from 'native-base';
 
