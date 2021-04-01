@@ -21,6 +21,7 @@ def daterange(start_date, end_date):
 def generate_dataset():
 
     file = open(FILENAME, 'a')
+    file.write('Date;Location;MealType;Time;MenuItem')
 
     for single_date in daterange(START_DATE, END_DATE):
 

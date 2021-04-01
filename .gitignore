@@ -4,6 +4,10 @@
 #Notebook Checkpoints
 **/.ipynb_checkpoints
 
+#XGBoost 
+backend/temp.csv
+backend/WaitTimesRegression.csv
+
 #Package-lock
 **/package-lock.json
 
