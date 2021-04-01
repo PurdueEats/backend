@@ -24,7 +24,9 @@ function Menu({route, navigation}) {
     const [glutenFreeData, setGlutenFreeData] = useState([]);
     const [dairyFreeData, setDairyFreeData] = useState([]);
     const [nutFreeData, setNutFreeData] = useState([]);
-    const [favData, setFavData] = useState([]);
+//     const [favData, setFavData] = useState([]);
+
+
 
     //
     const [vegetarian, setVegetarian] = useState(false);
@@ -34,13 +36,13 @@ function Menu({route, navigation}) {
 
     //fav
     const [currentSelection, setCurrentSelection] = useState([]);
+    const favData = allData.filter(a => currentSelection.some(c => c.value === a.menu_item.menu_item_id));
 
     const popAction = StackActions.pop();
 
     useEffect(() => {
         getMeals();
         getFavMeal();
-        getFilterFavMeal();
     }, []);
 
 
@@ -203,17 +205,18 @@ function Menu({route, navigation}) {
    function getFilterFavMeal() {
 //     console.log("filtering here")
 //     console.log(currentSelection);
-       allData.forEach((mealList) => {
-           currentSelection.forEach((mealList2) => {
-               if (mealList["menu_item"]["menu_item_id"] === mealList2.value) {
-//                     setMatchList();
-                      favData.push(mealList);
-//                       setFavData(mealList)
-               }
-           });
-       });
-       setFavData(favData);
-       console.log(favData)
+//        allData.forEach((mealList) => {
+//            currentSelection.forEach((mealList2) => {
+//                if (mealList["menu_item"]["menu_item_id"] === mealList2.value) {
+// //                     setMatchList();
+//                       favData.push(mealList);
+// //                       setFavData(mealList)
+//                }
+//            });
+//        });
+//        setFavData(favData);
+//        console.log(favData)
+//         const favData = allData.filter(a => currentSelection.some(c => c.value === a.menu_item.menu_item_id));
    }
 
 
