@@ -8,7 +8,7 @@ import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
 function MealReview({route, navigation}) {
-    const [ratings, setRatings] = React.useState(3);
+    const [rating, setRating] = React.useState(3);
     const [selectedMeals, setSelectedMeals] = React.useState([]);
     const [meals, setMeals] = React.useState([]);
 
@@ -84,7 +84,7 @@ function MealReview({route, navigation}) {
     }
 
     function handleMealReview() {
-        selectedMeals.map(item => {
+        // selectedMeals.map(item => {
             fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
                 method: 'POST',
                 headers : {
@@ -93,8 +93,8 @@ function MealReview({route, navigation}) {
                 },
                 body: JSON.stringify({
                     "user_id": route.params.UserID.toString(),
-                    "menu_item_id": item.value,
-                    "rating": ratings,
+                    "menu_item_id": selectedMeals[0].value,
+                    "rating": rating,
                     "timestamp": time
                 })
             })
@@ -114,11 +114,11 @@ function MealReview({route, navigation}) {
                 .catch(function(err) {
                     console.log('Fetch Error :-S', err);
                 });
-        })
+        // })
     }
 
-    function updateRating(rating) {
-        setRatings(rating);
+    function updateRating(newRating) {
+        setRating(newRating);
     }
 
     function handleClearMealReview() {
