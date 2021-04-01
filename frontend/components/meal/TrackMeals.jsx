@@ -242,7 +242,7 @@ function TrackMeals({route, navigation}) {
                                                                                     MealID: item.item.value }) }>
         <View style={{flexDirection:"row"}}>
             <View style={{alignItems: 'flex-end'}}>
-                <Item label={ item.item.label + " " + item.item.timestamp } />
+                <Item label={ item.item.label + "  " + item.item.timestamp.substring(2, item.item.timestamp.length - 6) } />
             </View>
             <View style={{position: 'absolute', right: 10, bottom: 15}}>
                 <MaterialCommunityIcons name="arrow-right" color="red" size={30}/>

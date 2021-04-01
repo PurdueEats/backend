@@ -248,6 +248,7 @@ function ProfileManager({route, navigation}) {
         });
     }
 
+
     function sendMealPlan(planNew) {
         // Send Meal Plan Route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/MealPlan`, {
