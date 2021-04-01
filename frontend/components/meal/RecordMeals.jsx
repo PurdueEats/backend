@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { AirbnbRating} from 'react-native-ratings';
 import { Button, Toast } from 'native-base';
@@ -7,17 +7,17 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
-function MealReview({route, navigation}) {
+function RecordMeals({route, navigation}) {
     //Ratings
-    const [rating, setRating] = React.useState(3);
+    const [rating, setRating] = useState(3);
     //List of selected meals to review
-    const [selectedMeals, setSelectedMeals] = React.useState([]);
+    const [selectedMeals, setSelectedMeals] = useState([]);
     //List of all meals at a specific dining court
-    const [meals, setMeals] = React.useState([]);
+    const [meals, setMeals] = useState([]);
 
     //Timezone components
-    var moment = require('moment-timezone');
-    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
+    const moment = require('moment-timezone');
+    const time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
     useEffect(() => {
         getMeals();
@@ -93,37 +93,42 @@ function MealReview({route, navigation}) {
 
     //POST request for meal review
     function handleMealReview() {
-        // selectedMeals.map(item => {
-            fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
-                method: 'POST',
-                headers : {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "user_id": route.params.UserID.toString(),
-                    "menu_item_id": selectedMeals[0].value,
-                    "rating": rating,
-                    "timestamp": time
-                })
-            })
-                .then(
-                    function(response) {
-                        if (response.status === 200 || response.status === 201) {
-                            // Successful POST
-                            displayConfirmation();
-                        } else {
-                            // Examine the text in the response
-                            console.log('Looks like there was a problem recording meals. Status Code: ' +
-                                response.status);
-                            displayError();
-                        }
+        // Submit
+        const submitJSON = selectedMeals.map((meal) => {
+            return {
+                "user_id": route.params.UserID,
+                "menu_item_id": meal.value,
+                "rating": rating,
+                "timestamp": time
+            }
+        });
+        console.log(submitJSON)
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
+            method: 'POST',
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                submitJSON
+            )
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        displayConfirmation();
+                    } else {
+                        // Examine the text in the response
+                        console.log('Looks like there was a problem recording meals. Status Code: ' +
+                            response.status);
+                        displayError();
                     }
-                )
-                .catch(function(err) {
-                    console.log('Fetch Error :-S', err);
-                });
-        // })
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
     }
 
     //Updating meal rating
@@ -135,6 +140,7 @@ function MealReview({route, navigation}) {
     function handleClearMealReview() {
         setSelectedMeals([]);
     }
+
     return (
         <ScrollView>
             <View style={ [styles.screenView, {flexDirection:"row"}] } >
@@ -252,4 +258,4 @@ const styles = StyleSheet.create({
         color: "white"
     },
 });
-export default MealReview
+export default RecordMeals

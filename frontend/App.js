@@ -8,7 +8,7 @@ import MealPreferences from "./components/meal/MealPreferences";
 import DiningCourt from "./components/dining/DiningFacilities";
 import Menu from "./components/dining/Menu";
 import MealNutrition from "./components/meal/MealNutrition";
-import MealReview from "./components/meal/MealReview";
+import RecordMeals from "./components/meal/RecordMeals";
 import Name from "./components/signup/Name";
 import Email from "./components/signup/Email";
 import Password from "./components/signup/Password";
@@ -41,7 +41,7 @@ export default function App() {
                     <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Menu" component={ Menu }/>
                     <Stack.Screen name="MealNutrition" component={ MealNutrition } options={{gestureEnabled: false}}/>
-                    <Stack.Screen name="MealReview" component={ MealReview }/>
+                    <Stack.Screen name="MealReview" component={ RecordMeals }/>
                     <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="Profile" component={ ProfileManager }/>
                     <Stack.Screen name="EditSchedule" component={ ScheduleManager }/>
