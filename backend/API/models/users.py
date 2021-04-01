@@ -40,6 +40,22 @@ class UserSchedule(BaseModel):
 
 
 class UserFavMenuItems(BaseModel):
-    user_id: int
-    menu_item_id: int
-    toggle: bool
+
+    user_id:        int
+    menu_item_id:   int
+    toggle:         bool
+
+
+class UserNutrition(BaseModel):
+    user_id:    int
+    calories:   int
+    carbs:      int
+    fat:        int
+    protein:    int
+
+
+class UserFavMeals(BaseModel):
+    user_id:    int
+    meal_id:    int
+    name:       str
+    toggle:     bool

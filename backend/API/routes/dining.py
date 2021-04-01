@@ -33,7 +33,7 @@ async def get_dining_facility(DiningFacilityID: int):
 
     if len(res) != 1:
         raise HTTPException(
-            status_code=400, detail='Dining Facility not found')
+            status_code=404, detail='Dining Facility not found')
 
     res = [DiningFacility.parse_obj({
         'dining_facility_id':     item['DiningFacilityID'],
@@ -54,7 +54,7 @@ async def get_dining_facility_menu(DiningFacilityID: int):
 
     if dining_facility[0]['f0_'] != 1:
         raise HTTPException(
-            status_code=400, detail='Dining Facility not found')
+            status_code=404, detail='Dining Facility not found')
 
     res = [dict(row) for row in runQuery(
         f"""

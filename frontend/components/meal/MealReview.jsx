@@ -117,7 +117,7 @@ function MealReview({route, navigation}) {
         })
     }
 
-   function updateRating(rating) {
+    function updateRating(rating) {
         setRatings(rating);
     }
 
@@ -125,17 +125,17 @@ function MealReview({route, navigation}) {
         setSelectedMeals([]);
     }
     return (
-          <ScrollView>
-              <View style={ [styles.screenView, {flexDirection:"row"}] } >
-                  <TouchableOpacity style={ styles.button } onPress={ () => navigation.dispatch(StackActions.pop(1))}>
-                      <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
-                  </TouchableOpacity>
-                  <Image style={ styles.logoImage } source={ Logo } />
-              </View>
-              <View>
-                    <Text style={ styles.screenTitle }>Record Meal</Text>
-              </View>
-              <View style={ styles.ratingView }>
+        <ScrollView>
+            <View style={ [styles.screenView, {flexDirection:"row"}] } >
+                <TouchableOpacity style={ styles.button } onPress={ () => navigation.dispatch(StackActions.pop(1))}>
+                    <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                </TouchableOpacity>
+                <Image style={ styles.logoImage } source={ Logo } />
+            </View>
+            <View>
+                <Text style={ styles.screenTitle }>Record Meal</Text>
+            </View>
+            <View style={ styles.ratingView }>
                 <AirbnbRating
                     count={5}
                     reviews={["Terrible", "Meh", "OK", "Good", "Amazing"]}
@@ -147,27 +147,27 @@ function MealReview({route, navigation}) {
                     size={25}
                     onFinishRating={ updateRating }
                 />
-              </View>
-              <View>
+            </View>
+            <View>
                 <View style={ styles.selectMultipleView }>
                     <SelectMultiple
-                      items={meals}
-                      selectedItems={selectedMeals}
-                      onSelectionsChange={onSelectionsChange}
-                      />
+                        items={meals}
+                        selectedItems={selectedMeals}
+                        onSelectionsChange={onSelectionsChange}
+                    />
                 </View>
-              </View>
-              <View style={ styles.buttonView }>
-                  <View style={{ flexDirection:"row" }}>
+            </View>
+            <View style={ styles.buttonView }>
+                <View style={{ flexDirection:"row" }}>
                     <Button style={ styles.cancelButtonComponent } onPress= { handleClearMealReview }>
                         <Text style={ styles.cancelButtonText }>Clear</Text>
                     </Button>
                     <Button style={ styles.confirmButtonComponent } onPress={ handleMealReview }>
                         <Text style={ styles.confirmButtonText }>Confirm</Text>
                     </Button>
-                  </View>
-              </View>
-          </ScrollView>
+                </View>
+            </View>
+        </ScrollView>
     )
 }
 

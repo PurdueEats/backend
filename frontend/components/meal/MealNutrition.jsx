@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import {StackActions} from "@react-navigation/native";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import { StackActions } from "@react-navigation/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ProgressChart } from "react-native-chart-kit";
 
 function MealNutrition({route, navigation}) {
     // Nutritional Information
     const [servingSize, setServingSize] = useState('');
     const [calories, setCalories] = useState('');
+
     // Macros
     const [fat, setFat] =  useState('');
     const [fatValue, setFatValue] = useState('0%');
@@ -79,7 +80,7 @@ function MealNutrition({route, navigation}) {
                 </View>
                 <View style={ styles.sameLineDataView }>
                     <Text style={ styles.data }>Calories </Text>
-                    <Text style={ styles.data }>{calories}</Text>
+                    <Text style={ styles.data }>{calories.toLocaleString()}</Text>
                 </View>
                 <Text style={ styles.dataHeader }>Macros % of Daily Value</Text>
                 <View style={{ marginTop: "5%" }}>
@@ -148,7 +149,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignItems: "center",
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+        justifyContent: "center"
     },
     bodyView: {
         marginLeft: "5%",
