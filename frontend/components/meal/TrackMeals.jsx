@@ -103,7 +103,6 @@ function TrackMeals({route, navigation}) {
                             // Set Fields to correct values
                              response.json().then(function(data) {
                                 currentSelection.push( { label: data.item_name, value: item.value, timestamp: item.timestamp } );
-
                                 //setCurrentSelection( ({ label: data.item_name, value: item.id, timestamp: item.timestamp } ));
                             });
                             console.log(currentSelection)

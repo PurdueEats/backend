@@ -54,26 +54,67 @@ function ProfileManager({route, navigation}) {
     }, [isFocused]);
 
     function handleNameExit() {
-        setNameBool(true);
-        if (name !== nameNew) {
-            setName(nameNew);
-            putName(nameNew);
-        }
         setModalName(!setModalName);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
+            if (name !== nameNew) {
+                setNameBool(true);
+                setName(nameNew);
+                putName(nameNew);
+            }
+        } else {
+
+             Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+
+               });
+        }
     }
 
     function handlePlanExit(newPlan) {
-        setPlanBool(true);
         setModalPlan(!setModalPlan);
-        if (plan !== newPlan) {
-            setPlan(newPlan);
-            sendMealPlan(newPlan);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
+            setPlanBool(true);
+            if (plan !== newPlan) {
+                setPlan(newPlan);
+                sendMealPlan(newPlan);
+            }
+        } else {
+            Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
+
+
         }
     }
     function handlePassExit(password2) {
-        setPasswordBool(true);
-        setModalPassword(!setModalPassword);
-        changePassword(password2);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
+            setPasswordBool(true);
+            setModalPassword(!setModalPassword);
+            changePassword(password2);
+        }
+        else {
+            Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
+        }
     }
 
     function handleDiningExit(subtract) {
