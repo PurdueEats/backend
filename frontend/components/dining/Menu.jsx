@@ -37,12 +37,16 @@ function Menu({route, navigation}) {
     //fav
     const [currentSelection, setCurrentSelection] = useState([]);
     const favData = allData.filter(a => currentSelection.some(c => c.value === a.menu_item.menu_item_id));
+    const [favDataName, setFavDataName] = useState([]);
+    const [mealName, setMealName] = useState([]);
+    const [favMealName, setFavMealName] = useState([]);
 
     const popAction = StackActions.pop();
 
     useEffect(() => {
         getMeals();
         getFavMeal();
+        convertName();
     }, []);
 
 
@@ -69,6 +73,15 @@ function Menu({route, navigation}) {
                                 .map((e, i, final) => final.indexOf(e) === i && i)
                                 .filter(e => data[e])
                                 .map(e => data[e])
+//                             favData.map(menuItem => {
+//                                 favDataName.push(menuItem["menu_item"]["item_name"]);
+//                                 })
+//                             setFavDataName(favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
+//                             const name = favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] }));
+//                             console.log("here located")
+//                                 console.log(name);
+                            setMealName(data.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
+
                             data.map(menuItem => {
                                 if(menuItem["menu_item"]["is_vegetarian"] === true) {
                                     vegetarianData.push(menuItem);
@@ -100,6 +113,11 @@ function Menu({route, navigation}) {
             .catch(function(err) {
                 console.log('Fetch Error :-S', err);
             });
+    }
+
+    function convertName() {
+        setFavMealName(favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
+        console.log(favMealName);
     }
 
     // GET request to get the selected favorite item(s)
@@ -153,7 +171,7 @@ function Menu({route, navigation}) {
             if (filter === "Favorite Items") {
                 setFilterData(favData);
             }
-            setFilterData(allData);
+//             setFilterData(allData);
         }
         if(searchText) {
             const searchData = allData.filter(function (menuItem)
@@ -201,25 +219,6 @@ function Menu({route, navigation}) {
         }
     }
 
-   // seeing if there are fav meals
-   function getFilterFavMeal() {
-//     console.log("filtering here")
-//     console.log(currentSelection);
-//        allData.forEach((mealList) => {
-//            currentSelection.forEach((mealList2) => {
-//                if (mealList["menu_item"]["menu_item_id"] === mealList2.value) {
-// //                     setMatchList();
-//                       favData.push(mealList);
-// //                       setFavData(mealList)
-//                }
-//            });
-//        });
-//        setFavData(favData);
-//        console.log(favData)
-//         const favData = allData.filter(a => currentSelection.some(c => c.value === a.menu_item.menu_item_id));
-   }
-
-
     function renderMenuItem (menuItem)  {
         return (
             <TouchableOpacity style={{ marginTop: "3%", marginBottom: "3%" }} onPress={() =>  navigation.navigate("MealNutrition", { UserID: route.params.UserID, token: route.params.token,
@@ -265,14 +264,24 @@ function Menu({route, navigation}) {
                             <View>
                             </View>
                         )}
-                        {favData ? (
-                            <View>
-                                <MaterialCommunityIcons name="star" color="red" size={30}/>
-                            </View>
-                        ): (
-                            <View>
-                            </View>
-                        )}
+                        {
+                            favMealName.map(function (meal, index) {
+//                             console.log(menuItem.item.menu_item.menu_item_id)
+//                                 return (
+                                    {meal.value === menuItem.item.menu_item.menu_item_id ? (
+                                        <View>
+                                            {console.log("hit")}
+                                            <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                        </View>
+                                    ): (
+                                        <View>
+{/*                                             {console.log("nothing")} */}
+                                        </View>
+                                    )}
+//                                 );
+
+
+                            })}
                     </View>
                 </View>
             </TouchableOpacity>

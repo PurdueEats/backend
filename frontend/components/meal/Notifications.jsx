@@ -8,17 +8,21 @@ import { StackActions } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
 
 function Notifications({route, navigation}) {
+    //Tab selection
     const [selectedTab, setSelectedTab] = React.useState(0);
-    //current fav meals w/ notifications on
+    //Current fav meals w/ notifications on
     const [notiOn, setNotiOn] = React.useState([]);
-    //current fav meals w/o notifications on
+    //Current fav meals w/o notifications on
     const [notiOff, setNotiOff] = React.useState([]);
-    //boolean state
-    const [bool, setBool] = React.useState(true);
+    //Response status
     const [response, setResponse] = React.useState('');
+    //Current Selection of Notifications On
     const [currentSelection, setCurrentSelection] = React.useState([]);
+    //Current Selection of Notifications Off
     const [currentSelectionOff, setCurrentSelectionOff] = React.useState([]);
+    //Current selected Fav Meals
     const [selectedFavMeals, setSelectedFavMeals] = React.useState([]);
+    //Current selection of meals for their notifications to turn off
     const [removeSelection, setRemoveSelection] = React.useState([]);
 
     useEffect(() => {

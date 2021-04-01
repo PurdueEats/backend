@@ -8,28 +8,28 @@ import { StackActions } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
 import { SearchBar } from 'react-native-elements';
 
-
 function FavoriteMeals({route, navigation}) {
+    //Total meals list
     const [meals, selectedMeals] = React.useState([]);
+    //Tab selection
     const [selectedTab, setSelectedTab] = React.useState(0);
+    //Current list of User's Fav Meals
     const [currentSelection, setCurrentSelection] = React.useState([]);
+    //List of user's Fav Meals to be removed
     const [removeSelection, setRemoveSelection] = React.useState([]);
+    //List of fav meals to be added
     const [selectedFavMeals, setSelectedFavMeals] = React.useState([]);
-    const [currentSelectID, setCurrentSelectID] = React.useState([]);
+    //Response status
     const [response, setResponse] = React.useState('');
+    //Search bar
     const [searched, setSearched] = useState('');
-
 
     useEffect(() => {
         getFavMeal();
-//         getFavMealName();
         getMeal();
     },[]);
 
-    /*function handleNavigate() {
-        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token });
-    }*/
-
+    //For select multiple; displays change on click
     const onSelectionsChange = newSelections => {
       setSelectedFavMeals(newSelections);
     }
@@ -38,11 +38,11 @@ function FavoriteMeals({route, navigation}) {
       setRemoveSelection(favSelections);
     }
 
+    //Search bar filtering
     function searchFiltering (searchText) {
         if (!searchText) {
             setSearched(searchText);
             selectedMeals(meals);
-
         }
         if(searchText) {
             const searchData = meals.filter(function (menuItem)
@@ -56,12 +56,37 @@ function FavoriteMeals({route, navigation}) {
         }
     }
 
-    // POST request for favorite meal(s)
+    //Toast message for recording fav meal successfully
+    function displayConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Favorite Meal(s) recorded successfully.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    //Toast message for error
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Selecting favorite meal(s) failed. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    //POST request for favorite meal(s)
     function handleFavMeal() {
         const updatedList = currentSelection.concat(selectedFavMeals);
         setCurrentSelection(updatedList);
         selectedFavMeals.map(item => {
-            console.log("hit");
             fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
                 method: 'POST',
                 headers : {
@@ -76,17 +101,27 @@ function FavoriteMeals({route, navigation}) {
                      "toggle": true
                 })
             })
-                .then((response) => response.text())
-                        .then((responseData) => {
-                         console.log("inside responsejson");
-                         console.log('response object:',responseData);
-                         console.log(item.value);
-                         }).done();
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful POST
+                            displayConfirmation();
+                        } else {
+                            // Examine the text in the response
+                            console.log('Looks like there was a problem recording meals. Status Code: ' +
+                                response.status);
+                            displayError();
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
         })
         setSelectedFavMeals([]);
     }
 
-    // GET request to get the selected favorite item(s)
+    //GET request to get the selected favorite item(s)
     function getFavMeal() {
        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
@@ -102,13 +137,8 @@ function FavoriteMeals({route, navigation}) {
                     // Successful GET
                     // Set fields to correct values
                     response.json().then(function(data) {
-//                         data.map(item => {
-//                             currentSelectID.push(item.meal_id);
-//                         })
                         setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
-//                         console.log(menuItem.name)
                     });
-//                     console.log(currentSelectID)
                 } else {
                     console.log('Auth like there was a problem with favorite meals fetching. Status Code: ' +
                         response.status);
@@ -120,7 +150,7 @@ function FavoriteMeals({route, navigation}) {
         });
     }
 
-    // GET request to get all of the menu items
+    //GET request to get all of the menu items
      function getMeal() {
            fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/`, {
                 method: 'GET',
@@ -133,9 +163,6 @@ function FavoriteMeals({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         response.json().then(function(data) {
-//                             data.map(item => {
-//                                 meals.push({ label: item.item_name, value: item.menu_item_id});
-//                             })
                             selectedMeals(data.map(menuItem => ({ label: menuItem.item_name, value: menuItem.menu_item_id })));
                         });
                     } else {
@@ -149,9 +176,34 @@ function FavoriteMeals({route, navigation}) {
             });
      }
 
-     // DELETE request to remove selected menu items from database
+    //Toast for successful deletion
+    function displayConfirmationDelete() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Favorite Meal(s) recorded successfully.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    //Toast for error in deletion
+    function displayErrorDelete() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Selecting favorite meal(s) failed. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+     //DELETE request to remove selected menu items from database
      function removeFavMeal() {
-     console.log("removed")
         removeSelection.map(singleMeal => {
             fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals?menuItemID='+ singleMeal.value, {
                  method: 'DELETE',
@@ -165,13 +217,14 @@ function FavoriteMeals({route, navigation}) {
                  function(response) {
                      if (response.status === 200 || response.status === 201) {
                          // Successful DELETE
+                         displayConfirmationDelete();
                          response.json().then(function(data) {
                              const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
                              setCurrentSelection(filtered);
-//                              currentSelectID.pop(item.meal_id);
                              setRemoveSelection([]);
                          });
                      } else {
+                        displayErrorDelete();
                          console.log('Auth like there was a problem with removing items. Status Code: ' +
                              response.status);
                      }
