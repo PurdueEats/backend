@@ -460,11 +460,11 @@ function ProfileManager({route, navigation}) {
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
                             <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
-                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                                <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>                </Text>
                             <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
-                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                                <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
                             </TouchableOpacity>
                         </View>
                         <Text style={styles.dollarsText}>How many dollars?</Text>
