@@ -9,7 +9,7 @@ import Logo from "../../resources/logo.png";
 
 function MealReview({route, navigation}) {
     //Ratings
-    const [ratings, setRatings] = React.useState(3);
+    const [rating, setRating] = React.useState(3);
     //List of selected meals to review
     const [selectedMeals, setSelectedMeals] = React.useState([]);
     //List of all meals at a specific dining court
@@ -93,7 +93,7 @@ function MealReview({route, navigation}) {
 
     //POST request for meal review
     function handleMealReview() {
-        selectedMeals.map(item => {
+        // selectedMeals.map(item => {
             fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
                 method: 'POST',
                 headers : {
@@ -102,8 +102,8 @@ function MealReview({route, navigation}) {
                 },
                 body: JSON.stringify({
                     "user_id": route.params.UserID.toString(),
-                    "menu_item_id": item.value,
-                    "rating": ratings,
+                    "menu_item_id": selectedMeals[0].value,
+                    "rating": rating,
                     "timestamp": time
                 })
             })
@@ -123,12 +123,12 @@ function MealReview({route, navigation}) {
                 .catch(function(err) {
                     console.log('Fetch Error :-S', err);
                 });
-        })
+        // })
     }
 
     //Updating meal rating
-    function updateRating(rating) {
-        setRatings(rating);
+    function updateRating(newRating) {
+        setRating(newRating);
     }
 
     //Clearing selected meal list
