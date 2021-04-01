@@ -45,21 +45,28 @@ async def get_user_meal_ratings(UserID: int = Depends(auth_handler.auth_wrapper)
 @app.post("/", status_code=201)
 async def add_meal_rating(menuItemReviews: List[MenuItemReview]):
 
-    # Check for valid UserID and MenuItemId
+    if len(menuItemReviews) == 0:
+        return
+    
+    # Check for valid UserID
     user_id = [dict(row) for row in runQuery(
-        f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {menuItemReview.user_id}")]
-    menu_id = [dict(row) for row in runQuery(
-        f"SELECT COUNT(*) FROM MenuItems WHERE MenuItemID = {menuItemReview.menu_item_id}")]
-
+        f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {menuItemReviews[0].user_id}")]
+    
     if user_id[0]['f0_'] != 1:
         raise HTTPException(status_code=400, detail='Invalid UserID')
-    if menu_id[0]['f0_'] != 1:
-        raise HTTPException(status_code=400, detail='Invalid MenuItemID')
-
 
     calories, carbs, fat, protein = 0, 0, 0, 0
-    
+
     for menuItemReview in menuItemReviews:
+
+        # Check for valid MenuItemID
+        menu_id = [dict(row) for row in runQuery(
+        f"SELECT COUNT(*) FROM MenuItems WHERE MenuItemID = {menuItemReview.menu_item_id}")]
+
+        if menu_id[0]['f0_'] != 1:
+            raise HTTPException(status_code=400, detail='Invalid MenuItemID')
+
+        # Insert MenuItem
         runQuery(f"""
         INSERT INTO MenuItemsReviews values 
         ({menuItemReview.menu_item_id}, {menuItemReview.user_id},
@@ -74,6 +81,7 @@ async def add_meal_rating(menuItemReviews: List[MenuItemReview]):
         carbs += _carbs
         fat +=  _fat
         protein += _protein
+
 
     res = [dict(row) for row in runQuery(
         f"SELECT * FROM UserNutrition WHERE UserID = {menuItemReview.user_id}")][0]
