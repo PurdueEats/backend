@@ -16,6 +16,7 @@ function ProfileManager({route, navigation}) {
     const [modalPassword, setModalPassword] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
     const [modalDining, setModalDining] = useState(false);
+    const [modalSwipes, setModalSwipes] = useState(false);
 
     // Settings attributes
     const [name, setName] = useState('');
@@ -28,14 +29,16 @@ function ProfileManager({route, navigation}) {
     const [password, setPassword] = useState('');
     const [swipes, setSwipes] = useState('');
     const [transact, setTransact] = useState('');
-    const [add, setAdd] = useState('Add');
+    const [add, setAdd] = useState('Subtract');
     const [sign, setSign] = useState('+');
 
-    // ?
+    // Booleans for checking if a post is in progress
     const [delBool, setDelBool] = useState(false);
     const [nameBool, setNameBool] = useState(false);
     const [planBool, setPlanBool] = useState(false);
     const [passwordBool, setPasswordBool] = useState(false);
+    const [dollarsBool, setDollarsBool] = useState(false);
+    const [swipesBool, setSwipesBool] = useState(false);
 
     const [picture, setPicture] = useState(null);
     // Timestamp fields
@@ -44,7 +47,7 @@ function ProfileManager({route, navigation}) {
 
     useEffect(() => {
         if (isFocused) {
-            if (!delBool && !nameBool && !planBool && !passwordBool) {
+            if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
                 getAuth()
                 getMealInfo()
                 getProfilePicture()
@@ -66,35 +69,157 @@ function ProfileManager({route, navigation}) {
 
 
     function handleNameExit() {
-        setNameBool(true);
-        if (name !== nameNew) {
-            setName(nameNew);
-            putName(nameNew);
-        }
         setModalName(!setModalName);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
+            if (name !== nameNew) {
+                setNameBool(true);
+                setName(nameNew);
+                putName(nameNew);
+            }
+        } else {
+
+            Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+
+            });
+        }
     }
 
     function handlePlanExit(newPlan) {
-        setPlanBool(true);
         setModalPlan(!setModalPlan);
-        if (plan !== newPlan) {
-            setPlan(newPlan);
-            sendMealPlan(newPlan);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
+            setPlanBool(true);
+            if (plan !== newPlan) {
+                setPlan(newPlan);
+                sendMealPlan(newPlan);
+            }
+        } else {
+            Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
+
+
         }
     }
     function handlePassExit(password2) {
-        setPasswordBool(true);
-        setModalPassword(!setModalPassword);
-        changePassword(password2);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
+            setPasswordBool(true);
+            setModalPassword(!setModalPassword);
+            changePassword(password2);
+        }
+        else {
+            Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
+        }
     }
 
     function handleDiningExit(subtract) {
         setModalDining(!setModalDining);
-        if (add === 'Add') {
-            sendDiningDollars(0 - subtract);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
+
+            if (add == 'Add') {
+                if ((dollars + subtract) > 999999999) {
+                    Toast.show({
+                        style: { backgroundColor: "red", justifyContent: "center" },
+                        position: "top",
+                        text: "Too many dining dollars to add",
+                        textStyle: {
+                            textAlign: 'center',
+                        },
+                        duration: 3000
+                    });
+                    return
+
+                }
+
+
+                setDollarsBool(true);
+                sendDiningDollars(0 - subtract);
+            } else {
+                if ((dollars - subtract) < 0) {
+                    Toast.show({
+                        style: { backgroundColor: "red", justifyContent: "center" },
+                        position: "top",
+                        text: "Invalid dollar subtraction amount",
+                        textStyle: {
+                            textAlign: 'center',
+                        },
+                        duration: 3000
+                    });
+
+                    return;
+
+
+                }
+                setDollarsBool(true);
+                sendDiningDollars(subtract);
+            }
         } else {
-            sendDiningDollars(subtract);
+            Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
         }
+    }
+
+    function handleSwipesSub() {
+        setModalSwipes(!setModalSwipes);
+        if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
+
+            if (swipes > 0) {
+                setSwipesBool(true);
+                useSwipe();
+            } else {
+                Toast.show({
+                    style: { backgroundColor: "red", justifyContent: "center" },
+                    position: "top",
+                    text: "You are already out of swipes for the week",
+                    textStyle: {
+                        textAlign: 'center',
+                    },
+                    duration: 3000
+                });
+            }
+        } else {
+            Toast.show({
+                style: { backgroundColor: "red", justifyContent: "center" },
+                position: "top",
+                text: "Wait for information to update",
+                textStyle: {
+                    textAlign: 'center',
+                },
+                duration: 3000
+            });
+        }
+
+    }
+
+    function handleSwipesExit(subtract) {
+        setModalSwipes(!setModalSwipes);
     }
 
     function handleAdd() {
@@ -108,7 +233,7 @@ function ProfileManager({route, navigation}) {
     }
 
     function handleLogout() {
-        if (!delBool && !nameBool && !planBool && !passwordBool) {
+        if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
             navigation.navigate("Login")
         }
         else Toast.show({
@@ -121,6 +246,7 @@ function ProfileManager({route, navigation}) {
             duration: 1500
         });
     }
+
 
     function sendMealPlan(planNew) {
         // Send Meal Plan Route
@@ -143,15 +269,12 @@ function ProfileManager({route, navigation}) {
                         setPlanBool(false);
                         getMealInfo();
                     } else {
-                        console.log('Meal like there was a problem. Status Code: ' +
-                            response.status);
                         setPlanBool(false);
                         getMealInfo();
                     }
                 }
             )
             .catch(function(err) {
-                console.log('Fetch Error :-S', err);
             });
     }
 
@@ -177,18 +300,42 @@ function ProfileManager({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        setPlanBool(false);
+                        setDollarsBool(false);
                         getMealInfo();
                     } else {
-                        console.log('Meal like there was a problem. Status Code: ' +
-                            response.status);
-                        setPlanBool(false);
+                        setDollarsBool(false);
                         getMealInfo();
                     }
                 }
             )
             .catch(function(err) {
-                console.log('Fetch Error :-S', err);
+            });
+    }
+
+    function useSwipe() {
+        // Send Meal Plan Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/MealSwipe`, {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        setSwipesBool(false);
+                        getMealInfo();
+                    } else {
+                        setSwipesBool(false);
+                        getMealInfo();
+                    }
+                }
+            )
+            .catch(function(err) {
             });
     }
 
@@ -203,26 +350,23 @@ function ProfileManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
         })
-        .then(
-            function(response) {
-                if (response.status === 200 || response.status === 201) {
-                    // Successful GET
-                    // Set fields to correct values
-                    response.json().then(function(data) {
-                        setName(data.name);
-                        setEmail(data.email);
-                        setPassword(data.password);
-                    });
-                } else {
-                    console.log('Auth like there was a problem. Status Code: ' +
-                        response.status);
-                    navigation.navigate("Login");
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        // Set fields to correct values
+                        response.json().then(function(data) {
+                            setName(data.name);
+                            setEmail(data.email);
+                            setPassword(data.password);
+                        });
+                    } else {
+                        navigation.navigate("Login");
+                    }
                 }
-            }
-        )
-        .catch(function(err) {
-            console.log('Fetch Error :-S', err);
-        });
+            )
+            .catch(function(err) {
+            });
     }
 
     // Fetches Plan and Swipe information
@@ -236,32 +380,29 @@ function ProfileManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
         })
-        .then(
-            function(response) {
-                if (response.status === 200 || response.status === 201) {
-                    // Successful GET
-                    // Set Fields to correct values
-                    response.json().then(function(data) {
-                        setDollars(data.dining_dollar_amount);
-                        setPlan(data.meal_plan_name);
-                        setSwipes(data.meal_swipe_count);
-                    });
-                } else {
-                    console.log('GetMeal like there was a problem. Status Code: ' +
-                        response.status);
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        // Set Fields to correct values
+                        response.json().then(function(data) {
+                            setDollars(data.dining_dollar_amount);
+                            setPlan(data.meal_plan_name);
+                            setSwipes(data.meal_swipe_count);
+                        });
+                    } else {
+                    }
                 }
-            }
-        )
-        .catch(function(err) {
-            console.log('Fetch Error :-S', err);
-        });
+            )
+            .catch(function(err) {
+            });
     }
 
     //deletes account
     function deleteAccount() {
         setDelBool(true);
         // Deletion route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID, {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId, {
             method: 'DELETE',
             headers : {
                 'Content-Type': 'application/json',
@@ -269,21 +410,18 @@ function ProfileManager({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
         })
-        .then(
-            function(response) {
-                if (response.status === 200 || response.status === 201) {
-                    // Successful DELETE
-                    // Navigates back to login
-                    navigation.navigate("Login");
-                } else {
-                    console.log('Delete like there was a problem. Status Code: ' +
-                        response.status);
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful DELETE
+                        // Navigates back to login
+                        navigation.navigate("Login");
+                    } else {
+                    }
                 }
-            }
-        )
-        .catch(function(err) {
-            console.log('Fetch Error :-S', err);
-        });
+            )
+            .catch(function(err) {
+            });
     }
 
     // Set name route
@@ -302,21 +440,18 @@ function ProfileManager({route, navigation}) {
                 "password": ""
             })
         })
-        .then(
-            function(response) {
-                if (response.status === 200 || response.status === 201) {
-                    // Successful POST
-                    setNameBool(false);
-                } else {
-                    console.log('Looks like there was a problem. Status Code: ' +
-                        response.status);
-                    setNameBool(false);
-                 }
-             }
-        )
-        .catch(function(err) {
-            console.log('Fetch Error :-S', err);
-        });
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        setNameBool(false);
+                    } else {
+                        setNameBool(false);
+                    }
+                }
+            )
+            .catch(function(err) {
+            });
     }
 
     //change password route
@@ -336,22 +471,18 @@ function ProfileManager({route, navigation}) {
                 "password": password2
             })
         })
-        .then(
-            function(response) {
-                if (response.status === 200 || response.status === 201) {
-                    // Successful POST
-                    setPasswordBool(false);
-                } else {
-                    // Examine the text in the response
-                    console.log('PutName like there was a problem. Status Code: ' +
-                        response.status);
-                    setPasswordBool(false);
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        setPasswordBool(false);
+                    } else {
+                        // Examine the text in the response
+                        setPasswordBool(false);
+                    }
                 }
-            }
-        )
-        .catch(function(err) {
-            console.log('Fetch Error :-S', err);
-        });
+            )
+            .catch(function(err) {        });
     }
 
     const pickProfilePicture = async () => {
@@ -456,9 +587,9 @@ function ProfileManager({route, navigation}) {
     return (
         <ScrollView style={styles.viewFlex}>
             <Modal animationType="slide" transparent={true} visible={modalName}
-                onRequestClose={() => {
-                    setModalName(!modalName);
-                }}
+                   onRequestClose={() => {
+                       setModalName(!modalName);
+                   }}
             >
                 <View>
                     <View style={styles.modalView}>
@@ -472,9 +603,9 @@ function ProfileManager({route, navigation}) {
                 </View>
             </Modal>
             <Modal animationType="slide" transparent={true} visible={modalDining}
-                onRequestClose={() => {
-                    setModalDining(!modalDining);
-                }}
+                   onRequestClose={() => {
+                       setModalDining(!modalDining);
+                   }}
             >
                 <View>
                     <View style={styles.modalView}>
@@ -483,11 +614,11 @@ function ProfileManager({route, navigation}) {
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
                             <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
-                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                                <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>                </Text>
                             <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
-                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                                <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
                             </TouchableOpacity>
                         </View>
                         <Text style={styles.dollarsText}>How many dollars?</Text>
@@ -499,7 +630,26 @@ function ProfileManager({route, navigation}) {
                     </View>
                 </View>
             </Modal>
+            <Modal animationType="slide" transparent={true} visible={modalSwipes}
+                   onRequestClose={() => {
+                       setModalSwipes(!modalSwipes);
+                   }}
+            >
+                <View>
+                    <View style={styles.modalView}>
+                        <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesExit()}>
+                            <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                        </TouchableOpacity>
+                        <Text style={styles.dollarsText}>Subtract a swipe from your total?</Text>
+                        <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesSub()}>
+                            <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
+                        </TouchableOpacity>
+                        <View style={styles.rowBetween}>
 
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <View style={ styles.profileHeader }>
                 <View style={ styles.backImage }>
                     <Text style={ styles.profileWord }>           </Text>
@@ -521,26 +671,31 @@ function ProfileManager({route, navigation}) {
                 <Text style={ styles.textNormal }>   {email} </Text>
             </View>
             <View style={ styles.borderLine }/>
-        <View/>
-        <View style={styles.rowBetween}>
-            <Text style={ styles.textNormal }>   {plan} </Text>
-            <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
-                <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
-            </TouchableOpacity>
-        </View>
-        <View style={styles.rowBetween}>
-            <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
-            <TouchableOpacity active = { .5 } onPress={() =>  setModalDining(true) }>
-                <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
-            </TouchableOpacity>
-        </View>
-        <View style={styles.colBetween}/>
+            <View/>
+            <View style={styles.rowBetween}>
+                <Text style={ styles.textNormal }>   {plan} </Text>
+                <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
+                    <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.rowBetween}>
+                <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
+                <TouchableOpacity active = { .5 } onPress={() =>  setModalDining(true) }>
+                    <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.colBetween}/>
             <View style={styles.rowBetween}>
                 <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
+                <View style={styles.rowBetween}>
+                    <TouchableOpacity active = { .5 } onPress={() =>  setModalSwipes(true) }>
+                        <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
+                    </TouchableOpacity>
+                </View>
                 <Modal animationType="slide" transparent={true} visible={ModalPlan}
-                    onRequestClose={() => {
-                        setModalPlan(!ModalPlan);
-                    }}
+                       onRequestClose={() => {
+                           setModalPlan(!ModalPlan);
+                       }}
                 >
                     <View>
                         <View style={styles.modalView}>
@@ -566,9 +721,9 @@ function ProfileManager({route, navigation}) {
                     </View>
                 </Modal>
                 <Modal animationType="slide" transparent={true} visible={modalPassword}
-                    onRequestClose={() => {
-                        setModalName(!modalPassword);
-                    }}
+                       onRequestClose={() => {
+                           setModalName(!modalPassword);
+                       }}
                 >
                     <View>
                         <View style={styles.modalView}>
@@ -582,15 +737,15 @@ function ProfileManager({route, navigation}) {
                     </View>
                 </Modal>
             </View>
-        <View style={styles.viewCenter}>
-            <View style={ styles.borderLine }/>
+            <View style={styles.viewCenter}>
+                <View style={ styles.borderLine }/>
                 <TouchableOpacity active = { .5 } onPress={() =>
-                    navigation.navigate("Track") }>
+                    navigation.navigate("Track", { UserID: route.params.UserID, token: route.params.token }) }>
                     <Text style={ styles.textNormal}>Track Meals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("FavoriteMeal", { UserID: route.params.UserID, token: route.params.token }) }>
-                     <Text style={ styles.textNormal}>Favorite Meals</Text>
-                 </TouchableOpacity>
+                    <Text style={ styles.textNormal}>Favorite Meals</Text>
+                </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
                     <Text style={ styles.textNormal}>Change Password</Text>
                 </TouchableOpacity>
@@ -609,9 +764,9 @@ function ProfileManager({route, navigation}) {
                 </TouchableOpacity>
 
                 <Modal animationType="slide" transparent={true} visible={modalDelete}
-                    onRequestClose={() => {
-                        setModalName(!modalDelete);
-                    }}
+                       onRequestClose={() => {
+                           setModalName(!modalDelete);
+                       }}
                 >
                     <View>
                         <View style={styles.modalView}>
@@ -768,17 +923,17 @@ const styles = StyleSheet.create({
         color: "black",
         marginBottom: "5%",
 
-        },
+    },
     dollarsText: {
         color: "black",
         marginBottom: "1%",
 
-        },
+    },
 
     big: {
         color: "black",
         fontSize: 20,
-        },
+    },
 
     modalView: {
         margin: 20,

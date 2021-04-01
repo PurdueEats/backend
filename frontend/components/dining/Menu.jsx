@@ -23,6 +23,9 @@ function Menu({route, navigation}) {
     const [glutenFreeData, setGlutenFreeData] = useState([]);
     const [dairyFreeData, setDairyFreeData] = useState([]);
     const [nutFreeData, setNutFreeData] = useState([]);
+//     const [favData, setFavData] = useState([]);
+
+
 
     //
     const [vegetarian, setVegetarian] = useState(false);
@@ -30,10 +33,19 @@ function Menu({route, navigation}) {
     const [dairyFree, setDairyFree] = useState(false);
     const [nutFree, setNutFree] = useState(false);
 
+    //fav
+    const [currentSelection, setCurrentSelection] = useState([]);
+    const favData = allData.filter(a => currentSelection.some(c => c.value === a.menu_item.menu_item_id));
+    const [favDataName, setFavDataName] = useState([]);
+    const [mealName, setMealName] = useState([]);
+    const [favMealName, setFavMealName] = useState([]);
+
     const popAction = StackActions.pop();
 
     useEffect(() => {
         getMeals();
+        getFavMeal();
+        convertName();
     }, []);
 
 
@@ -60,6 +72,15 @@ function Menu({route, navigation}) {
                                 .map((e, i, final) => final.indexOf(e) === i && i)
                                 .filter(e => data[e])
                                 .map(e => data[e])
+//                             favData.map(menuItem => {
+//                                 favDataName.push(menuItem["menu_item"]["item_name"]);
+//                                 })
+//                             setFavDataName(favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
+//                             const name = favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] }));
+//                             console.log("here located")
+//                                 console.log(name);
+                            setMealName(data.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
+
                             data.map(menuItem => {
                                 if(menuItem["menu_item"]["is_vegetarian"] === true) {
                                     vegetarianData.push(menuItem);
@@ -93,6 +114,40 @@ function Menu({route, navigation}) {
             });
     }
 
+    function convertName() {
+        setFavMealName(favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
+        console.log(favMealName);
+    }
+
+    // GET request to get the selected favorite item(s)
+    function getFavMeal() {
+       fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            },
+        })
+        .then(
+            function(response) {
+                if (response.status === 200 || response.status === 201) {
+                    // Successful GET
+                    // Set fields to correct values
+                    response.json().then(function(data) {
+                        setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
+                    });
+                } else {
+                    console.log('Auth like there was a problem with favorite meals fetching. Status Code: ' +
+                        response.status);
+                }
+            }
+        )
+        .catch(function(err) {
+            console.log('Fetch Error :-S', err);
+        });
+    }
+
     function searchFiltering (searchText) {
         if (!searchText) {
             setSearched(searchText);
@@ -111,7 +166,10 @@ function Menu({route, navigation}) {
             if (filter === "All Items") {
                 setFilterData(allData);
             }
-            setFilterData(allData);
+            if (filter === "Favorite Items") {
+                setFilterData(favData);
+            }
+//             setFilterData(allData);
         }
         if(searchText) {
             const searchData = allData.filter(function (menuItem)
@@ -154,8 +212,10 @@ function Menu({route, navigation}) {
         if (filterType === "All Items") {
             setFilterData(allData);
         }
+        if (filterType === "Favorite Items") {
+            setFilterData(favData);
+        }
     }
-
 
     function renderMenuItem (menuItem)  {
         return (
@@ -202,6 +262,20 @@ function Menu({route, navigation}) {
                             <View>
                             </View>
                         )}
+                        {favMealName.map(function (meal, index) {
+                                return (
+                                    <View>
+                                        {meal.value === menuItem.item.menu_item.menu_item_id ? (
+                                            <View>
+                                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                            </View>
+                                        ): (
+                                            <View>
+                                            </View>
+                                        )}
+                                    </View>
+                                );
+                            })}
                     </View>
                 </View>
             </TouchableOpacity>
@@ -248,6 +322,10 @@ function Menu({route, navigation}) {
                             <View style={{flexDirection: "row"}}>
                                 <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={20}/>
                                 <Text style={styles.modalText}>Nut Free Item</Text>
+                            </View>
+                            <View style={{flexDirection: "row"}}>
+                                <MaterialCommunityIcons name="star" color="red" size={20}/>
+                                <Text style={styles.modalText}>Favorite Item</Text>
                             </View>
                         </View>
                     </View>
@@ -309,7 +387,8 @@ function Menu({route, navigation}) {
                                     {label: 'Gluten Free', value: 'Gluten Free'},
                                     {label: 'Vegetarian', value: 'Vegetarian'},
                                     {label: 'Dairy Free', value: 'Dairy Free'},
-                                    {label: 'Nut Free', value: 'Nut Free'}
+                                    {label: 'Nut Free', value: 'Nut Free'},
+                                    {label: 'Favorite Items', value: 'Favorite Items'}
                                 ]}
                                 containerStyle={{height: 40}}
                                 style={{backgroundColor: '#fafafa'}}
@@ -323,7 +402,7 @@ function Menu({route, navigation}) {
                     </View>
                 </View>
             </Modal>
-            <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id }/>
+            <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id } extraData={allData}/>
         </ScrollView>
     );
 }
