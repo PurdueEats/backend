@@ -4,7 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginManager from "./components/login/LoginManager";
 import ProfileManager from "./components/profile/ProfileManager";
-import ScheduleManager from "./components/profile/ScheduleManager"
 import MealPreferences from "./components/meal/MealPreferences";
 import DiningCourt from "./components/dining/DiningFacilities";
 import Menu from "./components/dining/Menu";
@@ -16,10 +15,11 @@ import Password from "./components/signup/Password";
 import MealPlan from "./components/signup/MealPlan";
 import MapManager from "./components/map/MapManager";
 import NavBar from "./components/navbar/NavBar";
-import ForgotPassword from "./components/login/ForgotPassword"
-import TrackMeals from "./components/meal/TrackMeals"
-import FavoriteMeal from "./components/meal/FavoriteMeal"
-import Notifications from "./components/meal/Notifications"
+import ForgotPassword from "./components/login/ForgotPassword";
+import TrackMeals from "./components/meal/TrackMeals";
+import FavoriteMeal from "./components/meal/FavoriteMeal";
+import ScheduleManager from "./components/profile/ScheduleManager";
+import Notifications from "./components/meal/Notifications";
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -49,6 +49,7 @@ export default function App() {
                     <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
                     <Stack.Screen name="Notifications" component= { Notifications }/>
                     <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
+
                 </Stack.Navigator>
             </NavigationContainer>
         </Root>
