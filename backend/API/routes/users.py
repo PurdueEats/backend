@@ -58,10 +58,10 @@ async def create_user(userBasic: UserBasic):
      '{userBasic.email}', '{hashed_password}')
      """)
 
-    runQuery(f"""
-    INSERT INTO UserNutrition values
-    ({user_id[0]['UserID']}, 0, 0, 0, 0)
-    """)
+    #runQuery(f"""
+    #INSERT INTO UserNutrition values
+    #({user_id[0]['UserID']}, 0, 0, 0, 0)
+    #""")
 
     return {'UserID': str(user_id[0]['UserID'])}
 
