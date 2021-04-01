@@ -8,10 +8,14 @@ import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
 function MealReview({route, navigation}) {
+    //Ratings
     const [rating, setRating] = React.useState(3);
+    //List of selected meals to review
     const [selectedMeals, setSelectedMeals] = React.useState([]);
+    //List of all meals at a specific dining court
     const [meals, setMeals] = React.useState([]);
 
+    //Timezone components
     var moment = require('moment-timezone');
     var time = moment().tz('America/New_York').utcOffset("−05:00").format();
 
@@ -19,10 +23,12 @@ function MealReview({route, navigation}) {
         getMeals();
     }, []);
 
+    //For select multiple; displays change on click
     const onSelectionsChange = newSelections => {
         setSelectedMeals(newSelections)
     }
 
+    //GET function to get all of the menu items of a specific dining facility
     function getMeals() {
         fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
             method: 'GET',
@@ -59,11 +65,12 @@ function MealReview({route, navigation}) {
             });
     }
 
+    //Toast for meal successfully recording
     function displayConfirmation() {
         Toast.show({
             style: { backgroundColor: "green", justifyContent: "center" },
             position: "top",
-            text: "Meals successfully recorded.",
+            text: "Meal(s) successfully recorded.",
             textStyle: {
                 textAlign: 'center',
             },
@@ -71,11 +78,12 @@ function MealReview({route, navigation}) {
         });
     }
 
+    //Toast for meal having an error recording
     function displayError() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
-            text: "Record meals failed. Please try again.",
+            text: "Record meal(s) failed. Please try again.",
             textStyle: {
                 textAlign: 'center',
             },
@@ -83,6 +91,7 @@ function MealReview({route, navigation}) {
         });
     }
 
+    //POST request for meal review
     function handleMealReview() {
         // selectedMeals.map(item => {
             fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
@@ -117,10 +126,12 @@ function MealReview({route, navigation}) {
         // })
     }
 
+    //Updating meal rating
     function updateRating(newRating) {
         setRating(newRating);
     }
 
+    //Clearing selected meal list
     function handleClearMealReview() {
         setSelectedMeals([]);
     }
