@@ -62,23 +62,4 @@ async def add_meal_rating(menuItemReview: MenuItemReview):
   	 {menuItemReview.rating}, '{menuItemReview.timestamp}')
   	 """)
 
-    # Add User Nutrition insertion here
-    response = get_nutrition(menuItemReview.menu_item_id)
-    calories, carbs, fat, protein = nutrition_to_macros(response)
-
-    res = [dict(row) for row in runQuery(
-        f"SELECT * FROM UserNutrition WHERE UserID = {menuItemReview.user_id}")][0]
-    runQuery(
-        f"DELETE FROM UserNutrition WHERE UserID = {menuItemReview.user_id}")
-
-    calories += res['Calories']
-    carbs += res['Carbs']
-    fat += res['Fat']
-    protein += res['Protein']
-
-    runQuery(f"""
-	INSERT INTO UserNutrition values
-	({menuItemReview.user_id}, {calories}, {carbs}, {fat}, {protein}
-	)""")
-
     return
