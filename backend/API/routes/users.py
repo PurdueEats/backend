@@ -216,6 +216,7 @@ async def get_user_profile_pic(UserID: int = Depends(auth_handler.auth_wrapper))
         raise HTTPException(
             status_code=404, detail='Profile picture not found')
 
+    profile = profile[0]
     res = [UserProfile.parse_obj(
         {'user_id': profile['UserID'], 'profile_pic': profile['ProfilePicture']})]
 
@@ -228,7 +229,7 @@ async def upload_profile_pic(userProfile: UserProfile, UserID: int = Depends(aut
 
     runQuery(f"DELETE FROM UserProfile WHERE UserID = {UserID}")
     runQuery(
-        f"INSERT INTO UserProfile values ({userProfile.user_id}, {userProfile.profile_pic}")
+        f"INSERT INTO UserProfile values ({userProfile.user_id}, {userProfile.profile_pic})")
 
     return
 
@@ -383,7 +384,7 @@ async def post_user_fav_meals(userFavMeals: UserFavMeals, UserID: int = Depends(
 
     runQuery(f"""
     INSERT INTO UserFavoriteMenuItems values (
-    {userFavMeals.user_id}, {userFavMeals.meal_id}, {userFavMeals.name}, {userFavMeals.toggle}
+    {userFavMeals.user_id}, {userFavMeals.meal_id}, '{userFavMeals.name}', {userFavMeals.toggle}
     )
     """)
 
@@ -410,12 +411,12 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     K = 3
 
     import random
-    P = tnp.array([[random.random() for i in range(K)] for j in range(N)])
-    Q = tnp.array([[random.random() for i in range(K)] for j in range(M)])
+    P = np.array([[random.random() for i in range(K)] for j in range(N)])
+    Q = np.array([[random.random() for i in range(K)] for j in range(M)])
 
     nP, nQ = matrix_factorization(R, P, Q, K)
 
-    nR = tnp.dot(nP, nQ.T)
+    nR = np.dot(nP, nQ.T)
 
     recommend_list = list(nR[user_map[str(UserID)]])
     recommend_list = [(x, i) for i,x in enumerate(recommend_list)]

@@ -1,4 +1,4 @@
-from tinynumpy import tinynumpy as tnp
+import numpy as np
 
 def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
     '''
@@ -20,7 +20,7 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
                 if R[i][j] > 0:
 
                     # calculate error
-                    eij = R[i][j] - tnp.dot(P[i, :], Q[:, j])
+                    eij = R[i][j] - np.dot(P[i, :], Q[:, j])
 
                     for k in range(K):
                         # calculate gradient with a and beta parameter
@@ -29,8 +29,7 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
                         Q[k][j] = Q[k][j] + alpha * \
                             (2 * eij * P[i][k] - beta * Q[k][j])
 
-        print(P.shape, Q.shape)
-        eR = tnp.dot(P, Q)
+        eR = np.dot(P, Q)
 
         e = 0
 
@@ -40,7 +39,7 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
 
                 if R[i][j] > 0:
 
-                    e = e + pow(R[i][j] - tnp.dot(P[i, :], Q[:, j]), 2)
+                    e = e + pow(R[i][j] - np.dot(P[i, :], Q[:, j]), 2)
 
                     for k in range(K):
 
@@ -49,6 +48,9 @@ def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
         if e < 0.001:
 
             break
+        
+        if step%5 == 0:
+            print(f"At epoch {step}, loss: {e}")
 
     return P, Q.T
 
