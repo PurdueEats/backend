@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
-import { Button } from 'native-base';
+import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity, FlatList } from "react-native";
+import { Button, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
 import MaterialTabs from 'react-native-material-tabs';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
@@ -236,6 +236,17 @@ function FavoriteMeals({route, navigation}) {
          })
      }
 
+// const renderItems = () => {
+//   return currentSelection.map(item => {
+//     return (
+// //     View style={ [styles.iconPosition, {flexDirection:"row"}] }
+//       <View key={item.value} style={{position: 'left',  padding: 7,  flexDirection: "column"}}>
+//         <MaterialCommunityIcons name="star" color="red" size={40}/>
+//       </View>
+//     );
+//   });
+// }
+
     return (
         <ScrollView>
             <View style={ [styles.iconPosition, {flexDirection:"row"}] }>
@@ -263,6 +274,7 @@ function FavoriteMeals({route, navigation}) {
                           selectedItems={removeSelection}
                           onSelectionsChange={onFavSelectionsChange}
                           />
+{/*                         {renderItems()} */}
                     </View>
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>
                         <Button style={ styles.favoriteButtonComponent } onPress= { removeFavMeal }>
@@ -329,6 +341,7 @@ const styles = StyleSheet.create({
         marginTop: "-50%"
     },
     selectMultipleView: {
+//         position: 'absolute',
         marginTop: "5%",
     },
     buttonView: {

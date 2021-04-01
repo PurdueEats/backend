@@ -1,4 +1,3 @@
-  
 import React, {useEffect, useState} from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -147,7 +146,6 @@ function Menu({route, navigation}) {
         .catch(function(err) {
             console.log('Fetch Error :-S', err);
         });
-//         console.log(currentSelection);
     }
 
     function searchFiltering (searchText) {
@@ -264,23 +262,19 @@ function Menu({route, navigation}) {
                             <View>
                             </View>
                         )}
-                        {
-                            favMealName.map(function (meal, index) {
-//                             console.log(menuItem.item.menu_item.menu_item_id)
-//                                 return (
-                                    {meal.value === menuItem.item.menu_item.menu_item_id ? (
-                                        <View>
-                                            {console.log("hit")}
-                                            <MaterialCommunityIcons name="star" color="red" size={30}/>
-                                        </View>
-                                    ): (
-                                        <View>
-{/*                                             {console.log("nothing")} */}
-                                        </View>
-                                    )}
-//                                 );
-
-
+                        {favMealName.map(function (meal, index) {
+                                return (
+                                    <View>
+                                        {meal.value === menuItem.item.menu_item.menu_item_id ? (
+                                            <View>
+                                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                            </View>
+                                        ): (
+                                            <View>
+                                            </View>
+                                        )}
+                                    </View>
+                                );
                             })}
                     </View>
                 </View>
@@ -408,7 +402,7 @@ function Menu({route, navigation}) {
                     </View>
                 </View>
             </Modal>
-            <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id }/>
+            <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id } extraData={allData}/>
         </ScrollView>
     );
 }
