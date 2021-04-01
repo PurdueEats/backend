@@ -43,7 +43,7 @@ async def get_user_meal_ratings(UserID: int = Depends(auth_handler.auth_wrapper)
 
 # Add MenuItemReview to DB
 @app.post("/", status_code=201)
-async def add_meal_rating(menuItemReview: MenuItemReview):
+async def add_meal_rating(menuItemReview: List[MenuItemReview]):
 
     # Check for valid UserID and MenuItemId
     user_id = [dict(row) for row in runQuery(
@@ -61,5 +61,23 @@ async def add_meal_rating(menuItemReview: MenuItemReview):
   	({menuItemReview.menu_item_id}, {menuItemReview.user_id},
   	 {menuItemReview.rating}, '{menuItemReview.timestamp}')
   	 """)
+
+    # Add User Nutrition insertion here
+    response = get_nutrition(menuItemReview.menu_item_id)
+    calories, carbs, fat, protein = nutrition_to_macros(response)
+
+    res = [dict(row) for row in runQuery(
+        f"SELECT * FROM UserNutrition WHERE UserID = {menuItemReview.user_id}")][0]
+
+    calories += res['Calories']
+    carbs += res['Carbs']
+    fat += res['Fat']
+    protein += res['Protein']
+
+    runQuery(f"""
+	DELETE FROM UserNutrition WHERE UserID = {menuItemReview.user_id};
+    INSERT INTO UserNutrition values
+	({menuItemReview.user_id}, {calories}, {carbs}, {fat}, {protein}
+	)""")
 
     return

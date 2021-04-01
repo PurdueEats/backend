@@ -18,12 +18,13 @@ def generate_matrix():
     for user in users:
         user_map[str(user['UserID'])] = i
         i += 1
-        matrix.append(np.zeros((menu_items,)))
+        matrix.append(np.zeros((menu_items)))
 
     matrix = np.array(matrix)
+    print(user_map)
 
     for review in menu_item_reviews:
-        matrix[user_map[str(review['UserID'])], review['MenuItemID']] = review['Rating']
+        matrix[user_map[str(review['UserID'])], review['MenuItemID'] -1] = review['Rating']
     
     return matrix, user_map
 
