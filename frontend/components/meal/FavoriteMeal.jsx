@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
-import { Button } from 'native-base';
+import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity, FlatList } from "react-native";
+import { Button, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
 import MaterialTabs from 'react-native-material-tabs';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import { StackActions } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
+import { SearchBar } from 'react-native-elements';
 
 function FavoriteMeals({route, navigation}) {
+    //Total meals list
     const [meals, selectedMeals] = React.useState([]);
+    //Tab selection
     const [selectedTab, setSelectedTab] = React.useState(0);
+    //Current list of User's Fav Meals
     const [currentSelection, setCurrentSelection] = React.useState([]);
+    //List of user's Fav Meals to be removed
     const [removeSelection, setRemoveSelection] = React.useState([]);
+    //List of fav meals to be added
     const [selectedFavMeals, setSelectedFavMeals] = React.useState([]);
-    const [currentSelectID, setCurrentSelectID] = React.useState([]);
+    //Response status
     const [response, setResponse] = React.useState('');
+    //Search bar
+    const [searched, setSearched] = useState('');
 
     useEffect(() => {
         getFavMeal();
-        getFavMealName();
         getMeal();
     },[]);
 
-    /*function handleNavigate() {
-        navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token });
-    }*/
-
+    //For select multiple; displays change on click
     const onSelectionsChange = newSelections => {
       setSelectedFavMeals(newSelections);
     }
@@ -34,13 +38,55 @@ function FavoriteMeals({route, navigation}) {
       setRemoveSelection(favSelections);
     }
 
-    // POST request for favorite meal(s)
+    //Search bar filtering
+    function searchFiltering (searchText) {
+        if (!searchText) {
+            setSearched(searchText);
+            selectedMeals(meals);
+        }
+        if(searchText) {
+            const searchData = meals.filter(function (menuItem)
+            {
+                const menuInfo = menuItem.label ? menuItem.label.toUpperCase() : ''.toUpperCase();
+                const textInfo = searchText.toUpperCase();
+                return menuInfo.indexOf(textInfo) > -1;
+            });
+            selectedMeals(searchData);
+            setSearched(searchText);
+        }
+    }
+
+    //Toast message for recording fav meal successfully
+    function displayConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Favorite Meal(s) recorded successfully.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    //Toast message for error
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Selecting favorite meal(s) failed. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    //POST request for favorite meal(s)
     function handleFavMeal() {
         const updatedList = currentSelection.concat(selectedFavMeals);
         setCurrentSelection(updatedList);
-        setSelectedFavMeals([]);
         selectedFavMeals.map(item => {
-            console.log("hit");
             fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
                 method: 'POST',
                 headers : {
@@ -51,19 +97,31 @@ function FavoriteMeals({route, navigation}) {
                 body: JSON.stringify({
                      "user_id": route.params.UserID.toString(),
                      "meal_id": item.value,
+                     "name": item.label,
                      "toggle": true
                 })
             })
-                .then((response) => response.text())
-                        .then((responseData) => {
-                         console.log("inside responsejson");
-                         console.log('response object:',responseData);
-                         console.log(item.value);
-                         }).done();
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful POST
+                            displayConfirmation();
+                        } else {
+                            // Examine the text in the response
+                            console.log('Looks like there was a problem recording meals. Status Code: ' +
+                                response.status);
+                            displayError();
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
         })
+        setSelectedFavMeals([]);
     }
 
-    // GET request to get the ID(s) of the selected favorite item(s)
+    //GET request to get the selected favorite item(s)
     function getFavMeal() {
        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
@@ -79,15 +137,10 @@ function FavoriteMeals({route, navigation}) {
                     // Successful GET
                     // Set fields to correct values
                     response.json().then(function(data) {
-                        data.map(item => {
-                            currentSelectID.push(item.meal_id);
-                        })
-//                         setCurrentSelectID(data.map(item => (item.meal_id)));
+                        setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
                     });
-//                     console.log("id")
-                    console.log(currentSelectID)
                 } else {
-                    console.log('Auth like there was a problem with ID fetching. Status Code: ' +
+                    console.log('Auth like there was a problem with favorite meals fetching. Status Code: ' +
                         response.status);
                 }
             }
@@ -97,49 +150,7 @@ function FavoriteMeals({route, navigation}) {
         });
     }
 
-    // GET request to convert selected menu item(s) ID(s) to the respective name(s)
-     function getFavMealName() {
-     console.log("hereeeeee");
-     console.log(currentSelectID);
-       currentSelectID.map(item => {
-         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item, {
-                method: 'GET',
-                headers : {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-            })
-                .then(
-                    function(response) {
-                        if (response.status === 200 || response.status === 201) {
-                            // Successful GET
-                            // Set Fields to correct values
-                            response.json().then(function(data) {
-                                currentSelection.push({ label: data.item_name, value: item });
-//                                 setCurrentSelection({ label: data.item_name, value: item });
-
-                                const unique = currentSelection
-                                    .map(e => e['value'])
-                                    // store the keys of the unique objects
-                                    .map((e, i, final) => final.indexOf(e) === i && i)
-                                    // eliminate the dead keys & store unique objects
-                                    .filter(e => currentSelection[e]).map(e => currentSelection[e]);
-                                setCurrentSelection(unique);
-                            });
-                            console.log(currentSelection)
-                        } else {
-                            console.log('Getting Menu Items like there was a problem. Status Code: ' +
-                                response.status);
-                        }
-                    }
-                )
-                .catch(function(err) {
-                    console.log('Fetch Error :-S', err);
-                });
-            })
-        }
-
-    // GET request to get all of the menu items
+    //GET request to get all of the menu items
      function getMeal() {
            fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/`, {
                 method: 'GET',
@@ -152,9 +163,6 @@ function FavoriteMeals({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         response.json().then(function(data) {
-//                             data.map(item => {
-//                                 meals.push({ label: item.item_name, value: item.menu_item_id});
-//                             })
                             selectedMeals(data.map(menuItem => ({ label: menuItem.item_name, value: menuItem.menu_item_id })));
                         });
                     } else {
@@ -168,7 +176,33 @@ function FavoriteMeals({route, navigation}) {
             });
      }
 
-     // DELETE request to remove selected menu items from database
+    //Toast for successful deletion
+    function displayConfirmationDelete() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Favorite Meal(s) recorded successfully.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    //Toast for error in deletion
+    function displayErrorDelete() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Selecting favorite meal(s) failed. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+     //DELETE request to remove selected menu items from database
      function removeFavMeal() {
         removeSelection.map(singleMeal => {
             fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals?menuItemID='+ singleMeal.value, {
@@ -183,13 +217,14 @@ function FavoriteMeals({route, navigation}) {
                  function(response) {
                      if (response.status === 200 || response.status === 201) {
                          // Successful DELETE
+                         displayConfirmationDelete();
                          response.json().then(function(data) {
                              const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
                              setCurrentSelection(filtered);
-                             currentSelectID.pop(item.meal_id);
                              setRemoveSelection([]);
                          });
                      } else {
+                        displayErrorDelete();
                          console.log('Auth like there was a problem with removing items. Status Code: ' +
                              response.status);
                      }
@@ -200,6 +235,17 @@ function FavoriteMeals({route, navigation}) {
              });
          })
      }
+
+// const renderItems = () => {
+//   return currentSelection.map(item => {
+//     return (
+// //     View style={ [styles.iconPosition, {flexDirection:"row"}] }
+//       <View key={item.value} style={{position: 'left',  padding: 7,  flexDirection: "column"}}>
+//         <MaterialCommunityIcons name="star" color="red" size={40}/>
+//       </View>
+//     );
+//   });
+// }
 
     return (
         <ScrollView>
@@ -228,6 +274,7 @@ function FavoriteMeals({route, navigation}) {
                           selectedItems={removeSelection}
                           onSelectionsChange={onFavSelectionsChange}
                           />
+{/*                         {renderItems()} */}
                     </View>
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>
                         <Button style={ styles.favoriteButtonComponent } onPress= { removeFavMeal }>
@@ -242,6 +289,15 @@ function FavoriteMeals({route, navigation}) {
                 </View>
             ): (
                 <View>
+                    <SearchBar
+                        round
+                        searchIcon={{ size: 20 }}
+                        placeholder="Look for an item here"
+                        value={searched}
+                        lightTheme = "true"
+                        onChangeText={(searchText) => searchFiltering(searchText)}
+                        onClear={(searchText) => searchFiltering('')}
+                    />
                     <View style={ styles.selectMultipleView }>
                         <SelectMultiple
                           items={meals}
@@ -285,6 +341,7 @@ const styles = StyleSheet.create({
         marginTop: "-50%"
     },
     selectMultipleView: {
+//         position: 'absolute',
         marginTop: "5%",
     },
     buttonView: {
