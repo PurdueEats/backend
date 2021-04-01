@@ -50,7 +50,6 @@ export default function App() {
                     <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
                     <Stack.Screen name="Notifications" component= { Notifications }/>
                     <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
-                    <Stack.Screen name="Template" component={ TemplateComponent }/>
                     <Stack.Screen name="MealHistory" component={ MealHistory }/>
 
                 </Stack.Navigator>
