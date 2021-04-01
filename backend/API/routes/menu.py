@@ -115,7 +115,7 @@ def get_nutrition(MenuItemID: int):
 
 def nutrition_to_macros(response):
 
-    response = response['Nutrition']
+    response = response['Nutrition'] if 'Nutrition' in response else []
     calories, carbs, fat, protein = 0, 0, 0, 0
 
     for term in response:
