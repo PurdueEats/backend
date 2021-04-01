@@ -58,39 +58,49 @@ function MealPreferences({route, navigation}) {
     }
 
     function handleMealPreferences() {
-        let index = 0;
-        currMeals.map(item => {
-            fetch("https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/", {
-                method: 'POST',
-                    headers : {
-                    'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "user_id": route.params.UserID,
-                    "menu_item_id": item.menu_item_id,
-                    "rating": ratings[index],
-                    "timestamp": time
-                })
-            })
-                .then(
-                    function(response) {
-                        if (response.status === 200 || response.status === 201) {
-                            // Successful POST
-
-                        } else {
-                            // Examine the text in the response
-                            console.log('Looks like there was a problem recording meals. Status Code: ' +
-                                response.status);
-                        }
-                    }
-                )
-                .catch(function(err) {
-                    console.log('Fetch Error :-S', err);
-                });
-             index++;
-        })
+        // console.log(currMeals.length)
+        // for (let i = 0; i < currMeals.length; i++) {
+        //     sendPosts(i);
+        // }
+        sendPosts(0);
+        // sendPosts(1);
+        // sendPosts(2);
+        // sendPosts(3);
+        // sendPosts(4);
     }
+
+    function sendPosts(index) {
+        fetch("https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/", {
+            method: 'POST',
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "user_id": route.params.UserID,
+                "menu_item_id": currMeals[index].menu_item_id,
+                "rating": ratings[index],
+                "timestamp": time
+            })
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        displayConfirmation();
+                    } else {
+                        // Examine the text in the response
+                        console.log('Looks like there was a problem recording meals. Status Code: ' +
+                            response.status);
+                        displayError();
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
     function displayConfirmation() {
         Toast.show({
             style: { backgroundColor: "green", justifyContent: "center" },
