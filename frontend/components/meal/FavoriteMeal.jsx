@@ -119,7 +119,7 @@ function FavoriteMeals({route, navigation}) {
         setSelectedFavMeals([]);
     }
 
-    //GET request to get the selected favorite item(s)
+    // GET request to get the selected favorite item(s)
     function getFavMeal() {
        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
@@ -148,7 +148,7 @@ function FavoriteMeals({route, navigation}) {
         });
     }
 
-    //GET request to get all of the menu items
+    // GET request to get all of the menu items
      function getMeal() {
            fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/`, {
                 method: 'GET',
@@ -174,7 +174,7 @@ function FavoriteMeals({route, navigation}) {
             });
      }
 
-    //Toast for successful deletion
+    // Toast for successful deletion
     function displayConfirmationDelete() {
         Toast.show({
             style: { backgroundColor: "green", justifyContent: "center" },
@@ -187,7 +187,7 @@ function FavoriteMeals({route, navigation}) {
         });
     }
 
-    //Toast for error in deletion
+    // Toast for error in deletion
     function displayErrorDelete() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
@@ -200,7 +200,7 @@ function FavoriteMeals({route, navigation}) {
         });
     }
 
-     //DELETE request to remove selected menu items from database
+     // DELETE request to remove selected menu items from database
      function removeFavMeal() {
         removeSelection.map(singleMeal => {
             fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals?menuItemID='+ singleMeal.value, {
@@ -233,17 +233,6 @@ function FavoriteMeals({route, navigation}) {
              });
          })
      }
-
-// const renderItems = () => {
-//   return currentSelection.map(item => {
-//     return (
-// //     View style={ [styles.iconPosition, {flexDirection:"row"}] }
-//       <View key={item.value} style={{position: 'left',  padding: 7,  flexDirection: "column"}}>
-//         <MaterialCommunityIcons name="star" color="red" size={40}/>
-//       </View>
-//     );
-//   });
-// }
 
     return (
         <ScrollView>

@@ -38,18 +38,17 @@ export default function App() {
                     <Stack.Screen name="Password" component={ Password }/>
                     <Stack.Screen name="MealPlan" component={ MealPlan } options={{gestureEnabled: false}}/>
                     <Stack.Screen name="MealPreferences" component={ MealPreferences } options={{gestureEnabled: false}}/>
-                    <Stack.Screen name="Dining" component={ DiningCourt } options={{gestureEnabled: false}}/>
+                    <Stack.Screen name="Dining" component={ DiningCourt }/>
                     <Stack.Screen name="Menu" component={ Menu }/>
-                    <Stack.Screen name="MealNutrition" component={ MealNutrition } options={{gestureEnabled: false}}/>
+                    <Stack.Screen name="MealNutrition" component={ MealNutrition }/>
                     <Stack.Screen name="MealReview" component={ RecordMeals }/>
-                    <Stack.Screen name="Map" component={ MapManager } options={{gestureEnabled: false}}/>
+                    <Stack.Screen name="Map" component={ MapManager }/>
                     <Stack.Screen name="Profile" component={ ProfileManager }/>
                     <Stack.Screen name="EditSchedule" component={ ScheduleManager }/>
                     <Stack.Screen name="Track" component={ TrackMeals }/>
                     <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
                     <Stack.Screen name="Notifications" component= { Notifications }/>
                     <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
-
                 </Stack.Navigator>
             </NavigationContainer>
         </Root>

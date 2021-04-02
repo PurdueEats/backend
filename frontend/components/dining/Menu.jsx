@@ -14,18 +14,15 @@ function Menu({route, navigation}) {
     const [filterModalVisible, setFilterModalVisible] = useState(false);
     const [searched, setSearched] = useState('');
 
-    // search filtering
+    // Search filtering
     const [allData, setAllData] = useState([]);
     const [filterData, setFilterData] = useState([]);
 
-    //drop down filter
+    // Drop down filter
     const [vegetarianData, setVegetarianData] = useState([]);
     const [glutenFreeData, setGlutenFreeData] = useState([]);
     const [dairyFreeData, setDairyFreeData] = useState([]);
     const [nutFreeData, setNutFreeData] = useState([]);
-//     const [favData, setFavData] = useState([]);
-
-
 
     //
     const [vegetarian, setVegetarian] = useState(false);
@@ -33,14 +30,12 @@ function Menu({route, navigation}) {
     const [dairyFree, setDairyFree] = useState(false);
     const [nutFree, setNutFree] = useState(false);
 
-    //fav
+    // Favorite meals
     const [currentSelection, setCurrentSelection] = useState([]);
     const favData = allData.filter(a => currentSelection.some(c => c.value === a.menu_item.menu_item_id));
     const [favDataName, setFavDataName] = useState([]);
     const [mealName, setMealName] = useState([]);
     const [favMealName, setFavMealName] = useState([]);
-
-    const popAction = StackActions.pop();
 
     useEffect(() => {
         getMeals();
@@ -58,8 +53,7 @@ function Menu({route, navigation}) {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                /* 'Authorization': 'Bearer ' + route.params.token */
+                'Accept': 'application/json'
             },
         })
             .then(
@@ -72,13 +66,6 @@ function Menu({route, navigation}) {
                                 .map((e, i, final) => final.indexOf(e) === i && i)
                                 .filter(e => data[e])
                                 .map(e => data[e])
-//                             favData.map(menuItem => {
-//                                 favDataName.push(menuItem["menu_item"]["item_name"]);
-//                                 })
-//                             setFavDataName(favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
-//                             const name = favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] }));
-//                             console.log("here located")
-//                                 console.log(name);
                             setMealName(data.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
 
                             data.map(menuItem => {
@@ -116,7 +103,6 @@ function Menu({route, navigation}) {
 
     function convertName() {
         setFavMealName(favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
-        console.log(favMealName);
     }
 
     // GET request to get the selected favorite item(s)
@@ -402,12 +388,11 @@ function Menu({route, navigation}) {
                     </View>
                 </View>
             </Modal>
-            <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id } extraData={allData}/>
+            <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)}
+                      keyExtractor={item => { Math.random().toString(36).substring(5) } } extraData={allData}/>
         </ScrollView>
     );
 }
-
-
 
 const styles = StyleSheet.create({
     pageView: {

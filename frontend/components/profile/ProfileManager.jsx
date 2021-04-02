@@ -77,7 +77,6 @@ function ProfileManager({route, navigation}) {
                 putName(nameNew);
             }
         } else {
-
             Toast.show({
                 style: { backgroundColor: "red", justifyContent: "center" },
                 position: "top",
@@ -136,7 +135,7 @@ function ProfileManager({route, navigation}) {
         setModalDining(!setModalDining);
         if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
 
-            if (add == 'Add') {
+            if (add === 'Add') {
                 if ((dollars + subtract) > 999999999) {
                     Toast.show({
                         style: { backgroundColor: "red", justifyContent: "center" },
@@ -150,8 +149,6 @@ function ProfileManager({route, navigation}) {
                     return
 
                 }
-
-
                 setDollarsBool(true);
                 sendDiningDollars(0 - subtract);
             } else {
@@ -165,10 +162,7 @@ function ProfileManager({route, navigation}) {
                         },
                         duration: 3000
                     });
-
                     return;
-
-
                 }
                 setDollarsBool(true);
                 sendDiningDollars(subtract);
@@ -593,7 +587,7 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity style={ styles.backImage } onPress={() =>  handleNameExit()}>
+                        <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleNameExit()}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <Text style={styles.modalText}>Set new name</Text>
@@ -609,15 +603,15 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity style={ styles.backImage } onPress={() =>  handleDiningExit(transact)}>
+                        <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleDiningExit(transact)}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
-                            <TouchableOpacity style={ styles.symbolStyle } onPress={() =>  handleSub()}>
+                            <TouchableOpacity active={0.5} style={ styles.symbolStyle } onPress={() =>  handleSub()}>
                                 <MaterialCommunityIcons name="minus" color="white" size={30}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>                </Text>
-                            <TouchableOpacity style={ styles.symbolStyle } onPress={() =>  handleAdd()}>
+                            <TouchableOpacity active={0.5} style={ styles.symbolStyle } onPress={() =>  handleAdd()}>
                                 <MaterialCommunityIcons name="plus" color="white" size={30}/>
                             </TouchableOpacity>
                         </View>
@@ -637,11 +631,11 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity style={ styles.backImage } onPress={() =>  handleSwipesExit()}>
+                        <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleSwipesExit()}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <Text style={styles.dollarsText}>Subtract a swipe from your total?</Text>
-                        <TouchableOpacity style={ styles.symbolStyleBig }  onPress={() =>  handleSwipesSub()}>
+                        <TouchableOpacity active={0.5} style={ styles.symbolStyleBig }  onPress={() =>  handleSwipesSub()}>
                             <MaterialCommunityIcons name="minus" color="white" size={30}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
@@ -651,10 +645,8 @@ function ProfileManager({route, navigation}) {
                 </View>
             </Modal>
             <View style={ styles.profileHeader }>
-                  <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
-                 <Text style={ styles.profileWord }>Profile</Text>
-                 <Text style={ styles.profileWord }>       </Text>
-                </View>
+                <Text style={ styles.profileWord }>Profile</Text>
+            </View>
             <View style={ styles.viewCenter }>
                 <Image style={ styles.profileImage } defaultSource={require('../../resources/train.jpg')} source={{uri: 'data:image/jpeg;base64,' + picture}}
                 />
@@ -697,7 +689,7 @@ function ProfileManager({route, navigation}) {
                 >
                     <View>
                         <View style={styles.modalView}>
-                            <TouchableOpacity style={ styles.backImage } onPress={() => handlePlanExit(planNew) }>
+                            <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() => handlePlanExit(planNew) }>
                                 <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
                             <DropDownPicker
@@ -725,7 +717,7 @@ function ProfileManager({route, navigation}) {
                 >
                     <View>
                         <View style={styles.modalView}>
-                            <TouchableOpacity style={ styles.backImage } onPress={() => handlePassExit(passNew) }>
+                            <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() => handlePassExit(passNew) }>
                                 <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>Set password</Text>
@@ -768,7 +760,7 @@ function ProfileManager({route, navigation}) {
                 >
                     <View>
                         <View style={styles.modalView}>
-                            <TouchableOpacity style={ styles.backImage } onPress={() => setModalDelete(!modalDelete) }>
+                            <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() => setModalDelete(!modalDelete) }>
                                 <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity >
                             <Text style={styles.modalText}>Delete Account?</Text>
@@ -831,9 +823,8 @@ const styles = StyleSheet.create({
 
     profileHeader: {
         marginTop: "8%",
+        marginBottom: "5%",
         alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-between",
         color: "black",
         fontSize: 22,
     },
@@ -923,9 +914,9 @@ const styles = StyleSheet.create({
 
     },
     dollarsText: {
-        color: "black",
-        marginBottom: "1%",
-
+        marginTop: "2%",
+        marginBottom: "2%",
+        color: "black"
     },
 
     big: {
@@ -966,7 +957,7 @@ const styles = StyleSheet.create({
         elevation: 5
     },
 
-     symbolStyle: {
+    symbolStyle: {
         height: 30,
         width: 30,
         backgroundColor: 'red',
