@@ -39,49 +39,48 @@ function MealPreferences({route, navigation}) {
     }, []);
 
     function handleSubmit() {
-        handleMealPreferences();
+        sendMealPreferences();
         navigation.navigate("NavBar", { UserID: route.params.UserID, token: route.params.token });
     }
 
-    function renderStars() {
-        return (
-            <View
-                style={{
-                    borderBottomColor: '#c4baba',
-                    borderBottomWidth: 1,
-                    marginTop: "2%",
-                    marginBottom: "5%"
-                }}
-            />
-        );
-
-    }
-
-    function handleMealPreferences() {
-        // console.log(currMeals.length)
-        // for (let i = 0; i < currMeals.length; i++) {
-        //     sendMealPreference(i);
-        // }
-        sendMealPreference(0);
-        // sendMealPreference(1);
-        // sendMealPreference(2);
-        // sendMealPreference(3);
-        // sendMealPreference(4);
-    }
-
-    function sendMealPreference(index) {
+    function sendMealPreferences() {
         fetch("https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/", {
             method: 'POST',
             headers : {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                "user_id": route.params.UserID,
-                "menu_item_id": currMeals[index].menu_item_id,
-                "rating": ratings[index],
-                "timestamp": time
-            })
+            body: JSON.stringify([{
+                    "user_id": route.params.UserID,
+                    "menu_item_id": currMeals[0].menu_item_id,
+                    "rating": ratings[0],
+                    "timestamp": time
+                },
+                {
+                    "user_id": route.params.UserID,
+                    "menu_item_id": currMeals[1].menu_item_id,
+                    "rating": ratings[1],
+                    "timestamp": time
+                },
+                {
+                    "user_id": route.params.UserID,
+                    "menu_item_id": currMeals[2].menu_item_id,
+                    "rating": ratings[2],
+                    "timestamp": time
+                },
+                {
+                    "user_id": route.params.UserID,
+                    "menu_item_id": currMeals[3].menu_item_id,
+                    "rating": ratings[3],
+                    "timestamp": time
+                },
+                {
+                    "user_id": route.params.UserID,
+                    "menu_item_id": currMeals[4].menu_item_id,
+                    "rating": ratings[4],
+                    "timestamp": time
+                }]
+            )
         })
             .then(
                 function(response) {
