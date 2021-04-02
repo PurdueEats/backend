@@ -102,7 +102,6 @@ function RecordMeals({route, navigation}) {
                 "timestamp": time
             }
         });
-        console.log(submitJSON)
         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
             method: 'POST',
             headers : {

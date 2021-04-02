@@ -44,36 +44,6 @@ function MealPreferences({route, navigation}) {
     }
 
     function sendMealPreferences() {
-        console.log([{
-                "user_id": route.params.UserID,
-                "menu_item_id": currMeals[0].menu_item_id,
-                "rating": ratings[0],
-                "timestamp": time
-            },
-            {
-                "user_id": route.params.UserID,
-                "menu_item_id": currMeals[1].menu_item_id,
-                "rating": ratings[1],
-                "timestamp": time
-            },
-            {
-                "user_id": route.params.UserID,
-                "menu_item_id": currMeals[2].menu_item_id,
-                "rating": ratings[2],
-                "timestamp": time
-            },
-            {
-                "user_id": route.params.UserID,
-                "menu_item_id": currMeals[3].menu_item_id,
-                "rating": ratings[3],
-                "timestamp": time
-            },
-            {
-                "user_id": route.params.UserID,
-                "menu_item_id": currMeals[4].menu_item_id,
-                "rating": ratings[4],
-                "timestamp": time
-            }])
         fetch("https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/", {
             method: 'POST',
             headers : {
