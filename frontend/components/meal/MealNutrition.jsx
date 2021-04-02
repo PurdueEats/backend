@@ -23,6 +23,13 @@ function MealNutrition({route, navigation}) {
     const [protein, setProtein] =  useState('');
     const [proteinValue, setProteinValue] = useState('0%');
 
+    // Chart Data
+    const [chartProtein, setChartProtein] = useState(0);
+    const [chartCholesterol, setChartCholesterol] = useState(0);
+    const [chartSodium, setChartSodium] = useState(0);
+    const [chartCarbs, setChartCarbs] = useState(0);
+    const [chartFat, setChartFat] = useState(0);
+
     useEffect(() => {
         // Meal Nutrition Route
         fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + route.params.MealID + "/Nutrition", {
@@ -55,6 +62,43 @@ function MealNutrition({route, navigation}) {
                             setCarbsValue(data["Nutrition"][7]["DailyValue"])
                             setProtein(data["Nutrition"][10]["LabelValue"])
                             setProteinValue(data["Nutrition"][10]["DailyValue"])
+
+                            // Set chart values
+                            // Protein
+                            const proteinVal = parseFloat(data["Nutrition"][10]["DailyValue"].slice(0, -1));
+                            if (proteinVal > 100) {
+                                setChartProtein(100);
+                            } else {
+                                setChartProtein(parseFloat(data["Nutrition"][10]["DailyValue"].slice(0, -1)))
+                            }
+                            // Cholesterol
+                            const cholesterolVal = parseFloat(data["Nutrition"][5]["DailyValue"].slice(0, -1));
+                            if (cholesterolVal > 100) {
+                                setChartCholesterol(100);
+                            } else {
+                                setChartCholesterol(cholesterolVal);
+                            }
+                            // Sodium
+                            const sodiumVal = parseFloat(data["Nutrition"][6]["DailyValue"].slice(0, -1));
+                            if (sodiumVal > 100) {
+                                setChartSodium(100);
+                            } else {
+                                setChartSodium(sodiumVal);
+                            }
+                            // Carbs
+                            const carbsVal = parseFloat(data["Nutrition"][7]["DailyValue"].slice(0, -1));
+                            if (carbsVal > 100) {
+                                setChartCarbs(100);
+                            } else {
+                                setChartCarbs(carbsVal)
+                            }
+                            // Fat
+                            const fatVal = parseFloat(data["Nutrition"][3]["DailyValue"].slice(0, -1));
+                            if (fatVal > 100) {
+                                setChartFat(100);
+                            } else {
+                                setChartFat(fatVal)
+                            }
                         });
                     }
                 }
@@ -87,9 +131,9 @@ function MealNutrition({route, navigation}) {
                     <ProgressChart
                         data={{
                             labels: ["Fat", "Carbs.", "Sodium", "Cholest.", "Protein"],
-                            data: [ parseFloat(fatValue.slice(0, -1))/100, parseFloat(carbsValue.slice(0, -1))/100,
-                                parseFloat(sodiumValue.slice(0, -1))/100, parseFloat(cholesterolValue.slice(0, -1))/100,
-                                parseFloat(proteinValue.slice(0, -1))/100 ]
+                            data: [ chartFat/100, chartCarbs/100,
+                                chartSodium/100, chartCholesterol/100,
+                                chartProtein/100 ]
                         }}
                         width={Dimensions.get("window").width - 20}
                         height={250}

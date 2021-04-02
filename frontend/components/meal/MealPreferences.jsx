@@ -16,7 +16,6 @@ function MealPreferences({route, navigation}) {
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                /* 'Authorization': 'Bearer ' + route.params.token */
             },
         })
             .then(
@@ -62,18 +61,18 @@ function MealPreferences({route, navigation}) {
                     "rating": ratings[1],
                     "timestamp": time
                 },
-                {
-                    "user_id": route.params.UserID,
-                    "menu_item_id": currMeals[2].menu_item_id,
-                    "rating": ratings[2],
-                    "timestamp": time
-                },
-                {
-                    "user_id": route.params.UserID,
-                    "menu_item_id": currMeals[3].menu_item_id,
-                    "rating": ratings[3],
-                    "timestamp": time
-                },
+                // {
+                //     "user_id": route.params.UserID,
+                //     "menu_item_id": currMeals[2].menu_item_id,
+                //     "rating": ratings[2],
+                //     "timestamp": time
+                // },
+                // {
+                //     "user_id": route.params.UserID,
+                //     "menu_item_id": currMeals[3].menu_item_id,
+                //     "rating": ratings[3],
+                //     "timestamp": time
+                // },
                 {
                     "user_id": route.params.UserID,
                     "menu_item_id": currMeals[4].menu_item_id,
