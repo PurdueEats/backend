@@ -8,7 +8,7 @@ client = bigquery.Client(project=gcp_project)
 dataset_ref = client.dataset(bq_dataset)
 
 
-def runQuery(sql: str): 
+def runQuery(sql: str):
     job_config = bigquery.QueryJobConfig()
     job_config.default_dataset = dataset_ref
     query = client.query(sql, job_config)
@@ -16,21 +16,9 @@ def runQuery(sql: str):
     return results
 
 
-def nutrition_cleaner(request):
-
-    runQuery("DELETE FROM UserNutrition WHERE True")
-
-    res = [dict(row) for row in runQuery("SELECT UserID FROM UserBasic")]
-
-    for user_id in res:
-
-        runQuery(f"""
-        INSERT INTO UserNutrition values
-        ({user_id['UserID']}, 0, 0, 0, 0)
-        """)
-    
-    return
+def meal_swipe_resetter(request):
+    pass
 
 
 if __name__ == "__main__":
-    nutrition_cleaner(None)
+    meal_swipe_resetter(None)
