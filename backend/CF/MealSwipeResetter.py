@@ -18,7 +18,11 @@ def runQuery(sql: str):
 
 def meal_swipe_resetter(request):
 
-    res = [dict(row) for row in runQuery("SELECT * FROM UserExtra, MealPlan")]
+    res = [dict(row) for row in runQuery("""
+    SELECT * 
+    FROM UserExtra as E, MealPlan as MP
+    WHERE E.MealPlanName = MP.MealPlanName
+    """)]
 
     runQuery("DELETE FROM UserExtra WHERE True")
 
