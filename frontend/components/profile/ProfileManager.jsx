@@ -593,7 +593,7 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity active = { .5 } onPress={() =>  handleNameExit()}>
+                        <TouchableOpacity style={ styles.backImage } onPress={() =>  handleNameExit()}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <Text style={styles.modalText}>Set new name</Text>
@@ -609,7 +609,7 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity active = { .5 } onPress={() =>  handleDiningExit(transact)}>
+                        <TouchableOpacity style={ styles.backImage } onPress={() =>  handleDiningExit(transact)}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
@@ -617,7 +617,7 @@ function ProfileManager({route, navigation}) {
                                 <MaterialCommunityIcons name="minus" color="white" size={30}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>                </Text>
-                            <TouchableOpacity style={ styles.symbolStyle } active = { .5 } onPress={() =>  handleAdd()}>
+                            <TouchableOpacity style={ styles.symbolStyle } onPress={() =>  handleAdd()}>
                                 <MaterialCommunityIcons name="plus" color="white" size={30}/>
                             </TouchableOpacity>
                         </View>
@@ -637,7 +637,7 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesExit()}>
+                        <TouchableOpacity style={ styles.backImage } onPress={() =>  handleSwipesExit()}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <Text style={styles.dollarsText}>Subtract a swipe from your total?</Text>
@@ -697,7 +697,7 @@ function ProfileManager({route, navigation}) {
                 >
                     <View>
                         <View style={styles.modalView}>
-                            <TouchableOpacity active = { .5 } onPress={() => handlePlanExit(planNew) }>
+                            <TouchableOpacity style={ styles.backImage } onPress={() => handlePlanExit(planNew) }>
                                 <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
                             <DropDownPicker
@@ -725,7 +725,7 @@ function ProfileManager({route, navigation}) {
                 >
                     <View>
                         <View style={styles.modalView}>
-                            <TouchableOpacity active = { .5 } onPress={() => handlePassExit(passNew) }>
+                            <TouchableOpacity style={ styles.backImage } onPress={() => handlePassExit(passNew) }>
                                 <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
                             <Text style={styles.modalText}>Set password</Text>
@@ -768,7 +768,7 @@ function ProfileManager({route, navigation}) {
                 >
                     <View>
                         <View style={styles.modalView}>
-                            <TouchableOpacity active = { .5 } onPress={() => setModalDelete(!modalDelete) }>
+                            <TouchableOpacity style={ styles.backImage } onPress={() => setModalDelete(!modalDelete) }>
                                 <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity >
                             <Text style={styles.modalText}>Delete Account?</Text>
