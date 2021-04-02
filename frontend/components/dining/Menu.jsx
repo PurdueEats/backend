@@ -155,7 +155,7 @@ function Menu({route, navigation}) {
             if (filter === "Favorite Items") {
                 setFilterData(favData);
             }
-//             setFilterData(allData);
+//             setFilterData(allData)
         }
         if(searchText) {
             const searchData = allData.filter(function (menuItem)
@@ -218,7 +218,7 @@ function Menu({route, navigation}) {
                     <View style ={{flexDirection: "row", marginLeft: "2%"}}>
                         {menuItem.item.menu_item.is_vegetarian ? (
                             <View >
-                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" size={30}/>
                             </View>
                         ): (
                             <View>
@@ -234,7 +234,7 @@ function Menu({route, navigation}) {
                         )}
                         {!menuItem.item.menu_item.has_milk ? (
                             <View>
-                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="#84b2c2" size={30}/>
                             </View>
                         ): (
                             <View>
@@ -242,7 +242,7 @@ function Menu({route, navigation}) {
                         )}
                         {!menuItem.item.menu_item.has_peanuts && !menuItem.item.menu_item.has_treenuts ? (
                             <View>
-                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
+                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="#C16718" size={30}/>
                             </View>
                         ): (
                             <View>
@@ -253,7 +253,7 @@ function Menu({route, navigation}) {
                                     <View>
                                         {meal.value === menuItem.item.menu_item.menu_item_id ? (
                                             <View>
-                                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                                <MaterialCommunityIcons name="star" color="#FFD133" size={30}/>
                                             </View>
                                         ): (
                                             <View>
@@ -294,7 +294,7 @@ function Menu({route, navigation}) {
                                 </View>
                             </TouchableOpacity >
                             <View style={{flexDirection: "row"}}>
-                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={20}/>
+                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" size={20}/>
                                 <Text style={styles.modalText}>Vegetarian Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
@@ -302,15 +302,15 @@ function Menu({route, navigation}) {
                                 <Text style={styles.modalText}>Gluten Free Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
-                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={20}/>
+                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="#84b2c2" size={20}/>
                                 <Text style={styles.modalText}>Dairy Free Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
-                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={20}/>
+                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="#C16718" size={20}/>
                                 <Text style={styles.modalText}>Nut Free Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
-                                <MaterialCommunityIcons name="star" color="red" size={20}/>
+                                <MaterialCommunityIcons name="star" color="#FFD133" size={20}/>
                                 <Text style={styles.modalText}>Favorite Item</Text>
                             </View>
                         </View>
