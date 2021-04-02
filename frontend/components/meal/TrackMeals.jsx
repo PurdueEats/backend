@@ -38,7 +38,7 @@ function TrackMeals({route, navigation}) {
     },[]);
 
     function sortList() {
-        currentSelection.sort(function(a, b) { return a.timestamp > b.timestamp; });
+        currentSelection.sort(function(a, b) { return a.timestamp < b.timestamp; });
 
         setBool('a');
         setBool('b');
