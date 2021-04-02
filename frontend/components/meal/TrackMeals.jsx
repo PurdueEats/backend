@@ -38,7 +38,7 @@ function TrackMeals({route, navigation}) {
     },[]);
 
     function sortList() {
-        currentSelection.sort(function(a, b) { return a.timestamp < b.timestamp; });
+        currentSelection.sort(function(a, b) { return a.timestamp > b.timestamp; });
 
         setBool('a');
         setBool('b');
@@ -219,30 +219,29 @@ function TrackMeals({route, navigation}) {
 
     }
     const Item = ({ label }) => (
-        <View style={styles.item}>
+        <View style={styles.foodText}>
             <Text style={styles.label}>{label}</Text>
         </View>
     );
     function renderItem(item) {
         return (
-            <TouchableOpacity onPress={() =>  navigation.navigate("MealNutrition", { UserID: route.params.UserID, token: route.params.token,
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Button style={ styles.foodButton } onPress={() =>  navigation.navigate("MealNutrition", { UserID: route.params.UserID, token: route.params.token,
                 MealName: item.item.label,
                 MealID: item.item.value }) }>
-                <View style={{flexDirection:"row"}}>
-                    <View style={{alignItems: 'flex-end'}}>
-                        <Item label={ item.item.label + "  " + item.item.timestamp.substring(2, item.item.timestamp.length - 6) } />
-                    </View>
-                    <View style={{position: 'absolute', right: 10, bottom: 15}}>
-                        <MaterialCommunityIcons name="arrow-right" color="red" size={30}/>
+
+                    <View style={ styles.buttonText }>
+                        <Text style={ styles.buttonText }> { item.item.label  + " " + item.item.timestamp.substring(2, item.item.timestamp.length - 6) }   </Text>
                     </View>
 
                     <View style={{flexDirection: "column"}}>
                         <View style = {{flexDirection: "row"}}>
-                            <Text style={styles.firstItem}>{currentSelection.label}</Text>
+                            <Text style={styles.buttonText}>{currentSelection.label}</Text>
                         </View>
                     </View>
-                </View>
-            </TouchableOpacity>
+            </Button>
+        </View>
+
         );
     }
 
@@ -255,30 +254,20 @@ function TrackMeals({route, navigation}) {
                 </TouchableOpacity>
                 <Image style={ styles.logoImage } source={ Logo } />
             </View>
-            <View>
+            <View styles={ styles.viewCenter }>
                 <Text style={ styles.screenTitle }>Track Meals</Text>
-                <TouchableOpacity style={ styles.sortTitle } onPress={ () => sortList()}>
-                    <Text style={ styles.sortTitle }>Sort</Text>
-                </TouchableOpacity>
-            </View>
+                <Button style={ styles.sortButton } onPress={ () => sortList()}>
+                    <Text style={ styles.sortText }>Sort</Text>
+                </Button>
+                <View>
+                        <FlatList
+                            data={ currentSelection }
+                            renderItem={ (item) => renderItem(item) }
+                            extraData={ bool.state }
+                            keyExtractor={item => { Math.random().toString(36).substring(5) } }
+                            ListEmptyComponent={ EmptyListMessage }
 
-            <View style={ [styles.screenView, {flexDirection:"row"}] } >
-            </View>
-            <View>
-                <SafeAreaView style={styles.container}>
-                    <FlatList
-                        data={ currentSelection }
-                        renderItem={ (item) => renderItem(item) }
-                        extraData={ bool.state }
-                        keyExtractor={item => { Math.random().toString(36).substring(5) } }
-                        ListEmptyComponent={ EmptyListMessage }
-
-                    />
-                </SafeAreaView>
-            </View>
-
-            <View style={ [styles.buttonView, {alignItems:"center"}] }>
-                <View style={ styles.notView }>
+                        />
                 </View>
             </View>
         </ScrollView>
@@ -297,24 +286,50 @@ const styles = StyleSheet.create({
         marginLeft: "30%",
         marginRight: "30%",
         alignItems: "center",
+        justifyContent: 'center',
     },
-    button: {
-        marginLeft: "-65%",
-        marginRight: "73%",
+
+    foodText: {
+        color: 'white',
     },
+
+     foodButton: {
+        marginBottom: "5%",
+        backgroundColor: 'red',
+        width: '60%',
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: "center",
+    },
+
+    sortButton: {
+        marginBottom: "5%",
+        backgroundColor: 'red',
+        width: '100%',
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: "center",
+    },
+
+    viewCenter: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
     logoImage: {
         height: 80,
         width: 80,
-        marginRight: "15%",
         marginTop: "10%",
         marginBottom: "3%",
         alignItems: "center",
+        justifyContent: 'center',
     },
     screenTitle: {
         fontSize: 26,
         fontWeight: "bold",
         textAlign: "center",
         marginBottom: "2%",
+        justifyContent: 'center'
     },
 
     sortTitle: {
@@ -322,18 +337,33 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         marginBottom: "2%",
+        justifyContent: "center",
     },
 
     container: {
-        flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
+        flex: 0,
+        justifyContent: "center",
+        textAlign: "center",
+        alignItems: "center",
+
     },
     item: {
-        backgroundColor: '#f9c2ff',
-        padding: 15,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        backgroundColor: 'red',
     },
+
+     buttonText: {
+        fontSize: 14,
+        fontWeight: "bold",
+        color: "white",
+        justifyContent: 'center',
+    },
+
+    sortText: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "white",
+        },
+
 });
 
 export default TrackMeals;
