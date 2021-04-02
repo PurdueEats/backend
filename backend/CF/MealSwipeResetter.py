@@ -17,7 +17,21 @@ def runQuery(sql: str):
 
 
 def meal_swipe_resetter(request):
-    pass
+
+    res = [dict(row) for row in runQuery("SELECT * FROM UserExtra, MealPlan")]
+
+    runQuery("DELETE FROM UserExtra WHERE True")
+
+    for user in res:
+
+        runQuery(f"""
+        INSERT INTO UserExtra values (
+            {user['UserID']}, '{user['MealPlanName']}', 
+            {user['MealSwipes']}, {user['DiningDollarBalance']}
+        )
+        """)
+    
+    return {'detail' : 'Meal Swipes Reset Succesfully!'}
 
 
 if __name__ == "__main__":
