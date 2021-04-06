@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
+import { useTheme } from '@react-navigation/native';
 import { AirbnbRating } from 'react-native-ratings';
 import { Button, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
 
 function MealPreferences({route, navigation}) {
+    const { colors } = useTheme();
     const [currMeals, setCurrMeals] = useState([]);
     const ratings = [ 3, 3, 3, 3, 3 ];
     var moment = require('moment-timezone');
@@ -127,7 +129,7 @@ function MealPreferences({route, navigation}) {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={ styles.screenView }>
                 <Image style={ styles.logoImage } source={ Logo } />
-                <Text style={ styles.screenTitle }>Enter your meal preferences</Text>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }>Enter your meal preferences</Text>
             </View>
 
 
@@ -140,7 +142,7 @@ function MealPreferences({route, navigation}) {
                         }
                        return (
                             <View key={index} style={ styles.individualRatingComponents }>
-                                <Text key={index + "Text"} style={ styles.mealText }>{meal.item_name}</Text>
+                                <Text key={index + "Text"} style={ [styles.mealText, {color: colors.text}] }>{meal.item_name}</Text>
                                 <AirbnbRating
                                     key={index + "Rating"}
                                     count={5}

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
 import { Button, Item } from 'native-base';
+import { useTheme } from '@react-navigation/native';
 
 function Email({route, navigation}) {
+    const { colors } = useTheme();
     const [email, setEmail] = useState('');
 
     function handleNavigate() {
@@ -11,13 +13,13 @@ function Email({route, navigation}) {
 
     return (
         <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
-            <Text style={ styles.questionTitle }>Enter your email.</Text>
-            <Text style={ styles.detailsTitle }>This will be the email you use to login.</Text>
+            <Text style={ [styles.questionTitle, {color: colors.text}] }>Enter your email.</Text>
+            <Text style={ [styles.detailsTitle, {color: colors.text}] }>This will be the email you use to login.</Text>
             <Item style={ styles.emailInput }>
-                <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
+                <TextInput style={ [styles.textInput, {color: colors.text}] } onChangeText={(email) => setEmail(email)} />
             </Item>
             <Button style={ styles.continueButton } onPress={ handleNavigate } >
-                <Text style={ styles.continueText}>Continue</Text>
+                <Text style={ styles.continueText }>Continue</Text>
             </Button>
         </SafeAreaView>
     );

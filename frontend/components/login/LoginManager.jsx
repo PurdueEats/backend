@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import { useTheme } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import { Button, Item, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
 
 function LoginManager({navigation}) {
+    const { colors } = useTheme();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -131,17 +134,18 @@ function LoginManager({navigation}) {
         <View>
             <View style={ styles.iconPosition }>
                 <Image source = { Logo } />
-                <Text style={ styles.appName }>PurdueEats</Text>
+                <Text style={ [styles.appName, {color: colors.text}] }>PurdueEats</Text>
+
             </View>
             <View style={ styles.content }>
-                <Text style={ styles.signInContent }>Sign In</Text>
+                <Text style={ [styles.signInContent, {color: colors.text}] }>Sign In</Text>
                 <Text style={ styles.sectionHeader }>Email</Text>
                 <Item style={ styles.emailContent }>
-                    <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
+                    <TextInput style={ [styles.textInput, {color: colors.text}] } onChangeText={(email) => setEmail(email)} />
                 </Item>
                 <Text style={ styles.sectionHeader }>Password</Text>
                 <Item style={ styles.passwordContent }>
-                    <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
+                    <TextInput style={ [styles.textInput, {color: colors.text}] } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
                 </Item>
             </View>
             <View style={ styles.buttons }>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useTheme } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import { Button } from 'native-base';
 import { StackActions } from '@react-navigation/native';
@@ -9,6 +10,7 @@ import { SearchBar } from 'react-native-elements';
 import { AirbnbRating } from "react-native-ratings";
 
 function Menu({route, navigation}) {
+    const { colors } = useTheme();
     const [filter, setFilter] = useState('');
     const [legendModalVisible, setLegendModalVisible] = useState(false);
     const [filterModalVisible, setFilterModalVisible] = useState(false);
@@ -210,7 +212,7 @@ function Menu({route, navigation}) {
                 MealID: menuItem.item.menu_item.menu_item_id}) }>
                 <View style={{flexDirection: "column"}}>
                     <View style = {{flexDirection: "row"}}>
-                        <Text style={styles.firstItem}>{menuItem.item.menu_item.item_name}</Text>
+                        <Text style={ [styles.firstItem, {color: colors.text}] }>{menuItem.item.menu_item.item_name}</Text>
                         <View style={{position: 'absolute', right: 10, bottom: -15}}>
                             <MaterialCommunityIcons name="arrow-right" color="red" size={30}/>
                         </View>
@@ -274,7 +276,7 @@ function Menu({route, navigation}) {
                 <TouchableOpacity onPress={() => navigation.dispatch(StackActions.pop(1))}>
                     <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                 </TouchableOpacity>
-                <Text style={ styles.screenTitle }>Menu</Text>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }>Menu</Text>
                 <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(true) }>
                     <MaterialCommunityIcons name="help-circle-outline" color="red" size={30}/>
                 </TouchableOpacity>
