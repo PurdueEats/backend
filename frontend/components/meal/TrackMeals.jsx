@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTheme } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
 import { Button} from 'native-base';
 import Logo from "../../resources/logo.png";
 
 function TrackMeals({route, navigation}) {
+    const { colors } = useTheme();
 
     const [currentSelectID, setCurrentSelectID] = React.useState([]);
     const [currentSelection, setCurrentSelection] = React.useState([]);
@@ -202,7 +204,7 @@ function TrackMeals({route, navigation}) {
                 <Image style={ styles.logoImage } source={ Logo } />
             </View>
             <View style={ styles.sortView }>
-                <Text style={ styles.screenTitle }>Track Meals</Text>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }>Track Meals</Text>
                 <Button style={ styles.sortButton } onPress={ () => sortList() }>
                     <Text style={ styles.sortText }>Sort</Text>
                 </Button>

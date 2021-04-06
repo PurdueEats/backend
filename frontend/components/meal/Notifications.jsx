@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { Button, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
+import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackActions } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
 
 function Notifications({route, navigation}) {
+    const { colors } = useTheme();
     //Tab selection
     const [selectedTab, setSelectedTab] = React.useState(0);
     //Current fav meals w/ notifications on
@@ -214,7 +216,7 @@ function Notifications({route, navigation}) {
                 </TouchableOpacity>
                 <Image source = { Logo } style = { styles.iconSize } />
                 <View style={ styles.title }>
-                    <Text style={ styles.screenTitle }>Notification Preferences</Text>
+                    <Text style={ [styles.screenTitle, {color: colors.text}] }>Notification Preferences</Text>
                 </View>
             </View>
 

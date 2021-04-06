@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput, View } from "react-native";
 import {Button, Item, Toast} from 'native-base';
+import { useTheme } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
 
 function ForgotPassword({navigation}) {
+    const { colors } = useTheme();
     const [email, setEmail] = useState('');
     const popAction = StackActions.pop();
 
@@ -49,10 +51,10 @@ function ForgotPassword({navigation}) {
     return (
         <View style={styles.viewFlex}>
             <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
-                <Text style={ styles.questionTitle }>Enter your email.</Text>
-                <Text style={ styles.detailsTitle }>If we have an account associated with your email, you'll receive an email to reset your password.</Text>
+                <Text style={ [styles.questionTitle, {color: colors.text}] }>Enter your email.</Text>
+                <Text style={ [styles.detailsTitle, {color: colors.text}] }>If we have an account associated with your email, you'll receive an email to reset your password.</Text>
                 <Item style={ styles.emailInput }>
-                    <TextInput style={ styles.textInput } onChangeText={(email) => setEmail(email)} />
+                    <TextInput style={ [styles.textInput, {color: colors.text}] } onChangeText={(email) => setEmail(email)} />
                 </Item>
                 <Button style={ styles.continueButton } onPress={ () => forgotPassword(email) }>
                     <Text style={ styles.continueText }>Submit</Text>

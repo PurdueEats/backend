@@ -1,1 +1,4 @@
-{"name": "PurdueEats"}
+{
+  "name": "PurdueEats",
+  "ios": {"userInterfaceStyle": "automatic"}
+}

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput, View } from "react-native";
+import { useTheme } from '@react-navigation/native';
 import { Button, Item } from 'native-base';
 
 function Name({navigation}) {
+    const { colors } = useTheme();
     const [name, setName] = useState('');
 
     function handleNavigate() {
@@ -11,10 +13,10 @@ function Name({navigation}) {
 
     return (
         <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
-            <Text style={ styles.questionTitle }>Enter your name.</Text>
-            <Text style={ styles.detailsTitle }>This will be the name that we associate with your account.</Text>
+            <Text style={ [styles.questionTitle, {color: colors.text}] }>Enter your name.</Text>
+            <Text style={ [styles.detailsTitle, {color: colors.text}] }>This will be the name that we associate with your account.</Text>
             <Item style={ styles.nameInput }>
-                <TextInput style={ styles.textInput } onChangeText={(name) => setName(name)} />
+                <TextInput style={ [styles.textInput, {color: colors.text}] } onChangeText={(name) => setName(name)} />
             </Item>
             <View style={{flexDirection: "row"}}>
                 <Button style={ styles.continueButton } onPress={ handleNavigate } >

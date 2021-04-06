@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { AirbnbRating} from 'react-native-ratings';
 import { Button, Toast } from 'native-base';
+import { useTheme } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 
 function RecordMeals({route, navigation}) {
+    const { colors } = useTheme();
     //Ratings
     const [rating, setRating] = useState(3);
     //List of selected meals to review
@@ -149,7 +151,7 @@ function RecordMeals({route, navigation}) {
                 <Image style={ styles.logoImage } source={ Logo } />
             </View>
             <View>
-                <Text style={ styles.screenTitle }>Record Meal</Text>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }>Record Meal</Text>
             </View>
             <View style={ styles.ratingView }>
                 <AirbnbRating

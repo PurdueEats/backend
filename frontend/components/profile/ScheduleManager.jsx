@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image, Modal } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useTheme } from '@react-navigation/native';
 import Logo from "../../resources/logo.png";
 import {Button, Toast} from "native-base";
 import CalendarPicker from 'react-native-calendar-picker';
@@ -9,6 +10,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import MaterialTabs from "react-native-material-tabs";
 
 function ScheduleManager({route, navigation}) {
+    const { colors } = useTheme()
     // Calendar Component
     const [day, setDay] = useState(-1);
     const minDate = new Date(); // Today
@@ -166,9 +168,9 @@ function ScheduleManager({route, navigation}) {
                 <Image style={ styles.logoImage } source={ Logo } />
             </View>
             <View>
-                <Text style={ styles.screenTitle }>Edit Schedule</Text>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }>Edit Schedule</Text>
             </View>
-            <Text style={ styles.directionsText }>Tap a day below to edit or view your schedule for that day.</Text>
+            <Text style={ [styles.directionsText, {color: colors.text}] }>Tap a day below to edit or view your schedule for that day.</Text>
             <View style={ styles.daysView }>
                 <CalendarPicker
                     startFromMonday={false}
@@ -704,7 +706,7 @@ function ScheduleManager({route, navigation}) {
                     })()}
                 </Modal>
             </View>
-            <Text style={ styles.directionsText }>Note: these changes will become your new schedule.</Text>
+            <Text style={ [styles.directionsText, {color: colors.text}] }>Note: these changes will become your new schedule.</Text>
             <View style={ styles.finalButtons }>
                 <Button style={ styles.confirmButtonComponent } onPress={() => handleSubmit()}>
                     <Text style={ styles.confirmButtonText }>Update Schedule</Text>
