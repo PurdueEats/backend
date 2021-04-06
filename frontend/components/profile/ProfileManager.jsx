@@ -5,6 +5,7 @@ import { Toast } from 'native-base';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';
+import * as SecureStore from "expo-secure-store";
 
 function ProfileManager({route, navigation}) {
     // Setup re-render on focus change
@@ -228,7 +229,8 @@ function ProfileManager({route, navigation}) {
 
     function handleLogout() {
         if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
-            navigation.navigate("Login")
+            clearCredentials();
+            navigation.navigate("Login");
         }
         else Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
@@ -241,6 +243,14 @@ function ProfileManager({route, navigation}) {
         });
     }
 
+    async function clearCredentials() {
+        try {
+            await SecureStore.deleteItemAsync('UserID', null);
+            await SecureStore.deleteItemAsync('token', null);
+        } catch (error) {
+            // Error saving data
+        }
+    }
 
     function sendMealPlan(planNew) {
         // Send Meal Plan Route
@@ -286,9 +296,7 @@ function ProfileManager({route, navigation}) {
                 "transaction_amount": dollars2,
                 "balance": dollars,
                 "timestamp": time
-
             })
-
         })
             .then(
                 function(response) {
@@ -315,7 +323,6 @@ function ProfileManager({route, navigation}) {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + route.params.token
             },
-
         })
             .then(
                 function(response) {

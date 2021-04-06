@@ -1,16 +1,74 @@
-import React, { useState } from "react";
-import { Image, ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
-import Logo from "../../resources/logo.png";
+import React, {useEffect, useState} from "react";
+import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import * as SecureStore from 'expo-secure-store';
 import { Button, Item, Toast } from 'native-base';
+import Logo from "../../resources/logo.png";
 
 function LoginManager({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // Add use effect to clear email and password on re-render
+    useEffect(() => {
+       retrieveData();
+    }, []);
 
-    function tokenManager() {
-        // TODO add check for token expiration
+    async function retrieveData() {
+        try {
+            const userID = await SecureStore.getItemAsync('UserID');
+            const token = await SecureStore.getItemAsync('token');
+            // If credentials are stored
+            if (userID !== null && token !== null) {
+                // Dummy fetch to check token
+                fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + userID + `/Auth`, {
+                    method: 'GET',
+                    headers : {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                })
+                    .then(
+                        function(response) {
+                            if (response.status === 200 || response.status === 201) {
+                                // Successful GET
+                                navigation.navigate("NavBar", { UserID: userID, token: token });
+                            } else {
+                                console.log('Expired token. Status Code: ' + response.status);
+                                displayTokenExpiration();
+                            }
+                        }
+                    )
+                    .catch(function(err) {
+                        console.log('Fetch Error :-S', err);
+                    });
+            } else {
+                // No credentials, do nothing
+                console.log("No found credentials.")
+            }
+        } catch (error) {
+            // Error retrieving data
+        }
+    }
+
+    function displayTokenExpiration() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Your sign in has expired. Please sign in again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    async function storeData(UserID, token) {
+        try {
+            await SecureStore.setItemAsync('UserID', UserID);
+            await SecureStore.setItemAsync('token', token);
+        } catch (error) {
+            // Error saving data
+        }
     }
 
     function displayError() {
@@ -49,7 +107,8 @@ function LoginManager({navigation}) {
                     } else {
                         // Examine the text in the response
                         response.json().then(function(data) {
-                            // Login successful, redirect to MealPreferences
+                            // Login successful, store & redirect to MealPreferences
+                            storeData(data.UserID, data.token);
                             navigation.navigate("MealPreferences", { UserID: data.UserID, token: data.token });
                         });
                     }
@@ -61,15 +120,15 @@ function LoginManager({navigation}) {
     }
 
     function handleForgotPassword() {
-        navigation.navigate("ForgotPassword")
+        navigation.navigate("ForgotPassword");
     }
 
     function handleSignUp() {
-        navigation.navigate("Name")
+        navigation.navigate("Name");
     }
 
     return (
-        <ScrollView>
+        <View>
             <View style={ styles.iconPosition }>
                 <Image source = { Logo } />
                 <Text style={ styles.appName }>PurdueEats</Text>
@@ -102,7 +161,7 @@ function LoginManager({navigation}) {
                     </View>
                 </View>
             </View>
-        </ScrollView>
+        </View>
     );
 }
 
