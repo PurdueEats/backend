@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Button, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
+import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import { StackActions } from '@react-navigation/native';
@@ -9,6 +10,7 @@ import SelectMultiple from 'react-native-select-multiple'
 import { SearchBar } from 'react-native-elements';
 
 function FavoriteMeals({route, navigation}) {
+    const { colors } = useTheme();
     //Total meals list
     const [meals, selectedMeals] = React.useState([]);
     //Tab selection
@@ -270,7 +272,7 @@ function FavoriteMeals({route, navigation}) {
                     </View>
                     <View style={ styles.notiView }>
                         <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("Notifications", { UserID: route.params.UserID, token: route.params.token }) }>
-                            <Text style={ styles.textNormal}>Customize Notifications</Text>
+                            <Text style={ [styles.textNormal, {color: colors.text}] }>Customize Notifications</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
