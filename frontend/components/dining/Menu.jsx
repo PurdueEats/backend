@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useTheme } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import { Button } from 'native-base';
 import { StackActions } from '@react-navigation/native';
@@ -9,23 +10,21 @@ import { SearchBar } from 'react-native-elements';
 import { AirbnbRating } from "react-native-ratings";
 
 function Menu({route, navigation}) {
+    const { colors } = useTheme();
     const [filter, setFilter] = useState('');
     const [legendModalVisible, setLegendModalVisible] = useState(false);
     const [filterModalVisible, setFilterModalVisible] = useState(false);
     const [searched, setSearched] = useState('');
 
-    // search filtering
+    // Search filtering
     const [allData, setAllData] = useState([]);
     const [filterData, setFilterData] = useState([]);
 
-    //drop down filter
+    // Drop down filter
     const [vegetarianData, setVegetarianData] = useState([]);
     const [glutenFreeData, setGlutenFreeData] = useState([]);
     const [dairyFreeData, setDairyFreeData] = useState([]);
     const [nutFreeData, setNutFreeData] = useState([]);
-//     const [favData, setFavData] = useState([]);
-
-
 
     //
     const [vegetarian, setVegetarian] = useState(false);
@@ -33,14 +32,12 @@ function Menu({route, navigation}) {
     const [dairyFree, setDairyFree] = useState(false);
     const [nutFree, setNutFree] = useState(false);
 
-    //fav
+    // Favorite meals
     const [currentSelection, setCurrentSelection] = useState([]);
     const favData = allData.filter(a => currentSelection.some(c => c.value === a.menu_item.menu_item_id));
     const [favDataName, setFavDataName] = useState([]);
     const [mealName, setMealName] = useState([]);
     const [favMealName, setFavMealName] = useState([]);
-
-    const popAction = StackActions.pop();
 
     useEffect(() => {
         getMeals();
@@ -58,8 +55,7 @@ function Menu({route, navigation}) {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                /* 'Authorization': 'Bearer ' + route.params.token */
+                'Accept': 'application/json'
             },
         })
             .then(
@@ -72,13 +68,6 @@ function Menu({route, navigation}) {
                                 .map((e, i, final) => final.indexOf(e) === i && i)
                                 .filter(e => data[e])
                                 .map(e => data[e])
-//                             favData.map(menuItem => {
-//                                 favDataName.push(menuItem["menu_item"]["item_name"]);
-//                                 })
-//                             setFavDataName(favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
-//                             const name = favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] }));
-//                             console.log("here located")
-//                                 console.log(name);
                             setMealName(data.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
 
                             data.map(menuItem => {
@@ -116,12 +105,11 @@ function Menu({route, navigation}) {
 
     function convertName() {
         setFavMealName(favData.map(menuItem => ({ label: menuItem["menu_item"]["item_name"], value: menuItem["menu_item"]["menu_item_id"] })));
-        console.log(favMealName);
     }
 
     // GET request to get the selected favorite item(s)
     function getFavMeal() {
-       fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -129,23 +117,23 @@ function Menu({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
         })
-        .then(
-            function(response) {
-                if (response.status === 200 || response.status === 201) {
-                    // Successful GET
-                    // Set fields to correct values
-                    response.json().then(function(data) {
-                        setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
-                    });
-                } else {
-                    console.log('Auth like there was a problem with favorite meals fetching. Status Code: ' +
-                        response.status);
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        // Set fields to correct values
+                        response.json().then(function(data) {
+                            setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
+                        });
+                    } else {
+                        console.log('Auth like there was a problem with favorite meals fetching. Status Code: ' +
+                            response.status);
+                    }
                 }
-            }
-        )
-        .catch(function(err) {
-            console.log('Fetch Error :-S', err);
-        });
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
     }
 
     function searchFiltering (searchText) {
@@ -169,7 +157,7 @@ function Menu({route, navigation}) {
             if (filter === "Favorite Items") {
                 setFilterData(favData);
             }
-//             setFilterData(allData);
+//             setFilterData(allData)
         }
         if(searchText) {
             const searchData = allData.filter(function (menuItem)
@@ -224,7 +212,7 @@ function Menu({route, navigation}) {
                 MealID: menuItem.item.menu_item.menu_item_id}) }>
                 <View style={{flexDirection: "column"}}>
                     <View style = {{flexDirection: "row"}}>
-                        <Text style={styles.firstItem}>{menuItem.item.menu_item.item_name}</Text>
+                        <Text style={ [styles.firstItem, {color: colors.text}] }>{menuItem.item.menu_item.item_name}</Text>
                         <View style={{position: 'absolute', right: 10, bottom: -15}}>
                             <MaterialCommunityIcons name="arrow-right" color="red" size={30}/>
                         </View>
@@ -232,7 +220,7 @@ function Menu({route, navigation}) {
                     <View style ={{flexDirection: "row", marginLeft: "2%"}}>
                         {menuItem.item.menu_item.is_vegetarian ? (
                             <View >
-                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={30}/>
+                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" size={30}/>
                             </View>
                         ): (
                             <View>
@@ -248,7 +236,7 @@ function Menu({route, navigation}) {
                         )}
                         {!menuItem.item.menu_item.has_milk ? (
                             <View>
-                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={30}/>
+                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="#84b2c2" size={30}/>
                             </View>
                         ): (
                             <View>
@@ -256,26 +244,26 @@ function Menu({route, navigation}) {
                         )}
                         {!menuItem.item.menu_item.has_peanuts && !menuItem.item.menu_item.has_treenuts ? (
                             <View>
-                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={30}/>
+                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="#C16718" size={30}/>
                             </View>
                         ): (
                             <View>
                             </View>
                         )}
                         {favMealName.map(function (meal, index) {
-                                return (
-                                    <View>
-                                        {meal.value === menuItem.item.menu_item.menu_item_id ? (
-                                            <View>
-                                                <MaterialCommunityIcons name="star" color="red" size={30}/>
-                                            </View>
-                                        ): (
-                                            <View>
-                                            </View>
-                                        )}
-                                    </View>
-                                );
-                            })}
+                            return (
+                                <View>
+                                    {meal.value === menuItem.item.menu_item.menu_item_id ? (
+                                        <View>
+                                            <MaterialCommunityIcons name="star" color="#FFD133" size={30}/>
+                                        </View>
+                                    ): (
+                                        <View>
+                                        </View>
+                                    )}
+                                </View>
+                            );
+                        })}
                     </View>
                 </View>
             </TouchableOpacity>
@@ -288,7 +276,7 @@ function Menu({route, navigation}) {
                 <TouchableOpacity onPress={() => navigation.dispatch(StackActions.pop(1))}>
                     <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                 </TouchableOpacity>
-                <Text style={ styles.screenTitle }>Menu</Text>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }>Menu</Text>
                 <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(true) }>
                     <MaterialCommunityIcons name="help-circle-outline" color="red" size={30}/>
                 </TouchableOpacity>
@@ -308,7 +296,7 @@ function Menu({route, navigation}) {
                                 </View>
                             </TouchableOpacity >
                             <View style={{flexDirection: "row"}}>
-                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="red" size={20}/>
+                                <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" size={20}/>
                                 <Text style={styles.modalText}>Vegetarian Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
@@ -316,15 +304,15 @@ function Menu({route, navigation}) {
                                 <Text style={styles.modalText}>Gluten Free Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
-                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="red" size={20}/>
+                                <MaterialCommunityIcons name="alpha-d-circle-outline" color="#84b2c2" size={20}/>
                                 <Text style={styles.modalText}>Dairy Free Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
-                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="red" size={20}/>
+                                <MaterialCommunityIcons name="alpha-n-circle-outline" color="#C16718" size={20}/>
                                 <Text style={styles.modalText}>Nut Free Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
-                                <MaterialCommunityIcons name="star" color="red" size={20}/>
+                                <MaterialCommunityIcons name="star" color="#FFD133" size={20}/>
                                 <Text style={styles.modalText}>Favorite Item</Text>
                             </View>
                         </View>
@@ -402,12 +390,11 @@ function Menu({route, navigation}) {
                     </View>
                 </View>
             </Modal>
-            <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)} keyExtractor={(menuItem) => menuItem.menu_item_id } extraData={allData}/>
+            <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)}
+                      keyExtractor={item => { Math.random().toString(36).substring(5) } } extraData={allData}/>
         </ScrollView>
     );
 }
-
-
 
 const styles = StyleSheet.create({
     pageView: {
