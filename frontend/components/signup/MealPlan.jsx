@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text } from "react-native";
 import { Button } from 'native-base';
+import { useTheme } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 function MealPlan({route, navigation}) {
+    const { colors } = useTheme();
     const [mealPlan, setMealPlan] = useState('');
 
     function handleLogin() {
@@ -71,8 +73,8 @@ function MealPlan({route, navigation}) {
 
     return (
         <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
-            <Text style={ styles.questionTitle }>Select your meal plan.</Text>
-            <Text style={ styles.detailsTitle }>This will be the meal plan and dining dollar amount that we associate with your account.</Text>
+            <Text style={ [styles.questionTitle, {color: colors.text}] }>Select your meal plan.</Text>
+            <Text style={ [styles.detailsTitle, {color: colors.text}] }>This will be the meal plan and dining dollar amount that we associate with your account.</Text>
             <DropDownPicker
                 items={[
                     {label: '10 Meal Plan +100', value: '10 Meal Plan +100'},

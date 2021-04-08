@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
+import { useTheme } from '@react-navigation/native';
 import { AirbnbRating } from 'react-native-ratings';
 import { Button, Toast } from 'native-base';
 import Logo from "../../resources/logo.png";
 
 function MealPreferences({route, navigation}) {
+    const { colors } = useTheme();
     const [currMeals, setCurrMeals] = useState([]);
     const ratings = [ 3, 3, 3, 3, 3 ];
     var moment = require('moment-timezone');
@@ -16,7 +18,6 @@ function MealPreferences({route, navigation}) {
             headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                /* 'Authorization': 'Bearer ' + route.params.token */
             },
         })
             .then(
@@ -39,49 +40,48 @@ function MealPreferences({route, navigation}) {
     }, []);
 
     function handleSubmit() {
-        handleMealPreferences();
+        sendMealPreferences();
         navigation.navigate("NavBar", { UserID: route.params.UserID, token: route.params.token });
     }
 
-    function renderStars() {
-        return (
-            <View
-                style={{
-                    borderBottomColor: '#c4baba',
-                    borderBottomWidth: 1,
-                    marginTop: "2%",
-                    marginBottom: "5%"
-                }}
-            />
-        );
-
-    }
-
-    function handleMealPreferences() {
-        // console.log(currMeals.length)
-        // for (let i = 0; i < currMeals.length; i++) {
-        //     sendMealPreference(i);
-        // }
-        sendMealPreference(0);
-        // sendMealPreference(1);
-        // sendMealPreference(2);
-        // sendMealPreference(3);
-        // sendMealPreference(4);
-    }
-
-    function sendMealPreference(index) {
+    function sendMealPreferences() {
         fetch("https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/", {
             method: 'POST',
             headers : {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                "user_id": route.params.UserID,
-                "menu_item_id": currMeals[index].menu_item_id,
-                "rating": ratings[index],
-                "timestamp": time
-            })
+            body: JSON.stringify([{
+                    "user_id": route.params.UserID,
+                    "menu_item_id": currMeals[0].menu_item_id,
+                    "rating": ratings[0],
+                    "timestamp": time
+                },
+                {
+                    "user_id": route.params.UserID,
+                    "menu_item_id": currMeals[1].menu_item_id,
+                    "rating": ratings[1],
+                    "timestamp": time
+                },
+                // {
+                //     "user_id": route.params.UserID,
+                //     "menu_item_id": currMeals[2].menu_item_id,
+                //     "rating": ratings[2],
+                //     "timestamp": time
+                // },
+                // {
+                //     "user_id": route.params.UserID,
+                //     "menu_item_id": currMeals[3].menu_item_id,
+                //     "rating": ratings[3],
+                //     "timestamp": time
+                // },
+                {
+                    "user_id": route.params.UserID,
+                    "menu_item_id": currMeals[4].menu_item_id,
+                    "rating": ratings[4],
+                    "timestamp": time
+                }]
+            )
         })
             .then(
                 function(response) {
@@ -129,7 +129,7 @@ function MealPreferences({route, navigation}) {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={ styles.screenView }>
                 <Image style={ styles.logoImage } source={ Logo } />
-                <Text style={ styles.screenTitle }>Enter your meal preferences</Text>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }>Enter your meal preferences</Text>
             </View>
 
 
@@ -142,7 +142,7 @@ function MealPreferences({route, navigation}) {
                         }
                        return (
                             <View key={index} style={ styles.individualRatingComponents }>
-                                <Text key={index + "Text"} style={ styles.mealText }>{meal.item_name}</Text>
+                                <Text key={index + "Text"} style={ [styles.mealText, {color: colors.text}] }>{meal.item_name}</Text>
                                 <AirbnbRating
                                     key={index + "Rating"}
                                     count={5}

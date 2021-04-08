@@ -251,6 +251,7 @@ function Menu({route, navigation}) {
                             </View>
                         )}
                         {favMealName.map(function (meal, index) {
+<<<<<<< HEAD
                             return (
                                 <View>
                                     {meal.value === menuItem.item.menu_item.menu_item_id ? (
@@ -264,6 +265,21 @@ function Menu({route, navigation}) {
                                 </View>
                             );
                         })}
+=======
+                                return (
+                                    <View>
+                                        {meal.value === menuItem.item.menu_item.menu_item_id ? (
+                                            <View>
+                                                <MaterialCommunityIcons name="star" color="#FFD133" size={30}/>
+                                            </View>
+                                        ): (
+                                            <View>
+                                            </View>
+                                        )}
+                                    </View>
+                                );
+                            })}
+>>>>>>> 6d423ea3e99e7351afb9649b3dfb56dd7233c8fb
                     </View>
                 </View>
             </TouchableOpacity>

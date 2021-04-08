@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Modal, ScrollView } from "react-native";
 import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'native-base';
+import { useTheme } from '@react-navigation/native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';
+import * as SecureStore from "expo-secure-store";
 
 function ProfileManager({route, navigation}) {
+    const { colors } = useTheme();
     // Setup re-render on focus change
     const isFocused = useIsFocused();
 
@@ -77,7 +80,6 @@ function ProfileManager({route, navigation}) {
                 putName(nameNew);
             }
         } else {
-
             Toast.show({
                 style: { backgroundColor: "red", justifyContent: "center" },
                 position: "top",
@@ -136,7 +138,7 @@ function ProfileManager({route, navigation}) {
         setModalDining(!setModalDining);
         if (!delBool && !nameBool && !planBool && !passwordBool && !dollarsBool && !swipesBool) {
 
-            if (add == 'Add') {
+            if (add === 'Add') {
                 if ((dollars + subtract) > 999999999) {
                     Toast.show({
                         style: { backgroundColor: "red", justifyContent: "center" },
@@ -150,8 +152,6 @@ function ProfileManager({route, navigation}) {
                     return
 
                 }
-
-
                 setDollarsBool(true);
                 sendDiningDollars(0 - subtract);
             } else {
@@ -165,10 +165,7 @@ function ProfileManager({route, navigation}) {
                         },
                         duration: 3000
                     });
-
                     return;
-
-
                 }
                 setDollarsBool(true);
                 sendDiningDollars(subtract);
@@ -234,7 +231,8 @@ function ProfileManager({route, navigation}) {
 
     function handleLogout() {
         if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
-            navigation.navigate("Login")
+            clearCredentials();
+            navigation.navigate("Login");
         }
         else Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
@@ -247,6 +245,14 @@ function ProfileManager({route, navigation}) {
         });
     }
 
+    async function clearCredentials() {
+        try {
+            await SecureStore.deleteItemAsync('UserID', null);
+            await SecureStore.deleteItemAsync('token', null);
+        } catch (error) {
+            // Error saving data
+        }
+    }
 
     function sendMealPlan(planNew) {
         // Send Meal Plan Route
@@ -292,9 +298,7 @@ function ProfileManager({route, navigation}) {
                 "transaction_amount": dollars2,
                 "balance": dollars,
                 "timestamp": time
-
             })
-
         })
             .then(
                 function(response) {
@@ -321,7 +325,6 @@ function ProfileManager({route, navigation}) {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + route.params.token
             },
-
         })
             .then(
                 function(response) {
@@ -593,10 +596,10 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity active = { .5 } onPress={() =>  handleNameExit()}>
-                            <Image style={ styles.backImage }  source={require('../../resources/back.png')}/>
+                        <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleNameExit()}>
+                            <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
-                        <Text style={styles.modalText}>Set new name</Text>
+                        <Text style={ styles.modalText }>Set new name</Text>
                         <TextInput style={ styles.textEnter } onChangeText={(nameNew) => setNameNew(nameNew)} />
                         <View style={ styles.modalLine }/>
                     </View>
@@ -609,21 +612,21 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity active = { .5 } onPress={() =>  handleDiningExit(transact)}>
+                        <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleDiningExit(transact)}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
-                            <TouchableOpacity active = { .5 } onPress={() =>  handleSub()}>
-                                <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
+                            <TouchableOpacity active={0.5} style={ styles.symbolStyle } onPress={() =>  handleSub()}>
+                                <MaterialCommunityIcons name="minus" color="white" size={30}/>
                             </TouchableOpacity>
-                            <Text style={styles.modalText}>                </Text>
-                            <TouchableOpacity active = { .5 } onPress={() =>  handleAdd()}>
-                                <Image style={ styles.backImage } source={require('../../resources/add.png')}/>
+                            <Text style={ [styles.modalText, {color: colors.text}] }>                </Text>
+                            <TouchableOpacity active={0.5} style={ styles.symbolStyle } onPress={() =>  handleAdd()}>
+                                <MaterialCommunityIcons name="plus" color="white" size={30}/>
                             </TouchableOpacity>
                         </View>
-                        <Text style={styles.dollarsText}>How many dollars?</Text>
+                        <Text style={ styles.dollarsText }>How many dollars?</Text>
                         <View style={styles.rowBetween}>
-                            <Text style={styles.big}>{sign}</Text>
+                            <Text style={ styles.big }>{sign}</Text>
                             <TextInput style={ styles.textEnter } onChangeText={(transact) => setTransact(transact)} />
                         </View>
                         <View style={ styles.modalLine }/>
@@ -637,12 +640,12 @@ function ProfileManager({route, navigation}) {
             >
                 <View>
                     <View style={styles.modalView}>
-                        <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesExit()}>
+                        <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleSwipesExit()}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
-                        <Text style={styles.dollarsText}>Subtract a swipe from your total?</Text>
-                        <TouchableOpacity active = { .5 } onPress={() =>  handleSwipesSub()}>
-                            <Image style={ styles.backImage } source={require('../../resources/minus.png')}/>
+                        <Text style={ styles.dollarsText }>Subtract a swipe from your total?</Text>
+                        <TouchableOpacity active={0.5} style={ styles.symbolStyleBig }  onPress={() =>  handleSwipesSub()}>
+                            <MaterialCommunityIcons name="minus" color="white" size={30}/>
                         </TouchableOpacity>
                         <View style={styles.rowBetween}>
 
@@ -651,42 +654,38 @@ function ProfileManager({route, navigation}) {
                 </View>
             </Modal>
             <View style={ styles.profileHeader }>
-                <View style={ styles.backImage }>
-                    <Text style={ styles.profileWord }>           </Text>
-                </View>
-                <Text style={ styles.profileWord }>Profile</Text>
-                <Text style={ styles.profileWord }>           </Text>
+                <Text style={ [styles.profileWord, {color: colors.text}] }>Profile</Text>
             </View>
             <View style={ styles.viewCenter }>
                 <Image style={ styles.profileImage } defaultSource={require('../../resources/train.jpg')} source={{uri: 'data:image/jpeg;base64,' + picture}}
                 />
             </View>
             <View style={styles.rowBetween}>
-                <Text style={ styles.textNormal }>   {name} </Text>
+                <Text style={ [styles.textNormal, {color: colors.text}] }>   {name} </Text>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalName(true) }>
                     <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.rowBetween}>
-                <Text style={ styles.textNormal }>   {email} </Text>
+                <Text style={ [styles.textNormal, {color: colors.text}] }>   {email} </Text>
             </View>
             <View style={ styles.borderLine }/>
             <View/>
             <View style={styles.rowBetween}>
-                <Text style={ styles.textNormal }>   {plan} </Text>
+                <Text style={ [styles.textNormal, {color: colors.text}] }>   {plan} </Text>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPlan(true) }>
                     <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.rowBetween}>
-                <Text style={ styles.textNormal }>   Dining Dollars Left: ${ dollars } </Text>
+                <Text style={ [styles.textNormal, {color: colors.text}] }>   Dining Dollars Left: ${ dollars } </Text>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalDining(true) }>
                     <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.colBetween}/>
             <View style={styles.rowBetween}>
-                <Text style={ styles.textNormal }>   Meal Swipes Left: { swipes } </Text>
+                <Text style={ [styles.textNormal, {color: colors.text}] }>   Meal Swipes Left: { swipes } </Text>
                 <View style={styles.rowBetween}>
                     <TouchableOpacity active = { .5 } onPress={() =>  setModalSwipes(true) }>
                         <Image style={ styles.editImage } source={require('../../resources/edit.png')}/>
@@ -699,8 +698,8 @@ function ProfileManager({route, navigation}) {
                 >
                     <View>
                         <View style={styles.modalView}>
-                            <TouchableOpacity active = { .5 } onPress={() => handlePlanExit(planNew) }>
-                                <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
+                            <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() => handlePlanExit(planNew) }>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
                             <DropDownPicker
                                 items={[
@@ -727,10 +726,10 @@ function ProfileManager({route, navigation}) {
                 >
                     <View>
                         <View style={styles.modalView}>
-                            <TouchableOpacity active = { .5 } onPress={() => handlePassExit(passNew) }>
-                                <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
+                            <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() => handlePassExit(passNew) }>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
-                            <Text style={styles.modalText}>Set password</Text>
+                            <Text style={ styles.modalText }>Set password</Text>
                             <TextInput style={ styles.textEnter } onChangeText={(password2) => setPassNew(password2)} />
                             <View style={ styles.modalLine }/>
                         </View>
@@ -741,26 +740,26 @@ function ProfileManager({route, navigation}) {
                 <View style={ styles.borderLine }/>
                 <TouchableOpacity active = { .5 } onPress={() =>
                     navigation.navigate("Track", { UserID: route.params.UserID, token: route.params.token }) }>
-                    <Text style={ styles.textNormal}>Track Meals</Text>
+                    <Text style={ [styles.textNormal, {color: colors.text}] }>Track Meals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  navigation.navigate("FavoriteMeal", { UserID: route.params.UserID, token: route.params.token }) }>
-                    <Text style={ styles.textNormal}>Favorite Meals</Text>
+                    <Text style={ [styles.textNormal, {color: colors.text}] }>Favorite Meals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalPassword(true) }>
-                    <Text style={ styles.textNormal}>Change Password</Text>
+                    <Text style={ [styles.textNormal, {color: colors.text}] }>Change Password</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  pickProfilePicture() }>
-                    <Text style={ styles.textNormal}>Change Profile Picture</Text>
+                    <Text style={ [styles.textNormal, {color: colors.text}] }>Change Profile Picture</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>
                     navigation.navigate("EditSchedule", { UserID: route.params.UserID, token: route.params.token }) }>
-                    <Text style={ styles.textNormal}>Change Schedule</Text>
+                    <Text style={ [styles.textNormal, {color: colors.text}] }>Change Schedule</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalDelete(true) }>
-                    <Text style={ styles.textNormalRed}>Delete Account</Text>
+                    <Text style={ styles.textNormalRed }>Delete Account</Text>
                 </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={ () => handleLogout() }>
-                    <Text style={ styles.textNormal }>Logout</Text>
+                    <Text style={ [styles.textNormal, {color: colors.text}] }>Logout</Text>
                 </TouchableOpacity>
 
                 <Modal animationType="slide" transparent={true} visible={modalDelete}
@@ -770,8 +769,8 @@ function ProfileManager({route, navigation}) {
                 >
                     <View>
                         <View style={styles.modalView}>
-                            <TouchableOpacity active = { .5 } onPress={() => setModalDelete(!modalDelete) }>
-                                <Image style={ styles.backImage } source={require('../../resources/back.png')}/>
+                            <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() => setModalDelete(!modalDelete) }>
+                                <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity >
                             <Text style={styles.modalText}>Delete Account?</Text>
                             <TouchableOpacity active = { .5 } onPress={ () => deleteAccount() }>
@@ -833,9 +832,8 @@ const styles = StyleSheet.create({
 
     profileHeader: {
         marginTop: "8%",
+        marginBottom: "5%",
         alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-between",
         color: "black",
         fontSize: 22,
     },
@@ -925,9 +923,9 @@ const styles = StyleSheet.create({
 
     },
     dollarsText: {
-        color: "black",
-        marginBottom: "1%",
-
+        marginTop: "2%",
+        marginBottom: "2%",
+        color: "black"
     },
 
     big: {
@@ -966,6 +964,23 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
+    },
+
+    symbolStyle: {
+        height: 30,
+        width: 30,
+        backgroundColor: 'red',
+        color: 'white',
+
+    },
+
+    symbolStyleBig: {
+        marginTop: "10%",
+        height: 30,
+        width: 30,
+        backgroundColor: 'red',
+        color: 'white',
+
     },
 
 });

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, Text, TextInput } from "react-native";
+import { useTheme } from '@react-navigation/native';
 import { Button, Item, Toast } from 'native-base';
 
 function Password({route, navigation}) {
+    const { colors } = useTheme();
     const [password, setPassword] = useState('');
 
     function displayError() {
@@ -51,10 +53,10 @@ function Password({route, navigation}) {
 
     return (
         <SafeAreaView style={ [styles.screen, {flexDirection:"column"}] }>
-            <Text style={ styles.questionTitle }>Enter your password.</Text>
-            <Text style={ styles.detailsTitle }>Passwords must be at least 6 characters long.</Text>
+            <Text style={ [styles.questionTitle, {color: colors.text}] }>Enter your password.</Text>
+            <Text style={ [styles.detailsTitle, {color: colors.text}] }>Passwords must be at least 6 characters long.</Text>
             <Item style={ styles.passwordInput }>
-                <TextInput style={ styles.textInput } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
+                <TextInput style={ [styles.textInput, {color: colors.text}] } secureTextEntry={true} onChangeText={(password) => setPassword(password)} />
             </Item>
             <Button style={ styles.continueButton } onPress={ registerUser }>
                 <Text style={ styles.continueText }>Continue</Text>

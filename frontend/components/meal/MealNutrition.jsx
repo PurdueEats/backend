@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { StackActions } from "@react-navigation/native";
+import { useTheme } from '@react-navigation/native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ProgressChart } from "react-native-chart-kit";
 
 function MealNutrition({route, navigation}) {
+    const { colors } = useTheme();
     // Nutritional Information
     const [servingSize, setServingSize] = useState('');
     const [calories, setCalories] = useState('');
@@ -22,6 +24,13 @@ function MealNutrition({route, navigation}) {
     const [carbsValue, setCarbsValue] = useState('0%');
     const [protein, setProtein] =  useState('');
     const [proteinValue, setProteinValue] = useState('0%');
+
+    // Chart Data
+    const [chartProtein, setChartProtein] = useState(0);
+    const [chartCholesterol, setChartCholesterol] = useState(0);
+    const [chartSodium, setChartSodium] = useState(0);
+    const [chartCarbs, setChartCarbs] = useState(0);
+    const [chartFat, setChartFat] = useState(0);
 
     useEffect(() => {
         // Meal Nutrition Route
@@ -55,6 +64,43 @@ function MealNutrition({route, navigation}) {
                             setCarbsValue(data["Nutrition"][7]["DailyValue"])
                             setProtein(data["Nutrition"][10]["LabelValue"])
                             setProteinValue(data["Nutrition"][10]["DailyValue"])
+
+                            // Set chart values
+                            // Protein
+                            const proteinVal = parseFloat(data["Nutrition"][10]["DailyValue"].slice(0, -1));
+                            if (proteinVal > 100) {
+                                setChartProtein(100);
+                            } else {
+                                setChartProtein(parseFloat(data["Nutrition"][10]["DailyValue"].slice(0, -1)))
+                            }
+                            // Cholesterol
+                            const cholesterolVal = parseFloat(data["Nutrition"][5]["DailyValue"].slice(0, -1));
+                            if (cholesterolVal > 100) {
+                                setChartCholesterol(100);
+                            } else {
+                                setChartCholesterol(cholesterolVal);
+                            }
+                            // Sodium
+                            const sodiumVal = parseFloat(data["Nutrition"][6]["DailyValue"].slice(0, -1));
+                            if (sodiumVal > 100) {
+                                setChartSodium(100);
+                            } else {
+                                setChartSodium(sodiumVal);
+                            }
+                            // Carbs
+                            const carbsVal = parseFloat(data["Nutrition"][7]["DailyValue"].slice(0, -1));
+                            if (carbsVal > 100) {
+                                setChartCarbs(100);
+                            } else {
+                                setChartCarbs(carbsVal)
+                            }
+                            // Fat
+                            const fatVal = parseFloat(data["Nutrition"][3]["DailyValue"].slice(0, -1));
+                            if (fatVal > 100) {
+                                setChartFat(100);
+                            } else {
+                                setChartFat(fatVal)
+                            }
                         });
                     }
                 }
@@ -70,26 +116,26 @@ function MealNutrition({route, navigation}) {
                 <TouchableOpacity onPress={ () => navigation.dispatch(StackActions.pop(1))}>
                     <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                 </TouchableOpacity>
-                <Text style={ styles.screenTitle }>{route.params.MealName}</Text>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }>{route.params.MealName}</Text>
             </View>
             <View style={ styles.bodyView }>
-                <Text style={ styles.dataHeader }>Nutritional Information</Text>
+                <Text style={ [styles.dataHeader, {color: colors.text}] }>Nutritional Information</Text>
                 <View style={ styles.sameLineDataView }>
-                    <Text style={ styles.data }>Serving Size </Text>
-                    <Text style={ styles.data }>{servingSize}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>Serving Size </Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>{servingSize}</Text>
                 </View>
                 <View style={ styles.sameLineDataView }>
-                    <Text style={ styles.data }>Calories </Text>
-                    <Text style={ styles.data }>{calories.toLocaleString()}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>Calories </Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>{calories.toLocaleString()}</Text>
                 </View>
-                <Text style={ styles.dataHeader }>Macros % of Daily Value</Text>
+                <Text style={ [styles.dataHeader, {color: colors.text}] }>Macros % of Daily Value</Text>
                 <View style={{ marginTop: "5%" }}>
                     <ProgressChart
                         data={{
                             labels: ["Fat", "Carbs.", "Sodium", "Cholest.", "Protein"],
-                            data: [ parseFloat(fatValue.slice(0, -1))/100, parseFloat(carbsValue.slice(0, -1))/100,
-                                parseFloat(sodiumValue.slice(0, -1))/100, parseFloat(cholesterolValue.slice(0, -1))/100,
-                                parseFloat(proteinValue.slice(0, -1))/100 ]
+                            data: [ chartFat/100, chartCarbs/100,
+                                chartSodium/100, chartCholesterol/100,
+                                chartProtein/100 ]
                         }}
                         width={Dimensions.get("window").width - 20}
                         height={250}
@@ -105,32 +151,32 @@ function MealNutrition({route, navigation}) {
                     />
                 </View>
                 <View style={ styles.sameLineDataView }>
-                    <Text style={ styles.dataHeader }>Macros</Text>
-                    <Text style={ styles.dataHeader }>% Daily Value</Text>
+                    <Text style={ [styles.dataHeader, {color: colors.text}] }>Macros</Text>
+                    <Text style={ [styles.dataHeader, {color: colors.text}] }>% Daily Value</Text>
                 </View>
                 <View style={ styles.sameLineDataView }>
-                    <Text style={ styles.data }>Total fat {fat} </Text>
-                    <Text style={ styles.data }>{fatValue}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>Total fat {fat} </Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>{fatValue}</Text>
                 </View>
                 <View style={ styles.sameLineDataView }>
-                    <Text style={ styles.data }>Saturated fat {saturatedFat}</Text>
-                    <Text style={ styles.data }>{saturatedFatValue}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>Saturated fat {saturatedFat}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>{saturatedFatValue}</Text>
                 </View>
                 <View style={ styles.sameLineDataView }>
-                    <Text style={ styles.data }>Cholesterol {cholesterol}</Text>
-                    <Text style={ styles.data }>{cholesterolValue}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>Cholesterol {cholesterol}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>{cholesterolValue}</Text>
                 </View>
                 <View style={ styles.sameLineDataView }>
-                    <Text style={ styles.data }>Sodium {sodium}</Text>
-                    <Text style={ styles.data }>{sodiumValue}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>Sodium {sodium}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>{sodiumValue}</Text>
                 </View>
                 <View style={ styles.sameLineDataView }>
-                    <Text style={ styles.data }>Total Carbohydrates {carbs}</Text>
-                    <Text style={ styles.data }>{carbsValue}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>Total Carbohydrates {carbs}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>{carbsValue}</Text>
                 </View>
                 <View style={ styles.sameLineDataView }>
-                    <Text style={ styles.data }>Protein {protein}</Text>
-                    <Text style={ styles.data }>{proteinValue}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>Protein {protein}</Text>
+                    <Text style={ [styles.data, {color: colors.text}] }>{proteinValue}</Text>
                 </View>
             </View>
         </ScrollView>

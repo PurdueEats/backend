@@ -3,6 +3,7 @@ import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TouchableOpacity
 import { useIsFocused } from '@react-navigation/native';
 import { ProgressChart } from "react-native-chart-kit";
 import { Button } from 'native-base';
+import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
 import Logo from "../../resources/logo.png";
 import Earhart from "../../resources/earhart.png";
@@ -12,6 +13,7 @@ import Hillenbrand from "../../resources/hillenbrand.png";
 import Windsor from "../../resources/windsor.png";
 
 function DiningFacilities({route, navigation}) {
+    const { colors } = useTheme();
     // Setup re-render on focus change
     const isFocused = useIsFocused();
 
@@ -130,8 +132,8 @@ function DiningFacilities({route, navigation}) {
             {selectedTab === 0 ? (
                 <View style={{ marginBottom: "5%" }}>
                     <View style={ styles.recommendedView }>
-                        <Text style={ styles.dataHeader }>Your eating habits</Text>
-                        <Text style={ styles.directionsText }>Rings show % of the NHS recommended weekly totals.</Text>
+                        <Text style={ [styles.dataHeader, {color: colors.text}] }>Your eating habits</Text>
+                        <Text style={ [styles.directionsText, {color: colors.text}] }>Rings show % of the NHS recommended weekly totals.</Text>
                     </View>
                     <ProgressChart
                         data={{
@@ -151,21 +153,21 @@ function DiningFacilities({route, navigation}) {
                         }}
                     />
                     <View style={ styles.dataView }>
-                        <Text style={ styles.dataText }>
+                        <Text style={ [styles.dataText, {color: colors.text}] }>
                             <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories.toLocaleString()} of 14,000
                         </Text>
-                        <Text style={ styles.dataText }>
+                        <Text style={ [styles.dataText, {color: colors.text}] }>
                             <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs.toLocaleString()}g of 1,900g
                         </Text>
-                        <Text style={ styles.dataText }>
+                        <Text style={ [styles.dataText, {color: colors.text}] }>
                             <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat.toLocaleString()}g of 200g
                         </Text>
-                        <Text style={ styles.dataText }>
+                        <Text style={ [styles.dataText, {color: colors.text}] }>
                             <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein.toLocaleString()}g of 350g
                         </Text>
                     </View>
                     <View style={ styles.recommendedView }>
-                        <Text style={ styles.dataHeader }>These meals fit your eating habits</Text>
+                        <Text style={ [styles.dataHeader, {color: colors.text}] }>These meals fit your eating habits</Text>
                     </View>
                     <Button style={ styles.mealsButton } onPress={() => navigation.navigate("MealNutrition",
                         { UserID: route.params.UserID, token: route.params.token,
@@ -189,37 +191,37 @@ function DiningFacilities({route, navigation}) {
                         <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
                             <TouchableOpacity onPress={ EarhartNavigation }>
                                 <Image source = { Earhart } style = { styles.earhartDiningImage }/>
-                                <Text style={ styles.earhartTitle }>{"Earhart"}</Text>
-                                <Text style={ styles.earhartTime }>{"4:00-10:00 PM"}</Text>
+                                <Text style={ [styles.earhartTitle, {color: colors.text}] }>{"Earhart"}</Text>
+                                <Text style={ [styles.earhartTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
 
                         <TouchableOpacity onPress={ WileyNavigation }>
                             <Image source = { Wiley } style = { styles.wileyDiningImage }/>
-                            <Text style={ styles.wileyTitle }>{"Wiley"}</Text>
-                            <Text style={ styles.wileyTime }>{"4:00-10:00 PM"}</Text>
+                            <Text style={ [styles.wileyTitle, {color: colors.text}] }>{"Wiley"}</Text>
+                            <Text style={ [styles.wileyTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
                             <TouchableOpacity onPress={ HillenbrandNavigation }>
                                 <Image source = { Hillenbrand } style = { styles.hillenbrandDiningImage }/>
-                                <Text style={ styles.hillenbrandTitle }>{"Hillenbrand"}</Text>
-                                <Text style={ styles.hillenbrandTime }>{"4:00-10:00 PM"}</Text>
+                                <Text style={ [styles.hillenbrandTitle, {color: colors.text}] }>{"Hillenbrand"}</Text>
+                                <Text style={ [styles.hillenbrandTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
 
                         <TouchableOpacity onPress={ WindsorNavigation }>
                             <Image source = { Windsor } style = { styles.windsorDiningImage }/>
-                            <Text style={ styles.windsorTitle }>{"Windsor"}</Text>
-                            <Text style={ styles.windsorTime }>{"4:00-10:00 PM"}</Text>
+                            <Text style={ [styles.windsorTitle, {color: colors.text}] }>{"Windsor"}</Text>
+                            <Text style={ [styles.windsorTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={ styles.lastDiningCourt }>
                         <TouchableOpacity onPress={ FordNavigation }>
                             <Image source = { Ford } style = { styles.fordDiningImage } />
-                            <Text style={ styles.fordTitle }>{"Ford"}</Text>
-                            <Text style={ styles.fordTime }>{"4:00-10:00 PM"}</Text>
+                            <Text style={ [styles.fordTitle, {color: colors.text}] }>{"Ford"}</Text>
+                            <Text style={ [styles.fordTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
