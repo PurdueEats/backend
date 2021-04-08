@@ -755,6 +755,10 @@ function ProfileManager({route, navigation}) {
                     navigation.navigate("EditSchedule", { UserID: route.params.UserID, token: route.params.token }) }>
                     <Text style={ [styles.textNormal, {color: colors.text}] }>Change Schedule</Text>
                 </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("Settings", { UserID: route.params.UserID, token: route.params.token }) }>
+                    <Text style={ [styles.textNormal, {color: colors.text}] }>Settings</Text>
+                </TouchableOpacity>
                 <TouchableOpacity active = { .5 } onPress={() =>  setModalDelete(true) }>
                     <Text style={ styles.textNormalRed }>Delete Account</Text>
                 </TouchableOpacity>

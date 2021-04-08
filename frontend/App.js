@@ -22,6 +22,7 @@ import TrackMeals from "./components/meal/TrackMeals";
 import FavoriteMeal from "./components/meal/FavoriteMeal";
 import ScheduleManager from "./components/profile/ScheduleManager";
 import Notifications from "./components/meal/Notifications";
+import Settings from "./components/profile/Settings";
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -48,6 +49,7 @@ export default function App() {
                         <Stack.Screen name="MealReview" component={ RecordMeals }/>
                         <Stack.Screen name="Map" component={ MapManager }/>
                         <Stack.Screen name="Profile" component={ ProfileManager }/>
+                        <Stack.Screen name="Settings" component={ Settings }/>
                         <Stack.Screen name="EditSchedule" component={ ScheduleManager }/>
                         <Stack.Screen name="Track" component={ TrackMeals }/>
                         <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
