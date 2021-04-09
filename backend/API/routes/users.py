@@ -400,6 +400,32 @@ async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_hand
     return
 
 
+@app.get("/Feedback", response_model=List[UserFeedbackOut])
+async def get_feedback(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    if UserID != 0:
+        raise HTTPException(
+            status_code=401, detail='User is unauthorized for this task')
+    
+    res = [dict(row) for row in runQuery(
+        f"SELECT * FROM MenuItems WHERE MenuItemID = {userFavMeals.meal_id}")]
+    
+    return res
+
+
+@app.post("/Feedback", status_code=201)
+async def post_feedback(userFeedback = UserFeedback, UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    runQuery(f"""
+    INSERT INTO AppFeedback values (
+        {UserID}, '{userFeedback['feedback_text']}',
+        {userFeedback.timestamp}
+    )
+    """)
+
+    return
+
+
 @app.get("/Predict", response_model=List[MenuItem])
 async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     
