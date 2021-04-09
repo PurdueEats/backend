@@ -359,7 +359,7 @@ async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
     res = [UserFavMeals.parse_obj({
         'user_id':  item['UserID'],
         'meal_id':  item['MenuItemID'],
-        'name'  :   item['Name'], 
+        'name':   item['Name'],
         'toggle':   item['Toggle']
     })
         for item in res]
@@ -408,13 +408,13 @@ async def get_feedback(UserID: int = Depends(auth_handler.auth_wrapper)):
     if UserID != 0:
         raise HTTPException(
             status_code=401, detail='User is not authorized for this task')
-    
+
     res = [dict(row) for row in runQuery(
         f"""
         SELECT * FROM AppFeedback as A, UserBasic as U 
         WHERE A.UserID = U.UserID
         """)]
-    
+
     res = [UserFeedbackOut.parse_obj({
         'user_id':          str(item['UserID']),
         'name':             item['Name'],
@@ -441,7 +441,7 @@ async def post_feedback(userFeedback: UserFeedbackIn, UserID: int = Depends(auth
 
 @app.get("/Predict", response_model=List[MenuItem])
 async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
-    
+
     """
     R, user_map = generate_matrix()
 
