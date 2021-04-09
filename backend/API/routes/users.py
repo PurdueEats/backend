@@ -407,21 +407,32 @@ async def get_feedback(UserID: int = Depends(auth_handler.auth_wrapper)):
 
     if UserID != 0:
         raise HTTPException(
-            status_code=401, detail='User is unauthorized for this task')
+            status_code=401, detail='User is not authorized for this task')
     
     res = [dict(row) for row in runQuery(
-        f"SELECT * FROM MenuItems WHERE MenuItemID = {userFavMeals.meal_id}")]
+        f"""
+        SELECT * FROM AppFeedback as A, UserBasic as U 
+        WHERE A.UserID = U.UserID
+        """)]
     
+    res = [UserFeedbackOut.parse_obj({
+        'user_id':          str(item['UserID']),
+        'name':             item['Name'],
+        'email':            item['Email'],
+        'feedback_text':    item['FeedbackText'],
+        'timestamp':        item['Timestamp']
+    }) for item in res]
+
     return res
 
 
 @app.post("/Feedback", status_code=201)
-async def post_feedback(userFeedback = UserFeedbackIn, UserID: int = Depends(auth_handler.auth_wrapper)):
+async def post_feedback(userFeedback: UserFeedbackIn, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     runQuery(f"""
     INSERT INTO AppFeedback values (
-        {UserID}, '{userFeedback['feedback_text']}',
-        {userFeedback.timestamp}
+        {UserID}, '{userFeedback.feedback_text}',
+        '{userFeedback.timestamp}'
     )
     """)
 

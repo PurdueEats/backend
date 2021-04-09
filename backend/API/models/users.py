@@ -68,7 +68,7 @@ class UserFeedbackIn(BaseModel):
 
 class UserFeedbackOut(BaseModel):
     user_id:        str
-    name:       str
-    email:      EmailStr
+    name:           str
+    email:          EmailStr
     feedback_text:  str
     timestamp:      datetime
