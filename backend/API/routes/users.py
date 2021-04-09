@@ -17,7 +17,9 @@ from API.models.users import (
     UserFavMenuItems,
     UserOut,
     UserNutrition,
-    UserFavMeals
+    UserFavMeals,
+    UserFeedbackIn,
+    UserFeedbackOut,
 )
 #from GNN.MatrixFactorization import matrix_factorization
 #from GNN.MatrixGen import generate_matrix
@@ -414,7 +416,7 @@ async def get_feedback(UserID: int = Depends(auth_handler.auth_wrapper)):
 
 
 @app.post("/Feedback", status_code=201)
-async def post_feedback(userFeedback = UserFeedback, UserID: int = Depends(auth_handler.auth_wrapper)):
+async def post_feedback(userFeedback = UserFeedbackIn, UserID: int = Depends(auth_handler.auth_wrapper)):
 
     runQuery(f"""
     INSERT INTO AppFeedback values (

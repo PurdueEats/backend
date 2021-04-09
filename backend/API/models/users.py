@@ -58,3 +58,17 @@ class UserFavMeals(BaseModel):
     meal_id:    int
     name:       str
     toggle:     bool
+
+
+class UserFeedbackIn(BaseModel):
+    user_id:        int
+    feedback_text:  str
+    timestamp:      datetime
+
+
+class UserFeedbackOut(BaseModel):
+    user_id:        str
+    name:       str
+    email:      EmailStr
+    feedback_text:  str
+    timestamp:      datetime
