@@ -22,7 +22,7 @@ async def get_all_fun_facts():
 async def get_fun_fact(date: date):
 
     res = [dict(row) for row in runQuery(
-        f"SELECT * FROM PurdueFunFact WHERE Date = {date}")]
+        f"SELECT * FROM PurdueFunFact WHERE Date = '{date}'")]
 
     if len(res) == 0:
         raise HTTPException(status_code=404, detail='No Fun Fact for today :(')
