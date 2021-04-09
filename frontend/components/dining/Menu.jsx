@@ -50,6 +50,9 @@ function Menu({route, navigation}) {
         navigation.navigate("MealReview", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
     }
 
+    function handleReviewNavigate() {
+        navigation.navigate("ReadReviews", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
+    }
     function getMeals() {
         fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
             method: 'GET',
@@ -251,7 +254,6 @@ function Menu({route, navigation}) {
                             </View>
                         )}
                         {favMealName.map(function (meal, index) {
-<<<<<<< HEAD
                             return (
                                 <View>
                                     {meal.value === menuItem.item.menu_item.menu_item_id ? (
@@ -265,21 +267,6 @@ function Menu({route, navigation}) {
                                 </View>
                             );
                         })}
-=======
-                                return (
-                                    <View>
-                                        {meal.value === menuItem.item.menu_item.menu_item_id ? (
-                                            <View>
-                                                <MaterialCommunityIcons name="star" color="#FFD133" size={30}/>
-                                            </View>
-                                        ): (
-                                            <View>
-                                            </View>
-                                        )}
-                                    </View>
-                                );
-                            })}
->>>>>>> 6d423ea3e99e7351afb9649b3dfb56dd7233c8fb
                     </View>
                 </View>
             </TouchableOpacity>
@@ -408,6 +395,9 @@ function Menu({route, navigation}) {
             </Modal>
             <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)}
                       keyExtractor={item => { Math.random().toString(36).substring(5) } } extraData={allData}/>
+            <Button style={ styles.filterButton } onPress={ handleReviewNavigate }>
+                <Text style={ styles.filterText }>Reviews</Text>
+            </Button>
         </ScrollView>
     );
 }
