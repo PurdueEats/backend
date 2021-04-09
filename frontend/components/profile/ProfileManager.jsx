@@ -69,8 +69,6 @@ function ProfileManager({route, navigation}) {
         })();
     }, []);
 
-
-
     function handleNameExit() {
         setModalName(!setModalName);
         if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
@@ -115,6 +113,7 @@ function ProfileManager({route, navigation}) {
 
         }
     }
+
     function handlePassExit(password2) {
         if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
             setPasswordBool(true);
@@ -229,6 +228,7 @@ function ProfileManager({route, navigation}) {
         setSign('-');
     }
 
+    // Start logout functions
     function handleLogout() {
         if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
             clearCredentials();
@@ -253,6 +253,7 @@ function ProfileManager({route, navigation}) {
             // Error saving data
         }
     }
+    // End logout functions
 
     function sendMealPlan(planNew) {
         // Send Meal Plan Route
@@ -562,6 +563,7 @@ function ProfileManager({route, navigation}) {
                 console.log('Fetch Error :-S', err);
             });
     }
+
     function displayConfirmation() {
         Toast.show({
             style: { backgroundColor: "green", justifyContent: "center" },
