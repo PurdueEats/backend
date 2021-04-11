@@ -179,6 +179,17 @@ function ScheduleManager({route, navigation}) {
                     maxDate={maxDate}
                     selectedDayColor="red"
                     selectedDayTextColor="#FFFFFF"
+
+                    customDatesStyles={() => {
+                                            return {
+                                              textStyle: { color: "#808080", opacity: 1 },
+                                            };
+                                          }}
+                    customDayHeaderStyles={() => {
+                                              return {
+                                                textStyle: { color: "#808080", opacity: 1 },
+                                              };
+                                            }}
                     onDateChange={(date, type) => setDate(date, type)}
                 />
                 <Modal animationType="slide" transparent={true} visible={modalSchedule}>

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from API.models.menu import MenuItem
+from backend.API.models.menu import MenuItem
 
 
 class DiningFacility(BaseModel):

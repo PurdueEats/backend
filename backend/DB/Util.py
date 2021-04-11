@@ -1,12 +1,12 @@
 from google.cloud import bigquery
-from DB.CreateDBSchema import (
+from backend.DB.CreateDBSchema import (
     create_user_tables,
     create_dining_facilities_tables,
     create_menu_items_table,
     create_auxiliary_tables
 )
-from DB.MealPlans import meal_plan_list
-from DB.DiningFacilities import dining_facility_list
+from backend.DB.MealPlans import meal_plan_list
+from backend.DB.DiningFacilities import dining_facility_list
 import sys
 
 

@@ -6,6 +6,7 @@ import { useTheme } from '@react-navigation/native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';
+import * as SecureStore from "expo-secure-store";
 
 function ProfileManager({route, navigation}) {
     const { colors } = useTheme();
@@ -68,8 +69,6 @@ function ProfileManager({route, navigation}) {
         })();
     }, []);
 
-
-
     function handleNameExit() {
         setModalName(!setModalName);
         if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
@@ -114,6 +113,7 @@ function ProfileManager({route, navigation}) {
 
         }
     }
+
     function handlePassExit(password2) {
         if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
             setPasswordBool(true);
@@ -228,9 +228,11 @@ function ProfileManager({route, navigation}) {
         setSign('-');
     }
 
+    // Start logout functions
     function handleLogout() {
         if (!delBool && !nameBool && !planBool && !passwordBool && !swipesBool && !dollarsBool) {
-            navigation.navigate("Login")
+            clearCredentials();
+            navigation.navigate("Login");
         }
         else Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
@@ -243,6 +245,15 @@ function ProfileManager({route, navigation}) {
         });
     }
 
+    async function clearCredentials() {
+        try {
+            await SecureStore.deleteItemAsync('UserID', null);
+            await SecureStore.deleteItemAsync('token', null);
+        } catch (error) {
+            // Error saving data
+        }
+    }
+    // End logout functions
 
     function sendMealPlan(planNew) {
         // Send Meal Plan Route
@@ -288,9 +299,7 @@ function ProfileManager({route, navigation}) {
                 "transaction_amount": dollars2,
                 "balance": dollars,
                 "timestamp": time
-
             })
-
         })
             .then(
                 function(response) {
@@ -317,7 +326,6 @@ function ProfileManager({route, navigation}) {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + route.params.token
             },
-
         })
             .then(
                 function(response) {
@@ -555,6 +563,7 @@ function ProfileManager({route, navigation}) {
                 console.log('Fetch Error :-S', err);
             });
     }
+
     function displayConfirmation() {
         Toast.show({
             style: { backgroundColor: "green", justifyContent: "center" },

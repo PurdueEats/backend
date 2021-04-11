@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter
 
-from API.routes import users, dining, menu, auxiliary, MenuItemReview
+from backend.API.routes import users, dining, menu, auxiliary, MenuItemReview
 
 router = FastAPI()
 router.include_router(users.app, tags=["Users"], prefix="/Users")
