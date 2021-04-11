@@ -26,17 +26,6 @@ import Notifications from "./components/meal/Notifications";
 export default function App() {
     const Stack = createStackNavigator();
     const scheme = useColorScheme();
-//    const MyDarkTheme = {
-//        dark: true,
-//        colors: {
-//            primary: "#9933FF",
-//            background: "#000023",
-//            card: "#000028",
-//            text: "#ffffff",
-//            border: "#000028",
-//            notification: "#9933FF",
-//        },
-//    };
 
     return (
         // Do not remove Root! Root is necessary for toasts integrated in successive components.

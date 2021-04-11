@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 from google.cloud import bigquery
-from DB.Util import runQuery
+from backend.DB.Util import runQuery
 
 
 URL = 'https://api.hfs.purdue.edu/menus/v2/locations/'
