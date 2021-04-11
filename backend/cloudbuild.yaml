@@ -5,9 +5,9 @@ steps:
     args: ["install", "-r", "backend/requirements.txt", "--user"]
 
   # Run unit tests
-  - name: python
-    entrypoint: python
-    args: ["-m", "pytest", "backend/API/tests/"] 
+  #- name: python
+  #  entrypoint: python
+  #  args: ["-m", "pytest", "backend/API/tests/"] 
 
   # Docker Build
   - name: 'gcr.io/cloud-builders/docker'
