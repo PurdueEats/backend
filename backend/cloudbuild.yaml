@@ -2,7 +2,7 @@ steps:
   # Install dependencies
   - name: python
     entrypoint: pip
-    args: ["install", "-r", "requirements.txt", "--user"]
+    args: ["install", "-r", "backend/requirements.txt", "--user"]
 
   # Run unit tests
   - name: python
