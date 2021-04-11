@@ -7,7 +7,7 @@ steps:
   # Run unit tests
   - name: python
     entrypoint: python
-    args: ["-m", "pytest", "APi/tests/"] 
+    args: ["-m", "pytest", "backend/API/tests/"] 
 
   # Docker Build
   - name: 'gcr.io/cloud-builders/docker'
