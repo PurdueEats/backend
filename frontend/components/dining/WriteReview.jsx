@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView, SafeAreaView} from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
-import {Button, Item} from 'native-base';
+import {Button, Item, Toast} from 'native-base';
 import { StackActions } from '@react-navigation/native';
 
 function WriteReview({route, navigation}) {
@@ -15,8 +15,39 @@ function WriteReview({route, navigation}) {
     }, []);
 
 
-    function handleNavigate() {
-        navigation.navigate("ReadReviews", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
+    function submitReview() {
+        if (title === '' || body === '') {
+            reviewError();
+            return;
+        }
+        else {
+            reviewSubmitted()
+            navigation.navigate("ReadReviews", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
+        }
+    }
+
+    function reviewSubmitted() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Thank you for your review!",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function reviewError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Please make sure you enter text in each input.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
     }
 
     return (
@@ -35,7 +66,7 @@ function WriteReview({route, navigation}) {
             <Item style={ styles.bodyInput }>
                 <TextInput style={ [styles.bodyTextInput, {color: colors.text}] } multiline={true} numberOfLines={10} placeholder="Enter your review here" onChangeText={(body) => setBody(body)} />
             </Item>
-            <Button style={ styles.submitButton } onPress={handleNavigate}>
+            <Button style={ styles.submitButton } onPress={submitReview}>
                 <Text style={ styles.submitText }>Submit</Text>
             </Button>
         </ScrollView>
