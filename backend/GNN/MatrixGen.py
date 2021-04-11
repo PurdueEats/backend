@@ -1,4 +1,4 @@
-from DB.Util import runQuery
+from backend.DB.Util import runQuery
 import numpy as np
 
 def generate_matrix():

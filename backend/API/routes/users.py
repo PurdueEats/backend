@@ -4,11 +4,11 @@ from string import ascii_uppercase
 from typing import List
 #import numpy
 from fastapi import APIRouter, Depends, HTTPException
-from API.routes.auth import AuthHandler
-from DB.Util import runQuery
-from API.models.MealPlan import MealPlanIn
-from API.models.menu import MenuItem
-from API.models.users import (
+from backend.API.routes.auth import AuthHandler
+from backend.DB.Util import runQuery
+from backend.API.models.MealPlan import MealPlanIn
+from backend.API.models.menu import MenuItem
+from backend.API.models.users import (
     UserBasic,
     UserExtra,
     UserProfile,

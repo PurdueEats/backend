@@ -1,8 +1,8 @@
 from typing import List
 from datetime import date
 from fastapi import APIRouter, HTTPException
-from DB.Util import runQuery
-from API.models.auxiliary import FunFact
+from backend.DB.Util import runQuery
+from backend.API.models.auxiliary import FunFact
 
 app = APIRouter()
 

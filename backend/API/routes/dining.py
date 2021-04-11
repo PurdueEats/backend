@@ -1,8 +1,8 @@
 from typing import List
 from fastapi import APIRouter, HTTPException
-from API.models.dining import DiningFacility, DiningFacilityMenuItem
-from API.models.menu import MenuItem
-from DB.Util import runQuery
+from backend.API.models.dining import DiningFacility, DiningFacilityMenuItem
+from backend.API.models.menu import MenuItem
+from backend.DB.Util import runQuery
 
 
 app = APIRouter()
