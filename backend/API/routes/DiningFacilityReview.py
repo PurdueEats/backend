@@ -33,8 +33,8 @@ async def post_review(diningFacilityReview: DiningFacilityReviewIn):
     runQuery(f"""
         INSERT INTO DiningFacilityReview values (
         {dining_facility_review_id['DiningFacilityReviewID']},
-        {int(diningFacilityReview.user_id)},
-        {int(diningFacilityReview.dining_facility_id)},
+        {diningFacilityReview.user_id},
+        {diningFacilityReview.dining_facility_id},
         '{review_text}',
         {diningFacilityReview.rating},
         0,0
@@ -76,7 +76,7 @@ async def update_vote(vote: VoteIn):
 
     review = [dict(row) for row in runQuery(
         f"""SELECT * FROM DiningFacilityReview 
-        WHERE DiningFacilityID = {int(vote.dining_facility_review_id)}""")]
+        WHERE DiningFacilityReviewID = {vote.dining_facility_review_id}""")]
     
     if len(review) != 1:
         raise HTTPException(
@@ -92,3 +92,39 @@ async def update_vote(vote: VoteIn):
     if review['UserID'] == int(vote.user_id):
         raise HTTPException(
             status_code=400, detail='User cannot vote their own review!')
+    
+    prev_vote = [dict(row) for row in runQuery(
+        f"""SELECT Vote FROM DiningFacilitiyReviewVote 
+        WHERE UserID = {vote.user_id}
+        AND DiningFacilityReviewID = {vote.dining_facility_review_id} """
+        )]
+    
+    upvote, downvote = review['UpvoteCount'], review['DownvoteCount']
+    redo = True
+
+    if len(prev_vote) == 1:
+        if prev_vote['Vote'] == vote.vote_val:
+            redo = False
+        elif prev_vote['Vote'] == 1 and vote.vote_val == -1:
+            upvote -= 1
+            downvote += 1
+        elif prev_vote['Vote'] == -1 and vote.vote_val == 1:
+            upvote += 1
+            downvote -= 1
+    
+    if redo:
+        runQuery(f""""
+        INSERT INTO DiningFacilitiyReviewVote values (
+            {vote.dining_facility_review_id},
+            {vote.user_id}, {vote.vote_val}
+        );
+        DELETE FROM DiningFacilityReview
+        WHERE DiningFacilityID = {int(vote.dining_facility_review_id)};
+        INSERT INTO DiningFacilityReview values (
+            {review['DiningFacilityReviewID']},
+            {review['UserID']},
+            {review['DiningFacilityID']},
+            '{review['Review']}',
+            {review['Rating']},
+            {upvote}, {downvote}
+            )""")

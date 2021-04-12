@@ -24,4 +24,4 @@ class DiningFacilityReviewOut(BaseModel):
 class VoteIn(BaseModel):
     dining_facility_review_id:  str
     user_id:                    str
-    vote:                       int = Field(ge=-1, le=1)
+    vote_val:                   int = Field(ge=-1, le=1)
