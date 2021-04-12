@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     ]
 
-    R = npy.array(R)
+    R = np.array(R)
     # N: num of User
     N = len(R)
     # M: num of Movie
