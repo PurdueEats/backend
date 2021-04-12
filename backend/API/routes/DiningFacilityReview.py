@@ -83,7 +83,7 @@ async def update_vote(vote: VoteIn):
             status_code=404, detail='Facility Review not found')
     
     user_id = [dict(row) for row in runQuery(
-        f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {int(vote.user_id)}")]
+        f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {vote.user_id}")]
 
     if user_id[0]['f0_'] != 1:
         raise HTTPException(status_code=404, detail='Invalid User')
@@ -103,23 +103,29 @@ async def update_vote(vote: VoteIn):
     redo = True
 
     if len(prev_vote) == 1:
-        if prev_vote['Vote'] == vote.vote_val:
+        if prev_vote[0]['Vote'] == vote.vote_val:
             redo = False
-        elif prev_vote['Vote'] == 1 and vote.vote_val == -1:
+        elif prev_vote[0]['Vote'] == 1 and vote.vote_val == -1:
             upvote -= 1
             downvote += 1
-        elif prev_vote['Vote'] == -1 and vote.vote_val == 1:
+        elif prev_vote[0]['Vote'] == -1 and vote.vote_val == 1:
             upvote += 1
             downvote -= 1
+    else:
+        if vote.vote_val == 1:
+            upvote += 1
+        elif vote.vote_val == -1:
+            downvote += 1
+    
     
     if redo:
-        runQuery(f""""
+        runQuery(f"""
         INSERT INTO DiningFacilitiyReviewVote values (
             {vote.dining_facility_review_id},
             {vote.user_id}, {vote.vote_val}
         );
         DELETE FROM DiningFacilityReview
-        WHERE DiningFacilityID = {int(vote.dining_facility_review_id)};
+        WHERE DiningFacilityReviewID = {vote.dining_facility_review_id};
         INSERT INTO DiningFacilityReview values (
             {review['DiningFacilityReviewID']},
             {review['UserID']},
