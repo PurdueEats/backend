@@ -40,8 +40,8 @@ async def get_reviews(diningFacilityID: int):
         'dining_facility_review_id':  item['DiningFacilityReviewID'],
         'user_id':                    item['UserID'],
         'dining_facility_id':         item['DiningFacilityID'],
-        'title':                      item['Review'].split('\n')[0],
-        'review_text':                item['Review'].split('\n')[1],
+        'title':                      item['Review'].split('$')[0],
+        'review_text':                item['Review'].split('$')[1],
         'rating':                     item['Rating'],
         'upvote_count':               item['UpvoteCount'],
         'downvote_count':             item['DownvoteCount']
