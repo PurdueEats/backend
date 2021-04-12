@@ -22,6 +22,8 @@ import TrackMeals from "./components/profile/profile-accessories/TrackMeals";
 import FavoriteMeal from "./components/profile/profile-accessories/FavoriteMeal";
 import Schedule from "./components/profile/profile-accessories/Schedule";
 import Notifications from "./components/profile/profile-accessories/Notifications";
+import ReadReviews from "./components/home/menu/ReadReviews";
+import WriteReview from "./components/home/menu/WriteReview";
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -52,6 +54,8 @@ export default function App() {
                         <Stack.Screen name="Track" component={ TrackMeals }/>
                         <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
                         <Stack.Screen name="Notifications" component= { Notifications }/>
+                        <Stack.Screen name="ReadReviews" component= { ReadReviews }/>
+                        <Stack.Screen name="WriteReview" component= { WriteReview }/>
                         <Stack.Screen name="NavBar" component={ NavBarManager } options={{gestureEnabled: false}}/>
                     </Stack.Navigator>
                 </NavigationContainer>
