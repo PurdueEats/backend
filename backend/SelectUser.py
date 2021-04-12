@@ -12,7 +12,8 @@ dataset_ref = client.dataset(bq_dataset)
 
 def selectUser(UserID):
     #runQuery("DELETE from MealPlan WHERE True")
-    result = runQuery( f"select user.UserID, TransactionAmount, Balance, Timestamp from UserBasic as user Inner Join UserTransaction as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
+    #result = runQuery( f"select user.UserID, TransactionAmount, Balance, Timestamp from UserBasic as user Inner Join UserTransaction as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
+    result = runQuery( f"select user.UserID, MealSwipeCount, DiningDollarAmount, MealPlanName from UserBasic as user Inner Join MealPlan as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
     return result.to_dataframe()
     
     
