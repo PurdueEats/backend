@@ -3,13 +3,13 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, Modal } from "react-na
 import { StackActions } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from '@react-navigation/native';
-import Logo from "../../resources/logo.png";
+import Logo from "../../../resources/logo.png";
 import {Button, Toast} from "native-base";
 import CalendarPicker from 'react-native-calendar-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import MaterialTabs from "react-native-material-tabs";
 
-function ScheduleManager({route, navigation}) {
+function Schedule({route, navigation}) {
     const { colors } = useTheme()
     // Calendar Component
     const [day, setDay] = useState(-1);
@@ -840,4 +840,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ScheduleManager;
+export default Schedule;
