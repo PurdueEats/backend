@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Button, Toast } from 'native-base';
-import Logo from "../../resources/logo.png";
+import Logo from "../../../resources/logo.png";
 import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
 import {MaterialCommunityIcons} from "@expo/vector-icons";

@@ -6,7 +6,7 @@ import { useTheme } from '@react-navigation/native';
 import SelectMultiple from 'react-native-select-multiple'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
-import Logo from "../../resources/logo.png";
+import Logo from "../../../resources/logo.png";
 
 function RecordMeals({route, navigation}) {
     const { colors } = useTheme();

@@ -3,7 +3,7 @@ import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
 import { useTheme } from '@react-navigation/native';
 import { AirbnbRating } from 'react-native-ratings';
 import { Button, Toast } from 'native-base';
-import Logo from "../../resources/logo.png";
+import Logo from "../../../resources/logo.png";
 
 function MealPreferences({route, navigation}) {
     const { colors } = useTheme();

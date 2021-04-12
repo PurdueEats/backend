@@ -6,22 +6,22 @@ import { AppearanceProvider, useColorScheme } from "react-native-appearance";
 import { DefaultTheme, DarkTheme } from "@react-navigation/native";
 import LoginManager from "./components/login/LoginManager";
 import ProfileManager from "./components/profile/ProfileManager";
-import MealPreferences from "./components/meal/MealPreferences";
-import DiningCourt from "./components/dining/DiningFacilities";
-import Menu from "./components/dining/Menu";
-import MealNutrition from "./components/meal/MealNutrition";
-import RecordMeals from "./components/meal/RecordMeals";
-import Name from "./components/signup/Name";
-import Email from "./components/signup/Email";
-import Password from "./components/signup/Password";
-import MealPlan from "./components/signup/MealPlan";
+import MealPreferences from "./components/login/login-accessories/MealPreferences";
+import DiningCourt from "./components/home/HomeManager";
+import Menu from "./components/home/menu/Menu";
+import MealNutrition from "./components/home/menu/MealNutrition";
+import RecordMeals from "./components/home/menu/RecordMeals";
+import Name from "./components/login/signup/Name";
+import Email from "./components/login/signup/Email";
+import Password from "./components/login/signup/Password";
+import MealPlan from "./components/login/signup/MealPlan";
 import MapManager from "./components/map/MapManager";
-import NavBar from "./components/navbar/NavBar";
-import ForgotPassword from "./components/login/ForgotPassword";
-import TrackMeals from "./components/meal/TrackMeals";
-import FavoriteMeal from "./components/meal/FavoriteMeal";
-import ScheduleManager from "./components/profile/ScheduleManager";
-import Notifications from "./components/meal/Notifications";
+import NavBarManager from "./components/navbar/NavBarManager";
+import ForgotPassword from "./components/login/login-accessories/ForgotPassword";
+import TrackMeals from "./components/profile/profile-accessories/TrackMeals";
+import FavoriteMeal from "./components/profile/profile-accessories/FavoriteMeal";
+import Schedule from "./components/profile/profile-accessories/Schedule";
+import Notifications from "./components/profile/profile-accessories/Notifications";
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -48,11 +48,11 @@ export default function App() {
                         <Stack.Screen name="MealReview" component={ RecordMeals }/>
                         <Stack.Screen name="Map" component={ MapManager }/>
                         <Stack.Screen name="Profile" component={ ProfileManager }/>
-                        <Stack.Screen name="EditSchedule" component={ ScheduleManager }/>
+                        <Stack.Screen name="EditSchedule" component={ Schedule }/>
                         <Stack.Screen name="Track" component={ TrackMeals }/>
                         <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
                         <Stack.Screen name="Notifications" component= { Notifications }/>
-                        <Stack.Screen name="NavBar" component={ NavBar } options={{gestureEnabled: false}}/>
+                        <Stack.Screen name="NavBar" component={ NavBarManager } options={{gestureEnabled: false}}/>
                     </Stack.Navigator>
                 </NavigationContainer>
             </AppearanceProvider>

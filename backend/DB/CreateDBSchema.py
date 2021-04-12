@@ -82,7 +82,7 @@ create_dining_facilities_tables = {
 
         "Dining_Facilities":
         f"""
-	CREATE OR REPLACE TABLE DiningFacilities
+	CREATE OR REPLACE TABLE HomeManager
 	(
 		DiningFacilityID			INT64,
 		DiningFacilityName 			STRING,
@@ -109,7 +109,7 @@ create_dining_facilities_tables = {
 
         "Dining_Facility_Review_Vote":
         f"""
-	CREATE OR REPLACE TABLE DiningFacilities
+	CREATE OR REPLACE TABLE HomeManager
 	(
 		DiningFacilityReviewID		INT64,
 		UserID				INT64,

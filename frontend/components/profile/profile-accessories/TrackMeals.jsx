@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
 import { Button} from 'native-base';
-import Logo from "../../resources/logo.png";
+import Logo from "../../../resources/logo.png";
 
 function TrackMeals({route, navigation}) {
     const { colors } = useTheme();
