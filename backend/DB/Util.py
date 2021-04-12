@@ -60,7 +60,7 @@ def insertMealPlans():
 
 
 def insertDiningFacilities():
-    runQuery("DELETE from HomeManager WHERE True")
+    runQuery("DELETE from DiningFacilities WHERE True")
     for dining_facility in dining_facility_list:
         runQuery(dining_facility_list[dining_facility])
 
