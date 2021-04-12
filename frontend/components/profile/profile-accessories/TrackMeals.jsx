@@ -11,9 +11,7 @@ function TrackMeals({route, navigation}) {
 
     const [currentSelectID, setCurrentSelectID] = React.useState([]);
     const [currentSelection, setCurrentSelection] = React.useState([]);
-    const [removeSelection, setRemoveSelection] = React.useState([]);
     const [label, setLabel] = useState('');
-    const [valueTest, setValueTest] = useState('');
     const [bool, setBool] = useState('a');
     const EmptyListMessage = ({item}) => {
         return (
@@ -39,7 +37,7 @@ function TrackMeals({route, navigation}) {
 
     function getMealIds() {
 
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`  + route.params.UserID, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/MenuItemReview/`  + route.params.UserID, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -66,7 +64,7 @@ function TrackMeals({route, navigation}) {
                 }
             ).then(item => {
             item.map(item1 => {
-                fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item1.menu_item_id, {
+                fetch(`https://app-5fyldqenma-uc.a.run.app/MenuItems/` + item1.menu_item_id, {
                     method: 'GET',
                     headers : {
                         'Content-Type': 'application/json',
@@ -102,77 +100,9 @@ function TrackMeals({route, navigation}) {
                 });
 
         }).catch(function(err) {
-            console.log("err");
+            console.log('Fetch Error :-S', err);
         });
     }
-
-    // GET request to convert selected menu item(s) ID(s) to the respective name(s)
-    function getMealInfo() {
-        currentSelectID.map(item => {
-            fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item.value, {
-                method: 'GET',
-                headers : {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-            })
-                .then(
-                    function(response) {
-                        if (response.status === 200 || response.status === 201) {
-                            // Successful GET
-                            // Set Fields to correct values
-                            response.json().then(function(data) {
-                                currentSelection.push( { label: data.item_name, value: item.value, timestamp: item.timestamp } );
-                                //setCurrentSelection( ({ label: data.item_name, value: item.id, timestamp: item.timestamp } ));
-                            });
-                            console.log(currentSelection)
-                        } else {
-                            console.log('Getting Menu Item` like there was a problem. Status Code: ' +
-                                response.status);
-                        }
-                    }
-                )
-                .catch(function(err) {
-                    console.log('Fetch sdfError :-S', err);
-                });
-        })
-    }
-
-    function getMealInfo2(value) {
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + value, {
-            method: 'GET',
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-        })
-            .then(
-                function(response) {
-                    if (response.status === 200 || response.status === 201) {
-                        console.log("got to here")
-                        // Successful GET
-                        // Set Fields to correct values
-                        response.json().then(function(data) {
-                            setLabel(data.item_name);
-                            //setCurrentSelection( ({ label: data.item_name, value: item.id, timestamp: item.timestamp } ));
-                        });
-                    } else {
-                        console.log('Getting Menu Items like there was a problem. Status Code: ' +
-                            response.status);
-                    }
-                }
-            )
-            .catch(function(err) {
-                console.log('Fetch sdfError :-S', err)
-            });
-
-    }
-
-    const Item = ({ label }) => (
-        <View style={styles.foodText}>
-            <Text style={styles.label}>{label}</Text>
-        </View>
-    );
 
     function renderItem(item) {
         return (
@@ -214,7 +144,6 @@ function TrackMeals({route, navigation}) {
                     data={ currentSelection }
                     renderItem={ (item) => renderItem(item) }
                     extraData={ bool.state }
-                    keyExtractor={item => { Math.random().toString(36).substring(5) } }
                     ListEmptyComponent={ EmptyListMessage }
                 />
             </View>

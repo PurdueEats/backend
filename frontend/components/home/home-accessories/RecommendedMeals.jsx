@@ -16,7 +16,7 @@ const DiningFacilities = (props) => {
 
     function getRecommendedMeals() {
         // User Nutrition Summary Route
-        fetch("https://purdueeats-304919.uc.r.appspot.com/Users/Predict", {
+        fetch("https://app-5fyldqenma-uc.a.run.app/Users/Predict", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +33,6 @@ const DiningFacilities = (props) => {
                         // Examine the text in the response
                         response.json().then(function (data) {
                             setRecommendedMeals(data)
-                            console.log(data)
                         });
                     }
                 }
