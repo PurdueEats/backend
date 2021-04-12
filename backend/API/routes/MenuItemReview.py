@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
-from API.models.MenuItemReview import MenuItemReview
-from API.routes.auth import AuthHandler
-from API.routes.menu import get_nutrition, nutrition_to_macros
-from DB.Util import runQuery
+from backend.API.models.MenuItemReview import MenuItemReview
+from backend.API.routes.auth import AuthHandler
+from backend.API.routes.menu import get_nutrition, nutrition_to_macros
+from backend.DB.Util import runQuery
 
 app = APIRouter()
 auth_handler = AuthHandler()

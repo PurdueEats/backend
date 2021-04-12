@@ -15,6 +15,7 @@ function LoginManager({navigation}) {
        retrieveData();
     }, []);
 
+    // Start Login Persistence
     async function retrieveData() {
         try {
             const userID = await SecureStore.getItemAsync('UserID');
@@ -33,7 +34,10 @@ function LoginManager({navigation}) {
                     .then(
                         function(response) {
                             if (response.status === 200 || response.status === 201) {
-                                // Successful GET
+                                // Successful GET, display welcome and redirect to home
+                                response.json().then(function(data) {
+                                    displayWelcome(data.name);
+                                });
                                 navigation.navigate("NavBar", { UserID: userID, token: token });
                             } else {
                                 console.log('Expired token. Status Code: ' + response.status);
@@ -53,6 +57,18 @@ function LoginManager({navigation}) {
         }
     }
 
+    function displayWelcome(name) {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Welcome back, " + name + ".",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 2000
+        });
+    }
+
     function displayTokenExpiration() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
@@ -61,7 +77,7 @@ function LoginManager({navigation}) {
             textStyle: {
                 textAlign: 'center',
             },
-            duration: 1500
+            duration: 2000
         });
     }
 
@@ -73,6 +89,7 @@ function LoginManager({navigation}) {
             // Error saving data
         }
     }
+    // End Login Persistence
 
     function displayError() {
         Toast.show({

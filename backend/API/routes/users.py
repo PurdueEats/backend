@@ -4,11 +4,11 @@ from string import ascii_uppercase
 from typing import List
 #import numpy
 from fastapi import APIRouter, Depends, HTTPException
-from API.routes.auth import AuthHandler
-from DB.Util import runQuery
-from API.models.MealPlan import MealPlanIn
-from API.models.menu import MenuItem
-from API.models.users import (
+from backend.API.routes.auth import AuthHandler
+from backend.DB.Util import runQuery
+from backend.API.models.MealPlan import MealPlanIn
+from backend.API.models.menu import MenuItem
+from backend.API.models.users import (
     UserBasic,
     UserExtra,
     UserProfile,
@@ -17,7 +17,9 @@ from API.models.users import (
     UserFavMenuItems,
     UserOut,
     UserNutrition,
-    UserFavMeals
+    UserFavMeals,
+    UserFeedbackIn,
+    UserFeedbackOut,
 )
 #from GNN.MatrixFactorization import matrix_factorization
 #from GNN.MatrixGen import generate_matrix
@@ -357,7 +359,7 @@ async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
     res = [UserFavMeals.parse_obj({
         'user_id':  item['UserID'],
         'meal_id':  item['MenuItemID'],
-        'name'  :   item['Name'], 
+        'name':   item['Name'],
         'toggle':   item['Toggle']
     })
         for item in res]
@@ -400,9 +402,46 @@ async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_hand
     return
 
 
+@app.get("/Feedback", response_model=List[UserFeedbackOut])
+async def get_feedback(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    if UserID != 0:
+        raise HTTPException(
+            status_code=401, detail='User is not authorized for this task')
+
+    res = [dict(row) for row in runQuery(
+        f"""
+        SELECT * FROM AppFeedback as A, UserBasic as U 
+        WHERE A.UserID = U.UserID
+        """)]
+
+    res = [UserFeedbackOut.parse_obj({
+        'user_id':          str(item['UserID']),
+        'name':             item['Name'],
+        'email':            item['Email'],
+        'feedback_text':    item['FeedbackText'],
+        'timestamp':        item['Timestamp']
+    }) for item in res]
+
+    return res
+
+
+@app.post("/Feedback", status_code=201)
+async def post_feedback(userFeedback: UserFeedbackIn, UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    runQuery(f"""
+    INSERT INTO AppFeedback values (
+        {UserID}, '{userFeedback.feedback_text}',
+        '{userFeedback.timestamp}'
+    )
+    """)
+
+    return
+
+
 @app.get("/Predict", response_model=List[MenuItem])
 async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
-    
+
     """
     R, user_map = generate_matrix()
 
