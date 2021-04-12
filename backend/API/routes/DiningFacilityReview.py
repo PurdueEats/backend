@@ -10,6 +10,16 @@ app = APIRouter()
 @app.post("/", status_code=201)
 async def post_review(diningFacilityReview: DiningFacilityReview):
 
+    if int(diningFacilityReview.dining_facility_id) > 5 or int(diningFacilityReview.dining_facility_id) < 0:
+        raise HTTPException(
+            status_code=404, detail='Dining Facility not found')
+
+    user_id = [dict(row) for row in runQuery(
+        f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {int(diningFacilityReview.user_id)}")]
+
+    if user_id[0]['f0_'] != 1:
+        raise HTTPException(status_code=404, detail='Invalid User')
+
     dining_facility_review_id = [dict(row) for row in runQuery(
         "SELECT FARM_FINGERPRINT(GENERATE_UUID()) as DiningFacilityReviewID")][0]
 
@@ -32,6 +42,10 @@ async def post_review(diningFacilityReview: DiningFacilityReview):
 
 @app.get("/", response_model=List[DiningFacilityReview])
 async def get_reviews(diningFacilityID: int):
+
+    if int(diningFacilityID) > 5 or int(diningFacilityID) < 0:
+        raise HTTPException(
+            status_code=404, detail='Dining Facility not found')
 
     res = [dict(row) for row in runQuery(
         f"SELECT * FROM DiningFacilityReview WHERE DiningFacilityID = {diningFacilityID}")]
