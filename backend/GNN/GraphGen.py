@@ -8,7 +8,7 @@ import numpy as np
 
 
 DATASET = 'kanaryayi/recipe-ingredients-and-reviews/download'
-FILENAME = 'temp'
+FILENAME = 'backend/temp'
 
 
 def graph_gen():
@@ -23,7 +23,7 @@ def graph_gen():
     print("Dataset fetched at {}......".format(
         time_elapsed(time.time() - start_time)))
 
-    reviews = pd.read_csv("temp/clean_reviews.csv")
+    reviews = pd.read_csv("backend/temp/clean_reviews.csv")
 
     src = np.zeros(reviews.shape[0], dtype=np.int64)
     dst = np.zeros(reviews.shape[0], dtype=np.int64)
@@ -48,7 +48,7 @@ def graph_gen():
     print("Graph construction complete at {}......".format(
         time_elapsed(time.time() - start_time)))
 
-    save_graphs("./GNN/graph.dgl", [ratings])
+    save_graphs("./backend/GNN/graph.dgl", [ratings])
 
     print("Graph saved complete at {}......".format(
         time_elapsed(time.time() - start_time)))

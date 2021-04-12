@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Alert } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
+import { useTheme } from '@react-navigation/native';
 import getDistance from 'geolib/es/getDistance';
 import convertDistance from 'geolib/es/convertDistance'
 
 function MapManager({route, navigation}) {
+    const { colors } = useTheme();
     const [fordDistance, setFordDistance] = useState('');
     const [wileyDistance, setWileyDistance] = useState('');
     const [windsorDistance, setWindsorDistance] = useState('');
@@ -62,7 +64,7 @@ function MapManager({route, navigation}) {
     return (
         <View>
             <View style={ [styles.screenView, {flexDirection:"row"}] } >
-                <Text style={ styles.screenTitle }> Map </Text>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }> Map </Text>
             </View>
             <View style={ styles.box }>
                 <MapView

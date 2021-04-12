@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 from google.cloud import bigquery
-from DB.Util import runQuery
+from backend.DB.Util import runQuery
 
 
 URL = 'https://api.hfs.purdue.edu/menus/v2/locations/'
@@ -22,7 +22,7 @@ def meal_scrapper(request):
     DATE = '/' + datetime.today().strftime('%Y-%m-%d')
     MAX_ID = [dict(row) for row in runQuery(
         "SELECT max(MenuItemID) FROM MenuItems")]
-    
+
 
     if not MAX_ID[0]['f0_']:
         MAX_ID = 1
@@ -36,39 +36,39 @@ def meal_scrapper(request):
         response = requests.get(URL + loc + DATE).json()
 
         DF_ID = [dict(row) for row in runQuery(
-           f"""SELECT DiningFacilityID FROM DiningFacilities WHERE 
+           f"""SELECT DiningFacilityID FROM HomeManager WHERE 
             DiningFacilityName = '{loc}'""")][0]
 
         runQuery(
             f"""DELETE FROM DiningFacilityMenuItems 
             WHERE DiningFacilityID = {DF_ID['DiningFacilityID']}""")
-        
+
         meals_list = [x for x in response['Meals'] if x['Status'] ==  'Open']
 
         for meals in meals_list:
-            
+
             time = meals['Hours']['StartTime'] + "-" + meals['Hours']['EndTime']
 
             for station in meals['Stations']:
-                
+
                 for item in station['Items']:
 
                     find = [dict(row) for row in runQuery(
                         f"SELECT MenuItemID FROM MenuItems WHERE HashID = '{item['ID']}'")]
-                    
-                    if len(find) != 1: 
+
+                    if len(find) != 1:
 
                         query = 'INSERT INTO MenuItems values ('
                         query += f"{str(MAX_ID)}, '{item['ID']}', \"{item['Name']}\","
 
                         if 'Allergens' not in item:
                             item['Allergens'] = [{'Value': False} for _ in range(11)]
-                    
+
                         for allergen in item['Allergens']:
                             query += str(allergen['Value']).lower() + ','
-                        
+
                         query = query[:-1] + ')'
-                        
+
                         runQuery(query)
 
                         query = 'INSERT INTO DiningFacilityMenuItems values ('
@@ -79,9 +79,9 @@ def meal_scrapper(request):
                         runQuery(query)
 
                         MAX_ID += 1
-                    
+
                     else:
-                        
+
                         query = 'INSERT INTO DiningFacilityMenuItems values ('
                         query += f"{str(DF_ID['DiningFacilityID'])}, {find[0]['MenuItemID']}, "
                         query += f"b'{time}'" + ','
