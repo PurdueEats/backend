@@ -4,7 +4,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { ProgressChart } from "react-native-chart-kit";
 import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
-import RecommendedMeals from "./RecommendedMeals";
+import RecommendedMeals from "./home-accessories/RecommendedMeals";
 import Logo from "../../resources/logo.png";
 import Earhart from "../../resources/earhart.png";
 import Wiley from "../../resources/wiley.png";
