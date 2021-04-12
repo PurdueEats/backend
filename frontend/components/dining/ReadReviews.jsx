@@ -4,21 +4,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import { Button } from 'native-base';
 import { StackActions } from '@react-navigation/native';
-import { AirbnbRating } from "react-native-ratings";
 
 function ReadReviews({route, navigation}) {
     const { colors } = useTheme();
 
-
-    useEffect(() => {
-
-    }, []);
-
-
     function handleNavigate() {
         navigation.navigate("WriteReview", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
     }
-
 
     return (
         <ScrollView>
@@ -31,22 +23,30 @@ function ReadReviews({route, navigation}) {
                     <MaterialCommunityIcons name="pencil" color="red" size={30}/>
                 </TouchableOpacity>
             </View>
-            <View style={{ marginLeft: "2%", marginRight: "2%" }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: "2%" }}>
-                    <AirbnbRating
-                        key={"Rating"}
-                        count={5}
-                        reviews={["Terrible", "Meh", "OK", "Good", "Amazing"]}
-                        type={"custom"}
-                        showRating={false}
-                        selectedColor={"#ff0000"}
-                        defaultRating={3}
-                        reviewSize={20}
-                        size={25}
-                        // onFinishRating={ updateRating }
-                    />
-                </View>
+            <View style={{ marginLeft: "2%", marginRight: "2%", flexDirection: "row" }}>
+                    <Text style={ [styles.avgTitle, {color: colors.text}] }>Average Rating: </Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: "2%" }}>
+                        <MaterialCommunityIcons name="star" color="red" size={30}/>
+                        <MaterialCommunityIcons name="star" color="red" size={30}/>
+                        <MaterialCommunityIcons name="star" color="red" size={30}/>
+                        <MaterialCommunityIcons name="star" color="red" size={30}/>
+                        <MaterialCommunityIcons name="star" color="red" size={30}/>
+                    </View>
             </View>
+            <View
+                style={{
+                    borderBottomColor: '#c4baba',
+                    borderBottomWidth: 1,
+                }}
+            />
+            <Text style={ [styles.reviewTitle, {color: colors.text}] }>REVIEW TITLE </Text>
+            <Text style={ [styles.reviewContent, {color: colors.text}] }> REVIEW BODY HERE</Text>
+            <View
+                style={{
+                    borderBottomColor: '#c4baba',
+                    borderBottomWidth: 1,
+                }}
+            />
         </ScrollView>
     );
 }
@@ -69,6 +69,32 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginLeft: "auto",
         marginRight: "auto",
+        justifyContent: "center"
+    },
+    avgTitle: {
+        fontSize: 22,
+        fontWeight: "bold",
+        alignItems: "center",
+        marginLeft: "9%",
+        marginRight: "1%",
+        justifyContent: "center"
+    },
+    reviewTitle: {
+        fontSize: 22,
+        fontWeight: "bold",
+        alignItems: "center",
+        marginLeft: "15%",
+        marginRight: "3%",
+        marginTop: "3%",
+        marginBottom: "3%",
+        justifyContent: "center"
+    },
+    reviewContent: {
+        fontSize: 20,
+        alignItems: "center",
+        marginLeft: "15%",
+        marginRight: "3%",
+        marginBottom: "3%",
         justifyContent: "center"
     },
 });
