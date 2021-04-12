@@ -2,7 +2,7 @@
 from random import choice
 from string import ascii_uppercase
 from typing import List
-#import numpy
+import numpy as np
 from fastapi import APIRouter, Depends, HTTPException
 from backend.API.routes.auth import AuthHandler
 from backend.DB.Util import runQuery
@@ -21,8 +21,8 @@ from backend.API.models.users import (
     UserFeedbackIn,
     UserFeedbackOut,
 )
-#from GNN.MatrixFactorization import matrix_factorization
-#from GNN.MatrixGen import generate_matrix
+from backend.GNN.MatrixFactorization import matrix_factorization
+from backend.GNN.MatrixGen import generate_matrix
 
 
 app = APIRouter()
@@ -442,7 +442,7 @@ async def post_feedback(userFeedback: UserFeedbackIn, UserID: int = Depends(auth
 @app.get("/Predict", response_model=List[MenuItem])
 async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
 
-    """
+    
     R, user_map = generate_matrix()
 
     N = len(R)
@@ -463,13 +463,13 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     recommend_list = recommend_list[:5]
 
     res = [dict(row) for row in runQuery(
-        f\"""SELECT * FROM MenuItems 
+        f"""SELECT * FROM MenuItems 
         WHERE 
         MenuItemID = {recommend_list[0][1]} OR
         MenuItemID = {recommend_list[1][1]} OR
         MenuItemID = {recommend_list[2][1]} OR
         MenuItemID = {recommend_list[3][1]} OR
-        MenuItemID = {recommend_list[4][1]}\""")]
+        MenuItemID = {recommend_list[4][1]}""")]
 
     res = [MenuItem.parse_obj({
         'menu_item_id':   item['MenuItemID'],
@@ -489,9 +489,6 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     }) for item in res]
 
     return res
-    """
-
-    return []
 
 
 @app.post("/ForgotPassword", status_code=201)
