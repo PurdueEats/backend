@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { useIsFocused } from '@react-navigation/native';
 import { ProgressChart } from "react-native-chart-kit";
-import { Button } from 'native-base';
 import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
+import RecommendedMeals from "./RecommendedMeals";
 import Logo from "../../resources/logo.png";
 import Earhart from "../../resources/earhart.png";
 import Wiley from "../../resources/wiley.png";
@@ -32,66 +32,69 @@ function DiningFacilities({route, navigation}) {
     // Dining Courts
     const [selectedTab, setSelectedTab] = useState(0);
 
-
     useEffect(() => {
         if (isFocused) {
-            // User Nutrition Summary Route
-            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + "/Nutrition", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer ' + route.params.token
-                }
-            })
-                .then(
-                    function (response) {
-                        if (response.status !== 200 && response.status !== 201) {
-                            console.log('Looks like there was a problem. Status Code: ' +
-                                response.status);
-                        } else {
-                            // Examine the text in the response
-                            response.json().then(function (data) {
-                                // Set data fields
-                                setCalories(data["calories"]);
-                                setCarbs(data["carbs"]);
-                                setFat(data["fat"]);
-                                setProtein(data["protein"]);
-
-                                // Set chartData
-                                // Calories
-                                if (parseFloat(data["calories"]) > 14000) {
-                                    setChartCalories(14000);
-                                } else {
-                                    setChartCalories(parseFloat(data["calories"]));
-                                }
-                                // Carbs
-                                if (parseFloat(data["carbs"]) > 1900) {
-                                    setChartCarbs(1900);
-                                } else {
-                                    setChartCarbs(parseFloat(data["carbs"]));
-                                }
-                                // Fat
-                                if (parseFloat(data["fat"]) > 200) {
-                                    setChartFat(200);
-                                } else {
-                                    setChartFat(parseFloat(data["fat"]));
-                                }
-                                // Protein
-                                if (parseFloat(data["protein"]) > 350) {
-                                    setChartProtein(350);
-                                } else {
-                                    setChartProtein(parseFloat(data["protein"]));
-                                }
-                            });
-                        }
-                    }
-                )
-                .catch(function (err) {
-                    console.log('Fetch Error :-S', err);
-                });
+            getUserNutrition();
         }
     }, [isFocused]);
+
+    function getUserNutrition() {
+        // User Nutrition Summary Route
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + "/Nutrition", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            }
+        })
+            .then(
+                function (response) {
+                    if (response.status !== 200 && response.status !== 201) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                    } else {
+                        // Examine the text in the response
+                        response.json().then(function (data) {
+                            // Set data fields
+                            setCalories(data["calories"]);
+                            setCarbs(data["carbs"]);
+                            setFat(data["fat"]);
+                            setProtein(data["protein"]);
+
+                            // Set chartData
+                            // Calories
+                            if (parseFloat(data["calories"]) > 14000) {
+                                setChartCalories(14000);
+                            } else {
+                                setChartCalories(parseFloat(data["calories"]));
+                            }
+                            // Carbs
+                            if (parseFloat(data["carbs"]) > 1900) {
+                                setChartCarbs(1900);
+                            } else {
+                                setChartCarbs(parseFloat(data["carbs"]));
+                            }
+                            // Fat
+                            if (parseFloat(data["fat"]) > 200) {
+                                setChartFat(200);
+                            } else {
+                                setChartFat(parseFloat(data["fat"]));
+                            }
+                            // Protein
+                            if (parseFloat(data["protein"]) > 350) {
+                                setChartProtein(350);
+                            } else {
+                                setChartProtein(parseFloat(data["protein"]));
+                            }
+                        });
+                    }
+                }
+            )
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
 
     function EarhartNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 1});
@@ -166,26 +169,9 @@ function DiningFacilities({route, navigation}) {
                             <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein.toLocaleString()}g of 350g
                         </Text>
                     </View>
-                    <View style={ styles.recommendedView }>
-                        <Text style={ [styles.dataHeader, {color: colors.text}] }>These meals fit your eating habits</Text>
-                    </View>
-                    <Button style={ styles.mealsButton } onPress={() => navigation.navigate("MealNutrition",
-                        { UserID: route.params.UserID, token: route.params.token,
-                            MealID: 1, MealName: "French Toast Sticks"})}>
-                        <Text style={ styles.mealsText }>French Toast Sticks</Text>
-                    </Button>
-                    <Button style={ styles.mealsButton } onPress={() => navigation.navigate("MealNutrition",
-                        { UserID: route.params.UserID, token: route.params.token,
-                            MealID: 20, MealName: "French Roll"})}>
-                        <Text style={ styles.mealsText }>French Roll</Text>
-                    </Button>
-                    <Button style={ styles.mealsButton } onPress={() => navigation.navigate("MealNutrition",
-                        { UserID: route.params.UserID, token: route.params.token,
-                            MealID: 101, MealName: "Sausage Gravy"})}>
-                        <Text style={ styles.mealsText }>Sausage Gravy</Text>
-                    </Button>
+                    <RecommendedMeals UserID={route.params.UserID} token={route.params.token} navigation={navigation}/>
                 </View>
-            ): (
+            ) : (
                 <View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
