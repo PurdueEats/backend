@@ -268,6 +268,7 @@ async def fetch_transactions(userID: int = Depends(auth_handler.auth_wrapper)):
 
     transactions = [dict(row) for row in runQuery(
         f"SELECT * FROM UserTransaction WHERE UserID = {userID} ORDER BY Timestamp")]
+    
     res = [UserTransaction.parse_obj({'user_id': row['UserID'], 'transaction_amount':row['TransactionAmount'],
                                       'balance':row['Balance'], 'timestamp': row['Timestamp']}) for row in transactions]
 
@@ -291,13 +292,13 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
 
     runQuery(f"""
     INSERT INTO UserExtra values (
-        {user_extra['UserID']}, '{user_extra['MealPlanName']}',
+        {UserID}, '{user_extra['MealPlanName']}',
         {user_extra['MealSwipeCount']}, {balance}
     )
     """)
 
     runQuery(f"""
-    INSERT INTO UserTransaction values ({userTransaction.user_id}, {userTransaction.transaction_amount},
+    INSERT INTO UserTransaction values ({UserID}, {userTransaction.transaction_amount},
     {balance}, '{userTransaction.timestamp}')
     """)
 
