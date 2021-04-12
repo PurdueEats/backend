@@ -1,6 +1,6 @@
 import numpy as np
 
-def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0002, beta=0.02):
+def matrix_factorization(R, P, Q, K, steps=1000, alpha=0.0002, beta=0.02):
     '''
     R: rating matrix
     P: |U| * K (User features matrix)
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     ]
 
-    R = numpy.array(R)
+    R = np.array(R)
     # N: num of User
     N = len(R)
     # M: num of Movie
@@ -81,12 +81,12 @@ if __name__ == "__main__":
     # Num of Features
     K = 3
 
-    P = numpy.random.rand(N, K)
-    Q = numpy.random.rand(M, K)
+    P = np.random.rand(N, K)
+    Q = np.random.rand(M, K)
 
     nP, nQ = matrix_factorization(R, P, Q, K)
 
-    nR = numpy.dot(nP, nQ.T)
+    nR = np.dot(nP, nQ.T)
 
     for x in nR:
         print(x)

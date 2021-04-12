@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     screenTitle: {
         fontSize: 30,
         fontWeight: "bold",
+        textAlign: "center",
         alignItems: "center",
         marginLeft: "auto",
         marginRight: "auto",

@@ -50,6 +50,9 @@ function Menu({route, navigation}) {
         navigation.navigate("MealReview", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
     }
 
+    function handleReviewNavigate() {
+        navigation.navigate("ReadReviews", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
+    }
     function getMeals() {
         fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
             method: 'GET',
@@ -109,7 +112,7 @@ function Menu({route, navigation}) {
 
     // GET request to get the selected favorite item(s)
     function getFavMeal() {
-       fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -117,23 +120,23 @@ function Menu({route, navigation}) {
                 'Authorization': 'Bearer ' + route.params.token
             },
         })
-        .then(
-            function(response) {
-                if (response.status === 200 || response.status === 201) {
-                    // Successful GET
-                    // Set fields to correct values
-                    response.json().then(function(data) {
-                        setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
-                    });
-                } else {
-                    console.log('Auth like there was a problem with favorite meals fetching. Status Code: ' +
-                        response.status);
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        // Set fields to correct values
+                        response.json().then(function(data) {
+                            setCurrentSelection(data.map(menuItem => ({ label: menuItem.name, value: menuItem.meal_id })));
+                        });
+                    } else {
+                        console.log('Auth like there was a problem with favorite meals fetching. Status Code: ' +
+                            response.status);
+                    }
                 }
-            }
-        )
-        .catch(function(err) {
-            console.log('Fetch Error :-S', err);
-        });
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
     }
 
     function searchFiltering (searchText) {
@@ -251,19 +254,19 @@ function Menu({route, navigation}) {
                             </View>
                         )}
                         {favMealName.map(function (meal, index) {
-                                return (
-                                    <View>
-                                        {meal.value === menuItem.item.menu_item.menu_item_id ? (
-                                            <View>
-                                                <MaterialCommunityIcons name="star" color="#FFD133" size={30}/>
-                                            </View>
-                                        ): (
-                                            <View>
-                                            </View>
-                                        )}
-                                    </View>
-                                );
-                            })}
+                            return (
+                                <View>
+                                    {meal.value === menuItem.item.menu_item.menu_item_id ? (
+                                        <View>
+                                            <MaterialCommunityIcons name="star" color="#FFD133" size={30}/>
+                                        </View>
+                                    ): (
+                                        <View>
+                                        </View>
+                                    )}
+                                </View>
+                            );
+                        })}
                     </View>
                 </View>
             </TouchableOpacity>
@@ -392,6 +395,9 @@ function Menu({route, navigation}) {
             </Modal>
             <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)}
                       keyExtractor={item => { Math.random().toString(36).substring(5) } } extraData={allData}/>
+            <Button style={ styles.filterButton } onPress={ handleReviewNavigate }>
+                <Text style={ styles.filterText }>Reviews</Text>
+            </Button>
         </ScrollView>
     );
 }
