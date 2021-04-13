@@ -1,10 +1,9 @@
 #INSTRUCTIONS: RUN FILE WITH 1 ARG AS USER ID. E.G. python UserSummary.py 7023699889393535879
 
-
 from google.cloud import bigquery
 import sys
 from backend.DB.Util import runQuery
-from backend.API.routes.menu import get_nutrition, nutrition_to_macros
+from backend.API.routes.menu import get_nutrition, nutrition_to_macros, get_menu_item
 import pandas as pd
 import datetime
 
@@ -15,7 +14,6 @@ client = bigquery.Client(project=gcp_project)
 dataset_ref = client.dataset(bq_dataset)
 
 def userReviewsSummary(UserID):
-    #mealplan = runQuery( f"select user.UserID, MealSwipeCount, DiningDollarAmount, MealPlanName from UserBasic as user Inner Join MealPlan as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}") THIS DOESN'T WORK
     reviews = runQuery( f"select user.UserID, MenuItemID, Rating, Timestamp from UserBasic as user Inner Join MenuItemsReviews as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
     return reviews.to_dataframe()
 
@@ -23,6 +21,10 @@ def userTransactionsSummary(UserID):
     transactions = runQuery( f"select user.UserID, TransactionAmount, Balance, Timestamp from UserBasic as user Inner Join UserTransaction as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
     return transactions.to_dataframe()
 
+def getMenuItemName(MenuItemID):
+    rtn = runQuery( f"select ItemName from MenuItems WHERE MenuItemID = {MenuItemID}").to_dataframe()
+    rtn.columns = [''] * len(rtn.columns)
+    return rtn
 
 if __name__ == "__main__":
     input = sys.argv[1]
@@ -37,24 +39,22 @@ if __name__ == "__main__":
     carbs = []
     fat = []
     protein = []
+    menuItemStr = []
 
     for i, row in df.iterrows():
         menu_item_id = row[1] #this is the menu item id
+        menuItemStr.append(getMenuItemName(menu_item_id).loc[0].to_string()[4:])
         response = get_nutrition(menu_item_id)
         _calories, _carbs, _fat, _protein = nutrition_to_macros(response)
-        #print(f"df['calories'][i]: {df['calories'][i]} \ni: {i}\n row: {row}\nend Debug\n")
-        #df['calories', i] = _calories
         calories.append(_calories)
-        #df['carbs'] = _carbs
         carbs.append(_carbs)
-        #df['fat'] = _fat
         fat.append(_fat)
-        #df['protein'] = _protein
         protein.append(_protein)
     df['calories'] = calories
     df['carbs'] = carbs
     df['fat'] = fat
     df['protein'] = protein
+    df['menuItemStr'] = menuItemStr
 
     weekly_avg_calories = df.calories.resample('W').sum() / df.first_day_of_week.resample('W').count()
     weekly_avg_carbs = df.carbs.resample('W').sum() / df.first_day_of_week.resample('W').count()
@@ -63,8 +63,9 @@ if __name__ == "__main__":
     #sum of total calories per week / number of active input days per week
 
     #counting unique occurences
-    menu_item_count = df['MenuItemID'].value_counts()
-
+    df['menuItemStr'] = df['menuItemStr'].str.split()
+    menu_item_count = df['menuItemStr'].apply(pd.Series).stack().reset_index(drop=True).value_counts()
+    #menu_item_count = df['MenuItemID'].value_counts() #obsolete line that returns menu item id with count
 
     # this is to calculate user transactions
     df2 = userTransactionsSummary(input)
