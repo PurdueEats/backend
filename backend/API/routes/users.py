@@ -2,13 +2,13 @@
 from random import choice
 from string import ascii_uppercase
 from typing import List
-#import numpy
+import numpy as np
 from fastapi import APIRouter, Depends, HTTPException
-from API.routes.auth import AuthHandler
-from DB.Util import runQuery
-from API.models.MealPlan import MealPlanIn
-from API.models.menu import MenuItem
-from API.models.users import (
+from backend.API.routes.auth import AuthHandler
+from backend.DB.Util import runQuery
+from backend.API.models.MealPlan import MealPlanIn
+from backend.API.models.menu import MenuItem
+from backend.API.models.users import (
     UserBasic,
     UserExtra,
     UserProfile,
@@ -17,10 +17,12 @@ from API.models.users import (
     UserFavMenuItems,
     UserOut,
     UserNutrition,
-    UserFavMeals
+    UserFavMeals,
+    UserFeedbackIn,
+    UserFeedbackOut,
 )
-#from GNN.MatrixFactorization import matrix_factorization
-#from GNN.MatrixGen import generate_matrix
+from backend.GNN.MatrixFactorization import matrix_factorization
+from backend.GNN.MatrixGen import generate_matrix
 
 
 app = APIRouter()
@@ -266,6 +268,7 @@ async def fetch_transactions(userID: int = Depends(auth_handler.auth_wrapper)):
 
     transactions = [dict(row) for row in runQuery(
         f"SELECT * FROM UserTransaction WHERE UserID = {userID} ORDER BY Timestamp")]
+    
     res = [UserTransaction.parse_obj({'user_id': row['UserID'], 'transaction_amount':row['TransactionAmount'],
                                       'balance':row['Balance'], 'timestamp': row['Timestamp']}) for row in transactions]
 
@@ -289,13 +292,13 @@ async def post_transaction(userTransaction: UserTransaction, UserID: int = Depen
 
     runQuery(f"""
     INSERT INTO UserExtra values (
-        {user_extra['UserID']}, '{user_extra['MealPlanName']}',
+        {UserID}, '{user_extra['MealPlanName']}',
         {user_extra['MealSwipeCount']}, {balance}
     )
     """)
 
     runQuery(f"""
-    INSERT INTO UserTransaction values ({userTransaction.user_id}, {userTransaction.transaction_amount},
+    INSERT INTO UserTransaction values ({UserID}, {userTransaction.transaction_amount},
     {balance}, '{userTransaction.timestamp}')
     """)
 
@@ -357,7 +360,7 @@ async def get_user_fav_meals(UserID: int = Depends(auth_handler.auth_wrapper)):
     res = [UserFavMeals.parse_obj({
         'user_id':  item['UserID'],
         'meal_id':  item['MenuItemID'],
-        'name'  :   item['Name'], 
+        'name':   item['Name'],
         'toggle':   item['Toggle']
     })
         for item in res]
@@ -400,10 +403,47 @@ async def delete_user_fav_meals(menuItemID: int, UserID: int = Depends(auth_hand
     return
 
 
+@app.get("/Feedback", response_model=List[UserFeedbackOut])
+async def get_feedback(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    if UserID != 0:
+        raise HTTPException(
+            status_code=401, detail='User is not authorized for this task')
+
+    res = [dict(row) for row in runQuery(
+        f"""
+        SELECT * FROM AppFeedback as A, UserBasic as U 
+        WHERE A.UserID = U.UserID
+        """)]
+
+    res = [UserFeedbackOut.parse_obj({
+        'user_id':          str(item['UserID']),
+        'name':             item['Name'],
+        'email':            item['Email'],
+        'feedback_text':    item['FeedbackText'],
+        'timestamp':        item['Timestamp']
+    }) for item in res]
+
+    return res
+
+
+@app.post("/Feedback", status_code=201)
+async def post_feedback(userFeedback: UserFeedbackIn, UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    runQuery(f"""
+    INSERT INTO AppFeedback values (
+        {UserID}, '{userFeedback.feedback_text}',
+        '{userFeedback.timestamp}'
+    )
+    """)
+
+    return
+
+
 @app.get("/Predict", response_model=List[MenuItem])
 async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
+
     
-    """
     R, user_map = generate_matrix()
 
     N = len(R)
@@ -424,13 +464,13 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     recommend_list = recommend_list[:5]
 
     res = [dict(row) for row in runQuery(
-        f\"""SELECT * FROM MenuItems 
+        f"""SELECT * FROM MenuItems 
         WHERE 
         MenuItemID = {recommend_list[0][1]} OR
         MenuItemID = {recommend_list[1][1]} OR
         MenuItemID = {recommend_list[2][1]} OR
         MenuItemID = {recommend_list[3][1]} OR
-        MenuItemID = {recommend_list[4][1]}\""")]
+        MenuItemID = {recommend_list[4][1]}""")]
 
     res = [MenuItem.parse_obj({
         'menu_item_id':   item['MenuItemID'],
@@ -450,9 +490,6 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     }) for item in res]
 
     return res
-    """
-
-    return []
 
 
 @app.post("/ForgotPassword", status_code=201)

@@ -1,8 +1,8 @@
 from typing import List
 from fastapi import APIRouter, HTTPException
 from requests import get
-from DB.Util import runQuery
-from API.models.menu import MenuItem
+from backend.DB.Util import runQuery
+from backend.API.models.menu import MenuItem
 
 app = APIRouter()
 NUTRITION_URL = "https://api.hfs.purdue.edu/menus/v2/items/"

@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
-from API.models.MenuItemReview import MenuItemReview
-from API.routes.auth import AuthHandler
-from API.routes.menu import get_nutrition, nutrition_to_macros
-from DB.Util import runQuery
+from backend.API.models.MenuItemReview import MenuItemReview
+from backend.API.routes.auth import AuthHandler
+from backend.API.routes.menu import get_nutrition, nutrition_to_macros
+from backend.DB.Util import runQuery
 
 app = APIRouter()
 auth_handler = AuthHandler()
@@ -43,33 +43,48 @@ async def get_user_meal_ratings(UserID: int = Depends(auth_handler.auth_wrapper)
 
 # Add MenuItemReview to DB
 @app.post("/", status_code=201)
-async def add_meal_rating(menuItemReview: MenuItemReview):
+async def add_meal_rating(menuItemReviews: List[MenuItemReview]):
 
-    # Check for valid UserID and MenuItemId
+    if len(menuItemReviews) == 0:
+        return
+    
+    # Check for valid UserID
     user_id = [dict(row) for row in runQuery(
-        f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {menuItemReview.user_id}")]
-    menu_id = [dict(row) for row in runQuery(
-        f"SELECT COUNT(*) FROM MenuItems WHERE MenuItemID = {menuItemReview.menu_item_id}")]
-
+        f"SELECT COUNT(*) FROM UserBasic WHERE UserID = {menuItemReviews[0].user_id}")]
+    
     if user_id[0]['f0_'] != 1:
         raise HTTPException(status_code=400, detail='Invalid UserID')
-    if menu_id[0]['f0_'] != 1:
-        raise HTTPException(status_code=400, detail='Invalid MenuItemID')
 
-    runQuery(f"""
-  	INSERT INTO MenuItemsReviews values 
-  	({menuItemReview.menu_item_id}, {menuItemReview.user_id},
-  	 {menuItemReview.rating}, '{menuItemReview.timestamp}')
-  	 """)
+    calories, carbs, fat, protein = 0, 0, 0, 0
 
-    # Add User Nutrition insertion here
-    response = get_nutrition(menuItemReview.menu_item_id)
-    calories, carbs, fat, protein = nutrition_to_macros(response)
+    for menuItemReview in menuItemReviews:
+
+        # Check for valid MenuItemID
+        menu_id = [dict(row) for row in runQuery(
+        f"SELECT COUNT(*) FROM MenuItems WHERE MenuItemID = {menuItemReview.menu_item_id}")]
+
+        if menu_id[0]['f0_'] != 1:
+            raise HTTPException(status_code=400, detail='Invalid MenuItemID')
+
+        # Insert MenuItem
+        runQuery(f"""
+        INSERT INTO MenuItemsReviews values 
+        ({menuItemReview.menu_item_id}, {menuItemReview.user_id},
+        {menuItemReview.rating}, '{menuItemReview.timestamp}')
+        """)
+
+        # Add User Nutrition insertion here
+        response = get_nutrition(menuItemReview.menu_item_id)
+        _calories, _carbs, _fat, _protein = nutrition_to_macros(response)
+
+        calories += _calories
+        carbs += _carbs
+        fat +=  _fat
+        protein += _protein
+
 
     res = [dict(row) for row in runQuery(
         f"SELECT * FROM UserNutrition WHERE UserID = {menuItemReview.user_id}")][0]
-    runQuery(
-        f"DELETE FROM UserNutrition WHERE UserID = {menuItemReview.user_id}")
 
     calories += res['Calories']
     carbs += res['Carbs']
@@ -77,7 +92,8 @@ async def add_meal_rating(menuItemReview: MenuItemReview):
     protein += res['Protein']
 
     runQuery(f"""
-	INSERT INTO UserNutrition values
+	DELETE FROM UserNutrition WHERE UserID = {menuItemReview.user_id};
+    INSERT INTO UserNutrition values
 	({menuItemReview.user_id}, {calories}, {carbs}, {fat}, {protein}
 	)""")
 
