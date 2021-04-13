@@ -36,7 +36,7 @@ def meal_scrapper(request):
         response = requests.get(URL + loc + DATE).json()
 
         DF_ID = [dict(row) for row in runQuery(
-           f"""SELECT DiningFacilityID FROM HomeManager WHERE 
+           f"""SELECT DiningFacilityID FROM DiningFacilities WHERE 
             DiningFacilityName = '{loc}'""")][0]
 
         runQuery(
