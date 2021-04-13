@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
 import { Button} from 'native-base';
-import Logo from "../../resources/logo.png";
+import Logo from "../../../resources/logo.png";
 
 function TrackMeals({route, navigation}) {
     const { colors } = useTheme();
@@ -39,7 +39,7 @@ function TrackMeals({route, navigation}) {
 
     function getMealIds() {
 
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`  + route.params.UserID, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/MenuItemReview/`  + route.params.UserID, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ function TrackMeals({route, navigation}) {
                 }
             ).then(item => {
             item.map(item1 => {
-                fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item1.menu_item_id, {
+                fetch(`https://app-5fyldqenma-uc.a.run.app/MenuItems/` + item1.menu_item_id, {
                     method: 'GET',
                     headers : {
                         'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ function TrackMeals({route, navigation}) {
     // GET request to convert selected menu item(s) ID(s) to the respective name(s)
     function getMealInfo() {
         currentSelectID.map(item => {
-            fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + item.value, {
+            fetch(`https://app-5fyldqenma-uc.a.run.app/MenuItems/` + item.value, {
                 method: 'GET',
                 headers : {
                     'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ function TrackMeals({route, navigation}) {
     }
 
     function getMealInfo2(value) {
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + value, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/MenuItems/` + value, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',

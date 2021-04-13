@@ -2,11 +2,11 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import DiningFacilities from "../dining/DiningFacilities";
+import HomeManager from "../home/HomeManager";
 import MapManager from "../map/MapManager";
 import ProfileManager from "../profile/ProfileManager";
 
-function NavBar({route, navigation}) {
+function NavBarManager({route}) {
     const Tab = createBottomTabNavigator();
     const Stack = createStackNavigator();
 
@@ -14,14 +14,12 @@ function NavBar({route, navigation}) {
         <Tab.Navigator
             initialRouteName="Dining"
             tabBarOptions={{
-                activeTintColor: 'red',
-                // activeBackgroundColor: '#f2f2f2',
-                // inactiveBackgroundColor: '#f2f2f2'
+                activeTintColor: 'red'
             }}
         >
             <Stack.Screen
                 name="Dining"
-                component={ DiningFacilities }
+                component={ HomeManager }
                 initialParams={{ UserID: route.params.UserID, token: route.params.token }}
                 options={{
                     tabBarLabel: 'Dining',
@@ -56,4 +54,4 @@ function NavBar({route, navigation}) {
     );
 }
 
-export default NavBar;
+export default NavBarManager;

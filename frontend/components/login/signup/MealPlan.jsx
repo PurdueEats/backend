@@ -10,7 +10,7 @@ function MealPlan({route, navigation}) {
 
     function handleLogin() {
         // Login Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/Login`, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ function MealPlan({route, navigation}) {
 
     function sendMealPlan(UserID, token) {
         // Send Meal Plan Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ UserID +`/MealPlan`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/`+ UserID +`/MealPlan`, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function MealPlan({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        navigation.navigate("Login")
+                        navigation.navigate("NavBar", { UserID: UserID, token: token });
                     } else {
                         console.log('Looks like there was a problem. Status Code: ' +
                             response.status);
