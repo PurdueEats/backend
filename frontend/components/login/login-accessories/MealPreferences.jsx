@@ -45,7 +45,7 @@ function MealPreferences({route, navigation}) {
     }
 
     function sendMealPreferences() {
-        fetch("https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/", {
+        fetch("https://app-5fyldqenma-uc.a.run.app/MenuItemReview/", {
             method: 'POST',
             headers : {
                 'Accept': 'application/json',

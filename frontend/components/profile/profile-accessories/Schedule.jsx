@@ -46,7 +46,7 @@ function Schedule({route, navigation}) {
     // Get user's current schedule
     useEffect(() => {
         // Fetch current schedule data
-        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Schedule', {
+        fetch('https://app-5fyldqenma-uc.a.run.app/Users/'+ route.params.UserID +'/Schedule', {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ function Schedule({route, navigation}) {
             thursdayBreakfast + thursdayLunch + thursdayDinner + fridayBreakfast + fridayLunch + fridayDinner +
             saturdayBreakfast + saturdayLunch + saturdayDinner)
         // Submit current schedule data
-        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Schedule', {
+        fetch('https://app-5fyldqenma-uc.a.run.app/Users/'+ route.params.UserID +'/Schedule', {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',

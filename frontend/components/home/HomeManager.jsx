@@ -40,7 +40,7 @@ function HomeManager({route, navigation}) {
 
     function getUserNutrition() {
         // User Nutrition Summary Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + "/Nutrition", {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + "/Nutrition", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
         height: 150,
         marginRight: "7%",
         marginLeft: "6%",
-        marginBottom: "50%",
+        marginBottom: "5%",
         marginTop: "-5%"
     },
     imageContainer: {

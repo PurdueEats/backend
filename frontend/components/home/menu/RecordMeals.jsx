@@ -32,7 +32,7 @@ function RecordMeals({route, navigation}) {
 
     //GET function to get all of the menu items of a specific dining facility
     function getMeals() {
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/DF/` + route.params.DiningID + `/Menu`, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ function RecordMeals({route, navigation}) {
                 "timestamp": time
             }
         });
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItemReview/`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/MenuItemReview/`, {
             method: 'POST',
             headers : {
                 'Accept': 'application/json',

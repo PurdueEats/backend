@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
-import { Button, Toast } from 'native-base';
+import { Button } from 'native-base';
 import Logo from "../../../resources/logo.png";
 import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
@@ -39,7 +39,7 @@ function Notifications({route, navigation}) {
 
 // GET request to get the selected favorite item(s)
     function getFavMeal() {
-       fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+       fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -66,19 +66,6 @@ function Notifications({route, navigation}) {
         });
     }
 
-    function addNoti() {
-        const updatedList = currentSelection.concat(selectedFavMeals);
-        setCurrentSelection(updatedList);
-        setSelectedFavMeals([]);
-    }
-
-    function removeNoti() {
-        currentSelectID.pop(item.meal_id);
-        setRemoveSelection([]);
-        const updatedList = currentSelection.concat(selectedFavMeals);
-        setCurrentSelection(updatedList);
-    }
-
     // POST request to turn notifications on
     function handleFavMealNotificationsOn() {
         //add to noti on list
@@ -90,17 +77,9 @@ function Notifications({route, navigation}) {
         setSelectedFavMeals([]);
         setNotiOn([]);
         //remove duplicates from currentSelection
-//         setCurrentSelection(currentSelection
-//             .map(e => e.value)
-//             .map((e, i, final) => final.indexOf(e) === i && i)
-//             .filter(e => currentSelection[e])
-//             .map(e => currentSelection[e])
-//             .map(menuItem => ({
-//                 value: menuItem.value
-//             })));
         notiOn.map(item => {
             console.log("hit");
-            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+            fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals', {
                 method: 'POST',
                 headers : {
                     'Accept': 'application/json',
@@ -119,17 +98,6 @@ function Notifications({route, navigation}) {
                         if (response.status === 200 || response.status === 201) {
                             // Successful POST
                             displayConfirmation();
-//                             response.json().then(function(data) {
-//                                 //remove duplicates from currentSelection
-//                                 setCurrentSelection(data
-//                                     .map(e => e.value)
-//                                     .map((e, i, final) => final.indexOf(e) === i && i)
-//                                     .filter(e => data[e])
-//                                     .map(e => data[e])
-//                                     .map(menuItem => ({
-//                                         value: menuItem.value
-//                                     })));
-//                             });
                         } else {
                             // Examine the text in the response
                             console.log('Looks like there was a problem recording meals. Status Code: ' +
@@ -154,17 +122,8 @@ function Notifications({route, navigation}) {
         setCurrentSelection(filtered);
         setRemoveSelection([]);
         setNotiOff([]);
-//         setCurrentSelectionOff(currentSelectionOff
-//             .map(e => e.value)
-//             .map((e, i, final) => final.indexOf(e) === i && i)
-//             .filter(e => currentSelectionOff[e])
-//             .map(e => currentSelectionOff[e])
-//             .map(menuItem => ({
-//                 value: menuItem.value
-//             })));
         notiOff.map(item => {
-            console.log("hit");
-            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+            fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals', {
                 method: 'POST',
                 headers : {
                     'Accept': 'application/json',
@@ -183,17 +142,6 @@ function Notifications({route, navigation}) {
                         if (response.status === 200 || response.status === 201) {
                             // Successful POST
                             displayConfirmation();
-                            response.json().then(function(data) {
-                                //remove any duplicates from noti off list
-//                                 setCurrentSelectionOff(data
-//                                     .map(e => e.value)
-//                                     .map((e, i, final) => final.indexOf(e) === i && i)
-//                                     .filter(e => data[e])
-//                                     .map(e => data[e])
-//                                     .map(menuItem => ({
-//                                         value: menuItem.value
-//                                     })));
-                            });
                         } else {
                             // Examine the text in the response
                             console.log('Looks like there was a problem recording meals. Status Code: ' +
