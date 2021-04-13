@@ -6,7 +6,7 @@ import HomeManager from "../home/HomeManager";
 import MapManager from "../map/MapManager";
 import ProfileManager from "../profile/ProfileManager";
 
-function NavBarManager({route, navigation}) {
+function NavBarManager({route}) {
     const Tab = createBottomTabNavigator();
     const Stack = createStackNavigator();
 
@@ -14,9 +14,7 @@ function NavBarManager({route, navigation}) {
         <Tab.Navigator
             initialRouteName="Dining"
             tabBarOptions={{
-                activeTintColor: 'red',
-                // activeBackgroundColor: '#f2f2f2',
-                // inactiveBackgroundColor: '#f2f2f2'
+                activeTintColor: 'red'
             }}
         >
             <Stack.Screen

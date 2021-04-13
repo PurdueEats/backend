@@ -24,7 +24,7 @@ function ForgotPassword({navigation}) {
     function forgotPassword(email2) {
         // Register Route
         console.log(email2);
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/ForgotPassword?email=` + email2, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/ForgotPassword?email=` + email2, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',

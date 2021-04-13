@@ -21,7 +21,7 @@ function Password({route, navigation}) {
 
     function registerUser() {
         // Register Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Register`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/Register`, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',

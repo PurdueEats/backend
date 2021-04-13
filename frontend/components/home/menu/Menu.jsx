@@ -35,7 +35,6 @@ function Menu({route, navigation}) {
     // Favorite meals
     const [currentSelection, setCurrentSelection] = useState([]);
     const favData = allData.filter(a => currentSelection.some(c => c.value === a.menu_item.menu_item_id));
-    const [favDataName, setFavDataName] = useState([]);
     const [mealName, setMealName] = useState([]);
     const [favMealName, setFavMealName] = useState([]);
 
@@ -54,7 +53,7 @@ function Menu({route, navigation}) {
         navigation.navigate("ReadReviews", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
     }
     function getMeals() {
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/DF/` + route.params.DiningID + `/Menu`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/DF/` + route.params.DiningID + `/Menu`, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -112,7 +111,7 @@ function Menu({route, navigation}) {
 
     // GET request to get the selected favorite item(s)
     function getFavMeal() {
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -255,7 +254,7 @@ function Menu({route, navigation}) {
                         )}
                         {favMealName.map(function (meal, index) {
                             return (
-                                <View>
+                                <View key={index}>
                                     {meal.value === menuItem.item.menu_item.menu_item_id ? (
                                         <View>
                                             <MaterialCommunityIcons name="star" color="#FFD133" size={30}/>
