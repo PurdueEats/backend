@@ -45,6 +45,25 @@ function ReadReviews({route, navigation}) {
             });
     }
 
+    function renderBorderLine() {
+        return (
+            <View
+                style={{
+                    borderBottomColor: '#c4baba',
+                    borderBottomWidth: 1,
+                }}
+            />
+        );
+    }
+
+    function renderReview(review) {
+        return (
+            <View>
+                <Text style={ [styles.reviewTitle, {color: colors.text}] }>{review["item"]["title"]}</Text>
+                <Text style={ [styles.reviewContent, {color: colors.text}] }>{review["item"]["review_text"]}</Text>
+            </View>
+        );
+    }
 
     return (
         <ScrollView>
@@ -73,14 +92,9 @@ function ReadReviews({route, navigation}) {
                     borderBottomWidth: 1,
                 }}
             />
-            <Text style={ [styles.reviewTitle, {color: colors.text}] }>REVIEW TITLE </Text>
-            <Text style={ [styles.reviewContent, {color: colors.text}] }> REVIEW BODY HERE</Text>
-            <View
-                style={{
-                    borderBottomColor: '#c4baba',
-                    borderBottomWidth: 1,
-                }}
-            />
+            <FlatList data={reviews} ItemSeparatorComponent={renderBorderLine} renderItem={(review) => renderReview(review)}
+                      keyExtractor={item => { Math.random().toString(36).substring(5) } } />
+
         </ScrollView>
     );
 }
