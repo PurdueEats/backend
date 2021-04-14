@@ -7,10 +7,44 @@ import { StackActions } from '@react-navigation/native';
 
 function ReadReviews({route, navigation}) {
     const { colors } = useTheme();
+    const [reviews, setReviews] = useState([]);
+
+    useEffect(() => {
+       getReviews();
+    }, []);
 
     function handleNavigate() {
         navigation.navigate("WriteReview", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
     }
+
+    function getReviews() {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/DFR/?diningFacilityID=` + route.params.DiningID, {
+            method: 'GET',
+            headers : {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful GET
+                        // Set Fields to correct values
+                        response.json().then(function(data) {
+                            //reviews.push(data)
+                            setReviews(data);
+                        });
+                    } else {
+                        console.log('Looks like there was a problem getting the reviews. Status Code: ' +
+                            response.status);
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
 
     return (
         <ScrollView>
