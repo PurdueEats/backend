@@ -77,7 +77,7 @@ create_user_tables = {
 
 	"Weekly_Nutrition":
 	f"""
-	CREATE OR REPLACE TABLE UserNutrition
+	CREATE OR REPLACE TABLE WeeklyNutrition
 	(
 		Date		DATE,
 		Calories	INT64,
