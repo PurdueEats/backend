@@ -26,8 +26,9 @@ def getMenuItemName(MenuItemID):
     rtn.columns = [''] * len(rtn.columns)
     return rtn
 
-if __name__ == "__main__":
-    input = sys.argv[1]
+def gen_user_summary(userID: int):
+
+    input = userID
 
     #below calculates macros and stuff eaten.
     df = userReviewsSummary(input) #use 7023699889393535879 for example
@@ -84,4 +85,9 @@ if __name__ == "__main__":
     print(f"\nweekly_avg_protein: \n{weekly_avg_protein}") #this is a series
     print("\nWeekly sum transactions averages are below. They're in the same format as above.")
     print(f"\nweekly_summary_trans \n{weekly_summary_trans}") #this is a series.
+
+    print(type(weekly_avg_calories))
+
+if __name__=="__main__":
+    gen_user_summary(7023699889393535879)
 
