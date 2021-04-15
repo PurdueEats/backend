@@ -186,8 +186,7 @@ function HomeManager({route, navigation}) {
                         </View>
                     ) : (
                         <View style={{ marginBottom: "3%" }}>
-                            <AllUserSummary UserID={route.params.UserID} token={route.params.token} navigation={navigation}
-                                calories={calories} carbs={carbs} fat={fat} protein={protein}/>
+                            <AllUserSummary calories={calories} carbs={carbs} fat={fat} protein={protein}/>
                             <Button onPress={handleSetChart} style={ styles.mealsButton }>
                                 <Text style={ styles.mealsText }>Show Your Eating Habits</Text>
                             </Button>
