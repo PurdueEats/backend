@@ -23,19 +23,22 @@ const AllUserSummary = (props) => {
     }, []);
 
     function getUserNutrition() {
+        // Fetch date
+        let date = new Date(2021, 6, 2);
+        date.setDate(date.getDate() - date.getDay())
+        let fetchFormat = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         // User Nutrition Summary Route
-        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + props.UserID + "/Nutrition", {
+        fetch('https://app-5fyldqenma-uc.a.run.app/WeeklyNutrition/' + fetchFormat, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + props.token
+                'Accept': 'application/json'
             }
         })
             .then(
                 function (response) {
                     if (response.status !== 200 && response.status !== 201) {
-                        console.log('Looks like there was a problem. Status Code: ' +
+                        console.log('Looks like there was a problem getting user aggregate data. Status Code: ' +
                             response.status);
                     } else {
                         // Examine the text in the response
