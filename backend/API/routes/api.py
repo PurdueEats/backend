@@ -1,5 +1,4 @@
 from fastapi import FastAPI, APIRouter
-
 from backend.API.routes import (
     users, 
     dining, 

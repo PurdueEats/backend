@@ -23,7 +23,7 @@ function LoginManager({navigation}) {
             // If credentials are stored
             if (userID !== null && token !== null) {
                 // Dummy fetch to check token
-                fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + userID + `/Auth`, {
+                fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + userID + `/Auth`, {
                     method: 'GET',
                     headers : {
                         'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ function LoginManager({navigation}) {
 
     function handleLogin() {
         // Login Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/Login`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/Login`, {
         	method: 'POST',
         	headers : {
         		'Content-Type': 'application/json',

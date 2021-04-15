@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Button, Toast } from 'native-base';
-import Logo from "../../resources/logo.png";
+import Logo from "../../../resources/logo.png";
 import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
@@ -87,7 +87,7 @@ function FavoriteMeals({route, navigation}) {
         const updatedList = currentSelection.concat(selectedFavMeals);
         setCurrentSelection(updatedList);
         selectedFavMeals.map(item => {
-            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+            fetch(`hhttps://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals', {
                 method: 'POST',
                 headers : {
                     'Accept': 'application/json',
@@ -123,7 +123,7 @@ function FavoriteMeals({route, navigation}) {
 
     // GET request to get the selected favorite item(s)
     function getFavMeal() {
-       fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals', {
+       fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals', {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ function FavoriteMeals({route, navigation}) {
 
     // GET request to get all of the menu items
      function getMeal() {
-           fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/`, {
+           fetch(`https://app-5fyldqenma-uc.a.run.app/MenuItems/`, {
                 method: 'GET',
                 headers : {
                     'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ function FavoriteMeals({route, navigation}) {
      // DELETE request to remove selected menu items from database
      function removeFavMeal() {
         removeSelection.map(singleMeal => {
-            fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + '/UserFavMeals?menuItemID='+ singleMeal.value, {
+            fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals?menuItemID='+ singleMeal.value, {
                  method: 'DELETE',
                  headers: {
                      'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ function FavoriteMeals({route, navigation}) {
                      if (response.status === 200 || response.status === 201) {
                          // Successful DELETE
                          displayConfirmationDelete();
-                         response.json().then(function(data) {
+                         response.json().then(function() {
                              const filtered = currentSelection.filter(item => !removeSelection.map(i => i.value).includes(item.value));
                              setCurrentSelection(filtered);
                              setRemoveSelection([]);

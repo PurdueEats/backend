@@ -257,7 +257,7 @@ function ProfileManager({route, navigation}) {
 
     function sendMealPlan(planNew) {
         // Send Meal Plan Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/MealPlan`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/`+ route.params.UserID +`/MealPlan`, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -287,7 +287,7 @@ function ProfileManager({route, navigation}) {
 
     function sendDiningDollars(dollars2) {
         // Send Meal Plan Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/Trans`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/`+ route.params.UserID +`/Trans`, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -319,7 +319,7 @@ function ProfileManager({route, navigation}) {
 
     function useSwipe() {
         // Send Meal Plan Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +`/MealSwipe`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/`+ route.params.UserID +`/MealSwipe`, {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -346,7 +346,7 @@ function ProfileManager({route, navigation}) {
     // Gets login and Email
     function getAuth() {
         // Auth Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId + `/Auth`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserId + `/Auth`, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -376,7 +376,7 @@ function ProfileManager({route, navigation}) {
     // Fetches Plan and Swipe information
     function getMealInfo() {
         // MealPlan Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + `/MealPlan`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + `/MealPlan`, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -406,7 +406,7 @@ function ProfileManager({route, navigation}) {
     function deleteAccount() {
         setDelBool(true);
         // Deletion route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserId, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID, {
             method: 'DELETE',
             headers : {
                 'Content-Type': 'application/json',
@@ -430,7 +430,7 @@ function ProfileManager({route, navigation}) {
 
     // Set name route
     function putName(name2) {
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/`+ route.params.UserID +'/Auth', {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/`+ route.params.UserID +'/Auth', {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -461,7 +461,7 @@ function ProfileManager({route, navigation}) {
     //change password route
     function changePassword(password2) {
         // Set name route
-        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/Auth', {
+        fetch('https://app-5fyldqenma-uc.a.run.app/Users/'+ route.params.UserID +'/Auth', {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -505,7 +505,7 @@ function ProfileManager({route, navigation}) {
     };
 
     function getProfilePicture() {
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/Users/` + route.params.UserID + `/ProfilePic`, {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + `/ProfilePic`, {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -534,7 +534,7 @@ function ProfileManager({route, navigation}) {
 
     function submitProfilePicture(directString) {
         // Submit current schedule data
-        fetch('https://purdueeats-304919.uc.r.appspot.com/Users/'+ route.params.UserID +'/ProfilePic', {
+        fetch('https://app-5fyldqenma-uc.a.run.app/Users/'+ route.params.UserID +'/ProfilePic', {
             method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
