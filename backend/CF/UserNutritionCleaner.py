@@ -31,8 +31,15 @@ def nutrition_cleaner(request):
         fat += item['Fat']
         protein += item['Protein']
 
+    n = max(len(res), 1)
+
+    calories //= n
+    carbs //= n
+    fat //= n
+    protein //= n
+
     runQuery(
-        f"INSERT INTO WeeklyNutrition values ({calories}, {carbs}, {fat}, {protein}")
+        f"INSERT INTO WeeklyNutrition values ('{today}', {calories}, {carbs}, {fat}, {protein})")
 
     runQuery("DELETE FROM UserNutrition WHERE True")
 
