@@ -34,7 +34,7 @@ function MealNutrition({route, navigation}) {
 
     useEffect(() => {
         // Meal Nutrition Route
-        fetch(`https://purdueeats-304919.uc.r.appspot.com/MenuItems/` + route.params.MealID + "/Nutrition", {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/MenuItems/` + route.params.MealID + "/Nutrition", {
             method: 'GET',
             headers : {
                 'Content-Type': 'application/json',
@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     screenTitle: {
         fontSize: 30,
         fontWeight: "bold",
+        textAlign: "center",
         alignItems: "center",
         marginLeft: "auto",
         marginRight: "auto",
