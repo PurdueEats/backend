@@ -7,12 +7,6 @@ from backend.API.routes.menu import get_nutrition, nutrition_to_macros, get_menu
 import pandas as pd
 import datetime
 
-gcp_project = "purdueeats-304919"
-bq_dataset = "PurdueEatsDatabase"
-
-client = bigquery.Client(project=gcp_project)
-dataset_ref = client.dataset(bq_dataset)
-
 def userReviewsSummary(UserID):
     reviews = runQuery( f"select user.UserID, MenuItemID, Rating, Timestamp from UserBasic as user Inner Join MenuItemsReviews as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
     return reviews.to_dataframe()
