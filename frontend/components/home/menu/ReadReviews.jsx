@@ -58,9 +58,19 @@ function ReadReviews({route, navigation}) {
 
     function renderReview(review) {
         return (
-            <View>
-                <Text style={ [styles.reviewTitle, {color: colors.text}] }>{review["item"]["title"]}</Text>
-                <Text style={ [styles.reviewContent, {color: colors.text}] }>{review["item"]["review_text"]}</Text>
+            <View style={{flexDirection: "row"}}>
+                <View style={{flexDirection: "column", marginLeft: "2%", marginTop: "1%"}}>
+                    <TouchableOpacity>
+                        <MaterialCommunityIcons name="arrow-up" color="red" size={30}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <MaterialCommunityIcons name="arrow-down" color="red" size={30}/>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <Text style={ [styles.reviewTitle, {color: colors.text}] }>{review["item"]["title"]}</Text>
+                    <Text style={ [styles.reviewContent, {color: colors.text}] }>{review["item"]["review_text"]}</Text>
+                </View>
             </View>
         );
     }
