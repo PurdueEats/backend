@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import { Dimensions, StyleSheet, View, Text } from "react-native";
-import { ProgressChart } from "react-native-chart-kit";
+import { StyleSheet, View, Text } from "react-native";
+import { StackedBarChart } from "react-native-chart-kit";
 import { useTheme } from "@react-navigation/native";
 
 const AllUserSummary = (props) => {
@@ -11,12 +11,6 @@ const AllUserSummary = (props) => {
     const [carbs, setCarbs] = useState(0);
     const [fat, setFat] = useState(0);
     const [protein, setProtein] = useState(0);
-
-    // Chart Data
-    const [chartCalories, setChartCalories] = useState(0);
-    const [chartCarbs, setChartCarbs] = useState(0);
-    const [chartFat, setChartFat] = useState(0);
-    const [chartProtein, setChartProtein] = useState(0);
 
     useEffect(() => {
         getUserNutrition();
@@ -48,32 +42,6 @@ const AllUserSummary = (props) => {
                             setCarbs(data["carbs"]);
                             setFat(data["fat"]);
                             setProtein(data["protein"]);
-
-                            // Set chartData
-                            // Calories
-                            if (parseFloat(data["calories"]) > 14000) {
-                                setChartCalories(14000);
-                            } else {
-                                setChartCalories(parseFloat(data["calories"]));
-                            }
-                            // Carbs
-                            if (parseFloat(data["carbs"]) > 1900) {
-                                setChartCarbs(1900);
-                            } else {
-                                setChartCarbs(parseFloat(data["carbs"]));
-                            }
-                            // Fat
-                            if (parseFloat(data["fat"]) > 200) {
-                                setChartFat(200);
-                            } else {
-                                setChartFat(parseFloat(data["fat"]));
-                            }
-                            // Protein
-                            if (parseFloat(data["protein"]) > 350) {
-                                setChartProtein(350);
-                            } else {
-                                setChartProtein(parseFloat(data["protein"]));
-                            }
                         });
                     }
                 }
@@ -87,25 +55,54 @@ const AllUserSummary = (props) => {
         <View style={{ backgroundColor: "5%" }}>
             <View style={ styles.recommendedView }>
                 <Text style={ [styles.dataHeader, {color: colors.text}] }>Other users' eating habits</Text>
-                <Text style={ [styles.directionsText, {color: colors.text}] }>Rings show % of the NHS recommended weekly totals.</Text>
+                <Text style={ [styles.directionsText, {color: colors.text}] }>Calorie values have been divided by 10.</Text>
             </View>
-            <ProgressChart
+            <StackedBarChart
+                style={{ marginLeft: "2%", marginRight: "5%" }}
+                withHorizontalLabels={false}
                 data={{
-                    labels: ["Calories", "Carbs.", "Fat", "Protein"],
-                    data: [chartCalories / 14000, chartCarbs / 1900, chartFat / 200, chartProtein / 350]
+                    labels: ["Calories", "Carbs.", "Fat", "Protein", ""],
+                    data: [
+                        [parseInt(props.calories / 10), parseInt(calories / 10)],
+                        [parseInt(props.carbs), parseInt(carbs)],
+                        [parseInt(props.fat), parseInt(fat)],
+                        [parseInt(props.protein), parseInt(protein)],
+                        []
+                    ],
+                    barColors: ["red", "white"]
                 }}
-                width={Dimensions.get("window").width - 20}
+                width={400}
                 height={250}
-                strokeWidth={12}
-                radius={35}
+                strokeWidth={0}
                 chartConfig={{
                     backgroundColor: "#f2f2f2",
                     backgroundGradientFrom: "#f2f2f2",
                     backgroundGradientTo: "#f2f2f2",
                     color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`
+                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    propsForBackgroundLines: {
+                        strokeWidth: 0
+                    }
                 }}
+                hideLegend={false}
             />
+            {/*<ProgressChart*/}
+            {/*    data={{*/}
+            {/*        labels: ["Calories", "Carbs.", "Fat", "Protein"],*/}
+            {/*        data: [chartCalories / 14000, chartCarbs / 1900, chartFat / 200, chartProtein / 350]*/}
+            {/*    }}*/}
+            {/*    width={Dimensions.get("window").width - 20}*/}
+            {/*    height={250}*/}
+            {/*    strokeWidth={12}*/}
+            {/*    radius={35}*/}
+            {/*    chartConfig={{*/}
+            {/*        backgroundColor: "#f2f2f2",*/}
+            {/*        backgroundGradientFrom: "#f2f2f2",*/}
+            {/*        backgroundGradientTo: "#f2f2f2",*/}
+            {/*        color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,*/}
+            {/*        labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`*/}
+            {/*    }}*/}
+            {/*/>*/}
             <View style={ styles.dataView }>
                 <Text style={ [styles.dataText, {color: colors.text}] }>
                     You ate <Text style={{ fontWeight: "bold"}}>{props.calories.toLocaleString()} calories</Text>
