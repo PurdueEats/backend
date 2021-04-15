@@ -86,23 +86,6 @@ const AllUserSummary = (props) => {
                 }}
                 hideLegend={false}
             />
-            {/*<ProgressChart*/}
-            {/*    data={{*/}
-            {/*        labels: ["Calories", "Carbs.", "Fat", "Protein"],*/}
-            {/*        data: [chartCalories / 14000, chartCarbs / 1900, chartFat / 200, chartProtein / 350]*/}
-            {/*    }}*/}
-            {/*    width={Dimensions.get("window").width - 20}*/}
-            {/*    height={250}*/}
-            {/*    strokeWidth={12}*/}
-            {/*    radius={35}*/}
-            {/*    chartConfig={{*/}
-            {/*        backgroundColor: "#f2f2f2",*/}
-            {/*        backgroundGradientFrom: "#f2f2f2",*/}
-            {/*        backgroundGradientTo: "#f2f2f2",*/}
-            {/*        color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,*/}
-            {/*        labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`*/}
-            {/*    }}*/}
-            {/*/>*/}
             <View style={ styles.dataView }>
                 <Text style={ [styles.dataText, {color: colors.text}] }>
                     You ate <Text style={{ fontWeight: "bold"}}>{props.calories.toLocaleString()} calories</Text>
