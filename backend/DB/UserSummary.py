@@ -56,40 +56,51 @@ if __name__ == "__main__":
     df['protein'] = protein
     df['menuItemStr'] = menuItemStr
 
-    print(f"df: {df}")
-    r = pd.date_range(start=df.first_day_of_week.min(), end=df.first_day_of_week.max())
-    df.set_index('first_day_of_week').reindex(r).fillna(0.0).rename_axis('first_day_of_week').reset_index()
+    weeksList = [i for i in range(27)]
+    emptyDict = {}
+    for i in weeksList:
+        emptyDict[i] = 0
 
     weekly_avg_calories = df.calories.resample('W').sum() / df.first_day_of_week.resample('W').count()
-    print(f"weekly_avg_calories: {weekly_avg_calories}")
-    #dfTemp = weekly_avg_calories.to_frame()
-    #print(f"dfTemp: {dfTemp}")
-    #r = pd.date_range(start=dfTemp.first_day_of_week.min(), end=dfTemp.first_day_of_week.max())
-
-    #weekly_avg_calories.set_index('first_day_of_week').reindex(r).fillna(0.0).rename_axis('first_day_of_week').reset_index()
-    print(f"weekly_avg_calories: {weekly_avg_calories}")
     d = pd.Series(weekly_avg_calories.index, index=weekly_avg_calories.index)
     new_index = d.dt.isocalendar()
     weekly_avg_calories.index = new_index.week
     weekly_avg_calories = weekly_avg_calories.to_dict()
+    emptyDict.update(weekly_avg_calories)
+    weekly_avg_calories = emptyDict
 
+    emptyDict = {}
+    for i in weeksList:
+        emptyDict[i] = 0
     weekly_avg_carbs = df.carbs.resample('W').sum() / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_carbs.index, index=weekly_avg_carbs.index)
     new_index = d.dt.isocalendar()
     weekly_avg_carbs.index = new_index.week
     weekly_avg_carbs = weekly_avg_carbs.to_dict()
+    emptyDict.update(weekly_avg_carbs)
+    weekly_avg_carbs = emptyDict
 
+    emptyDict = {}
+    for i in weeksList:
+        emptyDict[i] = 0
     weekly_avg_fat = df.fat.resample('W').sum() / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_fat.index, index=weekly_avg_fat.index)
     new_index = d.dt.isocalendar()
     weekly_avg_fat.index = new_index.week
     weekly_avg_fat = weekly_avg_fat.to_dict()
+    emptyDict.update(weekly_avg_fat)
+    weekly_avg_fat = emptyDict
 
+    emptyDict = {}
+    for i in weeksList:
+        emptyDict[i] = 0
     weekly_avg_protein = df.protein.resample('W').sum() / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_protein.index, index=weekly_avg_protein.index)
     new_index = d.dt.isocalendar()
     weekly_avg_protein.index = new_index.week
     weekly_avg_protein = weekly_avg_protein.to_dict()
+    emptyDict.update(weekly_avg_protein)
+    weekly_avg_protein = emptyDict
     #sum of total calories per week / number of active input days per week
 
     #counting unique occurences
@@ -107,6 +118,11 @@ if __name__ == "__main__":
     new_index = d.dt.isocalendar()
     weekly_summary_trans.index = new_index.week
     weekly_summary_trans = weekly_summary_trans.to_dict()
+    emptyDict = {}
+    for i in weeksList:
+        emptyDict[i] = 0
+    emptyDict.update(weekly_summary_trans)
+    weekly_summary_trans = emptyDict
 
     print("\nMenu Item Count is used for word cloud. It contains the menu item # followed by the count.")
 
