@@ -57,12 +57,27 @@ if __name__ == "__main__":
     df['menuItemStr'] = menuItemStr
 
     weekly_avg_calories = df.calories.resample('W').sum() / df.first_day_of_week.resample('W').count()
+    d = pd.Series(weekly_avg_calories.index, index=weekly_avg_calories.index)
+    new_index = d.dt.isocalendar()
+    weekly_avg_calories.index = new_index.week
     weekly_avg_calories = weekly_avg_calories.to_dict()
+
     weekly_avg_carbs = df.carbs.resample('W').sum() / df.first_day_of_week.resample('W').count()
+    d = pd.Series(weekly_avg_carbs.index, index=weekly_avg_carbs.index)
+    new_index = d.dt.isocalendar()
+    weekly_avg_carbs.index = new_index.week
     weekly_avg_carbs = weekly_avg_carbs.to_dict()
+
     weekly_avg_fat = df.fat.resample('W').sum() / df.first_day_of_week.resample('W').count()
+    d = pd.Series(weekly_avg_fat.index, index=weekly_avg_fat.index)
+    new_index = d.dt.isocalendar()
+    weekly_avg_fat.index = new_index.week
     weekly_avg_fat = weekly_avg_fat.to_dict()
+
     weekly_avg_protein = df.protein.resample('W').sum() / df.first_day_of_week.resample('W').count()
+    d = pd.Series(weekly_avg_protein.index, index=weekly_avg_protein.index)
+    new_index = d.dt.isocalendar()
+    weekly_avg_protein.index = new_index.week
     weekly_avg_protein = weekly_avg_protein.to_dict()
     #sum of total calories per week / number of active input days per week
 
@@ -71,29 +86,25 @@ if __name__ == "__main__":
     menu_item_count = df['menuItemStr'].apply(pd.Series).stack().reset_index(drop=True).value_counts()
     #menu_item_count = df['MenuItemID'].value_counts() #obsolete line that returns menu item id with count
     menu_item_count = menu_item_count.to_dict()
-
     # this is to calculate user transactions
     df2 = userTransactionsSummary(input)
     df2['first_day_of_week'] = df2["Timestamp"].apply(lambda df2:
                                             datetime.datetime(year=df2.year, month=df2.month, day=df2.day))
     df2.set_index(df2["first_day_of_week"], inplace=True) #makes line 74 run
     weekly_summary_trans = df2.TransactionAmount.resample('W').sum()
+    d = pd.Series(weekly_summary_trans.index, index=weekly_summary_trans.index)
+    new_index = d.dt.isocalendar()
+    weekly_summary_trans.index = new_index.week
     weekly_summary_trans = weekly_summary_trans.to_dict()
 
     print("\nMenu Item Count is used for word cloud. It contains the menu item # followed by the count.")
 
     print(f"\nmenu_item_count: \n{menu_item_count}") #frequency count of menu items; for word cloud
-    print(type(menu_item_count))
     print("\nWeekly macro averages are below. They're in Series format and can thus be plotted. The index is the first day of the week, the values are average macro consumed of that week")
     print(f"\nweekly_avg_calories: \n{weekly_avg_calories}") #this is a series
-    print(type(weekly_avg_calories))
     print(f"\nweekly_avg_carbs: \n{weekly_avg_carbs}")  # this is a series
-    print(type(weekly_avg_carbs))
     print(f"\nweekly_avg_fat: \n{weekly_avg_fat}") #this is a series
-    print(type(weekly_avg_fat))
     print(f"\nweekly_avg_protein: \n{weekly_avg_protein}") #this is a series
-    print(type(weekly_avg_protein))
     print("\nWeekly sum transactions averages are below. They're in the same format as above.")
     print(f"\nweekly_summary_trans \n{weekly_summary_trans}") #this is a series.
-    print(type(weekly_summary_trans))
 
