@@ -73,8 +73,19 @@ create_user_tables = {
 		Fat		INT64,
 		Protein		INT64
 	)
-	"""
+	""",
 
+	"Weekly_Nutrition":
+	f"""
+	CREATE OR REPLACE TABLE WeeklyNutrition
+	(
+		Date		DATE,
+		Calories	INT64,
+		Carbs		INT64,
+		Fat		INT64,
+		Protein		INT64
+	)
+	"""
 }
 
 # Schema Description of all Dining Facility related tables
