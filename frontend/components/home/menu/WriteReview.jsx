@@ -35,8 +35,6 @@ function WriteReview({route, navigation}) {
                 "title": title,
                 "review_text": body,
                 "rating": diningRating,
-                "upvote_count": 0,
-                "downvote_count": 0
                 }
             )
         })
