@@ -120,7 +120,7 @@ def gen_stats(userID: int):
     emptyDict.update(weekly_summary_trans)
     weekly_summary_trans = emptyDict
 
-"""
+    """
     print("\nMenu Item Count is used for word cloud. It contains the menu item # followed by the count.")
 
     print(f"\nmenu_item_count: \n{menu_item_count}") #frequency count of menu items; for word cloud
@@ -131,21 +131,34 @@ def gen_stats(userID: int):
     print(f"\nweekly_avg_protein: \n{weekly_avg_protein}") #this is a series
     print("\nWeekly sum transactions averages are below. They're in the same format as above.")
     print(f"\nweekly_summary_trans \n{weekly_summary_trans}") #this is a series.
-"""
+    """
+
     T = lambda x: "Week " + str(x)
     res = {
-        'menu_item_count': {
-            'labels': list(map(T, menu_item_count.keys())),
-            'datasets': { menu_item_count.values() }
+        'menu_item_count': menu_item_count,
+        'weekly_avg_calories': {
+            'labels': list(map(T, weekly_avg_calories.keys())),
+            'datasets': { weekly_avg_calories.values() }
         },
-        'weekly_avg_calories': {},
-        'weekly_avg_carbs': {}, 
-        'weekly_avg_fat': {},
-        'weekly_avg_protein': {},
-        'weekly_summary_trans' : {}
+        'weekly_avg_carbs': {
+            'labels': list(map(T, weekly_avg_carbs.keys())),
+            'datasets': { weekly_avg_carbs.values() }
+        }, 
+        'weekly_avg_fat': {
+            'labels': list(map(T, weekly_avg_fat.keys())),
+            'datasets': { weekly_avg_fat.values() }
+        }, 
+        'weekly_avg_protein': {
+            'labels': list(map(T, weekly_avg_protein.keys())),
+            'datasets': { weekly_avg_protein.values() }
+        },
+        'weekly_summary_trans' : {
+            'labels': list(map(T, weekly_summary_trans.keys())),
+            'datasets': { weekly_summary_trans.values() }
+        },
     }
 
-    print(res)
+    print(res['weekly_avg_fat'])
 
 
 if __name__ == "__main__":
