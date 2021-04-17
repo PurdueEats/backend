@@ -8,6 +8,8 @@ import { StackActions } from '@react-navigation/native';
 function ReadReviews({route, navigation}) {
     const { colors } = useTheme();
     const [reviews, setReviews] = useState([]);
+    const [vote, setVote] = useState();
+    const [reviewID, setReviewID] = useState('');
 
     useEffect(() => {
        getReviews();
@@ -45,6 +47,37 @@ function ReadReviews({route, navigation}) {
             });
     }
 
+    function submitVote() {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/DFR/Vote`, {
+            method: 'POST',
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify( {
+                    "dining_facility_review_id": reviewID,
+                    "user_id": route.params.UserID,
+                    "vote_val": vote
+                }
+            )
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        console.log("Thank you for your vote!")
+                    } else {
+                        // Examine the text in the response
+                        console.log('Looks like there was a problem submitting the vote. Status Code: ' +
+                            response.status);
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
     function renderBorderLine() {
         return (
             <View
@@ -56,14 +89,25 @@ function ReadReviews({route, navigation}) {
         );
     }
 
+    function handleUpvote(diningReviewID) {
+        setVote(1);
+        setReviewID(diningReviewID);
+        submitVote();
+    }
+    function handleDownvote(diningReviewID) {
+        setVote(-1);
+        setReviewID(diningReviewID);
+        submitVote();
+    }
+
     function renderReview(review) {
         return (
             <View style={{flexDirection: "row"}}>
                 <View style={{flexDirection: "column", marginLeft: "2%", marginTop: "1%"}}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={handleUpvote(review["item"]["dining_facility_review_id"])}>
                         <MaterialCommunityIcons name="arrow-up" color="red" size={30}/>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={handleDownvote(review["item"]["dining_facility_review_id"])}>
                         <MaterialCommunityIcons name="arrow-down" color="red" size={30}/>
                     </TouchableOpacity>
                 </View>
