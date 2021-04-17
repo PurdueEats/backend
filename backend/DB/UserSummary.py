@@ -1,4 +1,4 @@
-#INSTRUCTIONS: RUN FILE WITH 1 ARG AS USER ID. E.G. python UserSummary.py 7023699889393535879
+# INSTRUCTIONS: RUN FILE WITH 1 ARG AS USER ID. E.G. python UserSummary.py 7023699889393535879
 
 from google.cloud import bigquery
 import sys
@@ -7,22 +7,22 @@ from backend.API.routes.menu import get_nutrition, nutrition_to_macros, get_menu
 import pandas as pd
 import datetime
 
-gcp_project = "purdueeats-304919"
-bq_dataset = "PurdueEatsDatabase"
-
-client = bigquery.Client(project=gcp_project)
-dataset_ref = client.dataset(bq_dataset)
 
 def userReviewsSummary(UserID):
-    reviews = runQuery( f"select user.UserID, MenuItemID, Rating, Timestamp from UserBasic as user Inner Join MenuItemsReviews as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
+    reviews = runQuery(
+        f"select user.UserID, MenuItemID, Rating, Timestamp from UserBasic as user Inner Join MenuItemsReviews as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
     return reviews.to_dataframe()
 
+
 def userTransactionsSummary(UserID):
-    transactions = runQuery( f"select user.UserID, TransactionAmount, Balance, Timestamp from UserBasic as user Inner Join UserTransaction as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
+    transactions = runQuery(
+        f"select user.UserID, TransactionAmount, Balance, Timestamp from UserBasic as user Inner Join UserTransaction as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
     return transactions.to_dataframe()
 
+
 def getMenuItemName(MenuItemID):
-    rtn = runQuery( f"select ItemName from MenuItems WHERE MenuItemID = {MenuItemID}").to_dataframe()
+    rtn = runQuery(
+        f"select ItemName from MenuItems WHERE MenuItemID = {MenuItemID}").to_dataframe()
     rtn.columns = [''] * len(rtn.columns)
     return rtn
 
@@ -31,21 +31,24 @@ def gen_stats(userID: int):
 
     input = userID
 
-    #below calculates macros and stuff eaten.
-    df = userReviewsSummary(input) #use 7023699889393535879 for example
+    # below calculates macros and stuff eaten.
+    df = userReviewsSummary(input)  # use 7023699889393535879 for example
     df['first_day_of_week'] = df["Timestamp"].apply(lambda df:
-                                            datetime.datetime(year=df.year, month=df.month, day=df.day))
-    df.set_index(df["first_day_of_week"], inplace=True) #makes lines 56-59 run
+                                                    datetime.datetime(year=df.year, month=df.month, day=df.day))
+    # makes lines 56-59 run
+    df.set_index(df["first_day_of_week"], inplace=True)
 
-    calories = [] #these empty lists will be populated with in the for loop below, then added as columns to dataset.
+    # these empty lists will be populated with in the for loop below, then added as columns to dataset.
+    calories = []
     carbs = []
     fat = []
     protein = []
     menuItemStr = []
 
     for i, row in df.iterrows():
-        menu_item_id = row[1] #this is the menu item id
-        menuItemStr.append(getMenuItemName(menu_item_id).loc[0].to_string()[4:])
+        menu_item_id = row[1]  # this is the menu item id
+        menuItemStr.append(getMenuItemName(
+            menu_item_id).loc[0].to_string()[4:])
         response = get_nutrition(menu_item_id)
         _calories, _carbs, _fat, _protein = nutrition_to_macros(response)
         calories.append(_calories)
@@ -63,10 +66,10 @@ def gen_stats(userID: int):
     for i in weeksList:
         emptyDict[i] = 0
 
-    weekly_avg_calories = df.calories.resample('W').sum() / df.first_day_of_week.resample('W').count()
+    weekly_avg_calories = df.calories.resample(
+        'W').sum() / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_calories.index, index=weekly_avg_calories.index)
-    new_index = d.dt.isocalendar()
-    new_index.week = new_index.week - 2 #change week number of year to reflect first week of sememster
+    new_index = d.dt.isocalendar() - 2
     weekly_avg_calories.index = new_index.week
     weekly_avg_calories = weekly_avg_calories.to_dict()
     emptyDict.update(weekly_avg_calories)
@@ -75,10 +78,10 @@ def gen_stats(userID: int):
     emptyDict = {}
     for i in weeksList:
         emptyDict[i] = 0
-    weekly_avg_carbs = df.carbs.resample('W').sum() / df.first_day_of_week.resample('W').count()
+    weekly_avg_carbs = df.carbs.resample('W').sum(
+    ) / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_carbs.index, index=weekly_avg_carbs.index)
-    new_index = d.dt.isocalendar()
-    new_index.week = new_index.week - 2
+    new_index = d.dt.isocalendar() - 2
     weekly_avg_carbs.index = new_index.week
     weekly_avg_carbs = weekly_avg_carbs.to_dict()
     emptyDict.update(weekly_avg_carbs)
@@ -87,10 +90,10 @@ def gen_stats(userID: int):
     emptyDict = {}
     for i in weeksList:
         emptyDict[i] = 0
-    weekly_avg_fat = df.fat.resample('W').sum() / df.first_day_of_week.resample('W').count()
+    weekly_avg_fat = df.fat.resample('W').sum(
+    ) / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_fat.index, index=weekly_avg_fat.index)
-    new_index = d.dt.isocalendar()
-    new_index.week = new_index.week - 2
+    new_index = d.dt.isocalendar() - 2
     weekly_avg_fat.index = new_index.week
     weekly_avg_fat = weekly_avg_fat.to_dict()
     emptyDict.update(weekly_avg_fat)
@@ -99,30 +102,30 @@ def gen_stats(userID: int):
     emptyDict = {}
     for i in weeksList:
         emptyDict[i] = 0
-    weekly_avg_protein = df.protein.resample('W').sum() / df.first_day_of_week.resample('W').count()
+    weekly_avg_protein = df.protein.resample(
+        'W').sum() / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_protein.index, index=weekly_avg_protein.index)
-    new_index = d.dt.isocalendar()
-    new_index.week = new_index.week - 2
+    new_index = d.dt.isocalendar() - 2
     weekly_avg_protein.index = new_index.week
     weekly_avg_protein = weekly_avg_protein.to_dict()
     emptyDict.update(weekly_avg_protein)
     weekly_avg_protein = emptyDict
-    #sum of total calories per week / number of active input days per week
+    # sum of total calories per week / number of active input days per week
 
-    #counting unique occurences
+    # counting unique occurences
     df['menuItemStr'] = df['menuItemStr'].str.split()
-    menu_item_count = df['menuItemStr'].apply(pd.Series).stack().reset_index(drop=True).value_counts()
-    #menu_item_count = df['MenuItemID'].value_counts() #obsolete line that returns menu item id with count
+    menu_item_count = df['menuItemStr'].apply(
+        pd.Series).stack().reset_index(drop=True).value_counts()
+    # menu_item_count = df['MenuItemID'].value_counts() #obsolete line that returns menu item id with count
     menu_item_count = menu_item_count.to_dict()
     # this is to calculate user transactions
     df2 = userTransactionsSummary(input)
     df2['first_day_of_week'] = df2["Timestamp"].apply(lambda df2:
-                                            datetime.datetime(year=df2.year, month=df2.month, day=df2.day))
-    df2.set_index(df2["first_day_of_week"], inplace=True) #makes line 74 run
+                                                      datetime.datetime(year=df2.year, month=df2.month, day=df2.day))
+    df2.set_index(df2["first_day_of_week"], inplace=True)  # makes line 74 run
     weekly_summary_trans = df2.TransactionAmount.resample('W').sum()
     d = pd.Series(weekly_summary_trans.index, index=weekly_summary_trans.index)
-    new_index = d.dt.isocalendar()
-    new_index.week = new_index.week - 2
+    new_index = d.dt.isocalendar() - 2
     weekly_summary_trans.index = new_index.week
     weekly_summary_trans = weekly_summary_trans.to_dict()
     emptyDict = {}
@@ -144,32 +147,29 @@ def gen_stats(userID: int):
     print(f"\nweekly_summary_trans \n{weekly_summary_trans}") #this is a series.
     """
 
-    T = lambda x: "Week " + str(x)
+    def T(x): return "Week " + str(x)
+    
     res = {
         'menu_item_count': menu_item_count,
         'weekly_avg_calories': {
             'labels': list(map(T, weekly_avg_calories.keys())),
-            'datasets': { weekly_avg_calories.values() }
+            'datasets': {'data': list(weekly_avg_calories.values())}
         },
-        'weekly_avg_carbs': {
-            'labels': list(map(T, weekly_avg_carbs.keys())),
-            'datasets': { weekly_avg_carbs.values() }
-        }, 
-        'weekly_avg_fat': {
+        'weekly_avg_macros': {
             'labels': list(map(T, weekly_avg_fat.keys())),
-            'datasets': { weekly_avg_fat.values() }
-        }, 
-        'weekly_avg_protein': {
-            'labels': list(map(T, weekly_avg_protein.keys())),
-            'datasets': { weekly_avg_protein.values() }
+            'data': [
+                list(weekly_avg_carbs.values()),
+                list(weekly_avg_fat.values()),
+                list(weekly_avg_protein.values())
+            ]
         },
-        'weekly_summary_trans' : {
+        'weekly_summary_trans': {
             'labels': list(map(T, weekly_summary_trans.keys())),
-            'datasets': { weekly_summary_trans.values() }
+            'datasets': {'data': list(weekly_summary_trans.values())}
         },
     }
 
-    print(res['weekly_avg_fat'])
+    return res
 
 
 if __name__ == "__main__":
