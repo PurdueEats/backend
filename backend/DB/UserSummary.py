@@ -58,6 +58,11 @@ def gen_stats(userID: int):
     df['protein'] = protein
     df['menuItemStr'] = menuItemStr
 
+    #if use has no transactions, return this
+    if df.empty:
+        print("User does not have any records!")
+        return;
+
     weeksList = [i + 1 for i in range(16)]
     emptyDict = {}
     for i in weeksList:
@@ -173,4 +178,4 @@ def gen_stats(userID: int):
 
 
 if __name__ == "__main__":
-    gen_stats(7023699889393535879)
+    gen_stats(188163777591238077)
