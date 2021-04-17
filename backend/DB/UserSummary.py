@@ -55,6 +55,7 @@ def gen_stats(userID: int):
         carbs.append(_carbs)
         fat.append(_fat)
         protein.append(_protein)
+
     df['calories'] = calories
     df['carbs'] = carbs
     df['fat'] = fat
