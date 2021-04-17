@@ -62,10 +62,7 @@ def gen_stats(userID: int):
     df['protein'] = protein
     df['menuItemStr'] = menuItemStr
 
-    #if use has no transactions, return this
-    if df.empty:
-        print("User does not have any records!")
-        return;
+
 
     weeksList = [i + 1 for i in range(16)]
     emptyDict = {}
@@ -119,9 +116,13 @@ def gen_stats(userID: int):
     # sum of total calories per week / number of active input days per week
 
     # counting unique occurences
-    df['menuItemStr'] = df['menuItemStr'].str.split()
-    menu_item_count = df['menuItemStr'].apply(
-        pd.Series).stack().reset_index(drop=True).value_counts()
+    if not df['menuItemStr'].empty:
+        df['menuItemStr'] = df['menuItemStr'].str.split()
+        menu_item_count = df['menuItemStr'].apply(
+            pd.Series).stack().reset_index(drop=True).value_counts()
+    else: #if the user has not made any user reviews, variable becomes an empty series with data type str.
+        menu_item_count = pd.Series(dtype = 'str')
+
     # menu_item_count = df['MenuItemID'].value_counts() #obsolete line that returns menu item id with count
     menu_item_count = menu_item_count.to_dict()
     # this is to calculate user transactions
@@ -179,4 +180,7 @@ def gen_stats(userID: int):
 
 
 if __name__ == "__main__":
-    gen_stats(188163777591238077)
+    gen_stats(188163777591238077) #
+
+
+
