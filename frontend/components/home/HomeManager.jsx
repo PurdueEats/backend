@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from "react";
-import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useIsFocused } from '@react-navigation/native';
 import { ProgressChart } from "react-native-chart-kit";
 import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
 import RecommendedMeals from "./home-accessories/RecommendedMeals";
+import AllUserSummary from "./home-accessories/AllUserSummary";
 import Logo from "../../resources/logo.png";
 import Earhart from "../../resources/earhart.png";
 import Wiley from "../../resources/wiley.png";
 import Ford from "../../resources/ford.png";
 import Hillenbrand from "../../resources/hillenbrand.png";
 import Windsor from "../../resources/windsor.png";
+import {Button} from "native-base";
 
 function HomeManager({route, navigation}) {
     const { colors } = useTheme();
@@ -22,6 +24,9 @@ function HomeManager({route, navigation}) {
     const [carbs, setCarbs] = useState(0);
     const [fat, setFat] = useState(0);
     const [protein, setProtein] = useState(0);
+
+    // Set chart visibility
+    const [showChart, setShowChart] = useState(true);
 
     // Chart Data
     const [chartCalories, setChartCalories] = useState(0);
@@ -96,6 +101,10 @@ function HomeManager({route, navigation}) {
             });
     }
 
+    function handleSetChart() {
+        setShowChart(!showChart)
+    }
+
     function EarhartNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 1});
     }
@@ -134,41 +143,55 @@ function HomeManager({route, navigation}) {
             </View>
             {selectedTab === 0 ? (
                 <View style={{ marginBottom: "5%" }}>
-                    <View style={ styles.recommendedView }>
-                        <Text style={ [styles.dataHeader, {color: colors.text}] }>Your eating habits</Text>
-                        <Text style={ [styles.directionsText, {color: colors.text}] }>Rings show % of the NHS recommended weekly totals.</Text>
-                    </View>
-                    <ProgressChart
-                        data={{
-                            labels: ["Calories", "Carbs.", "Fat", "Protein"],
-                            data: [chartCalories / 14000, chartCarbs / 1900, chartFat / 200, chartProtein / 350]
-                        }}
-                        width={Dimensions.get("window").width - 20}
-                        height={250}
-                        strokeWidth={12}
-                        radius={35}
-                        chartConfig={{
-                            backgroundColor: "#f2f2f2",
-                            backgroundGradientFrom: "#f2f2f2",
-                            backgroundGradientTo: "#f2f2f2",
-                            color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
-                            labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`
-                        }}
-                    />
-                    <View style={ styles.dataView }>
-                        <Text style={ [styles.dataText, {color: colors.text}] }>
-                            <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories.toLocaleString()} of 14,000
-                        </Text>
-                        <Text style={ [styles.dataText, {color: colors.text}] }>
-                            <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs.toLocaleString()}g of 1,900g
-                        </Text>
-                        <Text style={ [styles.dataText, {color: colors.text}] }>
-                            <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat.toLocaleString()}g of 200g
-                        </Text>
-                        <Text style={ [styles.dataText, {color: colors.text}] }>
-                            <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein.toLocaleString()}g of 350g
-                        </Text>
-                    </View>
+                    { showChart ? (
+                        <View style={{ marginBottom: "3%" }}>
+                            <View style={ styles.recommendedView }>
+                                <Text style={ [styles.dataHeader, {color: colors.text}] }>Your eating habits</Text>
+                                <Text style={ [styles.directionsText, {color: colors.text}] }>Rings show % of the NHS recommended weekly totals.</Text>
+                            </View>
+                            <ProgressChart
+                                data={{
+                                    labels: ["Calories", "Carbs.", "Fat", "Protein"],
+                                    data: [chartCalories / 14000, chartCarbs / 1900, chartFat / 200, chartProtein / 350]
+                                }}
+                                width={Dimensions.get("window").width - 20}
+                                height={250}
+                                strokeWidth={12}
+                                radius={35}
+                                chartConfig={{
+                                    backgroundColor: "#f2f2f2",
+                                    backgroundGradientFrom: "#f2f2f2",
+                                    backgroundGradientTo: "#f2f2f2",
+                                    color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
+                                    labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`
+                                }}
+                            />
+                            <View style={ styles.dataView }>
+                                <Text style={ [styles.dataText, {color: colors.text}] }>
+                                    <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories.toLocaleString()} of 14,000
+                                </Text>
+                                <Text style={ [styles.dataText, {color: colors.text}] }>
+                                    <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs.toLocaleString()}g of 1,900g
+                                </Text>
+                                <Text style={ [styles.dataText, {color: colors.text}] }>
+                                    <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat.toLocaleString()}g of 200g
+                                </Text>
+                                <Text style={ [styles.dataText, {color: colors.text}] }>
+                                    <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein.toLocaleString()}g of 350g
+                                </Text>
+                            </View>
+                            <Button onPress={handleSetChart} style={ styles.mealsButton }>
+                                <Text style={ styles.mealsText }>Show Other Users' Eating Habits</Text>
+                            </Button>
+                        </View>
+                    ) : (
+                        <View style={{ marginBottom: "3%" }}>
+                            <AllUserSummary calories={calories} carbs={carbs} fat={fat} protein={protein}/>
+                            <Button onPress={handleSetChart} style={ styles.mealsButton }>
+                                <Text style={ styles.mealsText }>Show Your Eating Habits</Text>
+                            </Button>
+                        </View>
+                    )}
                     <RecommendedMeals UserID={route.params.UserID} token={route.params.token} navigation={navigation}/>
                 </View>
             ) : (
@@ -265,8 +288,8 @@ const styles = StyleSheet.create({
     },
     mealsButton: {
         marginTop: "5%",
-        marginLeft: "25%",
-        width: '50%',
+        marginLeft: "20%",
+        width: '60%',
         backgroundColor: "red",
         borderRadius: 10,
         justifyContent: 'center',
@@ -275,6 +298,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "bold",
         color: "white"
+    },
+    switch: {
+        backgroundColor: "red",
+        borderRadius: 10,
+        justifyContent: 'center',
     },
     // Dining Facilities
     earhartTitle: {
