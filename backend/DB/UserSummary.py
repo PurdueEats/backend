@@ -7,6 +7,12 @@ from backend.API.routes.menu import get_nutrition, nutrition_to_macros, get_menu
 import pandas as pd
 import datetime
 
+gcp_project = "purdueeats-304919"
+bq_dataset = "PurdueEatsDatabase"
+
+client = bigquery.Client(project=gcp_project)
+dataset_ref = client.dataset(bq_dataset)
+
 def userReviewsSummary(UserID):
     reviews = runQuery( f"select user.UserID, MenuItemID, Rating, Timestamp from UserBasic as user Inner Join MenuItemsReviews as txn on user.UserID = txn.UserID WHERE user.UserID = {UserID}")
     return reviews.to_dataframe()
@@ -50,7 +56,7 @@ if __name__ == "__main__":
     df['protein'] = protein
     df['menuItemStr'] = menuItemStr
 
-    weeksList = [i for i in range(27)]
+    weeksList = [i + 1 for i in range(16)]
     emptyDict = {}
     for i in weeksList:
         emptyDict[i] = 0
@@ -58,6 +64,7 @@ if __name__ == "__main__":
     weekly_avg_calories = df.calories.resample('W').sum() / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_calories.index, index=weekly_avg_calories.index)
     new_index = d.dt.isocalendar()
+    new_index.week = new_index.week - 2 #change week number of year to reflect first week of sememster
     weekly_avg_calories.index = new_index.week
     weekly_avg_calories = weekly_avg_calories.to_dict()
     emptyDict.update(weekly_avg_calories)
@@ -69,6 +76,7 @@ if __name__ == "__main__":
     weekly_avg_carbs = df.carbs.resample('W').sum() / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_carbs.index, index=weekly_avg_carbs.index)
     new_index = d.dt.isocalendar()
+    new_index.week = new_index.week - 2
     weekly_avg_carbs.index = new_index.week
     weekly_avg_carbs = weekly_avg_carbs.to_dict()
     emptyDict.update(weekly_avg_carbs)
@@ -80,6 +88,7 @@ if __name__ == "__main__":
     weekly_avg_fat = df.fat.resample('W').sum() / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_fat.index, index=weekly_avg_fat.index)
     new_index = d.dt.isocalendar()
+    new_index.week = new_index.week - 2
     weekly_avg_fat.index = new_index.week
     weekly_avg_fat = weekly_avg_fat.to_dict()
     emptyDict.update(weekly_avg_fat)
@@ -91,6 +100,7 @@ if __name__ == "__main__":
     weekly_avg_protein = df.protein.resample('W').sum() / df.first_day_of_week.resample('W').count()
     d = pd.Series(weekly_avg_protein.index, index=weekly_avg_protein.index)
     new_index = d.dt.isocalendar()
+    new_index.week = new_index.week - 2
     weekly_avg_protein.index = new_index.week
     weekly_avg_protein = weekly_avg_protein.to_dict()
     emptyDict.update(weekly_avg_protein)
@@ -110,6 +120,7 @@ if __name__ == "__main__":
     weekly_summary_trans = df2.TransactionAmount.resample('W').sum()
     d = pd.Series(weekly_summary_trans.index, index=weekly_summary_trans.index)
     new_index = d.dt.isocalendar()
+    new_index.week = new_index.week - 2
     weekly_summary_trans.index = new_index.week
     weekly_summary_trans = weekly_summary_trans.to_dict()
     emptyDict = {}
