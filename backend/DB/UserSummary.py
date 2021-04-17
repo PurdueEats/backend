@@ -20,8 +20,10 @@ def getMenuItemName(MenuItemID):
     rtn.columns = [''] * len(rtn.columns)
     return rtn
 
-if __name__ == "__main__":
-    input = sys.argv[1]
+
+def gen_stats(userID: int):
+
+    input = userID
 
     #below calculates macros and stuff eaten.
     df = userReviewsSummary(input) #use 7023699889393535879 for example
@@ -118,6 +120,7 @@ if __name__ == "__main__":
     emptyDict.update(weekly_summary_trans)
     weekly_summary_trans = emptyDict
 
+"""
     print("\nMenu Item Count is used for word cloud. It contains the menu item # followed by the count.")
 
     print(f"\nmenu_item_count: \n{menu_item_count}") #frequency count of menu items; for word cloud
@@ -128,4 +131,22 @@ if __name__ == "__main__":
     print(f"\nweekly_avg_protein: \n{weekly_avg_protein}") #this is a series
     print("\nWeekly sum transactions averages are below. They're in the same format as above.")
     print(f"\nweekly_summary_trans \n{weekly_summary_trans}") #this is a series.
+"""
+    T = lambda x: "Week " + str(x)
+    res = {
+        'menu_item_count': {
+            'labels': list(map(T, menu_item_count.keys())),
+            'datasets': { menu_item_count.values() }
+        },
+        'weekly_avg_calories': {},
+        'weekly_avg_carbs': {}, 
+        'weekly_avg_fat': {},
+        'weekly_avg_protein': {},
+        'weekly_summary_trans' : {}
+    }
 
+    print(res)
+
+
+if __name__ == "__main__":
+    gen_stats(7023699889393535879)
