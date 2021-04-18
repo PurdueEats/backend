@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
-import { Button } from 'native-base';
+import {Button, Toast} from 'native-base';
 import { StackActions } from '@react-navigation/native';
 
 function ReadReviews({route, navigation}) {
@@ -56,7 +56,7 @@ function ReadReviews({route, navigation}) {
             },
             body: JSON.stringify( {
                     "dining_facility_review_id": reviewID,
-                    "user_id": route.params.UserID,
+                    "user_id": String(route.params.UserID),
                     "vote_val": vote
                 }
             )
@@ -65,17 +65,43 @@ function ReadReviews({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        console.log("Thank you for your vote!")
+                        //console.log("Thank you for your vote!");
+                        voteConfirmation();
                     } else {
                         // Examine the text in the response
                         console.log('Looks like there was a problem submitting the vote. Status Code: ' +
                             response.status);
+                        displayError();
                     }
                 }
             )
             .catch(function(err) {
                 console.log('Fetch Error :-S', err);
             });
+    }
+
+    function voteConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Thank you for your vote!",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "The vote was not submitted. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
     }
 
     function renderBorderLine() {
@@ -90,24 +116,30 @@ function ReadReviews({route, navigation}) {
     }
 
     function handleUpvote(diningReviewID) {
+        //console.log("here");
         setVote(1);
+        //console.log(vote);
         setReviewID(diningReviewID);
+        //console.log(reviewID);
         submitVote();
     }
     function handleDownvote(diningReviewID) {
+        // console.log("down");
         setVote(-1);
         setReviewID(diningReviewID);
         submitVote();
     }
 
     function renderReview(review) {
+        let sumVote = review["item"]["upvote_count"] - review["item"]["downvote_count"];
         return (
             <View style={{flexDirection: "row"}}>
                 <View style={{flexDirection: "column", marginLeft: "2%", marginTop: "1%"}}>
-                    <TouchableOpacity onPress={handleUpvote(review["item"]["dining_facility_review_id"])}>
+                    <TouchableOpacity onPress={() => handleUpvote(review["item"]["dining_facility_review_id"])}>
                         <MaterialCommunityIcons name="arrow-up" color="red" size={30}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleDownvote(review["item"]["dining_facility_review_id"])}>
+                    <Text style={[styles.voteCountText, {color: colors.text}]}>{sumVote}</Text>
+                    <TouchableOpacity onPress={() => handleDownvote(review["item"]["dining_facility_review_id"])}>
                         <MaterialCommunityIcons name="arrow-down" color="red" size={30}/>
                     </TouchableOpacity>
                 </View>
@@ -185,7 +217,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "bold",
         alignItems: "center",
-        marginLeft: "15%",
+        marginLeft: "1%",
         marginRight: "3%",
         marginTop: "3%",
         marginBottom: "3%",
@@ -194,8 +226,16 @@ const styles = StyleSheet.create({
     reviewContent: {
         fontSize: 20,
         alignItems: "center",
-        marginLeft: "15%",
+        marginLeft: "1%",
         marginRight: "3%",
+        marginBottom: "3%",
+        justifyContent: "center"
+    },
+    voteCountText: {
+        fontSize: 20,
+        alignItems: "center",
+        marginLeft: "15%",
+        marginRight: "-6%",
         marginBottom: "3%",
         justifyContent: "center"
     },
