@@ -41,7 +41,7 @@ function fetchData() {
                 <p>User Name: ${user.name}</p>
                 <p>User ID: ${user.user_id}</p>
                 <p>User Email: ${user.email}</p>
-                <p>User Feedback: ${user.feedback_text}</p>
+                <p>User Feedback Message: ${user.feedback_text}</p>
                 <p>Timestamp: ${user.timestamp}</p>
             </div>
             `;
