@@ -16,6 +16,8 @@ import Email from "./components/login/signup/Email";
 import Password from "./components/login/signup/Password";
 import MealPlan from "./components/login/signup/MealPlan";
 import MapManager from "./components/map/MapManager";
+import SettingsManager from "./components/settings/SettingsManager";
+import Feedback from "./components/settings/settings-accessories/Feedback";
 import NavBarManager from "./components/navbar/NavBarManager";
 import ForgotPassword from "./components/login/login-accessories/ForgotPassword";
 import TrackMeals from "./components/profile/profile-accessories/TrackMeals";
@@ -24,11 +26,9 @@ import Schedule from "./components/profile/profile-accessories/Schedule";
 import Notifications from "./components/profile/profile-accessories/Notifications";
 import ReadReviews from "./components/home/menu/ReadReviews";
 import WriteReview from "./components/home/menu/WriteReview";
-
 export default function App() {
     const Stack = createStackNavigator();
     const scheme = useColorScheme();
-
     return (
         // Do not remove Root! Root is necessary for toasts integrated in successive components.
         <Root>
@@ -50,6 +50,8 @@ export default function App() {
                         <Stack.Screen name="MealReview" component={ RecordMeals }/>
                         <Stack.Screen name="Map" component={ MapManager }/>
                         <Stack.Screen name="Profile" component={ ProfileManager }/>
+                        <Stack.Screen name="Settings" component={ SettingsManager }/>
+                        <Stack.Screen name="Feedback" component={ Feedback } options={{gestureEnabled: false}}/>
                         <Stack.Screen name="EditSchedule" component={ Schedule }/>
                         <Stack.Screen name="Track" component={ TrackMeals }/>
                         <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
