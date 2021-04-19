@@ -19,7 +19,7 @@ def userTransactionsSummary(UserID):
     return transactions.to_dataframe()
 
 
-def getMenuItemName():
+def getMenuItemDetails():
     res = [dict(row) for row in runQuery(
         f"select MenuItemID, ItemName, HashID from MenuItems")]
 
@@ -29,7 +29,8 @@ def getMenuItemName():
     for x in res:
         rtn[x['MenuItemID']] = x['ItemName']
         xtn[x['MenuItemID']] = x['HashID']
-    return rtn
+    
+    return rtn, xtn
 
 
 def gen_stats(userID: int):
@@ -49,7 +50,7 @@ def gen_stats(userID: int):
     fat = []
     protein = []
     menuItemStr = []
-    rtn, xtn = getMenuItemName()
+    rtn, xtn = getMenuItemDetails()
 
     for i, row in df.iterrows():
         menu_item_id = row[1]  # this is the menu item id
