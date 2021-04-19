@@ -1,11 +1,10 @@
-# INSTRUCTIONS: RUN FILE WITH 1 ARG AS USER ID. E.G. python UserSummary.py 7023699889393535879
-
-from google.cloud import bigquery
 import sys
-from backend.DB.Util import runQuery
-from backend.API.routes.menu import get_nutrition, nutrition_to_macros, get_menu_item
-import pandas as pd
 import datetime
+import pandas as pd
+from requests import get
+from collections import Counter
+from backend.DB.Util import runQuery
+from backend.API.routes.menu import nutr_helper
 
 
 def userReviewsSummary(UserID):
@@ -20,11 +19,18 @@ def userTransactionsSummary(UserID):
     return transactions.to_dataframe()
 
 
-def getMenuItemName(MenuItemID):
-    rtn = runQuery(
-        f"select ItemName from MenuItems WHERE MenuItemID = {MenuItemID}").to_dataframe()
-    rtn.columns = [''] * len(rtn.columns)
-    return rtn
+def getMenuItemDetails():
+    res = [dict(row) for row in runQuery(
+        f"select MenuItemID, ItemName, HashID from MenuItems")]
+
+    rtn = dict()
+    xtn = dict()
+
+    for x in res:
+        rtn[x['MenuItemID']] = x['ItemName']
+        xtn[x['MenuItemID']] = x['HashID']
+    
+    return rtn, xtn
 
 
 def gen_stats(userID: int):
@@ -44,13 +50,12 @@ def gen_stats(userID: int):
     fat = []
     protein = []
     menuItemStr = []
+    rtn, xtn = getMenuItemDetails()
 
     for i, row in df.iterrows():
         menu_item_id = row[1]  # this is the menu item id
-        menuItemStr.append(getMenuItemName(
-            menu_item_id).loc[0].to_string()[4:])
-        response = get_nutrition(menu_item_id)
-        _calories, _carbs, _fat, _protein = nutrition_to_macros(response)
+        menuItemStr.append(rtn[menu_item_id])
+        _calories, _carbs, _fat, _protein = nutr_helper(xtn[menu_item_id])
         calories.append(_calories)
         carbs.append(_carbs)
         fat.append(_fat)
@@ -62,8 +67,6 @@ def gen_stats(userID: int):
     df['protein'] = protein
     df['menuItemStr'] = menuItemStr
 
-
-
     weeksList = [i + 1 for i in range(16)]
     emptyDict = {}
     for i in weeksList:
@@ -74,6 +77,8 @@ def gen_stats(userID: int):
     d = pd.Series(weekly_avg_calories.index, index=weekly_avg_calories.index)
     new_index = d.dt.isocalendar() - 2
     weekly_avg_calories.index = new_index.week
+    
+    
     weekly_avg_calories = weekly_avg_calories.to_dict()
     emptyDict.update(weekly_avg_calories)
     weekly_avg_calories = emptyDict
@@ -143,7 +148,6 @@ def gen_stats(userID: int):
 
     """
     print("\nMenu Item Count is used for word cloud. It contains the menu item # followed by the count.")
-
     print(f"\nmenu_item_count: \n{menu_item_count}") #frequency count of menu items; for word cloud
     print("\nWeekly macro averages are below. They're in Series format and can thus be plotted. The index is the first day of the week, the values are average macro consumed of that week")
     print(f"\nweekly_avg_calories: \n{weekly_avg_calories}") #this is a series
@@ -156,31 +160,71 @@ def gen_stats(userID: int):
 
     def T(x): return "Week " + str(x)
     
+    formatted_menu_item_count = []
+    for k, v in Counter(menu_item_count).most_common(10):
+        formatted_menu_item_count.append(
+            {
+                'keyword':      k,
+                'frequency':    v,
+                'color':        ''
+            }
+        )
+    
+    
+        #cal = weekly_avg_calories.values.tolist()
+    cal=list(weekly_avg_calories.values())
+    carb = list(weekly_avg_carbs.values())
+    fat = list(weekly_avg_fat.values())
+    prot = list(weekly_avg_protein.values())
+    
     res = {
-        'menu_item_count': menu_item_count,
-        'weekly_avg_calories': {
-            'labels': list(map(T, weekly_avg_calories.keys())),
-            'datasets': {'data': list(weekly_avg_calories.values())}
-        },
-        'weekly_avg_macros': {
-            'labels': list(map(T, weekly_avg_fat.keys())),
+    'menu_item_count': formatted_menu_item_count,
+    'weekly_avg_calories': cal,
+    'weekly_avg_carbs': carb,
+    'weekly_avg_fat': fat,
+    'weekly_avg_prot': prot,
+    'weekly_summary_trans': list(weekly_summary_trans.values())
+    }
+    return res
+    
+    '''
+    #vaastav code below
+    cal, mac, trans = [], [], []
+
+    for i in range(0, 16, 4):
+
+        cal.append({
+            'labels': list(map(T, list(weekly_avg_calories.keys())[i:i+4])),
+            'datasets': {'data': list(weekly_avg_calories.values())[i:i+4]}
+        })
+
+        mac.append({
+            'labels': list(map(T, list(weekly_avg_fat.keys())[i:i+4])),
             'data': [
-                list(weekly_avg_carbs.values()),
-                list(weekly_avg_fat.values()),
-                list(weekly_avg_protein.values())
+                list(weekly_avg_carbs.values())[i:i+4],
+                list(weekly_avg_fat.values())[i:i+4],
+                list(weekly_avg_protein.values())[i:i+4]
             ]
-        },
-        'weekly_summary_trans': {
-            'labels': list(map(T, weekly_summary_trans.keys())),
-            'datasets': {'data': list(weekly_summary_trans.values())}
-        },
+        })
+
+        trans.append({
+            'labels': list(map(T, list(weekly_summary_trans.keys())[i:i+4])),
+            'datasets': {'data': list(weekly_summary_trans.values())[i:i+4]}
+        })
+    
+    res = {
+        'menu_item_count': formatted_menu_item_count,
+        'weekly_avg_calories': cal,
+        'weekly_avg_macros': mac,
+        'weekly_summary_trans': trans
     }
 
     return res
+    '''
 
 
 if __name__ == "__main__":
-    gen_stats(188163777591238077) #
+    gen_stats(7023699889393535879) #
 
 
 
