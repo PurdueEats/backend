@@ -173,7 +173,7 @@ def gen_stats(userID: int):
     
     cal, mac, trans = [], [], []
 
-    for i in range(0, 12, 4):
+    for i in range(0, 16, 4):
 
         cal.append({
             'labels': list(map(T, list(weekly_avg_calories.keys())[i:i+4])),
