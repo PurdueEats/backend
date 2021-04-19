@@ -342,7 +342,7 @@ function Menu({route, navigation}) {
                 <View style={{ marginBottom: "2%" }}>
                     <SearchBar
                         round
-                        containerStyle={{backgroundColor: '#f2f2f2', borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
+                        containerStyle={{backgroundColor: colors.background, borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
                         searchIcon={{ size: 20 }}
                         placeholder="Look for an item here"
                         value={searched}

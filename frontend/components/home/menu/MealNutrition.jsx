@@ -142,9 +142,9 @@ function MealNutrition({route, navigation}) {
                         strokeWidth={12}
                         radius={35}
                         chartConfig={{
-                            backgroundColor: "#f2f2f2",
-                            backgroundGradientFrom: "#f2f2f2",
-                            backgroundGradientTo: "#f2f2f2",
+                            backgroundColor: colors.background,
+                            backgroundGradientFrom: colors.background,
+                            backgroundGradientTo: colors.background,
                             color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
                             labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`
                         }}
