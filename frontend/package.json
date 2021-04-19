@@ -32,8 +32,7 @@
     "react-native-select-multiple": "^2.1.0",
     "react-native-svg": "^12.1.0",
     "react-native-webview": "^11.4.0",
-    "react-native-word-cloud": "^1.0.7",
-    "triz-react-native-wordcloud": "^1.0.21"
+    "react-native-word-cloud": "^1.0.7"
   },
   "scripts": {
     "start": "expo start",
