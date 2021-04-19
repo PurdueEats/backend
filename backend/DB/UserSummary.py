@@ -67,8 +67,6 @@ def gen_stats(userID: int):
     df['protein'] = protein
     df['menuItemStr'] = menuItemStr
 
-
-
     weeksList = [i + 1 for i in range(16)]
     emptyDict = {}
     for i in weeksList:
@@ -79,6 +77,8 @@ def gen_stats(userID: int):
     d = pd.Series(weekly_avg_calories.index, index=weekly_avg_calories.index)
     new_index = d.dt.isocalendar() - 2
     weekly_avg_calories.index = new_index.week
+    
+    
     weekly_avg_calories = weekly_avg_calories.to_dict()
     emptyDict.update(weekly_avg_calories)
     weekly_avg_calories = emptyDict
@@ -148,7 +148,6 @@ def gen_stats(userID: int):
 
     """
     print("\nMenu Item Count is used for word cloud. It contains the menu item # followed by the count.")
-
     print(f"\nmenu_item_count: \n{menu_item_count}") #frequency count of menu items; for word cloud
     print("\nWeekly macro averages are below. They're in Series format and can thus be plotted. The index is the first day of the week, the values are average macro consumed of that week")
     print(f"\nweekly_avg_calories: \n{weekly_avg_calories}") #this is a series
@@ -171,6 +170,17 @@ def gen_stats(userID: int):
             }
         )
     
+    
+        #cal = weekly_avg_calories.values.tolist()
+    cal=list(weekly_avg_calories.values())
+    carb = list(weekly_avg_carbs.values())
+    fat = list(weekly_avg_fat.values())
+    prot = list(weekly_avg_protein.values())
+    
+    return cal, carb, fat, prot
+    
+    '''
+    #vaastav code below
     cal, mac, trans = [], [], []
 
     for i in range(0, 16, 4):
@@ -202,10 +212,11 @@ def gen_stats(userID: int):
     }
 
     return res
+    '''
 
 
 if __name__ == "__main__":
-    gen_stats(188163777591238077) #
+    gen_stats(7023699889393535879) #
 
 
 
