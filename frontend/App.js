@@ -37,7 +37,7 @@ export default function App() {
                 <NavigationContainer theme={scheme === "dark" ? DarkTheme : DefaultTheme}>
                     <Stack.Navigator screenOptions={{
                         headerShown: false
-                    }} initialRouteName="WaitTimes">
+                    }} initialRouteName="Login">
                         <Stack.Screen name="Login" component={ LoginManager } options={{gestureEnabled: false}}/>
                         <Stack.Screen name="ForgotPassword" component={ ForgotPassword }/>
                         <Stack.Screen name="Name" component={ Name }/>

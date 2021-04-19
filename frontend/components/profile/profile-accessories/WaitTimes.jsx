@@ -223,7 +223,6 @@ function WaitTimes({route, navigation}) {
                     <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(true) }>
                         <MaterialCommunityIcons name="help-circle-outline" color="red" size={30}/>
                     </TouchableOpacity>
-                </View>
                     <Modal
                         animationType="slide"
                         transparent={false}
@@ -246,11 +245,12 @@ function WaitTimes({route, navigation}) {
                                     <Text>Separated by breakfast, lunch, and dinner!</Text>
                                 </View>
                                 <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                    <Text>Values of 0 indicate that food is not being served at a certain location.</Text>
+                                    <Text>Values of 0 indicate that food is not being served at {"\n"} a certain location at that time.</Text>
                                 </View>
                             </View>
                         </View>
                     </Modal>
+                </View>
                 <View style={ styles.title }>
                     <Text style={ [styles.screenTitle, {color: colors.text}] }>Wait Times</Text>
                 </View>

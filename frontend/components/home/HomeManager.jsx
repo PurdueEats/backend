@@ -125,6 +125,10 @@ function HomeManager({route, navigation}) {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 5});
     }
 
+    function handleWaitTimesNavigate() {
+        navigation.navigate("WaitTimes");
+    }
+
     return (
         <ScrollView>
             <View style={ [styles.iconPosition, {flexDirection:"row"}] }>
@@ -235,6 +239,11 @@ function HomeManager({route, navigation}) {
                     </View>
                 </View>
             )}
+            <View style={ [styles.buttonView, {alignItems:"center"}] }>
+                <Button style={ styles.favoriteButtonComponent } onPress= { handleWaitTimesNavigate }>
+                    <Text style={ styles.favoriteButtonText }>View Wait Times</Text>
+                </Button>
+            </View>
         </ScrollView>
     );
 }
@@ -439,6 +448,23 @@ const styles = StyleSheet.create({
     lastDiningCourt: {
         alignItems: "center",
         marginTop: "10%"
+    },
+    buttonView: {
+        marginTop: "5%",
+    },
+    favoriteButtonComponent: {
+        flex: 1,
+        width: '50%',
+        height: '100%',
+        marginLeft: '25%',
+        left: 0,
+        justifyContent: 'center',
+        backgroundColor: "red",
+    },
+    favoriteButtonText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "white"
     },
 
 });
