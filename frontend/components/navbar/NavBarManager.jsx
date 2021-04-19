@@ -5,11 +5,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeManager from "../home/HomeManager";
 import MapManager from "../map/MapManager";
 import ProfileManager from "../profile/ProfileManager";
+import Settings from "../settings/SettingsManager";
 
 function NavBarManager({route}) {
     const Tab = createBottomTabNavigator();
     const Stack = createStackNavigator();
-
     return (
         <Tab.Navigator
             initialRouteName="Dining"
@@ -50,8 +50,18 @@ function NavBarManager({route}) {
                     ),
                 }}
             />
+            <Stack.Screen
+                name="Settings"
+                component={ Settings }
+                initialParams={{ UserID: route.params.UserID, token: route.params.token }}
+                options={{
+                    tabBarLabel: 'Settings',
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="cellphone-settings" color={color} size={size} />
+                    ),
+                }}
+            />
         </Tab.Navigator>
     );
 }
-
 export default NavBarManager;
