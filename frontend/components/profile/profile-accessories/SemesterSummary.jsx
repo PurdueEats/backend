@@ -13,6 +13,7 @@ function SemesterSummary({route, navigation}) {
     const [wordArray, setWordArray] = useState([]);
 
     // Line charts data
+    const chartLabels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
     const [caloriesData, setCaloriesData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     const [carbsData, setCarbsData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     const [fatData, setFatData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -51,11 +52,11 @@ function SemesterSummary({route, navigation}) {
                             setWordArray(data["menu_item_count"]);
 
                             // Set line chart data
-                            // setCaloriesData(data["weekly_avg_calories"])
-                            // setCarbsData(data["weekly_avg_carbs"])
-                            // setFatData(data["weekly_avg_fat"])
-                            // setProteinData(data["weekly_avg_protein"])
-                            // setTransactionsData(data["weekly_avg_transactions"])
+                            setCaloriesData(data["weekly_avg_calories"])
+                            setCarbsData(data["weekly_avg_carbs"])
+                            setFatData(data["weekly_avg_fat"])
+                            setProteinData(data["weekly_avg_prot"])
+                            setTransactionsData(data["weekly_summary_trans"])
                         });
                     } else {
                         // Examine the text in the response
@@ -80,12 +81,12 @@ function SemesterSummary({route, navigation}) {
             <View>
                 <Text style={ [styles.screenTitle, {color: colors.text}] }>Semester Summary</Text>
             </View>
-            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your most eaten meals</Text>
+            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your top meals</Text>
             <Cloud width={400} keywords={wordArray} scale={350} largestAtCenter={true}/>
-            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your consumed calories history by week</Text>
+            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your consumed calories by week</Text>
             <LineChart
                 data={{
-                    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+                    labels: chartLabels,
                     datasets: [
                         {
                             data: caloriesData,
@@ -98,20 +99,20 @@ function SemesterSummary({route, navigation}) {
                 width={Dimensions.get("window").width}
                 height={220}
                 chartConfig={{
-                    backgroundColor: "#f2f2f2",
-                    backgroundGradientFrom: "#f2f2f2",
-                    backgroundGradientTo: "#f2f2f2",
+                    backgroundColor: colors.background,
+                    backgroundGradientFrom: colors.background,
+                    backgroundGradientTo: colors.background,
                     color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    labelColor: (opacity = 1) => colors.text,
                     propsForBackgroundLines: {
                         strokeWidth: 0
                     }
                 }}
             />
-            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your consumed carbohydrates history by week</Text>
+            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your consumed carbohydrates by week</Text>
             <LineChart
                 data={{
-                    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+                    labels: chartLabels,
                     datasets: [
                         {
                             data: carbsData,
@@ -124,20 +125,20 @@ function SemesterSummary({route, navigation}) {
                 width={Dimensions.get("window").width}
                 height={220}
                 chartConfig={{
-                    backgroundColor: "#f2f2f2",
-                    backgroundGradientFrom: "#f2f2f2",
-                    backgroundGradientTo: "#f2f2f2",
+                    backgroundColor: colors.background,
+                    backgroundGradientFrom: colors.background,
+                    backgroundGradientTo: colors.background,
                     color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    labelColor: (opacity = 1) => colors.text,
                     propsForBackgroundLines: {
                         strokeWidth: 0
                     }
                 }}
             />
-            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your consumed fat history by week</Text>
+            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your consumed fat by week</Text>
             <LineChart
                 data={{
-                    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+                    labels: chartLabels,
                     datasets: [
                         {
                             data: fatData,
@@ -150,20 +151,20 @@ function SemesterSummary({route, navigation}) {
                 width={Dimensions.get("window").width}
                 height={220}
                 chartConfig={{
-                    backgroundColor: "#f2f2f2",
-                    backgroundGradientFrom: "#f2f2f2",
-                    backgroundGradientTo: "#f2f2f2",
+                    backgroundColor: colors.background,
+                    backgroundGradientFrom: colors.background,
+                    backgroundGradientTo: colors.background,
                     color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    labelColor: (opacity = 1) => colors.text,
                     propsForBackgroundLines: {
                         strokeWidth: 0
                     }
                 }}
             />
-            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your consumed protein history by week</Text>
+            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your consumed protein by week</Text>
             <LineChart
                 data={{
-                    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+                    labels: chartLabels,
                     datasets: [
                         {
                             data: proteinData,
@@ -176,21 +177,21 @@ function SemesterSummary({route, navigation}) {
                 width={Dimensions.get("window").width}
                 height={220}
                 chartConfig={{
-                    backgroundColor: "#f2f2f2",
-                    backgroundGradientFrom: "#f2f2f2",
-                    backgroundGradientTo: "#f2f2f2",
+                    backgroundColor: colors.background,
+                    backgroundGradientFrom: colors.background,
+                    backgroundGradientTo: colors.background,
                     color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    labelColor: (opacity = 1) => colors.text,
                     propsForBackgroundLines: {
                         strokeWidth: 0
                     }
                 }}
             />
-            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your dining dollars transaction history by week</Text>
+            <Text style={ [styles.dataHeader, {color: colors.text}] }>Your dining dollars transactions by week</Text>
             <LineChart
                 yAxisLabel={"$"}
                 data={{
-                    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"],
+                    labels: chartLabels,
                     datasets: [
                         {
                             data: transactionsData,
@@ -203,11 +204,11 @@ function SemesterSummary({route, navigation}) {
                 width={Dimensions.get("window").width}
                 height={220}
                 chartConfig={{
-                    backgroundColor: "#f2f2f2",
-                    backgroundGradientFrom: "#f2f2f2",
-                    backgroundGradientTo: "#f2f2f2",
+                    backgroundColor: colors.background,
+                    backgroundGradientFrom: colors.background,
+                    backgroundGradientTo: colors.background,
                     color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    labelColor: (opacity = 1) => colors.text,
                     propsForBackgroundLines: {
                         strokeWidth: 0
                     }

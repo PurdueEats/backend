@@ -56,7 +56,6 @@ export default function App() {
                         <Stack.Screen name="SemesterSummary" component={ SemesterSummary }/>
                         <Stack.Screen name="Settings" component={ SettingsManager }/>
                         <Stack.Screen name="Feedback" component={ Feedback } options={{gestureEnabled: false}}/>
-                        <Stack.Screen name="EditSchedule" component={ Schedule }/>
                         <Stack.Screen name="Track" component={ TrackMeals }/>
                         <Stack.Screen name="FavoriteMeal" component= { FavoriteMeal }/>
                         <Stack.Screen name="Notifications" component= { Notifications }/>
