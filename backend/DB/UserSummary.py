@@ -1,12 +1,10 @@
-# INSTRUCTIONS: RUN FILE WITH 1 ARG AS USER ID. E.G. python UserSummary.py 7023699889393535879
-
-from google.cloud import bigquery
-from collections import Counter
 import sys
-from backend.DB.Util import runQuery
-from backend.API.routes.menu import get_nutrition, nutrition_to_macros, get_menu_item
-import pandas as pd
 import datetime
+import pandas as pd
+from requests import get
+from collections import Counter
+from backend.DB.Util import runQuery
+from backend.API.routes.menu import nutr_helper
 
 
 def userReviewsSummary(UserID):
@@ -23,11 +21,14 @@ def userTransactionsSummary(UserID):
 
 def getMenuItemName():
     res = [dict(row) for row in runQuery(
-        f"select MenuItemID, ItemName from MenuItems")]
+        f"select MenuItemID, ItemName, HashID from MenuItems")]
+
     rtn = dict()
+    xtn = dict()
 
     for x in res:
         rtn[x['MenuItemID']] = x['ItemName']
+        xtn[x['MenuItemID']] = x['HashID']
     return rtn
 
 
@@ -48,13 +49,12 @@ def gen_stats(userID: int):
     fat = []
     protein = []
     menuItemStr = []
-    rtn = getMenuItemName()
+    rtn, xtn = getMenuItemName()
 
     for i, row in df.iterrows():
         menu_item_id = row[1]  # this is the menu item id
         menuItemStr.append(rtn[menu_item_id])
-        response = get_nutrition(menu_item_id)
-        _calories, _carbs, _fat, _protein = nutrition_to_macros(response)
+        _calories, _carbs, _fat, _protein = nutr_helper(xtn[menu_item_id])
         calories.append(_calories)
         carbs.append(_carbs)
         fat.append(_fat)

@@ -113,6 +113,10 @@ def get_nutrition(MenuItemID: int):
     return get(NUTRITION_URL + res[0]['HashID']).json()
 
 
+def nutr_helper(hashID: str):
+
+    return nutrition_to_macros(get(NUTRITION_URL + hashID).json())
+
 def nutrition_to_macros(response):
 
     response = response['Nutrition'] if 'Nutrition' in response else []
