@@ -177,7 +177,15 @@ def gen_stats(userID: int):
     fat = list(weekly_avg_fat.values())
     prot = list(weekly_avg_protein.values())
     
-    return cal, carb, fat, prot
+    res = {
+    'menu_item_count': formatted_menu_item_count,
+    'weekly_avg_calories': cal,
+    'weekly_avg_carbs': carb,
+    'weekly_avg_fat': fat,
+    'weekly_avg_prot': prot,
+    'weekly_summary_trans': list(weekly_summary_trans.values())
+    }
+    return res
     
     '''
     #vaastav code below
