@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TouchableOpacity, Modal} from "react-native";
 import { useIsFocused } from '@react-navigation/native';
 import { ProgressChart } from "react-native-chart-kit";
 import { useTheme } from '@react-navigation/native';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MaterialTabs from 'react-native-material-tabs';
 import RecommendedMeals from "./home-accessories/RecommendedMeals";
 import AllUserSummary from "./home-accessories/AllUserSummary";
@@ -13,36 +14,45 @@ import Ford from "../../resources/ford.png";
 import Hillenbrand from "../../resources/hillenbrand.png";
 import Windsor from "../../resources/windsor.png";
 import {Button} from "native-base";
-
 function HomeManager({route, navigation}) {
     const { colors } = useTheme();
     // Setup re-render on focus change
     const isFocused = useIsFocused();
-
     // Recommended Meals
     const [calories, setCalories] = useState(0);
     const [carbs, setCarbs] = useState(0);
     const [fat, setFat] = useState(0);
     const [protein, setProtein] = useState(0);
-
     // Set chart visibility
     const [showChart, setShowChart] = useState(true);
-
     // Chart Data
     const [chartCalories, setChartCalories] = useState(0);
     const [chartCarbs, setChartCarbs] = useState(0);
     const [chartFat, setChartFat] = useState(0);
     const [chartProtein, setChartProtein] = useState(0);
-
     // Dining Courts
     const [selectedTab, setSelectedTab] = useState(0);
 
+    // Current Date (For fun fact)
+    var moment = require('moment-timezone');
+    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
+    var date = time.substring(0, time.indexOf('T'));
+
+    // Modal for Fun Fact
+    const [modalFact, setModalFact] = useState(false);
+
+    // Fun Fact
+    const [funFact, setFunFact] = useState('');
+    const [fact, setFact] = useState(false);
+
     useEffect(() => {
         if (isFocused) {
+            if (!fact) {
+                getFunFact();
+            }
             getUserNutrition();
         }
     }, [isFocused]);
-
     function getUserNutrition() {
         // User Nutrition Summary Route
         fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + "/Nutrition", {
@@ -66,7 +76,6 @@ function HomeManager({route, navigation}) {
                             setCarbs(data["carbs"]);
                             setFat(data["fat"]);
                             setProtein(data["protein"]);
-
                             // Set chartData
                             // Calories
                             if (parseFloat(data["calories"]) > 14000) {
@@ -101,26 +110,53 @@ function HomeManager({route, navigation}) {
             });
     }
 
+    function getFunFact() {
+        // User Nutrition Summary Route
+        fetch(`https://app-5fyldqenma-uc.a.run.app/PFF/` + date, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            }
+        })
+            .then(
+                function (response) {
+                    if (response.status !== 200 && response.status !== 201) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                            console.log('fact');
+                    } else {
+                        // Examine the text in the response
+                        response.json().then(function (data) {
+                            // Set data fields
+                            setFunFact(data.fact);
+                            setModalFact(true);
+                            setFact(true);
+                        });
+                    }
+                }
+            )
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
     function handleSetChart() {
-        setShowChart(!showChart)
+        setShowChart(!showChart);
     }
 
     function EarhartNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 1});
     }
-
     function HillenbrandNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 2});
     }
-
     function FordNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 3});
     }
-
     function WindsorNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 4});
     }
-
     function WileyNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 5});
     }
@@ -131,6 +167,22 @@ function HomeManager({route, navigation}) {
 
     return (
         <ScrollView>
+        <Modal animationType="slide" transparent={true} visible={modalFact}
+               onRequestClose={() => {
+                   setModalFact(!modalFact);
+               }}
+        >
+            <View>
+                <View style={styles.modalView}>
+                    <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  setModalFact(false)}>
+                        <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                    </TouchableOpacity>
+                    <Text style={ styles.modalTextTitle }>Did you know?</Text>
+                    <Text style={ styles.modalText }>           </Text>
+                    <Text style={ styles.modalText }>{funFact}</Text>
+                </View>
+            </View>
+        </Modal>
             <View style={ [styles.iconPosition, {flexDirection:"row"}] }>
                 <Image source = { Logo } style = { styles.iconSize } />
             </View>
@@ -208,7 +260,6 @@ function HomeManager({route, navigation}) {
                                 <Text style={ [styles.earhartTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
-
                         <TouchableOpacity onPress={ WileyNavigation }>
                             <Image source = { Wiley } style = { styles.wileyDiningImage }/>
                             <Text style={ [styles.wileyTitle, {color: colors.text}] }>{"Wiley"}</Text>
@@ -223,7 +274,6 @@ function HomeManager({route, navigation}) {
                                 <Text style={ [styles.hillenbrandTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
-
                         <TouchableOpacity onPress={ WindsorNavigation }>
                             <Image source = { Windsor } style = { styles.windsorDiningImage }/>
                             <Text style={ [styles.windsorTitle, {color: colors.text}] }>{"Windsor"}</Text>
@@ -247,7 +297,6 @@ function HomeManager({route, navigation}) {
         </ScrollView>
     );
 }
-
 const styles = StyleSheet.create({
     iconPosition: {
         marginBottom: "2%",
@@ -465,6 +514,30 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         color: "white"
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        height: 200
+    },
+    modalText: {
+        color: "black",
+        fontSize: 16,
+    },
+    modalTextTitle: {
+        color: "black",
+        fontSize: 18,
     },
 
 });
