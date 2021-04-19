@@ -175,22 +175,22 @@ def gen_stats(userID: int):
     for i in range(0, 12, 4):
 
         cal.append({
-            'labels': list(map(T, weekly_avg_calories.keys()[i:i+4])),
-            'datasets': {'data': list(weekly_avg_calories.values()[i:i+4])}
+            'labels': list(map(T, list(weekly_avg_calories.keys())[i:i+4])),
+            'datasets': {'data': list(weekly_avg_calories.values())[i:i+4]}
         })
 
         mac.append({
-            'labels': list(map(T, weekly_avg_fat.keys()[i:i+4])),
+            'labels': list(map(T, list(weekly_avg_fat.keys())[i:i+4])),
             'data': [
-                list(weekly_avg_carbs.values()[i:i+4]),
-                list(weekly_avg_fat.values()[i:i+4]),
-                list(weekly_avg_protein.values()[i:i+4])
+                list(weekly_avg_carbs.values())[i:i+4],
+                list(weekly_avg_fat.values())[i:i+4],
+                list(weekly_avg_protein.values())[i:i+4]
             ]
         })
 
         trans.append({
-            'labels': list(map(T, weekly_summary_trans.keys()[i:i+4])),
-            'datasets': {'data': list(weekly_summary_trans.values()[i:i+4])}
+            'labels': list(map(T, list(weekly_summary_trans.keys())[i:i+4])),
+            'datasets': {'data': list(weekly_summary_trans.values())[i:i+4]}
         })
     
     res = {
