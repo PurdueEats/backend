@@ -20,10 +20,13 @@ def userTransactionsSummary(UserID):
     return transactions.to_dataframe()
 
 
-def getMenuItemName(MenuItemID):
-    rtn = runQuery(
-        f"select ItemName from MenuItems WHERE MenuItemID = {MenuItemID}").to_dataframe()
-    rtn.columns = [''] * len(rtn.columns)
+def getMenuItemName():
+    res = [dict(row) for row in runQuery(
+        f"select MenuItemID, ItemName from MenuItems")]
+    rtn = dict()
+
+    for x in res:
+        rtn[x['MenuItemID']] = x['ItemName']
     return rtn
 
 
@@ -44,11 +47,12 @@ def gen_stats(userID: int):
     fat = []
     protein = []
     menuItemStr = []
+    rtn = getMenuItemName()
 
     for i, row in df.iterrows():
         menu_item_id = row[1]  # this is the menu item id
-        menuItemStr.append(getMenuItemName(
-            menu_item_id).loc[0].to_string()[4:])
+        print()
+        menuItemStr.append(rtn[menu_item_id])
         response = get_nutrition(menu_item_id)
         _calories, _carbs, _fat, _protein = nutrition_to_macros(response)
         calories.append(_calories)
