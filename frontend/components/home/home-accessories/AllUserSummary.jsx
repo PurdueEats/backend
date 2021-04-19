@@ -19,7 +19,7 @@ const AllUserSummary = (props) => {
     function getUserNutrition() {
         // Fetch date
         let date = new Date();
-        date.setDate(date.getDate() - date.getDay())
+        date.setDate(date.getDate() - date.getDay() + 1)
         let fetchFormat = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         // User Nutrition Summary Route
         fetch('https://app-5fyldqenma-uc.a.run.app/WeeklyNutrition/' + fetchFormat, {
