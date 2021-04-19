@@ -26,6 +26,8 @@ import Schedule from "./components/profile/profile-accessories/Schedule";
 import Notifications from "./components/profile/profile-accessories/Notifications";
 import ReadReviews from "./components/home/menu/ReadReviews";
 import WriteReview from "./components/home/menu/WriteReview";
+import WaitTimes from "./components/profile/profile-accessories/WaitTimes";
+
 export default function App() {
     const Stack = createStackNavigator();
     const scheme = useColorScheme();
@@ -58,6 +60,7 @@ export default function App() {
                         <Stack.Screen name="Notifications" component= { Notifications }/>
                         <Stack.Screen name="ReadReviews" component= { ReadReviews }/>
                         <Stack.Screen name="WriteReview" component= { WriteReview }/>
+                        <Stack.Screen name="WaitTimes" component= { WaitTimes }/>
                         <Stack.Screen name="NavBar" component={ NavBarManager } options={{gestureEnabled: false}}/>
                     </Stack.Navigator>
                 </NavigationContainer>

@@ -1,0 +1,352 @@
+[
+ {
+   "Day": 0,
+   "Hour": 9,
+   "LineLength": 200
+ },
+ {
+   "Day": 0,
+   "Hour": 10,
+   "LineLength": 58
+ },
+ {
+   "Day": 0,
+   "Hour": 11,
+   "LineLength": 105
+ },
+ {
+   "Day": 0,
+   "Hour": 12,
+   "LineLength": 118
+ },
+ {
+   "Day": 0,
+   "Hour": 13,
+   "LineLength": 121
+ },
+ {
+   "Day": 0,
+   "Hour": 14,
+   "LineLength": 126
+ },
+ {
+   "Day": 0,
+   "Hour": 15,
+   "LineLength": 76
+ },
+ {
+   "Day": 0,
+   "Hour": 17,
+   "LineLength": 75
+ },
+ {
+   "Day": 0,
+   "Hour": 18,
+   "LineLength": 86
+ },
+ {
+   "Day": 0,
+   "Hour": 19,
+   "LineLength": 107
+ },
+ {
+   "Day": 1,
+   "Hour": 9,
+   "LineLength": 200
+ },
+ {
+   "Day": 1,
+   "Hour": 10,
+   "LineLength": 58
+ },
+ {
+   "Day": 1,
+   "Hour": 11,
+   "LineLength": 105
+ },
+ {
+   "Day": 1,
+   "Hour": 12,
+   "LineLength": 118
+ },
+ {
+   "Day": 1,
+   "Hour": 13,
+   "LineLength": 121
+ },
+ {
+   "Day": 1,
+   "Hour": 14,
+   "LineLength": 126
+ },
+ {
+   "Day": 1,
+   "Hour": 15,
+   "LineLength": 76
+ },
+ {
+   "Day": 1,
+   "Hour": 17,
+   "LineLength": 75
+ },
+ {
+   "Day": 1,
+   "Hour": 18,
+   "LineLength": 86
+ },
+ {
+   "Day": 1,
+   "Hour": 19,
+   "LineLength": 107
+ },
+ {
+   "Day": 2,
+   "Hour": 9,
+   "LineLength": 200
+ },
+ {
+   "Day": 2,
+   "Hour": 10,
+   "LineLength": 58
+ },
+ {
+   "Day": 2,
+   "Hour": 11,
+   "LineLength": 105
+ },
+ {
+   "Day": 2,
+   "Hour": 12,
+   "LineLength": 118
+ },
+ {
+   "Day": 2,
+   "Hour": 13,
+   "LineLength": 121
+ },
+ {
+   "Day": 2,
+   "Hour": 14,
+   "LineLength": 126
+ },
+ {
+   "Day": 2,
+   "Hour": 15,
+   "LineLength": 76
+ },
+ {
+   "Day": 2,
+   "Hour": 17,
+   "LineLength": 75
+ },
+ {
+   "Day": 2,
+   "Hour": 18,
+   "LineLength": 86
+ },
+ {
+   "Day": 2,
+   "Hour": 19,
+   "LineLength": 107
+ },
+ {
+   "Day": 3,
+   "Hour": 9,
+   "LineLength": 200
+ },
+ {
+   "Day": 3,
+   "Hour": 10,
+   "LineLength": 58
+ },
+ {
+   "Day": 3,
+   "Hour": 11,
+   "LineLength": 105
+ },
+ {
+   "Day": 3,
+   "Hour": 12,
+   "LineLength": 118
+ },
+ {
+   "Day": 3,
+   "Hour": 13,
+   "LineLength": 121
+ },
+ {
+   "Day": 3,
+   "Hour": 14,
+   "LineLength": 126
+ },
+ {
+   "Day": 3,
+   "Hour": 15,
+   "LineLength": 76
+ },
+ {
+   "Day": 3,
+   "Hour": 17,
+   "LineLength": 75
+ },
+ {
+   "Day": 3,
+   "Hour": 18,
+   "LineLength": 86
+ },
+ {
+   "Day": 3,
+   "Hour": 19,
+   "LineLength": 107
+ },
+ {
+   "Day": 4,
+   "Hour": 9,
+   "LineLength": 200
+ },
+ {
+   "Day": 4,
+   "Hour": 10,
+   "LineLength": 58
+ },
+ {
+   "Day": 4,
+   "Hour": 11,
+   "LineLength": 105
+ },
+ {
+   "Day": 4,
+   "Hour": 12,
+   "LineLength": 118
+ },
+ {
+   "Day": 4,
+   "Hour": 13,
+   "LineLength": 121
+ },
+ {
+   "Day": 4,
+   "Hour": 14,
+   "LineLength": 126
+ },
+ {
+   "Day": 4,
+   "Hour": 15,
+   "LineLength": 76
+ },
+ {
+   "Day": 4,
+   "Hour": 17,
+   "LineLength": 75
+ },
+ {
+   "Day": 4,
+   "Hour": 18,
+   "LineLength": 86
+ },
+ {
+   "Day": 4,
+   "Hour": 19,
+   "LineLength": 107
+ },
+ {
+   "Day": 5,
+   "Hour": 9,
+   "LineLength": 200
+ },
+ {
+   "Day": 5,
+   "Hour": 10,
+   "LineLength": 58
+ },
+ {
+   "Day": 5,
+   "Hour": 11,
+   "LineLength": 105
+ },
+ {
+   "Day": 5,
+   "Hour": 12,
+   "LineLength": 118
+ },
+ {
+   "Day": 5,
+   "Hour": 13,
+   "LineLength": 121
+ },
+ {
+   "Day": 5,
+   "Hour": 14,
+   "LineLength": 126
+ },
+ {
+   "Day": 5,
+   "Hour": 15,
+   "LineLength": 76
+ },
+ {
+   "Day": 5,
+   "Hour": 17,
+   "LineLength": 75
+ },
+ {
+   "Day": 5,
+   "Hour": 18,
+   "LineLength": 86
+ },
+ {
+   "Day": 5,
+   "Hour": 19,
+   "LineLength": 107
+ },
+ {
+   "Day": 6,
+   "Hour": 9,
+   "LineLength": 200
+ },
+ {
+   "Day": 6,
+   "Hour": 10,
+   "LineLength": 58
+ },
+ {
+   "Day": 6,
+   "Hour": 11,
+   "LineLength": 105
+ },
+ {
+   "Day": 6,
+   "Hour": 12,
+   "LineLength": 118
+ },
+ {
+   "Day": 6,
+   "Hour": 13,
+   "LineLength": 121
+ },
+ {
+   "Day": 6,
+   "Hour": 14,
+   "LineLength": 126
+ },
+ {
+   "Day": 6,
+   "Hour": 15,
+   "LineLength": 76
+ },
+ {
+   "Day": 6,
+   "Hour": 17,
+   "LineLength": 75
+ },
+ {
+   "Day": 6,
+   "Hour": 18,
+   "LineLength": 86
+ },
+ {
+   "Day": 6,
+   "Hour": 19,
+   "LineLength": 107
+ }
+]
