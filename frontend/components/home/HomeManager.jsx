@@ -191,10 +191,10 @@ function HomeManager({route, navigation}) {
                     items={['Recommended Meals', 'Dining Facilities']}
                     selectedIndex={selectedTab}
                     onChange={setSelectedTab}
-                    barColor="#ffffff"
-                    indicatorColor="#000000"
-                    activeTextColor="#000000"
-                    inactiveTextColor="#908c8c"
+                    barColor={colors.background}
+                    indicatorColor={colors.text}
+                    activeTextColor={"red"}
+                    inactiveTextColor={colors.text}
                 />
             </View>
             {selectedTab === 0 ? (
@@ -386,7 +386,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "5%",
         marginBottom: "5%",
-        marginTop:"5%"
+        marginTop:"5%",
+        borderRadius: 10
     },
     wileyTitle: {
         fontSize: 20,
@@ -411,7 +412,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "-1%",
         marginBottom: "5%",
-        marginTop: "5%"
+        marginTop: "5%",
+        borderRadius: 10
     },
     hillenbrandTitle: {
         fontSize: 20,
@@ -436,7 +438,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "5%",
         marginBottom: "0%",
-        marginTop:"5%"
+        marginTop:"5%",
+        borderRadius: 10
     },
     windsorTitle: {
         fontSize: 20,
@@ -461,7 +464,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "-0.5%",
         marginBottom: "0%",
-        marginTop: "5%"
+        marginTop: "5%",
+        borderRadius: 10
     },
     fordTitle: {
         fontSize: 20,
@@ -486,7 +490,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "6%",
         marginBottom: "5%",
-        marginTop: "-5%"
+        marginTop: "-5%",
+        borderRadius: 10
     },
     imageContainer: {
         flexDirection: "row",
@@ -500,6 +505,7 @@ const styles = StyleSheet.create({
     },
     buttonView: {
         marginTop: "5%",
+        marginBottom: "4%",
     },
     favoriteButtonComponent: {
         flex: 1,
