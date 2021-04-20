@@ -247,6 +247,9 @@ function WaitTimes({route, navigation}) {
                                 <View style={{flexDirection: "row", justifyContent: "center"}}>
                                     <Text>Values of 0 indicate that food is not being served at {"\n"} a certain location at that time.</Text>
                                 </View>
+                                <View style={{flexDirection: "row", justifyContent: "center"}}>
+                                    <Text>Please note that these are predictions, so do not interpret the data literally.</Text>
+                                </View>
                             </View>
                         </View>
                     </Modal>

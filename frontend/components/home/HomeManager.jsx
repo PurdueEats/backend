@@ -252,6 +252,11 @@ function HomeManager({route, navigation}) {
                 </View>
             ) : (
                 <View>
+                    <View style={ [styles.buttonView, {alignItems:"center"}] }>
+                        <Button style={ styles.favoriteButtonComponent } onPress= { handleWaitTimesNavigate }>
+                            <Text style={ styles.favoriteButtonText }>View Wait Times</Text>
+                        </Button>
+                    </View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
                             <TouchableOpacity onPress={ EarhartNavigation }>
@@ -289,11 +294,6 @@ function HomeManager({route, navigation}) {
                     </View>
                 </View>
             )}
-            <View style={ [styles.buttonView, {alignItems:"center"}] }>
-                <Button style={ styles.favoriteButtonComponent } onPress= { handleWaitTimesNavigate }>
-                    <Text style={ styles.favoriteButtonText }>View Wait Times</Text>
-                </Button>
-            </View>
         </ScrollView>
     );
 }
