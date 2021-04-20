@@ -26,7 +26,6 @@ function Settings({route, navigation}) {
 
       return (
           <View>
-              {console.log(route.params.token)}
               <View style={ { backgroundColor: colors.background, flexDirection:"row" } } >
                   <Text>         </Text>
               </View>
