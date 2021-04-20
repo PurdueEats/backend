@@ -14,6 +14,7 @@ import Ford from "../../resources/ford.png";
 import Hillenbrand from "../../resources/hillenbrand.png";
 import Windsor from "../../resources/windsor.png";
 import {Button} from "native-base";
+
 function HomeManager({route, navigation}) {
     const { colors } = useTheme();
     // Setup re-render on focus change
@@ -53,6 +54,7 @@ function HomeManager({route, navigation}) {
             getUserNutrition();
         }
     }, [isFocused]);
+
     function getUserNutrition() {
         // User Nutrition Summary Route
         fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + "/Nutrition", {
@@ -148,15 +150,19 @@ function HomeManager({route, navigation}) {
     function EarhartNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 1});
     }
+
     function HillenbrandNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 2});
     }
+
     function FordNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 3});
     }
+
     function WindsorNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 4});
     }
+
     function WileyNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 5});
     }
@@ -297,6 +303,7 @@ function HomeManager({route, navigation}) {
         </ScrollView>
     );
 }
+
 const styles = StyleSheet.create({
     iconPosition: {
         marginBottom: "2%",
@@ -544,8 +551,7 @@ const styles = StyleSheet.create({
     modalTextTitle: {
         color: "black",
         fontSize: 18,
-    },
-
+    }
 });
 
 export default HomeManager;
