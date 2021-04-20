@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
-import { Button } from 'native-base';
 import Logo from "../../../resources/logo.png";
 import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
@@ -203,13 +202,14 @@ function WaitTimes({route, navigation}) {
     };
     //chart style
     const chartConfig = {
-      backgroundGradientFrom: "#1E2923",
-      backgroundGradientTo: "#000000",
-      backgroundGradientToOpacity: 0.6,
-      color: (opacity = 1) => `rgba(204, 147, 17, ${opacity})`,
-      strokeWidth: 2,
-      barPercentage: 0.5,
-      useShadowColorFromDataset: false
+        backgroundColor: colors.background,
+        backgroundGradientFrom: colors.background,
+        backgroundGradientTo: colors.background,
+        backgroundGradientToOpacity: 0.6,
+        color: (opacity = 1) => `rgba(204, 147, 17, ${opacity})`,
+        strokeWidth: 2,
+        barPercentage: 0.5,
+        useShadowColorFromDataset: false
     };
 
     return (
@@ -263,10 +263,10 @@ function WaitTimes({route, navigation}) {
                     items={['Breakfast', 'Lunch', 'Dinner']}
                     selectedIndex={selectedTab}
                     onChange={setSelectedTab}
-                    barColor="#ffffff"
-                    indicatorColor="#000000"
-                    activeTextColor="#000000"
-                    inactiveTextColor="#908c8c"
+                    barColor={colors.background}
+                    indicatorColor={colors.text}
+                    activeTextColor={"red"}
+                    inactiveTextColor={colors.text}
                 />
             </View>
             {selectedTab === 0 ? (
