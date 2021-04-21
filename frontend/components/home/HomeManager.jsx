@@ -44,15 +44,50 @@ function HomeManager({route, navigation}) {
     // Fun Fact
     const [funFact, setFunFact] = useState('');
     const [fact, setFact] = useState(false);
+    const [loginFirst, setLoginFirst] = useState(true);
 
     useEffect(() => {
         if (isFocused) {
-            if (!fact) {
-                getFunFact();
+            if (loginFirst) {
+                getFact();
+                setLoginFirst(false);
             }
             getUserNutrition();
         }
     }, [isFocused]);
+
+    function getFact() {
+          //retrieves setting
+          fetch('https://app-5fyldqenma-uc.a.run.app/Users/'+ route.params.UserID +'/Schedule', {
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + route.params.token
+                },
+            })
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful GET
+                            response.json().then(function(data) {
+                                setFact(data["schedule"].substring(42, 43));
+                                if (data["schedule"].substring(42, 43) == "1") {
+                                    getFunFact();
+                                }
+                            });
+                        } else {
+                            // Examine the text in the response
+                            console.log('Looks like there was a problem retrieving schedule. Status Code: ' +
+                                response.status);
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
+      }
+
     function getUserNutrition() {
         // User Nutrition Summary Route
         fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + "/Nutrition", {
