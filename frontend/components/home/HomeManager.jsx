@@ -14,6 +14,7 @@ import Ford from "../../resources/ford.png";
 import Hillenbrand from "../../resources/hillenbrand.png";
 import Windsor from "../../resources/windsor.png";
 import {Button} from "native-base";
+
 function HomeManager({route, navigation}) {
     const { colors } = useTheme();
     // Setup re-render on focus change
@@ -53,6 +54,7 @@ function HomeManager({route, navigation}) {
             getUserNutrition();
         }
     }, [isFocused]);
+
     function getUserNutrition() {
         // User Nutrition Summary Route
         fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + "/Nutrition", {
@@ -148,17 +150,25 @@ function HomeManager({route, navigation}) {
     function EarhartNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 1});
     }
+
     function HillenbrandNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 2});
     }
+
     function FordNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 3});
     }
+
     function WindsorNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 4});
     }
+
     function WileyNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 5});
+    }
+
+    function handleWaitTimesNavigate() {
+        navigation.navigate("WaitTimes");
     }
 
     return (
@@ -187,10 +197,10 @@ function HomeManager({route, navigation}) {
                     items={['Recommended Meals', 'Dining Facilities']}
                     selectedIndex={selectedTab}
                     onChange={setSelectedTab}
-                    barColor="#ffffff"
-                    indicatorColor="#000000"
-                    activeTextColor="#000000"
-                    inactiveTextColor="#908c8c"
+                    barColor={colors.background}
+                    indicatorColor={colors.text}
+                    activeTextColor={"red"}
+                    inactiveTextColor={colors.text}
                 />
             </View>
             {selectedTab === 0 ? (
@@ -211,9 +221,9 @@ function HomeManager({route, navigation}) {
                                 strokeWidth={12}
                                 radius={35}
                                 chartConfig={{
-                                    backgroundColor: "#f2f2f2",
-                                    backgroundGradientFrom: "#f2f2f2",
-                                    backgroundGradientTo: "#f2f2f2",
+                                    backgroundColor: colors.background,
+                                    backgroundGradientFrom: colors.background,
+                                    backgroundGradientTo: colors.background,
                                     color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
                                     labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`
                                 }}
@@ -248,6 +258,11 @@ function HomeManager({route, navigation}) {
                 </View>
             ) : (
                 <View>
+                    <View style={ [styles.buttonView, {alignItems:"center"}] }>
+                        <Button style={ styles.favoriteButtonComponent } onPress= { handleWaitTimesNavigate }>
+                            <Text style={ styles.favoriteButtonText }>View Wait Times</Text>
+                        </Button>
+                    </View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
                             <TouchableOpacity onPress={ EarhartNavigation }>
@@ -288,6 +303,7 @@ function HomeManager({route, navigation}) {
         </ScrollView>
     );
 }
+
 const styles = StyleSheet.create({
     iconPosition: {
         marginBottom: "2%",
@@ -377,7 +393,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "5%",
         marginBottom: "5%",
-        marginTop:"5%"
+        marginTop:"5%",
+        borderRadius: 10
     },
     wileyTitle: {
         fontSize: 20,
@@ -402,7 +419,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "-1%",
         marginBottom: "5%",
-        marginTop: "5%"
+        marginTop: "5%",
+        borderRadius: 10
     },
     hillenbrandTitle: {
         fontSize: 20,
@@ -427,7 +445,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "5%",
         marginBottom: "0%",
-        marginTop:"5%"
+        marginTop:"5%",
+        borderRadius: 10
     },
     windsorTitle: {
         fontSize: 20,
@@ -452,7 +471,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "-0.5%",
         marginBottom: "0%",
-        marginTop: "5%"
+        marginTop: "5%",
+        borderRadius: 10
     },
     fordTitle: {
         fontSize: 20,
@@ -477,7 +497,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "6%",
         marginBottom: "5%",
-        marginTop: "-5%"
+        marginTop: "-5%",
+        borderRadius: 10
     },
     imageContainer: {
         flexDirection: "row",
@@ -488,6 +509,24 @@ const styles = StyleSheet.create({
     lastDiningCourt: {
         alignItems: "center",
         marginTop: "10%"
+    },
+    buttonView: {
+        marginTop: "5%",
+        marginBottom: "4%",
+    },
+    favoriteButtonComponent: {
+        flex: 1,
+        width: '50%',
+        height: '100%',
+        marginLeft: '25%',
+        left: 0,
+        justifyContent: 'center',
+        backgroundColor: "red",
+    },
+    favoriteButtonText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "white"
     },
     modalView: {
         margin: 20,
@@ -512,8 +551,7 @@ const styles = StyleSheet.create({
     modalTextTitle: {
         color: "black",
         fontSize: 18,
-    },
-
+    }
 });
 
 export default HomeManager;

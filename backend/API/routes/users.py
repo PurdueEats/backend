@@ -32,6 +32,7 @@ auth_handler = AuthHandler()
 
 @app.get("/", response_model=List[UserOut])
 async def get_all_users():
+    'returns all users'
 
     res = [dict(row) for row in runQuery("SELECT * FROM UserBasic")]
     res = [UserOut.parse_obj({'user_id': item['UserID'], 'name': item['Name'],

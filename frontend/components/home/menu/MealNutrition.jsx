@@ -49,6 +49,9 @@ function MealNutrition({route, navigation}) {
                     } else {
                         // Examine the text in the response
                         response.json().then(function(data) {
+                            if (!data["Nutrition"]) {
+                                return;
+                            }
                             // GET successful, set nutrition data
                             setServingSize(data["Nutrition"][0]["LabelValue"])
                             setCalories(data["Nutrition"][1]["LabelValue"])
@@ -142,9 +145,9 @@ function MealNutrition({route, navigation}) {
                         strokeWidth={12}
                         radius={35}
                         chartConfig={{
-                            backgroundColor: "#f2f2f2",
-                            backgroundGradientFrom: "#f2f2f2",
-                            backgroundGradientTo: "#f2f2f2",
+                            backgroundColor: colors.background,
+                            backgroundGradientFrom: colors.background,
+                            backgroundGradientTo: colors.background,
                             color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
                             labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`
                         }}
