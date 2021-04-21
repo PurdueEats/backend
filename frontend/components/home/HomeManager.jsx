@@ -353,8 +353,8 @@ const styles = StyleSheet.create({
     },
     mealsButton: {
         marginTop: "5%",
-        marginLeft: "20%",
-        width: '60%',
+        marginLeft: "10%",
+        width: '80%',
         backgroundColor: "red",
         borderRadius: 10,
         justifyContent: 'center',

@@ -14,7 +14,7 @@ import wiley from "../../../components/profile/profile-accessories/OutputWiley.j
 import windsor from "../../../components/profile/profile-accessories/OutputWindsor.json";
 
 function WaitTimes({route, navigation}) {
-    const { colors } = useTheme();
+   const { colors } = useTheme();
    const [legendModalVisible, setLegendModalVisible] = useState(false);
     //Tab selection
     const [selectedTab, setSelectedTab] = React.useState(0);
@@ -219,41 +219,6 @@ function WaitTimes({route, navigation}) {
                     <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                 </TouchableOpacity>
                 <Image source = { Logo } style = { styles.iconSize } />
-                <View style={ styles.button2 } >
-                    <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(true) }>
-                        <MaterialCommunityIcons name="help-circle-outline" color="red" size={30}/>
-                    </TouchableOpacity>
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={legendModalVisible}
-                        onRequestClose={() => {
-                            setLegendModalVisible(!legendModalVisible);
-                        }}
-                     >
-                        <View>
-                            <View style={styles.modalView}>
-                                <TouchableOpacity onPress={() => setLegendModalVisible(!legendModalVisible)}>
-                                    <View style={styles.modalCloseButton}>
-                                        <MaterialCommunityIcons name="close" color="red" size={20}/>
-                                    </View>
-                                </TouchableOpacity >
-                                <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                    <Text style={styles.modalText}>Wait Times of Each Dining Court</Text>
-                                </View>
-                                <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                    <Text>Separated by breakfast, lunch, and dinner!</Text>
-                                </View>
-                                <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                    <Text>Values of 0 indicate that food is not being served at {"\n"} a certain location at that time.</Text>
-                                </View>
-                                <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                    <Text>Please note that these are predictions, so do not interpret the data literally.</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
                 <View style={ styles.title }>
                     <Text style={ [styles.screenTitle, {color: colors.text}] }>Wait Times</Text>
                 </View>
@@ -432,7 +397,7 @@ const styles = StyleSheet.create({
     title: {
         padding: "10%",
         marginTop: "30%",
-        marginLeft: "-180%"
+        marginLeft: "-79%"
     },
     screenTitle: {
         fontSize: 26,
@@ -445,11 +410,6 @@ const styles = StyleSheet.create({
         marginTop: "10%",
         marginRight: "50%",
     },
-    button2: {
-        marginLeft: "35%",
-        marginTop: "10%",
-        marginRight: "50%",
-    },
     tabBar: {
         marginLeft: "5%",
         marginRight: "5%",
@@ -459,13 +419,6 @@ const styles = StyleSheet.create({
     diningTitle: {
         fontSize: 15,
         fontWeight: "bold",
-    },
-    modalCloseButton: {
-        marginLeft: "5%",
-    },
-    modalText: {
-        fontSize: 20,
-        fontWeight: "bold"
     },
 });
 
