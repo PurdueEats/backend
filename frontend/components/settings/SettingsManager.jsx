@@ -180,6 +180,7 @@ function Settings({route, navigation}) {
                        <View style={{ position: "absolute", right: 10 }}>
                          <TouchableOpacity active = { .5 } onPress= { handleDarkModeNavigate }>
                              <MaterialCommunityIcons name="help-circle-outline" color="red" size={23}/>
+                         </TouchableOpacity>
                        </View>
                </View>
                <Text>         </Text>
