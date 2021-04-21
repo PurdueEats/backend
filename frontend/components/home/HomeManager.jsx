@@ -14,6 +14,7 @@ import Ford from "../../resources/ford.png";
 import Hillenbrand from "../../resources/hillenbrand.png";
 import Windsor from "../../resources/windsor.png";
 import {Button} from "native-base";
+
 function HomeManager({route, navigation}) {
     const { colors } = useTheme();
     // Setup re-render on focus change
@@ -44,15 +45,50 @@ function HomeManager({route, navigation}) {
     // Fun Fact
     const [funFact, setFunFact] = useState('');
     const [fact, setFact] = useState(false);
+    const [loginFirst, setLoginFirst] = useState(true);
 
     useEffect(() => {
         if (isFocused) {
-            if (!fact) {
-                getFunFact();
+            if (loginFirst) {
+                getFact();
+                setLoginFirst(false);
             }
             getUserNutrition();
         }
     }, [isFocused]);
+
+    function getFact() {
+          //retrieves setting
+          fetch('https://app-5fyldqenma-uc.a.run.app/Users/'+ route.params.UserID +'/Schedule', {
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + route.params.token
+                },
+            })
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful GET
+                            response.json().then(function(data) {
+                                setFact(data["schedule"].substring(42, 43));
+                                if (data["schedule"].substring(42, 43) == "1") {
+                                    getFunFact();
+                                }
+                            });
+                        } else {
+                            // Examine the text in the response
+                            console.log('Looks like there was a problem retrieving schedule. Status Code: ' +
+                                response.status);
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
+      }
+
     function getUserNutrition() {
         // User Nutrition Summary Route
         fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + "/Nutrition", {
@@ -161,6 +197,10 @@ function HomeManager({route, navigation}) {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 5});
     }
 
+    function handleWaitTimesNavigate() {
+        navigation.navigate("WaitTimes");
+    }
+
     return (
         <ScrollView>
         <Modal animationType="slide" transparent={true} visible={modalFact}
@@ -187,10 +227,10 @@ function HomeManager({route, navigation}) {
                     items={['Recommended Meals', 'Dining Facilities']}
                     selectedIndex={selectedTab}
                     onChange={setSelectedTab}
-                    barColor="#ffffff"
-                    indicatorColor="#000000"
-                    activeTextColor="#000000"
-                    inactiveTextColor="#908c8c"
+                    barColor={colors.background}
+                    indicatorColor={colors.text}
+                    activeTextColor={"red"}
+                    inactiveTextColor={colors.text}
                 />
             </View>
             {selectedTab === 0 ? (
@@ -211,9 +251,9 @@ function HomeManager({route, navigation}) {
                                 strokeWidth={12}
                                 radius={35}
                                 chartConfig={{
-                                    backgroundColor: "#f2f2f2",
-                                    backgroundGradientFrom: "#f2f2f2",
-                                    backgroundGradientTo: "#f2f2f2",
+                                    backgroundColor: colors.background,
+                                    backgroundGradientFrom: colors.background,
+                                    backgroundGradientTo: colors.background,
                                     color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
                                     labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`
                                 }}
@@ -248,6 +288,11 @@ function HomeManager({route, navigation}) {
                 </View>
             ) : (
                 <View>
+                    <View style={ [styles.buttonView, {alignItems:"center"}] }>
+                        <Button style={ styles.favoriteButtonComponent } onPress= { handleWaitTimesNavigate }>
+                            <Text style={ styles.favoriteButtonText }>View Wait Times</Text>
+                        </Button>
+                    </View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
                             <TouchableOpacity onPress={ EarhartNavigation }>
@@ -285,9 +330,15 @@ function HomeManager({route, navigation}) {
                     </View>
                 </View>
             )}
+            <View style={ [styles.buttonView, {alignItems:"center"}] }>
+                <Button style={ styles.favoriteButtonComponent } onPress= { handleWaitTimesNavigate }>
+                    <Text style={ styles.favoriteButtonText }>View Wait Times</Text>
+                </Button>
+            </View>
         </ScrollView>
     );
 }
+
 const styles = StyleSheet.create({
     iconPosition: {
         marginBottom: "2%",
@@ -337,8 +388,8 @@ const styles = StyleSheet.create({
     },
     mealsButton: {
         marginTop: "5%",
-        marginLeft: "20%",
-        width: '60%',
+        marginLeft: "10%",
+        width: '80%',
         backgroundColor: "red",
         borderRadius: 10,
         justifyContent: 'center',
@@ -377,7 +428,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "5%",
         marginBottom: "5%",
-        marginTop:"5%"
+        marginTop:"5%",
+        borderRadius: 10
     },
     wileyTitle: {
         fontSize: 20,
@@ -402,7 +454,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "-1%",
         marginBottom: "5%",
-        marginTop: "5%"
+        marginTop: "5%",
+        borderRadius: 10
     },
     hillenbrandTitle: {
         fontSize: 20,
@@ -427,7 +480,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "5%",
         marginBottom: "0%",
-        marginTop:"5%"
+        marginTop:"5%",
+        borderRadius: 10
     },
     windsorTitle: {
         fontSize: 20,
@@ -452,7 +506,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "-0.5%",
         marginBottom: "0%",
-        marginTop: "5%"
+        marginTop: "5%",
+        borderRadius: 10
     },
     fordTitle: {
         fontSize: 20,
@@ -477,7 +532,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "6%",
         marginBottom: "5%",
-        marginTop: "-5%"
+        marginTop: "-5%",
+        borderRadius: 10
     },
     imageContainer: {
         flexDirection: "row",
@@ -488,6 +544,24 @@ const styles = StyleSheet.create({
     lastDiningCourt: {
         alignItems: "center",
         marginTop: "10%"
+    },
+    buttonView: {
+        marginTop: "5%",
+        marginBottom: "4%",
+    },
+    favoriteButtonComponent: {
+        flex: 1,
+        width: '50%',
+        height: '100%',
+        marginLeft: '25%',
+        left: 0,
+        justifyContent: 'center',
+        backgroundColor: "red",
+    },
+    favoriteButtonText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "white"
     },
     modalView: {
         margin: 20,
@@ -512,8 +586,7 @@ const styles = StyleSheet.create({
     modalTextTitle: {
         color: "black",
         fontSize: 18,
-    },
-
+    }
 });
 
 export default HomeManager;

@@ -1,0 +1,422 @@
+[
+ {
+   "Day": 0,
+   "Hour": 7,
+   "LineLength": 25
+ },
+ {
+   "Day": 0,
+   "Hour": 8,
+   "LineLength": 25
+ },
+ {
+   "Day": 0,
+   "Hour": 9,
+   "LineLength": 63
+ },
+ {
+   "Day": 0,
+   "Hour": 10,
+   "LineLength": 59
+ },
+ {
+   "Day": 0,
+   "Hour": 11,
+   "LineLength": 121
+ },
+ {
+   "Day": 0,
+   "Hour": 12,
+   "LineLength": 109
+ },
+ {
+   "Day": 0,
+   "Hour": 13,
+   "LineLength": 133
+ },
+ {
+   "Day": 0,
+   "Hour": 14,
+   "LineLength": 42
+ },
+ {
+   "Day": 0,
+   "Hour": 17,
+   "LineLength": 119
+ },
+ {
+   "Day": 0,
+   "Hour": 18,
+   "LineLength": 139
+ },
+ {
+   "Day": 0,
+   "Hour": 19,
+   "LineLength": 139
+ },
+ {
+   "Day": 0,
+   "Hour": 20,
+   "LineLength": 84
+ },
+ {
+   "Day": 1,
+   "Hour": 7,
+   "LineLength": 25
+ },
+ {
+   "Day": 1,
+   "Hour": 8,
+   "LineLength": 25
+ },
+ {
+   "Day": 1,
+   "Hour": 9,
+   "LineLength": 63
+ },
+ {
+   "Day": 1,
+   "Hour": 10,
+   "LineLength": 59
+ },
+ {
+   "Day": 1,
+   "Hour": 11,
+   "LineLength": 121
+ },
+ {
+   "Day": 1,
+   "Hour": 12,
+   "LineLength": 109
+ },
+ {
+   "Day": 1,
+   "Hour": 13,
+   "LineLength": 133
+ },
+ {
+   "Day": 1,
+   "Hour": 14,
+   "LineLength": 42
+ },
+ {
+   "Day": 1,
+   "Hour": 17,
+   "LineLength": 119
+ },
+ {
+   "Day": 1,
+   "Hour": 18,
+   "LineLength": 139
+ },
+ {
+   "Day": 1,
+   "Hour": 19,
+   "LineLength": 139
+ },
+ {
+   "Day": 1,
+   "Hour": 20,
+   "LineLength": 84
+ },
+ {
+   "Day": 2,
+   "Hour": 7,
+   "LineLength": 25
+ },
+ {
+   "Day": 2,
+   "Hour": 8,
+   "LineLength": 25
+ },
+ {
+   "Day": 2,
+   "Hour": 9,
+   "LineLength": 63
+ },
+ {
+   "Day": 2,
+   "Hour": 10,
+   "LineLength": 59
+ },
+ {
+   "Day": 2,
+   "Hour": 11,
+   "LineLength": 121
+ },
+ {
+   "Day": 2,
+   "Hour": 12,
+   "LineLength": 109
+ },
+ {
+   "Day": 2,
+   "Hour": 13,
+   "LineLength": 133
+ },
+ {
+   "Day": 2,
+   "Hour": 14,
+   "LineLength": 42
+ },
+ {
+   "Day": 2,
+   "Hour": 17,
+   "LineLength": 119
+ },
+ {
+   "Day": 2,
+   "Hour": 18,
+   "LineLength": 139
+ },
+ {
+   "Day": 2,
+   "Hour": 19,
+   "LineLength": 139
+ },
+ {
+   "Day": 2,
+   "Hour": 20,
+   "LineLength": 84
+ },
+ {
+   "Day": 3,
+   "Hour": 7,
+   "LineLength": 25
+ },
+ {
+   "Day": 3,
+   "Hour": 8,
+   "LineLength": 25
+ },
+ {
+   "Day": 3,
+   "Hour": 9,
+   "LineLength": 63
+ },
+ {
+   "Day": 3,
+   "Hour": 10,
+   "LineLength": 59
+ },
+ {
+   "Day": 3,
+   "Hour": 11,
+   "LineLength": 121
+ },
+ {
+   "Day": 3,
+   "Hour": 12,
+   "LineLength": 109
+ },
+ {
+   "Day": 3,
+   "Hour": 13,
+   "LineLength": 133
+ },
+ {
+   "Day": 3,
+   "Hour": 14,
+   "LineLength": 42
+ },
+ {
+   "Day": 3,
+   "Hour": 17,
+   "LineLength": 119
+ },
+ {
+   "Day": 3,
+   "Hour": 18,
+   "LineLength": 139
+ },
+ {
+   "Day": 3,
+   "Hour": 19,
+   "LineLength": 139
+ },
+ {
+   "Day": 3,
+   "Hour": 20,
+   "LineLength": 84
+ },
+ {
+   "Day": 4,
+   "Hour": 7,
+   "LineLength": 25
+ },
+ {
+   "Day": 4,
+   "Hour": 8,
+   "LineLength": 25
+ },
+ {
+   "Day": 4,
+   "Hour": 9,
+   "LineLength": 63
+ },
+ {
+   "Day": 4,
+   "Hour": 10,
+   "LineLength": 59
+ },
+ {
+   "Day": 4,
+   "Hour": 11,
+   "LineLength": 121
+ },
+ {
+   "Day": 4,
+   "Hour": 12,
+   "LineLength": 109
+ },
+ {
+   "Day": 4,
+   "Hour": 13,
+   "LineLength": 133
+ },
+ {
+   "Day": 4,
+   "Hour": 14,
+   "LineLength": 42
+ },
+ {
+   "Day": 4,
+   "Hour": 17,
+   "LineLength": 119
+ },
+ {
+   "Day": 4,
+   "Hour": 18,
+   "LineLength": 139
+ },
+ {
+   "Day": 4,
+   "Hour": 19,
+   "LineLength": 139
+ },
+ {
+   "Day": 4,
+   "Hour": 20,
+   "LineLength": 84
+ },
+ {
+   "Day": 5,
+   "Hour": 7,
+   "LineLength": 25
+ },
+ {
+   "Day": 5,
+   "Hour": 8,
+   "LineLength": 25
+ },
+ {
+   "Day": 5,
+   "Hour": 9,
+   "LineLength": 63
+ },
+ {
+   "Day": 5,
+   "Hour": 10,
+   "LineLength": 59
+ },
+ {
+   "Day": 5,
+   "Hour": 11,
+   "LineLength": 121
+ },
+ {
+   "Day": 5,
+   "Hour": 12,
+   "LineLength": 109
+ },
+ {
+   "Day": 5,
+   "Hour": 13,
+   "LineLength": 133
+ },
+ {
+   "Day": 5,
+   "Hour": 14,
+   "LineLength": 42
+ },
+ {
+   "Day": 5,
+   "Hour": 17,
+   "LineLength": 119
+ },
+ {
+   "Day": 5,
+   "Hour": 18,
+   "LineLength": 139
+ },
+ {
+   "Day": 5,
+   "Hour": 19,
+   "LineLength": 139
+ },
+ {
+   "Day": 5,
+   "Hour": 20,
+   "LineLength": 84
+ },
+ {
+   "Day": 6,
+   "Hour": 7,
+   "LineLength": 25
+ },
+ {
+   "Day": 6,
+   "Hour": 8,
+   "LineLength": 25
+ },
+ {
+   "Day": 6,
+   "Hour": 9,
+   "LineLength": 63
+ },
+ {
+   "Day": 6,
+   "Hour": 10,
+   "LineLength": 59
+ },
+ {
+   "Day": 6,
+   "Hour": 11,
+   "LineLength": 121
+ },
+ {
+   "Day": 6,
+   "Hour": 12,
+   "LineLength": 109
+ },
+ {
+   "Day": 6,
+   "Hour": 13,
+   "LineLength": 133
+ },
+ {
+   "Day": 6,
+   "Hour": 14,
+   "LineLength": 42
+ },
+ {
+   "Day": 6,
+   "Hour": 17,
+   "LineLength": 119
+ },
+ {
+   "Day": 6,
+   "Hour": 18,
+   "LineLength": 139
+ },
+ {
+   "Day": 6,
+   "Hour": 19,
+   "LineLength": 139
+ },
+ {
+   "Day": 6,
+   "Hour": 20,
+   "LineLength": 84
+ }
+]

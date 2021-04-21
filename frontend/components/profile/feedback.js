@@ -38,11 +38,11 @@ function fetchData() {
             .map(user => {
               return `
             <div class="user">
-                <p>User Name: ${user.name}</p>
-                <p>User ID: ${user.user_id}</p>
-                <p>User Email: ${user.email}</p>
-                <p>User Feedback: ${user.feedback_text}</p>
-                <p>Timestamp: ${user.timestamp}</p>
+                <p><strong>User Name</strong>: ${user.name}</p>
+                <p><strong>User ID</strong>: ${user.user_id}</p>
+                <p><strong>User Email</strong>: <a href="mailto:${user.email}">${user.email}</a></p>
+                <p><strong>User Feedback Message</strong>: ${user.feedback_text}</p>
+                <p><strong>Timestamp</strong>: ${user.timestamp}</p>
             </div>
             `;
             })

@@ -741,6 +741,10 @@ function ProfileManager({route, navigation}) {
             <View style={styles.viewCenter}>
                 <View style={ styles.borderLine }/>
                 <TouchableOpacity active = { .5 } onPress={() =>
+                    navigation.navigate("SemesterSummary", { UserID: route.params.UserID, token: route.params.token }) }>
+                    <Text style={ [styles.textNormal, {color: colors.text}] }>View Semester Summary</Text>
+                </TouchableOpacity>
+                <TouchableOpacity active = { .5 } onPress={() =>
                     navigation.navigate("Track", { UserID: route.params.UserID, token: route.params.token }) }>
                     <Text style={ [styles.textNormal, {color: colors.text}] }>Track Meals</Text>
                 </TouchableOpacity>

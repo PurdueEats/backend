@@ -27,7 +27,7 @@ const DiningFacilities = (props) => {
             .then(
                 function (response) {
                     if (response.status !== 200 && response.status !== 201) {
-                        console.log('Looks like there was a problem retreiving recommended meals. Status Code: ' +
+                        console.log('Looks like there was a problem retrieving recommended meals. Status Code: ' +
                             response.status);
                     } else {
                         // Examine the text in the response
