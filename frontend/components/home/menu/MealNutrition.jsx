@@ -49,6 +49,9 @@ function MealNutrition({route, navigation}) {
                     } else {
                         // Examine the text in the response
                         response.json().then(function(data) {
+                            if (!data["Nutrition"]) {
+                                return;
+                            }
                             // GET successful, set nutrition data
                             setServingSize(data["Nutrition"][0]["LabelValue"])
                             setCalories(data["Nutrition"][1]["LabelValue"])

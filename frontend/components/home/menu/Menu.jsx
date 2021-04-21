@@ -38,6 +38,9 @@ function Menu({route, navigation}) {
     const [mealName, setMealName] = useState([]);
     const [favMealName, setFavMealName] = useState([]);
 
+    // Count for items
+    let count = 0;
+
     useEffect(() => {
         getMeals();
         getFavMeal();
@@ -393,7 +396,7 @@ function Menu({route, navigation}) {
                 </View>
             </Modal>
             <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)}
-                      keyExtractor={item => { Math.random().toString(36).substring(5) } } extraData={allData}/>
+                      keyExtractor={(item, index) => item.key} extraData={allData}/>
             <Button style={ styles.filterButton } onPress={ handleReviewNavigate }>
                 <Text style={ styles.filterText }>Reviews</Text>
             </Button>

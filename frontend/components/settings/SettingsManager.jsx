@@ -157,10 +157,15 @@ function Settings({route, navigation}) {
                   console.log('Fetch Error :-S', err);
               });
       }
+      const [selectedTab, setSelectedTab] = React.useState(0);
+
+      function handleDarkModeNavigate() {
+        navigation.navigate("DarkMode");
+      }
 
       return (
           <View>
-              <View style={ [styles.screenView, {flexDirection:"row"}] } >
+              <View style={ { backgroundColor: colors.background, flexDirection:"row" } } >
                   <Text>         </Text>
               </View>
               <View style={ styles.iconPosition }>
@@ -176,71 +181,73 @@ function Settings({route, navigation}) {
                <View style={ styles.rowBetween }>
                    <Text style={ styles.modeHeader }>Light Mode/Dark Mode</Text>
                        <View style={{ position: "absolute", right: 10 }}>
-                         <TouchableOpacity active = { .5 } onPress={() => setLegendModalVisible(true) }>
+                         <TouchableOpacity active = { .5 } onPress= { handleDarkModeNavigate }>
+{/*                          DarkMode */}
                              <MaterialCommunityIcons name="help-circle-outline" color="red" size={23}/>
                          </TouchableOpacity>
-                         <Modal
-                             animationType="slide"
-                             transparent={false}
-                             visible={legendModalVisible}
-                             onRequestClose={() => {
-                                 setLegendModalVisible(!legendModalVisible);
-                             }}
-                         >
-                             <View>
-                                 <View style={styles.modalView}>
-                                     <TouchableOpacity onPress={() => setLegendModalVisible(!legendModalVisible)}>
-                                         <View style={styles.modalCloseButton}>
-                                             <MaterialCommunityIcons name="close" color="red" size={20}/>
-                                         </View>
-                                     </TouchableOpacity >
-                                     <View style={styles.tabBar}>
-                                         <MaterialTabs
-                                             items={['iOS Users', 'Android Users']}
-                                             selectedIndex={selectedTab}
-                                             onChange={setSelectedTab}
-                                             barColor="#ffffff"
-                                             indicatorColor="#000000"
-                                             activeTextColor="#000000"
-                                             inactiveTextColor="#908c8c"
-                                         />
-                                     </View>
-                                     {selectedTab === 0 ? (
-                                         <View>
-                                               <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                                   <Text style={styles.modalText}>Dark/Light Mode on iOS</Text>
-                                               </View>
-                                               <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                                   <Text>To access dark mode or light mode on your iOS device, it is totally dependent on what you system's settings are on!</Text>
-                                               </View>
-                                               <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                                     <Image source = { iosPic1 } style={ styles.pic } />
-                                                     <Image source = { iosPic2 } style={ styles.pic } />
-                                               </View>
-                                               <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                                   <Text>To change modes, force touch the brightness icon and then, on the bottom left, you can toggle dark mode on or off to get dark mode or light mode respectively.</Text>
-                                               </View>
-                                         </View>
-                                     ): (
-                                         <View>
-                                             <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                                 <Text style={styles.modalText}>Dark/Light Mode on Android</Text>
-                                             </View>
-                                             <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                                   <Text>To access dark mode or light mode on your Android device, it is totally dependent on what you system's settings are on!</Text>
-                                             </View>
-                                             <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                                   <Image source = { AndroidPic1 } style={ styles.pic } />
-                                                   <Image source = { AndroidPic2 } style={ styles.pic } />
-                                             </View>
-                                             <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                                 <Text>To change modes, swipe up to view your settings and swipe all the way to the right. Here you can toggle dark mode on or off to get dark mode or light mode respectively.</Text>
-                                             </View>
-                                         </View>
-                                     )}
-                                 </View>
-                             </View>
-                         </Modal>
+{/*                          <Modal */}
+{/*                              animationType="slide" */}
+{/*                              transparent={false} */}
+{/*                              visible={legendModalVisible} */}
+{/*                              onRequestClose={() => { */}
+{/*                                  setLegendModalVisible(!legendModalVisible); */}
+{/*                              }} */}
+{/*                              style={{ backgroundColor: colors.background }} */}
+{/*                          > */}
+{/*                              <View> */}
+{/*                                  <View> */}
+{/*                                      <TouchableOpacity onPress={() => setLegendModalVisible(!legendModalVisible)}> */}
+{/*                                          <View style={styles.modalCloseButton}> */}
+{/*                                              <MaterialCommunityIcons name="close" color="red" size={20}/> */}
+{/*                                          </View> */}
+{/*                                      </TouchableOpacity > */}
+{/*                                      <View style={ [styles.tabBar, {backgroundColor: colors.background}]}> */}
+{/*                                          <MaterialTabs */}
+{/*                                              items={['iOS Users', 'Android Users']} */}
+{/*                                              selectedIndex={selectedTab} */}
+{/*                                              onChange={setSelectedTab} */}
+{/*                                              barColor={colors.background} */}
+{/*                                              indicatorColor={colors.text} */}
+{/*                                              activeTextColor={"red"} */}
+{/*                                              inactiveTextColor={colors.text} */}
+{/*                                          /> */}
+{/*                                      </View> */}
+{/*                                      {selectedTab === 0 ? ( */}
+{/*                                          <View> */}
+{/*                                                <View style={{flexDirection: "row", justifyContent: "center"}}> */}
+{/*                                                    <Text style={ [styles.modalText, {color: colors.text}]}>Dark/Light Mode on iOS</Text> */}
+{/*                                                </View> */}
+{/*                                                <View style={{flexDirection: "row", justifyContent: "center"}}> */}
+{/*                                                    <Text style={{ color: colors.text }}>To access dark mode or light mode on your iOS device, it is totally dependent on what you system's settings are on!</Text> */}
+{/*                                                </View> */}
+{/*                                                <View style={{flexDirection: "row", justifyContent: "center"}}> */}
+{/*                                                      <Image source = { iosPic1 } style={ styles.pic } /> */}
+{/*                                                      <Image source = { iosPic2 } style={ styles.pic } /> */}
+{/*                                                </View> */}
+{/*                                                <View style={{flexDirection: "row", justifyContent: "center"}}> */}
+{/*                                                    <Text style={{ color: colors.text }}>To change modes, force touch the brightness icon and then, on the bottom left, you can toggle dark mode on or off to get dark mode or light mode respectively.</Text> */}
+{/*                                                </View> */}
+{/*                                          </View> */}
+{/*                                      ) : ( */}
+{/*                                          <View> */}
+{/*                                              <View style={{flexDirection: "row", justifyContent: "center"}}> */}
+{/*                                                  <Text style={ [styles.modalText, { color: colors.text }]}>Dark/Light Mode on Android</Text> */}
+{/*                                              </View> */}
+{/*                                              <View style={{flexDirection: "row", justifyContent: "center"}}> */}
+{/*                                                    <Text style={{ color: colors.text }}>To access dark mode or light mode on your Android device, it is totally dependent on what you system's settings are on!</Text> */}
+{/*                                              </View> */}
+{/*                                              <View style={{flexDirection: "row", justifyContent: "center"}}> */}
+{/*                                                    <Image source = { AndroidPic1 } style={ styles.pic } /> */}
+{/*                                                    <Image source = { AndroidPic2 } style={ styles.pic } /> */}
+{/*                                              </View> */}
+{/*                                              <View style={{flexDirection: "row", justifyContent: "center"}}> */}
+{/*                                                  <Text style={{ color: colors.text }}>To change modes, swipe up to view your settings and swipe all the way to the right. Here you can toggle dark mode on or off to get dark mode or light mode respectively.</Text> */}
+{/*                                              </View> */}
+{/*                                          </View> */}
+{/*                                      )} */}
+{/*                                  </View> */}
+{/*                              </View> */}
+{/*                          </Modal> */}
                        </View>
                </View>
                <Text>         </Text>
@@ -316,14 +323,6 @@ function Settings({route, navigation}) {
           fontWeight: "bold",
           paddingBottom: "2%"
       },
-      screenView: {
-          marginTop: "10%",
-          marginLeft: "7%",
-      },
-      tabBar: {
-          marginLeft: "5%",
-          marginRight: "5%",
-      },
       rowBetween: {
           flexDirection: "row",
           justifyContent: "space-between",
@@ -335,8 +334,7 @@ function Settings({route, navigation}) {
       pic: {
         width: 180,
         height: 350,
-      },
-
+      }
   });
 
 export default Settings;

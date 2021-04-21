@@ -27,6 +27,8 @@ import SettingsManager from "./components/settings/SettingsManager";
 import Feedback from "./components/settings/settings-accessories/Feedback";
 import ReadReviews from "./components/home/menu/ReadReviews";
 import WriteReview from "./components/home/menu/WriteReview";
+import WaitTimes from "./components/profile/profile-accessories/WaitTimes";
+import DarkMode from "./components/settings/DarkMode";
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -62,6 +64,8 @@ export default function App() {
                         <Stack.Screen name="EditSchedule" component={ Schedule }/>
                         <Stack.Screen name="ReadReviews" component= { ReadReviews }/>
                         <Stack.Screen name="WriteReview" component= { WriteReview }/>
+                        <Stack.Screen name="WaitTimes" component= { WaitTimes }/>
+                        <Stack.Screen name="DarkMode" component= { DarkMode }/>
                         <Stack.Screen name="NavBar" component={ NavBarManager } options={{gestureEnabled: false}}/>
                     </Stack.Navigator>
                 </NavigationContainer>

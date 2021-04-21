@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
-import { Button } from 'native-base';
+import { Button, Toast } from 'native-base';
 import Logo from "../../../resources/logo.png";
 import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
@@ -66,6 +66,32 @@ function Notifications({route, navigation}) {
         });
     }
 
+    //Toast message for recording fav meal successfully
+    function displayConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Notification turned on successfully.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    //Toast message for error
+    function displayError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Notification failed turning on. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
     // POST request to turn notifications on
     function handleFavMealNotificationsOn() {
         //add to noti on list
@@ -78,7 +104,6 @@ function Notifications({route, navigation}) {
         setNotiOn([]);
         //remove duplicates from currentSelection
         notiOn.map(item => {
-            console.log("hit");
             fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals', {
                 method: 'POST',
                 headers : {
@@ -112,6 +137,32 @@ function Notifications({route, navigation}) {
         })
     }
 
+    //Toast message for recording fav meal successfully
+    function displayConfirmation2() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Notification turned off successfully.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    //Toast message for error
+    function displayError2() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "Notification failed turning off. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
     // POST request to turn notifications off
     function handleFavMealNotificationsOff() {
         //add to noti off list
@@ -141,12 +192,12 @@ function Notifications({route, navigation}) {
                     function(response) {
                         if (response.status === 200 || response.status === 201) {
                             // Successful POST
-                            displayConfirmation();
+                            displayConfirmation2();
                         } else {
                             // Examine the text in the response
                             console.log('Looks like there was a problem recording meals. Status Code: ' +
                                 response.status);
-                            displayError();
+                            displayError2();
                         }
                     }
                 )
@@ -168,15 +219,15 @@ function Notifications({route, navigation}) {
                 </View>
             </View>
 
-            <View style={styles.tabBar}>
+            <View style={ [styles.tabBar, {backgroundColor: colors.background}]}>
                 <MaterialTabs
                     items={['Notifications On', 'Notifications Off']}
                     selectedIndex={selectedTab}
                     onChange={setSelectedTab}
-                    barColor="#ffffff"
-                    indicatorColor="#000000"
-                    activeTextColor="#000000"
-                    inactiveTextColor="#908c8c"
+                    barColor={colors.background}
+                    indicatorColor={colors.text}
+                    activeTextColor={"red"}
+                    inactiveTextColor={colors.text}
                 />
             </View>
             {selectedTab === 0 ? (
