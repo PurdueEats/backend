@@ -25,3 +25,9 @@ class VoteIn(BaseModel):
     dining_facility_review_id:  str
     user_id:                    str
     vote_val:                   int = Field(ge=-1, le=1)
+
+
+class ReviewReport(BaseModel):
+    dining_facility_review_id:  str
+    user_id:                    str
+    report:                     str
