@@ -19,7 +19,7 @@ const AllUserSummary = (props) => {
     function getUserNutrition() {
         // Fetch date
         let date = new Date();
-        date.setDate(date.getDate() - date.getDay())
+        date.setDate(date.getDate() - date.getDay() + 1)
         let fetchFormat = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         // User Nutrition Summary Route
         fetch('https://app-5fyldqenma-uc.a.run.app/WeeklyNutrition/' + fetchFormat, {
@@ -75,9 +75,9 @@ const AllUserSummary = (props) => {
                 height={250}
                 strokeWidth={0}
                 chartConfig={{
-                    backgroundColor: "#f2f2f2",
-                    backgroundGradientFrom: "#f2f2f2",
-                    backgroundGradientTo: "#f2f2f2",
+                    backgroundColor: colors.background,
+                    backgroundGradientFrom: colors.background,
+                    backgroundGradientTo: colors.background,
                     color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
                     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                     propsForBackgroundLines: {
