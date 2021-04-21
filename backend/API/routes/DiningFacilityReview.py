@@ -154,6 +154,6 @@ async def report_review(reviewReport: ReviewReport):
         data={"from": "Excited User <mailgun@sandbox459d6d8b3208457c8613631ae018378a.mailgun.org>",
                       "to": ["amazonfankrishna@gmail.com"],
                       "subject": "Review Report",
-              "text": ""})
+              "text": text})
 
     print(r.text)
