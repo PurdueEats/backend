@@ -15,6 +15,8 @@ function TrackMeals({route, navigation}) {
     const [label, setLabel] = useState('');
     const [valueTest, setValueTest] = useState('');
     const [bool, setBool] = useState('a');
+    const [sortBool, setSortBool] = useState('0');
+
     const EmptyListMessage = ({item}) => {
         return (
             // Flat List Item
@@ -28,10 +30,59 @@ function TrackMeals({route, navigation}) {
 
     useEffect(() => {
         getMealIds();
+        getSort();
     },[]);
+
+    function handleSort() {
+        if (sortBool == "0") {
+            sortList();
+        }
+        else {
+            sortListOpposite();
+        }
+
+    }
+
+    function getSort() {
+          //retrieves setting
+          fetch('https://app-5fyldqenma-uc.a.run.app/Users/'+ route.params.UserID +'/Schedule', {
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + route.params.token
+                },
+            })
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful GET
+                            response.json().then(function(data) {
+                                if (data["schedule"].substring(43, 44) == "1") {
+                                    setSortBool("1");
+                                }
+                            });
+                        } else {
+                            // Examine the text in the response
+                            console.log('Looks like there was a problem retrieving schedule. Status Code: ' +
+                                response.status);
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
+      }
 
     function sortList() {
         currentSelection.sort(function(a, b) { return a.timestamp < b.timestamp; });
+
+        setBool('a');
+        setBool('b');
+    }
+
+    function sortListOpposite() {
+        currentSelection.sort(function(a, b) { return a.timestamp > b.timestamp; });
 
         setBool('a');
         setBool('b');
@@ -102,7 +153,7 @@ function TrackMeals({route, navigation}) {
                 });
 
         }).catch(function(err) {
-            console.log("err");
+            console.log("err:", err);
         });
     }
 
@@ -205,7 +256,7 @@ function TrackMeals({route, navigation}) {
             </View>
             <View style={ styles.sortView }>
                 <Text style={ [styles.screenTitle, {color: colors.text}] }>Track Meals</Text>
-                <Button style={ styles.sortButton } onPress={ () => sortList() }>
+                <Button style={ styles.sortButton } onPress={ () => handleSort() }>
                     <Text style={ styles.sortText }>Sort</Text>
                 </Button>
             </View>
