@@ -6,7 +6,7 @@ import numpy as np
 from fastapi import APIRouter, Depends, HTTPException
 from backend.API.routes.auth import AuthHandler
 from backend.DB.Util import runQuery
-from backend.API.routes.users import fetch_api_key
+from backend.DB.UserSummary import gen_stats
 from backend.API.models.MealPlan import MealPlanIn
 from backend.API.models.menu import MenuItem
 from backend.API.models.users import (
