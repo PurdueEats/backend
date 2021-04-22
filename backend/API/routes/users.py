@@ -29,16 +29,12 @@ app = APIRouter()
 auth_handler = AuthHandler()
 
 
-'''
- * @swagger
- * /get_all_users:
- *   get:
- *     summary: Retrieve a list of all users
- *     description: Retrieve a list of users.
-'''
-
 @app.get("/", response_model=List[UserOut])
 async def get_all_users():
+    '''
+    summary: Retrieve a list of all users.\n
+    description: Retrieve a list of users.
+    '''
     res = [dict(row) for row in runQuery("SELECT * FROM UserBasic")]
     res = [UserOut.parse_obj({'user_id': item['UserID'], 'name': item['Name'],
                               'email':item['Email']})
@@ -46,17 +42,14 @@ async def get_all_users():
 
     return res
 
-'''
- * @swagger
- * /users:
- *   create_user:
- *     summary: Creates new user.
- *     description: Creates user. enter name, email, and password. 201: successful creation returns null. 422 validation error: 
- '''
+
 
 @app.post("/Register", status_code=201)
 async def create_user(userBasic: UserBasic):
-    
+    '''
+    summary: Creates new user.\n
+    description: Creates user. enter name, email, and password. 201: successful creation returns null. 422 validation error: 
+    '''
     # Validate user email
     email = [dict(row) for row in runQuery(
         f"SELECT COUNT(*) FROM UserBasic WHERE Email = '{userBasic.email}'")]
