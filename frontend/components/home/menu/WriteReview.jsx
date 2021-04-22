@@ -42,7 +42,7 @@ function WriteReview({route, navigation}) {
                 function(response) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful POST
-                        reviewSubmitted()
+                        reviewSubmitted();
                         navigation.navigate("ReadReviews", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
                     } else {
                         // Examine the text in the response
