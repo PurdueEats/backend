@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
+import {useIsFocused, useTheme} from '@react-navigation/native';
 import {Button, Toast} from 'native-base';
 import { StackActions } from '@react-navigation/native';
 import Modal from 'react-native-modal';
@@ -11,10 +11,11 @@ function ReadReviews({route, navigation}) {
     const { colors } = useTheme();
     const [reviews, setReviews] = useState([]);
     const [reportModalVisible, setReportModalVisible] = useState(false);
+    const isFocused = useIsFocused();
 
     useEffect(() => {
        getReviews();
-    }, []);
+    }, [isFocused]);
 
     function handleNavigate() {
         navigation.navigate("WriteReview", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
@@ -48,7 +49,8 @@ function ReadReviews({route, navigation}) {
             });
     }
 
-    function submitVote(dineReviewID, voteVal) {
+    function submitVote(reviewItem, voteVal) {
+        console.log(reviewItem["dining_facility_review_id"]);
         fetch(`https://app-5fyldqenma-uc.a.run.app/DFR/Vote`, {
             method: 'POST',
             headers : {
@@ -56,7 +58,7 @@ function ReadReviews({route, navigation}) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify( {
-                    "dining_facility_review_id": dineReviewID,
+                    "dining_facility_review_id": reviewItem["dining_facility_review_id"],
                     "user_id": String(route.params.UserID),
                     "vote_val": voteVal
                 }
@@ -68,6 +70,7 @@ function ReadReviews({route, navigation}) {
                         // Successful POST
                         //console.log("Thank you for your vote!");
                         voteConfirmation();
+                        getReviews()
                     } else {
                         // Examine the text in the response
                         console.log('Looks like there was a problem submitting the vote. Status Code: ' +
@@ -179,11 +182,11 @@ function ReadReviews({route, navigation}) {
         return (
             <View style={{flexDirection: "row"}}>
                 <View style={{flexDirection: "column", marginLeft: "2%", marginTop: "1%"}}>
-                    <TouchableOpacity onPress={() => submitVote(review["item"]["dining_facility_review_id"], 1)}>
+                    <TouchableOpacity onPress={() => submitVote(review["item"], 1)}>
                         <MaterialCommunityIcons name="arrow-up" color="red" size={30}/>
                     </TouchableOpacity>
                     <Text style={[styles.voteCountText, {color: colors.text}]}>{sumVote}</Text>
-                    <TouchableOpacity onPress={() => submitVote(review["item"]["dining_facility_review_id"], -1)}>
+                    <TouchableOpacity onPress={() => submitVote(review["item"], -1)}>
                         <MaterialCommunityIcons name="arrow-down" color="red" size={30}/>
                     </TouchableOpacity>
                 </View>
