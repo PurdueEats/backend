@@ -532,6 +532,7 @@ async def forgot_password(email: str):
 
 def fetch_api_key():
 
+    """
     from google.cloud import secretmanager_v1beta1 as secretmanager
 
     secret_id = 'MAILGUN_KEY'
@@ -544,5 +545,7 @@ def fetch_api_key():
 
     response = client.access_secret_version(request={"name": name})
     payload = response.payload.data.decode("UTF-8")
+    """
+    import os
 
-    return payload
+    return os.environ.get("API")

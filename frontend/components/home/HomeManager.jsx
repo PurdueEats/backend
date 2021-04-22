@@ -1,42 +1,93 @@
 import React, {useEffect, useState} from "react";
-import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TouchableOpacity, Modal} from "react-native";
 import { useIsFocused } from '@react-navigation/native';
 import { ProgressChart } from "react-native-chart-kit";
 import { useTheme } from '@react-navigation/native';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MaterialTabs from 'react-native-material-tabs';
 import RecommendedMeals from "./home-accessories/RecommendedMeals";
+import AllUserSummary from "./home-accessories/AllUserSummary";
 import Logo from "../../resources/logo.png";
 import Earhart from "../../resources/earhart.png";
 import Wiley from "../../resources/wiley.png";
 import Ford from "../../resources/ford.png";
 import Hillenbrand from "../../resources/hillenbrand.png";
 import Windsor from "../../resources/windsor.png";
+import {Button} from "native-base";
 
 function HomeManager({route, navigation}) {
     const { colors } = useTheme();
     // Setup re-render on focus change
     const isFocused = useIsFocused();
-
     // Recommended Meals
     const [calories, setCalories] = useState(0);
     const [carbs, setCarbs] = useState(0);
     const [fat, setFat] = useState(0);
     const [protein, setProtein] = useState(0);
-
+    // Set chart visibility
+    const [showChart, setShowChart] = useState(true);
     // Chart Data
     const [chartCalories, setChartCalories] = useState(0);
     const [chartCarbs, setChartCarbs] = useState(0);
     const [chartFat, setChartFat] = useState(0);
     const [chartProtein, setChartProtein] = useState(0);
-
     // Dining Courts
     const [selectedTab, setSelectedTab] = useState(0);
 
+    // Current Date (For fun fact)
+    var moment = require('moment-timezone');
+    var time = moment().tz('America/New_York').utcOffset("−05:00").format();
+    var date = time.substring(0, time.indexOf('T'));
+
+    // Modal for Fun Fact
+    const [modalFact, setModalFact] = useState(false);
+
+    // Fun Fact
+    const [funFact, setFunFact] = useState('');
+    const [fact, setFact] = useState(false);
+    const [loginFirst, setLoginFirst] = useState(true);
+
     useEffect(() => {
         if (isFocused) {
+            if (loginFirst) {
+                getFact();
+                setLoginFirst(false);
+            }
             getUserNutrition();
         }
     }, [isFocused]);
+
+    function getFact() {
+          //retrieves setting
+          fetch('https://app-5fyldqenma-uc.a.run.app/Users/'+ route.params.UserID +'/Schedule', {
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + route.params.token
+                },
+            })
+                .then(
+                    function(response) {
+                        if (response.status === 200 || response.status === 201) {
+                            // Successful GET
+                            response.json().then(function(data) {
+                                setFact(data["schedule"].substring(42, 43));
+                                if (data["schedule"].substring(42, 43) == "1") {
+                                    getFunFact();
+                                }
+                            });
+                        } else {
+                            // Examine the text in the response
+                            console.log('Looks like there was a problem retrieving schedule. Status Code: ' +
+                                response.status);
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.log('Fetch Error :-S', err);
+                });
+      }
 
     function getUserNutrition() {
         // User Nutrition Summary Route
@@ -61,7 +112,6 @@ function HomeManager({route, navigation}) {
                             setCarbs(data["carbs"]);
                             setFat(data["fat"]);
                             setProtein(data["protein"]);
-
                             // Set chartData
                             // Calories
                             if (parseFloat(data["calories"]) > 14000) {
@@ -96,28 +146,79 @@ function HomeManager({route, navigation}) {
             });
     }
 
+    function getFunFact() {
+        // User Nutrition Summary Route
+        fetch(`https://app-5fyldqenma-uc.a.run.app/PFF/` + date, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + route.params.token
+            }
+        })
+            .then(
+                function (response) {
+                    if (response.status !== 200 && response.status !== 201) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                            console.log('fact');
+                    } else {
+                        // Examine the text in the response
+                        response.json().then(function (data) {
+                            // Set data fields
+                            setFunFact(data.fact);
+                            setModalFact(true);
+                            setFact(true);
+                        });
+                    }
+                }
+            )
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+    function handleSetChart() {
+        setShowChart(!showChart);
+    }
+
     function EarhartNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 1});
     }
-
     function HillenbrandNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 2});
     }
-
     function FordNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 3});
     }
-
     function WindsorNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 4});
     }
-
     function WileyNavigation() {
         navigation.navigate("Menu", { UserID: route.params.UserID, token: route.params.token, DiningID: 5});
     }
 
+    function handleWaitTimesNavigate() {
+        navigation.navigate("WaitTimes");
+    }
+
     return (
         <ScrollView>
+        <Modal animationType="slide" transparent={true} visible={modalFact}
+               onRequestClose={() => {
+                   setModalFact(!modalFact);
+               }}
+        >
+            <View>
+                <View style={styles.modalView}>
+                    <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  setModalFact(false)}>
+                        <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
+                    </TouchableOpacity>
+                    <Text style={ styles.modalTextTitle }>Did you know?</Text>
+                    <Text style={ styles.modalText }>           </Text>
+                    <Text style={ styles.modalText }>{funFact}</Text>
+                </View>
+            </View>
+        </Modal>
             <View style={ [styles.iconPosition, {flexDirection:"row"}] }>
                 <Image source = { Logo } style = { styles.iconSize } />
             </View>
@@ -126,53 +227,72 @@ function HomeManager({route, navigation}) {
                     items={['Recommended Meals', 'Dining Facilities']}
                     selectedIndex={selectedTab}
                     onChange={setSelectedTab}
-                    barColor="#ffffff"
-                    indicatorColor="#000000"
-                    activeTextColor="#000000"
-                    inactiveTextColor="#908c8c"
+                    barColor={colors.background}
+                    indicatorColor={colors.text}
+                    activeTextColor={"red"}
+                    inactiveTextColor={colors.text}
                 />
             </View>
             {selectedTab === 0 ? (
                 <View style={{ marginBottom: "5%" }}>
-                    <View style={ styles.recommendedView }>
-                        <Text style={ [styles.dataHeader, {color: colors.text}] }>Your eating habits</Text>
-                        <Text style={ [styles.directionsText, {color: colors.text}] }>Rings show % of the NHS recommended weekly totals.</Text>
-                    </View>
-                    <ProgressChart
-                        data={{
-                            labels: ["Calories", "Carbs.", "Fat", "Protein"],
-                            data: [chartCalories / 14000, chartCarbs / 1900, chartFat / 200, chartProtein / 350]
-                        }}
-                        width={Dimensions.get("window").width - 20}
-                        height={250}
-                        strokeWidth={12}
-                        radius={35}
-                        chartConfig={{
-                            backgroundColor: "#f2f2f2",
-                            backgroundGradientFrom: "#f2f2f2",
-                            backgroundGradientTo: "#f2f2f2",
-                            color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
-                            labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`
-                        }}
-                    />
-                    <View style={ styles.dataView }>
-                        <Text style={ [styles.dataText, {color: colors.text}] }>
-                            <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories.toLocaleString()} of 14,000
-                        </Text>
-                        <Text style={ [styles.dataText, {color: colors.text}] }>
-                            <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs.toLocaleString()}g of 1,900g
-                        </Text>
-                        <Text style={ [styles.dataText, {color: colors.text}] }>
-                            <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat.toLocaleString()}g of 200g
-                        </Text>
-                        <Text style={ [styles.dataText, {color: colors.text}] }>
-                            <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein.toLocaleString()}g of 350g
-                        </Text>
-                    </View>
+                    { showChart ? (
+                        <View style={{ marginBottom: "3%" }}>
+                            <View style={ styles.recommendedView }>
+                                <Text style={ [styles.dataHeader, {color: colors.text}] }>Your eating habits</Text>
+                                <Text style={ [styles.directionsText, {color: colors.text}] }>Rings show % of the NHS recommended weekly totals.</Text>
+                            </View>
+                            <ProgressChart
+                                data={{
+                                    labels: ["Calories", "Carbs.", "Fat", "Protein"],
+                                    data: [chartCalories / 14000, chartCarbs / 1900, chartFat / 200, chartProtein / 350]
+                                }}
+                                width={Dimensions.get("window").width - 20}
+                                height={250}
+                                strokeWidth={12}
+                                radius={35}
+                                chartConfig={{
+                                    backgroundColor: colors.background,
+                                    backgroundGradientFrom: colors.background,
+                                    backgroundGradientTo: colors.background,
+                                    color: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`,
+                                    labelColor: (opacity = 1) => `rgba(255, 99, 71, ${opacity})`
+                                }}
+                            />
+                            <View style={ styles.dataView }>
+                                <Text style={ [styles.dataText, {color: colors.text}] }>
+                                    <Text style={{ fontWeight: "bold"}}>Calories</Text> {calories.toLocaleString()} of 14,000
+                                </Text>
+                                <Text style={ [styles.dataText, {color: colors.text}] }>
+                                    <Text style={{ fontWeight: "bold"}}>Carbohydrates</Text> {carbs.toLocaleString()}g of 1,900g
+                                </Text>
+                                <Text style={ [styles.dataText, {color: colors.text}] }>
+                                    <Text style={{ fontWeight: "bold"}}>Fat</Text> {fat.toLocaleString()}g of 200g
+                                </Text>
+                                <Text style={ [styles.dataText, {color: colors.text}] }>
+                                    <Text style={{ fontWeight: "bold"}}>Protein</Text> {protein.toLocaleString()}g of 350g
+                                </Text>
+                            </View>
+                            <Button onPress={handleSetChart} style={ styles.mealsButton }>
+                                <Text style={ styles.mealsText }>Show Other Users' Eating Habits</Text>
+                            </Button>
+                        </View>
+                    ) : (
+                        <View style={{ marginBottom: "3%" }}>
+                            <AllUserSummary calories={calories} carbs={carbs} fat={fat} protein={protein}/>
+                            <Button onPress={handleSetChart} style={ styles.mealsButton }>
+                                <Text style={ styles.mealsText }>Show Your Eating Habits</Text>
+                            </Button>
+                        </View>
+                    )}
                     <RecommendedMeals UserID={route.params.UserID} token={route.params.token} navigation={navigation}/>
                 </View>
             ) : (
                 <View>
+                    <View style={ [styles.buttonView, {alignItems:"center"}] }>
+                        <Button style={ styles.favoriteButtonComponent } onPress= { handleWaitTimesNavigate }>
+                            <Text style={ styles.favoriteButtonText }>View Wait Times</Text>
+                        </Button>
+                    </View>
                     <View style={ styles.imageContainer }>
                         <View style={{alignItems: "center", justifyContent: "center", flexDirection:"row"}}>
                             <TouchableOpacity onPress={ EarhartNavigation }>
@@ -181,7 +301,6 @@ function HomeManager({route, navigation}) {
                                 <Text style={ [styles.earhartTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
-
                         <TouchableOpacity onPress={ WileyNavigation }>
                             <Image source = { Wiley } style = { styles.wileyDiningImage }/>
                             <Text style={ [styles.wileyTitle, {color: colors.text}] }>{"Wiley"}</Text>
@@ -196,7 +315,6 @@ function HomeManager({route, navigation}) {
                                 <Text style={ [styles.hillenbrandTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
-
                         <TouchableOpacity onPress={ WindsorNavigation }>
                             <Image source = { Windsor } style = { styles.windsorDiningImage }/>
                             <Text style={ [styles.windsorTitle, {color: colors.text}] }>{"Windsor"}</Text>
@@ -212,6 +330,11 @@ function HomeManager({route, navigation}) {
                     </View>
                 </View>
             )}
+            <View style={ [styles.buttonView, {alignItems:"center"}] }>
+                <Button style={ styles.favoriteButtonComponent } onPress= { handleWaitTimesNavigate }>
+                    <Text style={ styles.favoriteButtonText }>View Wait Times</Text>
+                </Button>
+            </View>
         </ScrollView>
     );
 }
@@ -265,8 +388,8 @@ const styles = StyleSheet.create({
     },
     mealsButton: {
         marginTop: "5%",
-        marginLeft: "25%",
-        width: '50%',
+        marginLeft: "10%",
+        width: '80%',
         backgroundColor: "red",
         borderRadius: 10,
         justifyContent: 'center',
@@ -275,6 +398,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "bold",
         color: "white"
+    },
+    switch: {
+        backgroundColor: "red",
+        borderRadius: 10,
+        justifyContent: 'center',
     },
     // Dining Facilities
     earhartTitle: {
@@ -300,7 +428,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "5%",
         marginBottom: "5%",
-        marginTop:"5%"
+        marginTop:"5%",
+        borderRadius: 10
     },
     wileyTitle: {
         fontSize: 20,
@@ -325,7 +454,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "-1%",
         marginBottom: "5%",
-        marginTop: "5%"
+        marginTop: "5%",
+        borderRadius: 10
     },
     hillenbrandTitle: {
         fontSize: 20,
@@ -350,7 +480,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "5%",
         marginBottom: "0%",
-        marginTop:"5%"
+        marginTop:"5%",
+        borderRadius: 10
     },
     windsorTitle: {
         fontSize: 20,
@@ -375,7 +506,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "-0.5%",
         marginBottom: "0%",
-        marginTop: "5%"
+        marginTop: "5%",
+        borderRadius: 10
     },
     fordTitle: {
         fontSize: 20,
@@ -400,7 +532,8 @@ const styles = StyleSheet.create({
         marginRight: "7%",
         marginLeft: "6%",
         marginBottom: "5%",
-        marginTop: "-5%"
+        marginTop: "-5%",
+        borderRadius: 10
     },
     imageContainer: {
         flexDirection: "row",
@@ -412,7 +545,48 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: "10%"
     },
-
+    buttonView: {
+        marginTop: "5%",
+        marginBottom: "4%",
+    },
+    favoriteButtonComponent: {
+        flex: 1,
+        width: '50%',
+        height: '100%',
+        marginLeft: '25%',
+        left: 0,
+        justifyContent: 'center',
+        backgroundColor: "red",
+    },
+    favoriteButtonText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "white"
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        height: 200
+    },
+    modalText: {
+        color: "black",
+        fontSize: 16,
+    },
+    modalTextTitle: {
+        color: "black",
+        fontSize: 18,
+    }
 });
 
 export default HomeManager;

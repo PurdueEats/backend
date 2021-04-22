@@ -87,7 +87,7 @@ function FavoriteMeals({route, navigation}) {
         const updatedList = currentSelection.concat(selectedFavMeals);
         setCurrentSelection(updatedList);
         selectedFavMeals.map(item => {
-            fetch(`hhttps://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals', {
+            fetch(`https://app-5fyldqenma-uc.a.run.app/Users/` + route.params.UserID + '/UserFavMeals', {
                 method: 'POST',
                 headers : {
                     'Accept': 'application/json',
@@ -181,7 +181,7 @@ function FavoriteMeals({route, navigation}) {
         Toast.show({
             style: { backgroundColor: "green", justifyContent: "center" },
             position: "top",
-            text: "Favorite Meal(s) recorded successfully.",
+            text: "Favorite Meal(s) deleted successfully.",
             textStyle: {
                 textAlign: 'center',
             },
@@ -194,7 +194,7 @@ function FavoriteMeals({route, navigation}) {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
-            text: "Selecting favorite meal(s) failed. Please try again.",
+            text: "Deleting favorite meal(s) failed. Please try again.",
             textStyle: {
                 textAlign: 'center',
             },
@@ -244,15 +244,15 @@ function FavoriteMeals({route, navigation}) {
                 </TouchableOpacity>
                 <Image source = { Logo } style = { styles.iconSize } />
             </View>
-            <View style={styles.tabBar}>
+            <View style={ [styles.tabBar, {backgroundColor: colors.background}]}>
                 <MaterialTabs
                     items={['Your Favorite Meals', 'Select Favorite Meals']}
                     selectedIndex={selectedTab}
                     onChange={setSelectedTab}
-                    barColor="#ffffff"
-                    indicatorColor="#000000"
-                    activeTextColor="#000000"
-                    inactiveTextColor="#908c8c"
+                    barColor={colors.background}
+                    indicatorColor={colors.text}
+                    activeTextColor={"red"}
+                    inactiveTextColor={colors.text}
                 />
             </View>
             {selectedTab === 0 ? (
@@ -263,7 +263,6 @@ function FavoriteMeals({route, navigation}) {
                           selectedItems={removeSelection}
                           onSelectionsChange={onFavSelectionsChange}
                           />
-{/*                         {renderItems()} */}
                     </View>
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>
                         <Button style={ styles.favoriteButtonComponent } onPress= { removeFavMeal }>
@@ -280,7 +279,7 @@ function FavoriteMeals({route, navigation}) {
                 <View>
                     <SearchBar
                         round
-                        containerStyle={{backgroundColor: '#f2f2f2', borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
+                        containerStyle={{backgroundColor: colors.background, borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
                         searchIcon={{ size: 20 }}
                         placeholder="Look for an item here"
                         value={searched}

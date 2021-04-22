@@ -42,6 +42,7 @@ function Schedule({route, navigation}) {
     const [sundayBreakfast, setSundayBreakfast] = useState("07");
     const [sundayLunch, setSundayLunch] = useState("11");
     const [sundayDinner, setSundayDinner] = useState("17");
+    const [settings, setSettings] = useState("00");
 
     // Get user's current schedule
     useEffect(() => {
@@ -80,6 +81,7 @@ function Schedule({route, navigation}) {
                             setSaturdayBreakfast(data["schedule"].substring(36, 38))
                             setSaturdayLunch(data["schedule"].substring(38, 40))
                             setSaturdayDinner(data["schedule"].substring(40, 42))
+                            setSettings(data["schedule"].substring(42, 44))
                         });
                     } else {
                         // Examine the text in the response
@@ -127,7 +129,7 @@ function Schedule({route, navigation}) {
         let schedule = (sundayBreakfast + sundayLunch + sundayDinner + mondayBreakfast + mondayLunch + mondayDinner +
             tuesdayBreakfast + tuesdayLunch + tuesdayDinner + wednesdayBreakfast + wednesdayLunch + wednesdayDinner +
             thursdayBreakfast + thursdayLunch + thursdayDinner + fridayBreakfast + fridayLunch + fridayDinner +
-            saturdayBreakfast + saturdayLunch + saturdayDinner)
+            saturdayBreakfast + saturdayLunch + saturdayDinner + settings)
         // Submit current schedule data
         fetch('https://app-5fyldqenma-uc.a.run.app/Users/'+ route.params.UserID +'/Schedule', {
             method: 'POST',
