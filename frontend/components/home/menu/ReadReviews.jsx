@@ -13,6 +13,7 @@ function ReadReviews({route, navigation}) {
     const [vote, setVote] = useState();
     const [reviewID, setReviewID] = useState('');
     const [reportModalVisible, setReportModalVisible] = useState(false);
+    const [reportType, setReportType] = useState('');
 
     useEffect(() => {
        getReviews();
@@ -74,7 +75,7 @@ function ReadReviews({route, navigation}) {
                         // Examine the text in the response
                         console.log('Looks like there was a problem submitting the vote. Status Code: ' +
                             response.status);
-                        displayError();
+                        displayVoteError();
                     }
                 }
             )
@@ -95,7 +96,7 @@ function ReadReviews({route, navigation}) {
         });
     }
 
-    function displayError() {
+    function displayVoteError() {
         Toast.show({
             style: { backgroundColor: "red", justifyContent: "center" },
             position: "top",
@@ -107,15 +108,60 @@ function ReadReviews({route, navigation}) {
         });
     }
 
-    function renderBorderLine() {
-        return (
-            <View
-                style={{
-                    borderBottomColor: '#c4baba',
-                    borderBottomWidth: 1,
-                }}
-            />
-        );
+    function submitReport() {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/DFR/Report`, {
+            method: 'POST',
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify( {
+                    "dining_facility_review_id": reviewID,
+                    "user_id": String(route.params.UserID),
+                    "report": reportType
+                }
+            )
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        //console.log("Thank you for your vote!");
+                        reportConfirmation();
+                    } else {
+                        // Examine the text in the response
+                        console.log('Looks like there was a problem submitting the vote. Status Code: ' +
+                            response.status);
+                        displayReportError();
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+    function reportConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Thank you for your report!",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function displayReportError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "The report was not submitted. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
     }
 
     function handleUpvote(diningReviewID) {
@@ -132,6 +178,29 @@ function ReadReviews({route, navigation}) {
         setReviewID(diningReviewID);
         submitVote();
     }
+
+    function submitSpamReport(diningReviewID, reportChosen) {
+        setReviewID(diningReviewID);
+        setReportType(reportChosen);
+        submitReport()
+    }
+    function submitInappropriateReport(diningReviewID, reportChosen) {
+        setReviewID(diningReviewID);
+        setReportType(reportChosen);
+        submitReport();
+    }
+
+    function renderBorderLine() {
+        return (
+            <View
+                style={{
+                    borderBottomColor: '#c4baba',
+                    borderBottomWidth: 1,
+                }}
+            />
+        );
+    }
+
 
     function renderReview(review) {
         let sumVote = review["item"]["upvote_count"] - review["item"]["downvote_count"];
@@ -168,10 +237,10 @@ function ReadReviews({route, navigation}) {
                                         </View>
                                     </TouchableOpacity >
                                     <Text style={ [styles.reportText, {color: colors.text}] }>Would you like to report this review?</Text>
-                                    <Button style={ styles.filterButton } >
+                                    <Button style={ styles.filterButton } onPress={() => submitSpamReport(review["item"]["dining_facility_review_id"], "spam")}>
                                         <Text style={ styles.filterText }>Spam</Text>
                                     </Button>
-                                    <Button style={ styles.filterButton } >
+                                    <Button style={ styles.filterButton } onPress={() => submitInappropriateReport(review["item"]["dining_facility_review_id"], "inappropriate")}>
                                         <Text style={ styles.filterText }>Inappropriate</Text>
                                     </Button>
 
