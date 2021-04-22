@@ -61,9 +61,7 @@ function Settings({route, navigation}) {
           if (schedule != '') {
             setSettings();
           }
-
       }
-
 
       function getSettings() {
           //retrieves settings
@@ -157,7 +155,6 @@ function Settings({route, navigation}) {
                   console.log('Fetch Error :-S', err);
               });
       }
-      const [selectedTab, setSelectedTab] = React.useState(0);
 
       function handleDarkModeNavigate() {
         navigation.navigate("DarkMode");
@@ -182,72 +179,8 @@ function Settings({route, navigation}) {
                    <Text style={ styles.modeHeader }>Light Mode/Dark Mode</Text>
                        <View style={{ position: "absolute", right: 10 }}>
                          <TouchableOpacity active = { .5 } onPress= { handleDarkModeNavigate }>
-{/*                          DarkMode */}
                              <MaterialCommunityIcons name="help-circle-outline" color="red" size={23}/>
                          </TouchableOpacity>
-{/*                          <Modal */}
-{/*                              animationType="slide" */}
-{/*                              transparent={false} */}
-{/*                              visible={legendModalVisible} */}
-{/*                              onRequestClose={() => { */}
-{/*                                  setLegendModalVisible(!legendModalVisible); */}
-{/*                              }} */}
-{/*                              style={{ backgroundColor: colors.background }} */}
-{/*                          > */}
-{/*                              <View> */}
-{/*                                  <View> */}
-{/*                                      <TouchableOpacity onPress={() => setLegendModalVisible(!legendModalVisible)}> */}
-{/*                                          <View style={styles.modalCloseButton}> */}
-{/*                                              <MaterialCommunityIcons name="close" color="red" size={20}/> */}
-{/*                                          </View> */}
-{/*                                      </TouchableOpacity > */}
-{/*                                      <View style={ [styles.tabBar, {backgroundColor: colors.background}]}> */}
-{/*                                          <MaterialTabs */}
-{/*                                              items={['iOS Users', 'Android Users']} */}
-{/*                                              selectedIndex={selectedTab} */}
-{/*                                              onChange={setSelectedTab} */}
-{/*                                              barColor={colors.background} */}
-{/*                                              indicatorColor={colors.text} */}
-{/*                                              activeTextColor={"red"} */}
-{/*                                              inactiveTextColor={colors.text} */}
-{/*                                          /> */}
-{/*                                      </View> */}
-{/*                                      {selectedTab === 0 ? ( */}
-{/*                                          <View> */}
-{/*                                                <View style={{flexDirection: "row", justifyContent: "center"}}> */}
-{/*                                                    <Text style={ [styles.modalText, {color: colors.text}]}>Dark/Light Mode on iOS</Text> */}
-{/*                                                </View> */}
-{/*                                                <View style={{flexDirection: "row", justifyContent: "center"}}> */}
-{/*                                                    <Text style={{ color: colors.text }}>To access dark mode or light mode on your iOS device, it is totally dependent on what you system's settings are on!</Text> */}
-{/*                                                </View> */}
-{/*                                                <View style={{flexDirection: "row", justifyContent: "center"}}> */}
-{/*                                                      <Image source = { iosPic1 } style={ styles.pic } /> */}
-{/*                                                      <Image source = { iosPic2 } style={ styles.pic } /> */}
-{/*                                                </View> */}
-{/*                                                <View style={{flexDirection: "row", justifyContent: "center"}}> */}
-{/*                                                    <Text style={{ color: colors.text }}>To change modes, force touch the brightness icon and then, on the bottom left, you can toggle dark mode on or off to get dark mode or light mode respectively.</Text> */}
-{/*                                                </View> */}
-{/*                                          </View> */}
-{/*                                      ) : ( */}
-{/*                                          <View> */}
-{/*                                              <View style={{flexDirection: "row", justifyContent: "center"}}> */}
-{/*                                                  <Text style={ [styles.modalText, { color: colors.text }]}>Dark/Light Mode on Android</Text> */}
-{/*                                              </View> */}
-{/*                                              <View style={{flexDirection: "row", justifyContent: "center"}}> */}
-{/*                                                    <Text style={{ color: colors.text }}>To access dark mode or light mode on your Android device, it is totally dependent on what you system's settings are on!</Text> */}
-{/*                                              </View> */}
-{/*                                              <View style={{flexDirection: "row", justifyContent: "center"}}> */}
-{/*                                                    <Image source = { AndroidPic1 } style={ styles.pic } /> */}
-{/*                                                    <Image source = { AndroidPic2 } style={ styles.pic } /> */}
-{/*                                              </View> */}
-{/*                                              <View style={{flexDirection: "row", justifyContent: "center"}}> */}
-{/*                                                  <Text style={{ color: colors.text }}>To change modes, swipe up to view your settings and swipe all the way to the right. Here you can toggle dark mode on or off to get dark mode or light mode respectively.</Text> */}
-{/*                                              </View> */}
-{/*                                          </View> */}
-{/*                                      )} */}
-{/*                                  </View> */}
-{/*                              </View> */}
-{/*                          </Modal> */}
                        </View>
                </View>
                <Text>         </Text>
@@ -273,14 +206,14 @@ function Settings({route, navigation}) {
                       />
                   </View>
                   <Text>         </Text>
-                  <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleConfirm() }>
+                  <Button style={ styles.confirmButton } onPress={() =>  handleConfirm() }>
                       <Text style={ [styles.sectionHeader, {color: colors.text}] }>Confirm Settings</Text>
-                  </TouchableOpacity>
+                  </Button>
                   <Text>         </Text>
                   <Text style={ [styles.signInContent, {color: colors.text}] }>Feedback</Text>
-                  <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  navigation.navigate("Feedback", { UserID: route.params.UserID, token: route.params.token }) }>
-                    <Text style={  [styles.sectionHeader, {color: colors.text}] }>Submit Feedback</Text>
-                  </TouchableOpacity>
+                  <Button style={ styles.confirmButton } onPress={() =>  navigation.navigate("Feedback", { UserID: route.params.UserID, token: route.params.token }) }>
+                      <Text style={ [styles.sectionHeader, {color: colors.text}] }>Submit Feedback</Text>
+                  </Button>
                   </View>
               </View>
 
@@ -313,6 +246,12 @@ function Settings({route, navigation}) {
           fontSize: 25,
           fontWeight: "bold",
           marginBottom: "10%"
+      },
+      confirmButton: {
+          width: '50%',
+          left: 0,
+          justifyContent: 'center',
+          backgroundColor: "red",
       },
       sectionHeader: {
           color: "red",
