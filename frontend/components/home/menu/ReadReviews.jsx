@@ -2,12 +2,15 @@ import React, {useEffect, useState} from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
-import { Button } from 'native-base';
+import {Button, Toast} from 'native-base';
 import { StackActions } from '@react-navigation/native';
+import Modal from 'react-native-modal';
+
 
 function ReadReviews({route, navigation}) {
     const { colors } = useTheme();
     const [reviews, setReviews] = useState([]);
+    const [reportModalVisible, setReportModalVisible] = useState(false);
 
     useEffect(() => {
        getReviews();
@@ -45,6 +48,120 @@ function ReadReviews({route, navigation}) {
             });
     }
 
+    function submitVote(dineReviewID, voteVal) {
+        fetch(`https://app-5fyldqenma-uc.a.run.app/DFR/Vote`, {
+            method: 'POST',
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify( {
+                    "dining_facility_review_id": dineReviewID,
+                    "user_id": String(route.params.UserID),
+                    "vote_val": voteVal
+                }
+            )
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        //console.log("Thank you for your vote!");
+                        voteConfirmation();
+                    } else {
+                        // Examine the text in the response
+                        console.log('Looks like there was a problem submitting the vote. Status Code: ' +
+                            response.status);
+                        displayVoteError();
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+
+    function voteConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Thank you for your vote!",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function displayVoteError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "The vote was not submitted. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function submitReport(dineReviewID, repType) {
+
+        fetch(`https://app-5fyldqenma-uc.a.run.app/DFR/Report`, {
+            method: 'POST',
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify( {
+                    "dining_facility_review_id": dineReviewID,
+                    "user_id": String(route.params.UserID),
+                    "report": repType,
+                }
+            )
+        })
+            .then(
+                function(response) {
+                    if (response.status === 200 || response.status === 201) {
+                        // Successful POST
+                        //console.log("Thank you for your vote!");
+                        reportConfirmation();
+                    } else {
+                        // Examine the text in the response
+                        console.log('Looks like there was a problem submitting the vote. Status Code: ' +
+                            response.status);
+                        displayReportError();
+                    }
+                }
+            )
+            .catch(function(err) {
+                console.log('Fetch Error :-S', err);
+            });
+    }
+    function reportConfirmation() {
+        Toast.show({
+            style: { backgroundColor: "green", justifyContent: "center" },
+            position: "top",
+            text: "Thank you for your report!",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
+    function displayReportError() {
+        Toast.show({
+            style: { backgroundColor: "red", justifyContent: "center" },
+            position: "top",
+            text: "The report was not submitted. Please try again.",
+            textStyle: {
+                textAlign: 'center',
+            },
+            duration: 1500
+        });
+    }
+
     function renderBorderLine() {
         return (
             <View
@@ -56,11 +173,55 @@ function ReadReviews({route, navigation}) {
         );
     }
 
+
     function renderReview(review) {
+        let sumVote = review["item"]["upvote_count"] - review["item"]["downvote_count"];
         return (
-            <View>
-                <Text style={ [styles.reviewTitle, {color: colors.text}] }>{review["item"]["title"]}</Text>
-                <Text style={ [styles.reviewContent, {color: colors.text}] }>{review["item"]["review_text"]}</Text>
+            <View style={{flexDirection: "row"}}>
+                <View style={{flexDirection: "column", marginLeft: "2%", marginTop: "1%"}}>
+                    <TouchableOpacity onPress={() => submitVote(review["item"]["dining_facility_review_id"], 1)}>
+                        <MaterialCommunityIcons name="arrow-up" color="red" size={30}/>
+                    </TouchableOpacity>
+                    <Text style={[styles.voteCountText, {color: colors.text}]}>{sumVote}</Text>
+                    <TouchableOpacity onPress={() => submitVote(review["item"]["dining_facility_review_id"], -1)}>
+                        <MaterialCommunityIcons name="arrow-down" color="red" size={30}/>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <View style={{flexDirection: "row"}}>
+                        <Text style={ [styles.reviewTitle, {color: colors.text}] }>{review["item"]["title"]}</Text>
+                        <TouchableOpacity onPress={() => setReportModalVisible(true) }>
+                            <MaterialCommunityIcons style={styles.report} name="alert-circle-outline" color="red" size={25}/>
+                        </TouchableOpacity>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={reportModalVisible}
+                            onRequestClose={() => {
+                                setReportModalVisible(!reportModalVisible);
+                            }}
+                        >
+                            <View>
+                                <View style={styles.modalView}>
+                                    <TouchableOpacity active = { .5 } onPress={() => setReportModalVisible(!reportModalVisible) }>
+                                        <View style={styles.closeButton}>
+                                            <MaterialCommunityIcons name="close" color="red" size={20}/>
+                                        </View>
+                                    </TouchableOpacity >
+                                    <Text style={ [styles.reportText, {color: colors.text}] }>Would you like to report this review?</Text>
+                                    <Button style={ styles.filterButton } onPress={() => submitReport(review["item"]["dining_facility_review_id"], "spam")}>
+                                        <Text style={ styles.filterText }>Spam</Text>
+                                    </Button>
+                                    <Button style={ styles.filterButton } onPress={() => submitReport(review["item"]["dining_facility_review_id"], "inappropriate")}>
+                                        <Text style={ styles.filterText }>Inappropriate</Text>
+                                    </Button>
+
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Text style={ [styles.reviewContent, {color: colors.text}] }>{review["item"]["review_text"]}</Text>
+                </View>
             </View>
         );
     }
@@ -131,7 +292,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "bold",
         alignItems: "center",
-        marginLeft: "15%",
+        marginLeft: "1%",
         marginRight: "3%",
         marginTop: "3%",
         marginBottom: "3%",
@@ -140,10 +301,68 @@ const styles = StyleSheet.create({
     reviewContent: {
         fontSize: 20,
         alignItems: "center",
-        marginLeft: "15%",
+        marginLeft: "1%",
         marginRight: "3%",
         marginBottom: "3%",
         justifyContent: "center"
+    },
+    voteCountText: {
+        fontSize: 20,
+        alignItems: "center",
+        marginLeft: "15%",
+        marginRight: "-6%",
+        marginBottom: "3%",
+        justifyContent: "center"
+    },
+    report: {
+        fontSize: 20,
+        alignItems: "center",
+        marginLeft: "10%",
+        marginRight: "-6%",
+        marginTop: "25%",
+        justifyContent: "center"
+    },
+    modalView: {
+        height: "55%",
+        backgroundColor: "white",
+        borderRadius: 20,
+        paddingTop: "5%",
+        paddingLeft: "2%",
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    closeButton: {
+        marginBottom: "10%"
+    },
+    reportText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        alignItems: "center",
+        marginLeft: "1%",
+        marginRight: "3%",
+        marginTop: "3%",
+        marginBottom: "3%",
+        justifyContent: "center"
+    },
+    filterButton: {
+        marginLeft: "10%",
+        marginBottom: "1%",
+        width: '80%',
+        backgroundColor: "red",
+        borderRadius: 10,
+        justifyContent: 'center',
+    },
+    filterText: {
+        fontSize: 15,
+        fontWeight: "bold",
+        color: "white"
     },
 });
 
