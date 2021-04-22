@@ -29,13 +29,13 @@ app = APIRouter()
 auth_handler = AuthHandler()
 
 
-/**
+'''
  * @swagger
  * /get_all_users:
  *   get:
  *     summary: Retrieve a list of all users
  *     description: Retrieve a list of users.
-*/
+'''
 
 @app.get("/", response_model=List[UserOut])
 async def get_all_users():
@@ -46,17 +46,16 @@ async def get_all_users():
 
     return res
 
-/**
+'''
  * @swagger
  * /users:
  *   create_user:
  *     summary: Creates new user.
  *     description: Creates user. enter name, email, and password. 201: successful creation returns null. 422 validation error: 
-*/
+ '''
 
 @app.post("/Register", status_code=201)
 async def create_user(userBasic: UserBasic):
-    'creates user. enter name, email, and password. successful creation returns null.'
     
     # Validate user email
     email = [dict(row) for row in runQuery(
