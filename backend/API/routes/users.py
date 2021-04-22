@@ -6,6 +6,7 @@ import numpy as np
 from fastapi import APIRouter, Depends, HTTPException
 from backend.API.routes.auth import AuthHandler
 from backend.DB.Util import runQuery
+from backend.API.routes.users import fetch_api_key
 from backend.API.models.MealPlan import MealPlanIn
 from backend.API.models.menu import MenuItem
 from backend.API.models.users import (
@@ -497,6 +498,12 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     }) for item in res]
 
     return res
+
+
+@app.get("/UserSummary")
+async def get_user_summary(UserID: int = Depends(auth_handler.auth_wrapper)):
+
+    return gen_stats(UserID)
 
 
 @app.post("/ForgotPassword", status_code=201)
