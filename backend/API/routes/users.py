@@ -6,7 +6,6 @@ import numpy as np
 from fastapi import APIRouter, Depends, HTTPException
 from backend.API.routes.auth import AuthHandler
 from backend.DB.Util import runQuery
-from backend.DB.UserSummary import gen_stats
 from backend.API.models.MealPlan import MealPlanIn
 from backend.API.models.menu import MenuItem
 from backend.API.models.users import (
@@ -494,12 +493,6 @@ async def predict(UserID: int = Depends(auth_handler.auth_wrapper)):
     return res
 
 
-@app.get("/UserSummary")
-async def get_user_summary(UserID: int = Depends(auth_handler.auth_wrapper)):
-
-    return gen_stats(UserID)
-
-
 @app.post("/ForgotPassword", status_code=201)
 async def forgot_password(email: str):
 
@@ -540,6 +533,7 @@ async def forgot_password(email: str):
 
 def fetch_api_key():
 
+    """
     from google.cloud import secretmanager_v1beta1 as secretmanager
 
     secret_id = 'MAILGUN_KEY'
@@ -552,5 +546,7 @@ def fetch_api_key():
 
     response = client.access_secret_version(request={"name": name})
     payload = response.payload.data.decode("UTF-8")
+    """
+    import os
 
-    return payload
+    return os.environ.get("API")
