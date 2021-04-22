@@ -1,9 +1,11 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
+from backend.API.routes.users import fetch_api_key
 from backend.API.models.DiningFacilityReview import (
     DiningFacilityReviewIn,
     DiningFacilityReviewOut,
-    VoteIn
+    VoteIn,
+    ReviewReport
 )
 from backend.DB.Util import runQuery
 
@@ -134,3 +136,24 @@ async def update_vote(vote: VoteIn):
             {review['Rating']},
             {upvote}, {downvote}
             )""")
+
+
+@app.post("/Report")
+async def report_review(reviewReport: ReviewReport):
+
+    import requests
+
+    text = "The following Review was reported:\n"
+    text += f"Review ID: {reviewReport.dining_facility_review_id}\n"
+    text += f"By User: {reviewReport.user_id}\n"
+    text += f"For reason: {reviewReport.report}"
+
+    r = requests.post(
+        "https://api.mailgun.net/v3/sandbox459d6d8b3208457c8613631ae018378a.mailgun.org/messages",
+        auth=("api", fetch_api_key()),
+        data={"from": "Excited User <mailgun@sandbox459d6d8b3208457c8613631ae018378a.mailgun.org>",
+                      "to": ["amazonfankrishna@gmail.com"],
+                      "subject": "Review Report",
+              "text": text})
+
+    print(r.text)
