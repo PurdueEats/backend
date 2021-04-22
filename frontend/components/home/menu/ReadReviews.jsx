@@ -10,10 +10,7 @@ import Modal from 'react-native-modal';
 function ReadReviews({route, navigation}) {
     const { colors } = useTheme();
     const [reviews, setReviews] = useState([]);
-    const [vote, setVote] = useState();
-    const [reviewID, setReviewID] = useState('');
     const [reportModalVisible, setReportModalVisible] = useState(false);
-    const [reportType, setReportType] = useState('');
 
     useEffect(() => {
        getReviews();
@@ -51,7 +48,7 @@ function ReadReviews({route, navigation}) {
             });
     }
 
-    function submitVote() {
+    function submitVote(dineReviewID, voteVal) {
         fetch(`https://app-5fyldqenma-uc.a.run.app/DFR/Vote`, {
             method: 'POST',
             headers : {
@@ -59,9 +56,9 @@ function ReadReviews({route, navigation}) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify( {
-                    "dining_facility_review_id": reviewID,
+                    "dining_facility_review_id": dineReviewID,
                     "user_id": String(route.params.UserID),
-                    "vote_val": vote
+                    "vote_val": voteVal
                 }
             )
         })
@@ -108,7 +105,8 @@ function ReadReviews({route, navigation}) {
         });
     }
 
-    function submitReport() {
+    function submitReport(dineReviewID, repType) {
+
         fetch(`https://app-5fyldqenma-uc.a.run.app/DFR/Report`, {
             method: 'POST',
             headers : {
@@ -116,9 +114,9 @@ function ReadReviews({route, navigation}) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify( {
-                    "dining_facility_review_id": reviewID,
+                    "dining_facility_review_id": dineReviewID,
                     "user_id": String(route.params.UserID),
-                    "report": reportType
+                    "report": repType,
                 }
             )
         })
@@ -164,32 +162,6 @@ function ReadReviews({route, navigation}) {
         });
     }
 
-    function handleUpvote(diningReviewID) {
-        //console.log("here");
-        setVote(1);
-        //console.log(vote);
-        setReviewID(diningReviewID);
-        //console.log(reviewID);
-        submitVote();
-    }
-    function handleDownvote(diningReviewID) {
-        // console.log("down");
-        setVote(-1);
-        setReviewID(diningReviewID);
-        submitVote();
-    }
-
-    function submitSpamReport(diningReviewID, reportChosen) {
-        setReviewID(diningReviewID);
-        setReportType(reportChosen);
-        submitReport()
-    }
-    function submitInappropriateReport(diningReviewID, reportChosen) {
-        setReviewID(diningReviewID);
-        setReportType(reportChosen);
-        submitReport();
-    }
-
     function renderBorderLine() {
         return (
             <View
@@ -207,11 +179,11 @@ function ReadReviews({route, navigation}) {
         return (
             <View style={{flexDirection: "row"}}>
                 <View style={{flexDirection: "column", marginLeft: "2%", marginTop: "1%"}}>
-                    <TouchableOpacity onPress={() => handleUpvote(review["item"]["dining_facility_review_id"])}>
+                    <TouchableOpacity onPress={() => submitVote(review["item"]["dining_facility_review_id"], 1)}>
                         <MaterialCommunityIcons name="arrow-up" color="red" size={30}/>
                     </TouchableOpacity>
                     <Text style={[styles.voteCountText, {color: colors.text}]}>{sumVote}</Text>
-                    <TouchableOpacity onPress={() => handleDownvote(review["item"]["dining_facility_review_id"])}>
+                    <TouchableOpacity onPress={() => submitVote(review["item"]["dining_facility_review_id"], -1)}>
                         <MaterialCommunityIcons name="arrow-down" color="red" size={30}/>
                     </TouchableOpacity>
                 </View>
@@ -237,10 +209,10 @@ function ReadReviews({route, navigation}) {
                                         </View>
                                     </TouchableOpacity >
                                     <Text style={ [styles.reportText, {color: colors.text}] }>Would you like to report this review?</Text>
-                                    <Button style={ styles.filterButton } onPress={() => submitSpamReport(review["item"]["dining_facility_review_id"], "spam")}>
+                                    <Button style={ styles.filterButton } onPress={() => submitReport(review["item"]["dining_facility_review_id"], "spam")}>
                                         <Text style={ styles.filterText }>Spam</Text>
                                     </Button>
-                                    <Button style={ styles.filterButton } onPress={() => submitInappropriateReport(review["item"]["dining_facility_review_id"], "inappropriate")}>
+                                    <Button style={ styles.filterButton } onPress={() => submitReport(review["item"]["dining_facility_review_id"], "inappropriate")}>
                                         <Text style={ styles.filterText }>Inappropriate</Text>
                                     </Button>
 
