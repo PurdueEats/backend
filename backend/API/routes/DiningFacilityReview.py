@@ -122,6 +122,9 @@ async def update_vote(vote: VoteIn):
     
     if redo:
         runQuery(f"""
+        DELETE FROM DiningFacilitiyReviewVote 
+        WHERE UserID = {vote.user_id}
+        AND DiningFacilityReviewID = {vote.dining_facility_review_id};
         INSERT INTO DiningFacilitiyReviewVote values (
             {vote.dining_facility_review_id},
             {vote.user_id}, {vote.vote_val}
