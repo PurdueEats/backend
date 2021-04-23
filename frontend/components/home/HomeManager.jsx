@@ -20,10 +20,10 @@ function HomeManager({route, navigation}) {
     // Setup re-render on focus change
     const isFocused = useIsFocused();
     // Recommended Meals
-    const [calories, setCalories] = useState(0);
-    const [carbs, setCarbs] = useState(0);
-    const [fat, setFat] = useState(0);
-    const [protein, setProtein] = useState(0);
+    const [calories, setCalories] = useState(1);
+    const [carbs, setCarbs] = useState(1);
+    const [fat, setFat] = useState(1);
+    const [protein, setProtein] = useState(1);
     // Set chart visibility
     const [showChart, setShowChart] = useState(true);
     // Chart Data
