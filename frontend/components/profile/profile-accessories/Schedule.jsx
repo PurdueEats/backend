@@ -173,7 +173,7 @@ function Schedule({route, navigation}) {
                 <Text style={ [styles.screenTitle, {color: colors.text}] }>Edit Schedule</Text>
             </View>
             <Text style={ [styles.directionsText, {color: colors.text}] }>Tap a day below to edit or view your schedule for that day.</Text>
-            <View style={ styles.daysView }>
+            <View style={ [styles.daysText, {color: colors.text}] }>
                 <CalendarPicker
                     startFromMonday={false}
                     restrictMonthNavigation={true}
@@ -198,9 +198,9 @@ function Schedule({route, navigation}) {
                     {(() => {
                         switch(day) {
                             case 0: {
-                                return <View style={styles.modalView}>
-                                    <Text style={ styles.daysText }>Sunday</Text>
-                                    <Text style={ styles.modalDirectionsText }>Select an hour window below that fits your scheduling needs.</Text>
+                                return <View style={ [styles.modalView, {flexDirection:"row"}] }>
+                                    <Text style={ [styles.daysText, {color: colors.text}] }>Sunday</Text>
+                                    <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Select an hour window below that fits your scheduling needs.</Text>
                                     <MaterialTabs
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
@@ -263,7 +263,7 @@ function Schedule({route, navigation}) {
                                     )}
                                     </View>
                                     <View style={ styles.modalButtonView }>
-                                        <Text style={ styles.modalDirectionsText }>Tap done to save your changes.</Text>
+                                        <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Tap done to save your changes.</Text>
                                     </View>
                                     <Button style={styles.modalButton}
                                             onPress={() => setModalSchedule(false)}>
@@ -272,9 +272,9 @@ function Schedule({route, navigation}) {
                                 </View>;
                             }
                             case 1: {
-                                return <View style={styles.modalView}>
-                                    <Text style={ styles.daysText }>Monday</Text>
-                                    <Text style={ styles.modalDirectionsText }>Select an hour window below that fits your scheduling needs.</Text>
+                                return <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
+                                    <Text style={ [styles.daysText, {color: colors.text}] }>Monday</Text>
+                                    <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Select an hour window below that fits your scheduling needs.</Text>
                                     <MaterialTabs
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
@@ -337,7 +337,7 @@ function Schedule({route, navigation}) {
                                         )}
                                     </View>
                                     <View style={ styles.modalButtonView }>
-                                        <Text style={ styles.modalDirectionsText }>Tap done to save your changes.</Text>
+                                        <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Tap done to save your changes.</Text>
                                     </View>
                                     <Button style={styles.modalButton}
                                             onPress={() => setModalSchedule(false)}>
@@ -346,9 +346,9 @@ function Schedule({route, navigation}) {
                                 </View>;
                             }
                             case 2: {
-                                return <View style={styles.modalView}>
-                                    <Text style={ styles.daysText }>Tuesday</Text>
-                                    <Text style={ styles.modalDirectionsText }>Select an hour window below that fits your scheduling needs.</Text>
+                                return <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
+                                    <Text style={ [styles.daysText, {color: colors.text}] }>Tuesday</Text>
+                                    <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Select an hour window below that fits your scheduling needs.</Text>
                                     <MaterialTabs
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
@@ -411,7 +411,7 @@ function Schedule({route, navigation}) {
                                         )}
                                     </View>
                                     <View style={ styles.modalButtonView }>
-                                        <Text style={ styles.modalDirectionsText }>Tap done to save your changes.</Text>
+                                        <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Tap done to save your changes.</Text>
                                     </View>
                                     <Button style={styles.modalButton}
                                             onPress={() => setModalSchedule(false)}>
@@ -420,9 +420,9 @@ function Schedule({route, navigation}) {
                                 </View>;
                             }
                             case 3: {
-                                return <View style={styles.modalView}>
-                                    <Text style={ styles.daysText }>Wednesday</Text>
-                                    <Text style={ styles.modalDirectionsText }>Select an hour window below that fits your scheduling needs.</Text>
+                                return <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
+                                    <Text style={ [styles.daysText, {color: colors.text}] }>Wednesday</Text>
+                                    <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Select an hour window below that fits your scheduling needs.</Text>
                                     <MaterialTabs
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
@@ -485,7 +485,7 @@ function Schedule({route, navigation}) {
                                         )}
                                     </View>
                                     <View style={ styles.modalButtonView }>
-                                        <Text style={ styles.modalDirectionsText }>Tap done to save your changes.</Text>
+                                        <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Tap done to save your changes.</Text>
                                     </View>
                                     <Button style={styles.modalButton}
                                             onPress={() => setModalSchedule(false)}>
@@ -494,9 +494,9 @@ function Schedule({route, navigation}) {
                                 </View>;
                             }
                             case 4: {
-                                return <View style={styles.modalView}>
-                                    <Text style={ styles.daysText }>Thursday</Text>
-                                    <Text style={ styles.modalDirectionsText }>Select an hour window below that fits your scheduling needs.</Text>
+                                return <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
+                                    <Text style={ [styles.daysText, {color: colors.text}] }>Thursday</Text>
+                                    <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Select an hour window below that fits your scheduling needs.</Text>
                                     <MaterialTabs
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
@@ -559,7 +559,7 @@ function Schedule({route, navigation}) {
                                         )}
                                     </View>
                                     <View style={ styles.modalButtonView }>
-                                        <Text style={ styles.modalDirectionsText }>Tap done to save your changes.</Text>
+                                        <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Tap done to save your changes.</Text>
                                     </View>
                                     <Button style={styles.modalButton}
                                             onPress={() => setModalSchedule(false)}>
@@ -568,9 +568,9 @@ function Schedule({route, navigation}) {
                                 </View>;
                             }
                             case 5: {
-                                return <View style={styles.modalView}>
-                                    <Text style={ styles.daysText }>Friday</Text>
-                                    <Text style={ styles.modalDirectionsText }>Select an hour window below that fits your scheduling needs.</Text>
+                                return <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
+                                    <Text style={ [styles.daysText, {color: colors.text}] }>Friday</Text>
+                                    <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Select an hour window below that fits your scheduling needs.</Text>
                                     <MaterialTabs
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
@@ -633,7 +633,7 @@ function Schedule({route, navigation}) {
                                         )}
                                     </View>
                                     <View style={ styles.modalButtonView }>
-                                        <Text style={ styles.modalDirectionsText }>Tap done to save your changes.</Text>
+                                        <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Tap done to save your changes.</Text>
                                     </View>
                                     <Button style={styles.modalButton}
                                             onPress={() => setModalSchedule(false)}>
@@ -642,9 +642,9 @@ function Schedule({route, navigation}) {
                                 </View>;
                             }
                             case 6: {
-                                return <View style={styles.modalView}>
-                                    <Text style={ styles.daysText }>Saturday</Text>
-                                    <Text style={ styles.modalDirectionsText }>Select an hour window below that fits your scheduling needs.</Text>
+                                return <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
+                                    <Text style={ [styles.daysText, {color: colors.text}] }>Saturday</Text>
+                                    <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Select an hour window below that fits your scheduling needs.</Text>
                                     <MaterialTabs
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
@@ -707,7 +707,7 @@ function Schedule({route, navigation}) {
                                         )}
                                     </View>
                                     <View style={ styles.modalButtonView }>
-                                        <Text style={ styles.modalDirectionsText }>Tap done to save your changes.</Text>
+                                        <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Tap done to save your changes.</Text>
                                     </View>
                                     <Button style={styles.modalButton}
                                             onPress={() => setModalSchedule(false)}>
