@@ -294,7 +294,7 @@ function Menu({route, navigation}) {
                     }}
                 >
                     <View>
-                        <View style={styles.modalView}>
+                        <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                             <TouchableOpacity onPress={() => setLegendModalVisible(!legendModalVisible)}>
                                 <View style={styles.modalCloseButton}>
                                     <MaterialCommunityIcons name="close" color="red" size={20}/>
@@ -302,23 +302,23 @@ function Menu({route, navigation}) {
                             </TouchableOpacity >
                             <View style={{flexDirection: "row"}}>
                                 <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" size={20}/>
-                                <Text style={styles.modalText}>Vegetarian Item</Text>
+                                <Text style={ [styles.modalText, {color: colors.text}]}>Vegetarian Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
                                 <MaterialCommunityIcons name="alpha-g-circle-outline" color="red" size={20}/>
-                                <Text style={styles.modalText}>Gluten Free Item</Text>
+                                <Text style={ [styles.modalText, {color: colors.text}]}>Gluten Free Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
                                 <MaterialCommunityIcons name="alpha-d-circle-outline" color="#84b2c2" size={20}/>
-                                <Text style={styles.modalText}>Dairy Free Item</Text>
+                                <Text style={ [styles.modalText, {color: colors.text}]}>Dairy Free Item</Text>
                             </View>
                             <View style={{flexDirection: "row"}}>
                                 <MaterialCommunityIcons name="alpha-n-circle-outline" color="#C16718" size={20}/>
-                                <Text style={styles.modalText}>Nut Free Item</Text>
+                                <Text style={ [styles.modalText, {color: colors.text}]}>Nut Free Item</Text>
                             </View>
 {/*                             <View style={{flexDirection: "row"}}> */}
 {/*                                 <MaterialCommunityIcons name="star" color="#FFD133" size={20}/> */}
-{/*                                 <Text style={styles.modalText}>Favorite Item</Text> */}
+{/*                                 <Text style={ [styles.modalText, {color: colors.text}]}>Favorite Item</Text> */}
 {/*                             </View> */}
                         </View>
                     </View>
@@ -358,7 +358,7 @@ function Menu({route, navigation}) {
                 }}
             >
                 <View>
-                    <View style={styles.filterModalView}>
+                    <View style={ [styles.filterModalView, {backgroundColor: colors.card}] }>
                         <TouchableOpacity active = { .5 } onPress={() => setFilterModalVisible(!filterModalVisible) }>
                             <View style={styles.closeButton}>
                                 <MaterialCommunityIcons name="close" color="red" size={20}/>

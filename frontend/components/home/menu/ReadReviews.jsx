@@ -213,7 +213,7 @@ function ReadReviews({route, navigation}) {
                             }}
                         >
                             <View>
-                                <View style={styles.modalView}>
+                                <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                                     <TouchableOpacity active = { .5 } onPress={() => setReportModalVisible(!reportModalVisible) }>
                                         <View style={styles.closeButton}>
                                             <MaterialCommunityIcons name="close" color="red" size={20}/>

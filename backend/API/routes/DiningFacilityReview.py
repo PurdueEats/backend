@@ -32,6 +32,8 @@ async def post_review(diningFacilityReview: DiningFacilityReviewIn):
     review_text = diningFacilityReview.title + \
         '$' + diningFacilityReview.review_text
 
+    review_text = review_text.replace('\n', '')
+        
     runQuery(f"""
         INSERT INTO DiningFacilityReview values (
         {dining_facility_review_id['DiningFacilityReviewID']},

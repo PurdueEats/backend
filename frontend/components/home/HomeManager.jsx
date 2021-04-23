@@ -209,13 +209,13 @@ function HomeManager({route, navigation}) {
                }}
         >
             <View>
-                <View style={styles.modalView}>
+                <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                     <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  setModalFact(false)}>
                         <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                     </TouchableOpacity>
-                    <Text style={ styles.modalTextTitle }>Did you know?</Text>
-                    <Text style={ styles.modalText }>           </Text>
-                    <Text style={ styles.modalText }>{funFact}</Text>
+                    <Text style={ [styles.modalTextTitle, {color: colors.text}]}>Did you know?</Text>
+                    <Text style={ [styles.modalText, {color: colors.text}]}>           </Text>
+                    <Text style={ [styles.modalText, {color: colors.text}]}>{funFact}</Text>
                 </View>
             </View>
         </Modal>
