@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Switch } from "react-native";
+import { ScrollView, Image, StyleSheet, View, Text, TextInput, TouchableOpacity, Switch } from "react-native";
 import { useTheme } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import { Button, Item, Toast } from 'native-base';
@@ -76,7 +76,7 @@ function Feedback({route, navigation}) {
                         });
     }
       return (
-          <View>
+          <ScrollView>
               <View style={ [styles.screenView, {flexDirection:"row"}] } >
                   <TouchableOpacity style={ styles.button } onPress={ () => navigation.dispatch(StackActions.pop(1))}>
                       <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
@@ -99,8 +99,12 @@ function Feedback({route, navigation}) {
                 <TouchableOpacity style={ styles.button } onPress={ () => postFeedback()}>
                     <MaterialCommunityIcons name="send" color={"red"} size={40} />
                 </TouchableOpacity>
+                <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
+                <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
+                <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
+                <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
             </View>
-          </View>
+          </ScrollView>
 
       );
   }
