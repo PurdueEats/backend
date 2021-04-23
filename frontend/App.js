@@ -27,7 +27,7 @@ import SettingsManager from "./components/settings/SettingsManager";
 import Feedback from "./components/settings/settings-accessories/Feedback";
 import ReadReviews from "./components/home/menu/ReadReviews";
 import WriteReview from "./components/home/menu/WriteReview";
-import WaitTimes from "./components/profile/profile-accessories/WaitTimes";
+import WaitTimes from "./components/home/home-accessories/WaitTimes";
 import DarkMode from "./components/settings/DarkMode";
 
 export default function App() {

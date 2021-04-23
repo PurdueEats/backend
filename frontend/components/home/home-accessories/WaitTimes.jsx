@@ -1,24 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { Dimensions, Image, ScrollView, StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import Logo from "../../../resources/logo.png";
 import { useTheme } from '@react-navigation/native';
 import MaterialTabs from 'react-native-material-tabs';
-import Modal from 'react-native-modal';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackActions } from '@react-navigation/native';
 import { LineChart } from "react-native-chart-kit";
-import earhart from "../../../components/profile/profile-accessories/OutputEarhart.json";
-import ford from "../../../components/profile/profile-accessories/OutputFord.json";
-import hillenbrand from "../../../components/profile/profile-accessories/OutputHillenbrand.json";
-import wiley from "../../../components/profile/profile-accessories/OutputWiley.json";
-import windsor from "../../../components/profile/profile-accessories/OutputWindsor.json";
+import earhart from "./OutputEarhart.json";
+import ford from "./OutputFord.json";
+import hillenbrand from "./OutputHillenbrand.json";
+import wiley from "./OutputWiley.json";
+import windsor from "./OutputWindsor.json";
 
-function WaitTimes({route, navigation}) {
+function WaitTimes({navigation}) {
    const { colors } = useTheme();
-   const [legendModalVisible, setLegendModalVisible] = useState(false);
     //Tab selection
     const [selectedTab, setSelectedTab] = React.useState(0);
-    //
     const screenWidth = Dimensions.get("window").width;
     // Breakfast data Earhart
     const dataBreakfastEarhart = {
@@ -214,14 +211,14 @@ function WaitTimes({route, navigation}) {
 
     return (
         <ScrollView>
-            <View style={ [styles.iconPosition, {flexDirection:"row"}] }>
+            <View style={ [styles.screenView, {flexDirection:"row"}] } >
                 <TouchableOpacity style={ styles.button } onPress={ () => navigation.dispatch(StackActions.pop(1))}>
                     <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                 </TouchableOpacity>
-                <Image source = { Logo } style = { styles.iconSize } />
-                <View style={ styles.title }>
-                    <Text style={ [styles.screenTitle, {color: colors.text}] }>Wait Times</Text>
-                </View>
+                <Image style={ styles.logoImage } source={ Logo } />
+            </View>
+            <View>
+                <Text style={ [styles.screenTitle, {color: colors.text}] }>Wait Times</Text>
             </View>
             <View style={styles.tabBar}>
                 <MaterialTabs
@@ -386,13 +383,23 @@ function WaitTimes({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
-    iconPosition: {
-        marginLeft: "40%",
-        marginTop: "10%",
+    screenView: {
+        marginTop: "5%",
+        marginLeft: "30%",
+        marginRight: "30%",
+        alignItems: "center",
     },
-    iconSize: {
-        width: 100,
-        height: 100,
+    button: {
+        marginLeft: "-65%",
+        marginRight: "73%",
+    },
+    logoImage: {
+        height: 80,
+        width: 80,
+        marginRight: "15%",
+        marginTop: "10%",
+        marginBottom: "5%",
+        alignItems: "center",
     },
     title: {
         padding: "10%",
@@ -402,13 +409,8 @@ const styles = StyleSheet.create({
     screenTitle: {
         fontSize: 26,
         fontWeight: "bold",
-        color: "black",
-        marginLeft: "20%",
-    },
-    button: {
-        marginLeft: "-65%",
-        marginTop: "10%",
-        marginRight: "50%",
+        textAlign: "center",
+        marginBottom: "5%",
     },
     tabBar: {
         marginLeft: "5%",
