@@ -438,7 +438,7 @@ async def get_feedback(UserID: int = Depends(auth_handler.auth_wrapper)):
 @app.post("/Feedback", status_code=201)
 async def post_feedback(userFeedback: UserFeedbackIn, UserID: int = Depends(auth_handler.auth_wrapper)):
 
-    userFeedback.timestamp = userFeedback.timestamp.replace('\n', '')
+    userFeedback.feedback_text = userFeedback.feedback_text.replace('\n', '')
 
     runQuery(f"""
     INSERT INTO AppFeedback values (
