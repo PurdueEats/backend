@@ -108,10 +108,18 @@ function HomeManager({route, navigation}) {
                         // Examine the text in the response
                         response.json().then(function (data) {
                             // Set data fields
-                            setCalories(data["calories"]);
-                            setCarbs(data["carbs"]);
-                            setFat(data["fat"]);
-                            setProtein(data["protein"]);
+                            if (data["calories"] > 0) {
+                                setCalories(data["calories"]);
+                            }
+                            if (data["carbs"] > 0) {
+                                setCarbs(data["carbs"]);
+                            }
+                            if (data["fat"] > 0) {
+                                setFat(data["fat"]);
+                            }
+                            if (data["protein"] > 0) {
+                                setProtein(data["protein"]);
+                            }
                             // Set chartData
                             // Calories
                             if (parseFloat(data["calories"]) > 14000) {
