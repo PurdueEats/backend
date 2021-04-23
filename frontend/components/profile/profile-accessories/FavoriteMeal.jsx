@@ -13,6 +13,7 @@ function FavoriteMeals({route, navigation}) {
     const { colors } = useTheme();
     //Total meals list
     const [meals, selectedMeals] = React.useState([]);
+    const [allMeals, setAllMeals] = React.useState([]);
     //Tab selection
     const [selectedTab, setSelectedTab] = React.useState(0);
     //Current list of User's Fav Meals
@@ -42,7 +43,7 @@ function FavoriteMeals({route, navigation}) {
     function searchFiltering (searchText) {
         if (!searchText) {
             setSearched(searchText);
-            selectedMeals(meals);
+            selectedMeals(allMeals);
         }
         if(searchText) {
             const searchData = meals.filter(function (menuItem)
@@ -164,6 +165,7 @@ function FavoriteMeals({route, navigation}) {
                     if (response.status === 200 || response.status === 201) {
                         response.json().then(function(data) {
                             selectedMeals(data.map(menuItem => ({ label: menuItem.item_name, value: menuItem.menu_item_id })));
+                            setAllMeals(data.map(menuItem => ({ label: menuItem.item_name, value: menuItem.menu_item_id })));
                         });
                     } else {
                         console.log('Auth like there was a problem with fetching all menu items. Status Code: ' +

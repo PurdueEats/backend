@@ -326,17 +326,9 @@ function Menu({route, navigation}) {
             </View>
             <View style={{ marginLeft: "2%", marginRight: "2%" }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: "2%" }}>
-                    <AirbnbRating
-                        key={"Rating"}
-                        count={5}
-                        reviews={["Terrible", "Meh", "OK", "Good", "Amazing"]}
-                        type={"custom"}
-                        showRating={false}
-                        selectedColor={"#ff0000"}
-                        defaultRating={3}
-                        reviewSize={20}
-                        size={25}
-                    />
+                    <Button style={ styles.reviewButton } onPress={ handleReviewNavigate }>
+                        <Text style={ styles.reviewText }>Reviews</Text>
+                    </Button>
                     <Button style={ styles.recordButton } onPress={ handleNavigate }>
                         <Text style={ styles.recordText }>Record Meal</Text>
                     </Button>
@@ -396,9 +388,7 @@ function Menu({route, navigation}) {
             </Modal>
             <FlatList data={filterData} ItemSeparatorComponent={renderLine} renderItem={(menuItem) => renderMenuItem(menuItem)}
                       keyExtractor={(item, index) => item.key} extraData={allData}/>
-            <Button style={ styles.filterButton } onPress={ handleReviewNavigate }>
-                <Text style={ styles.filterText }>Reviews</Text>
-            </Button>
+
         </ScrollView>
     );
 }
@@ -492,6 +482,7 @@ const styles = StyleSheet.create({
     },
     recordButton: {
         width: '35%',
+        marginRight: "5%",
         justifyContent: 'center',
         backgroundColor: "red",
         borderRadius: 10,
@@ -510,6 +501,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     filterText: {
+        fontSize: 15,
+        fontWeight: "bold",
+        color: "white"
+    },
+    reviewButton: {
+        marginLeft: "5%",
+        marginBottom: "1%",
+        width: '35%',
+        backgroundColor: "red",
+        borderRadius: 10,
+        justifyContent: 'center',
+    },
+    reviewText: {
         fontSize: 15,
         fontWeight: "bold",
         color: "white"
