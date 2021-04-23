@@ -73,7 +73,7 @@ function HomeManager({route, navigation}) {
                             // Successful GET
                             response.json().then(function(data) {
                                 setFact(data["schedule"].substring(42, 43));
-                                if (data["schedule"].substring(42, 43) == "1") {
+                                if (data["schedule"].substring(42, 43) === "1") {
                                     getFunFact();
                                 }
                             });
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
         marginLeft: "5%",
         marginBottom: "5%",
         marginTop:"5%",
-        borderRadius: 10
+        borderRadius: 15
     },
     wileyTitle: {
         fontSize: 20,
@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
         marginLeft: "-1%",
         marginBottom: "5%",
         marginTop: "5%",
-        borderRadius: 10
+        borderRadius: 15
     },
     hillenbrandTitle: {
         fontSize: 20,
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
         marginLeft: "5%",
         marginBottom: "0%",
         marginTop:"5%",
-        borderRadius: 10
+        borderRadius: 15
     },
     windsorTitle: {
         fontSize: 20,
@@ -502,7 +502,7 @@ const styles = StyleSheet.create({
         marginLeft: "-0.5%",
         marginBottom: "0%",
         marginTop: "5%",
-        borderRadius: 10
+        borderRadius: 15
     },
     fordTitle: {
         fontSize: 20,
@@ -528,7 +528,7 @@ const styles = StyleSheet.create({
         marginLeft: "6%",
         marginBottom: "5%",
         marginTop: "-5%",
-        borderRadius: 10
+        borderRadius: 15
     },
     imageContainer: {
         flexDirection: "row",
@@ -545,16 +545,15 @@ const styles = StyleSheet.create({
         marginBottom: "4%",
     },
     favoriteButtonComponent: {
-        flex: 1,
+        marginTop: "1%",
+        marginLeft: "25%",
         width: '50%',
-        height: '100%',
-        marginLeft: '25%',
-        left: 0,
-        justifyContent: 'center',
         backgroundColor: "red",
+        borderRadius: 10,
+        justifyContent: 'center',
     },
     favoriteButtonText: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: "bold",
         color: "white"
     },
