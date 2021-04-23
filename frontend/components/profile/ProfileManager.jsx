@@ -597,12 +597,12 @@ function ProfileManager({route, navigation}) {
                    }}
             >
                 <View>
-                    <View style={styles.modalView}>
+                    <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                         <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleNameExit()}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
-                        <Text style={ styles.modalText }>Set new name</Text>
-                        <TextInput style={ styles.textEnter } onChangeText={(nameNew) => setNameNew(nameNew)} />
+                        <Text style={ [styles.modalText, {color: colors.text}] }>Set new name</Text>
+                        <TextInput style={ [styles.textEnter, {color: colors.text}] } onChangeText={(nameNew) => setNameNew(nameNew)} />
                         <View style={ styles.modalLine }/>
                     </View>
                 </View>
@@ -613,7 +613,7 @@ function ProfileManager({route, navigation}) {
                    }}
             >
                 <View>
-                    <View style={styles.modalView}>
+                    <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                         <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleDiningExit(transact)}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
@@ -626,10 +626,10 @@ function ProfileManager({route, navigation}) {
                                 <MaterialCommunityIcons name="plus" color="white" size={30}/>
                             </TouchableOpacity>
                         </View>
-                        <Text style={ styles.dollarsText }>How many dollars?</Text>
+                        <Text style={ [styles.dollarsText, {color: colors.text}]}>How many dollars?</Text>
                         <View style={styles.rowBetween}>
-                            <Text style={ styles.big }>{sign}</Text>
-                            <TextInput style={ styles.textEnter } onChangeText={(transact) => setTransact(transact)} />
+                            <Text style={ [styles.big, {color: colors.text}]}>{sign}</Text>
+                            <TextInput style={ [styles.textEnter, {color: colors.text}]} onChangeText={(transact) => setTransact(transact)} />
                         </View>
                         <View style={ styles.modalLine }/>
                     </View>
@@ -641,11 +641,11 @@ function ProfileManager({route, navigation}) {
                    }}
             >
                 <View>
-                    <View style={styles.modalView}>
+                    <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                         <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() =>  handleSwipesExit()}>
                             <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                         </TouchableOpacity>
-                        <Text style={ styles.dollarsText }>Subtract a swipe from your total?</Text>
+                        <Text style={ [styles.dollarsText, {color: colors.text}]}>Subtract a swipe from your total?</Text>
                         <TouchableOpacity active={0.5} style={ styles.symbolStyleBig }  onPress={() =>  handleSwipesSub()}>
                             <MaterialCommunityIcons name="minus" color="white" size={30}/>
                         </TouchableOpacity>
@@ -699,7 +699,7 @@ function ProfileManager({route, navigation}) {
                        }}
                 >
                     <View>
-                        <View style={styles.modalView}>
+                        <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                             <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() => handlePlanExit(planNew) }>
                                 <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
@@ -727,12 +727,12 @@ function ProfileManager({route, navigation}) {
                        }}
                 >
                     <View>
-                        <View style={styles.modalView}>
+                        <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                             <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() => handlePassExit(passNew) }>
                                 <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity>
-                            <Text style={ styles.modalText }>Set password</Text>
-                            <TextInput style={ styles.textEnter } onChangeText={(password2) => setPassNew(password2)} />
+                            <Text style={ [styles.modalText, {color: colors.text}]}>Set password</Text>
+                            <TextInput style={ [styles.textEnter, {color: colors.text}]} onChangeText={(password2) => setPassNew(password2)} />
                             <View style={ styles.modalLine }/>
                         </View>
                     </View>
@@ -774,11 +774,11 @@ function ProfileManager({route, navigation}) {
                        }}
                 >
                     <View>
-                        <View style={styles.modalView}>
+                        <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                             <TouchableOpacity active={0.5} style={ styles.backImage } onPress={() => setModalDelete(!modalDelete) }>
                                 <MaterialCommunityIcons name="arrow-left" color="red" size={30}/>
                             </TouchableOpacity >
-                            <Text style={styles.modalText}>Delete Account?</Text>
+                            <Text style={ [styles.modalText, {color: colors.text}]}>Delete Account?</Text>
                             <TouchableOpacity active = { .5 } onPress={ () => deleteAccount() }>
                                 <Text style={ styles.textNormalRed }> DELETE ACCOUNT </Text>
                             </TouchableOpacity>
@@ -941,8 +941,8 @@ const styles = StyleSheet.create({
 
     modalView: {
         margin: 20,
-        backgroundColor: "white",
         borderRadius: 20,
+        backgroundColor: "white",
         padding: 35,
         alignItems: "center",
         shadowColor: "#000",
@@ -953,7 +953,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        height: 350
+        height: 350,
     },
 
     modalViewPlan: {
