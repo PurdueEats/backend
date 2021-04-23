@@ -12,10 +12,20 @@ function ReadReviews({route, navigation}) {
     const [reviews, setReviews] = useState([]);
     const [reportModalVisible, setReportModalVisible] = useState(false);
     const isFocused = useIsFocused();
+    let avgRating = 0;
 
     useEffect(() => {
        getReviews();
+       calculateAverageRating()
     }, [isFocused]);
+
+    function calculateAverageRating() {
+        let allRatings = 0;
+        for (let i = 0; i < reviews.length; i++) {
+            allRatings = allRatings + reviews[i].rating;
+        }
+        avgRating = Math.floor(allRatings / reviews.length);
+    }
 
     function handleNavigate() {
         navigation.navigate("WriteReview", { UserID: route.params.UserID, token: route.params.token, DiningID: route.params.DiningID });
@@ -35,8 +45,7 @@ function ReadReviews({route, navigation}) {
                         // Successful GET
                         // Set Fields to correct values
                         response.json().then(function(data) {
-                            //reviews.push(data)
-                            setReviews(data);
+                            setReviews(data.sort());
                         });
                     } else {
                         console.log('Looks like there was a problem getting the reviews. Status Code: ' +
@@ -50,7 +59,6 @@ function ReadReviews({route, navigation}) {
     }
 
     function submitVote(reviewItem, voteVal) {
-        console.log(reviewItem["dining_facility_review_id"]);
         fetch(`https://app-5fyldqenma-uc.a.run.app/DFR/Vote`, {
             method: 'POST',
             headers : {
@@ -243,11 +251,57 @@ function ReadReviews({route, navigation}) {
             <View style={{ marginLeft: "2%", marginRight: "2%", flexDirection: "row" }}>
                     <Text style={ [styles.avgTitle, {color: colors.text}] }>Average Rating: </Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: "2%" }}>
-                        <MaterialCommunityIcons name="star" color="red" size={30}/>
-                        <MaterialCommunityIcons name="star" color="red" size={30}/>
-                        <MaterialCommunityIcons name="star" color="red" size={30}/>
-                        <MaterialCommunityIcons name="star" color="red" size={30}/>
-                        <MaterialCommunityIcons name="star" color="red" size={30}/>
+                        {calculateAverageRating()}
+                        {avgRating === 1 ? (
+                            <View >
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                            </View>
+                        ): (
+                            <View>
+                            </View>
+                        )}
+                        {avgRating === 2 ? (
+                            <View style={{flexDirection: 'row'}}>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                            </View>
+                        ): (
+                            <View>
+                            </View>
+                        )}
+                        {avgRating === 3 ? (
+                            <View style={{flexDirection: 'row'}}>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                            </View>
+                        ): (
+                            <View>
+                            </View>
+                        )}
+                        {avgRating === 4 ? (
+                            <View style={{flexDirection: 'row'}}>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                            </View>
+                        ): (
+                            <View>
+                            </View>
+                        )}
+                        {avgRating === 5 ? (
+                            <View style={{flexDirection: 'row'}}>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                                <MaterialCommunityIcons name="star" color="red" size={30}/>
+                            </View>
+                        ): (
+                            <View>
+                            </View>
+                        )}
                     </View>
             </View>
             <View
