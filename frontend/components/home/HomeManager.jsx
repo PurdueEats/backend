@@ -404,14 +404,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         position: "absolute",
-        marginLeft: "27%",
+        marginLeft: "32%",
         alignItems: "center",
         marginTop: "35%"
     },
     earhartTime: {
         fontSize: 15,
         position: "absolute",
-        marginLeft: "17%",
+        marginLeft: "23%",
         alignItems: "center",
         marginTop: "50%"
     },
@@ -456,14 +456,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         position: "absolute",
-        marginLeft: "17%",
+        marginLeft: "20%",
         alignItems: "center",
         marginTop: "35%"
     },
     hillenbrandTime: {
         fontSize: 15,
         position: "absolute",
-        marginLeft: "18.5%",
+        marginLeft: "24%",
         alignItems: "center",
         marginTop: "50%"
     },
@@ -482,7 +482,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         position: "absolute",
-        marginLeft: "23%",
+        marginLeft: "24%",
         alignItems: "center",
         marginTop: "34%"
     },
@@ -491,7 +491,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         marginLeft: "15.5%",
         alignItems: "center",
-        marginTop: "47%"
+        marginTop: "50%"
     },
     windsorDiningImage: {
         aspectRatio: 1,
@@ -515,7 +515,7 @@ const styles = StyleSheet.create({
     fordTime: {
         fontSize: 15,
         position: "absolute",
-        marginLeft: "13%",
+        marginLeft: "14%",
         alignItems: "center",
         marginTop: "17%"
     },
