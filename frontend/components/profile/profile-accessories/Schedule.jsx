@@ -183,84 +183,84 @@ function Schedule({route, navigation}) {
                     selectedDayTextColor="#FFFFFF"
 
                     customDatesStyles={() => {
-                                            return {
-                                              textStyle: { color: "#808080", opacity: 1 },
-                                            };
-                                          }}
+                        return {
+                            textStyle: { color: "#808080", opacity: 1 },
+                        };
+                    }}
                     customDayHeaderStyles={() => {
-                                              return {
-                                                textStyle: { color: "#808080", opacity: 1 },
-                                              };
-                                            }}
+                        return {
+                            textStyle: { color: "#808080", opacity: 1 },
+                        };
+                    }}
                     onDateChange={(date, type) => setDate(date, type)}
                 />
                 <Modal animationType="slide" transparent={true} visible={modalSchedule}>
                     {(() => {
                         switch(day) {
                             case 0: {
-                                return <View style={ [styles.modalView, {flexDirection:"row"}] }>
+                                return <View style={ [styles.modalView, {backgroundColor: colors.card}] }>
                                     <Text style={ [styles.daysText, {color: colors.text}] }>Sunday</Text>
                                     <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Select an hour window below that fits your scheduling needs.</Text>
                                     <MaterialTabs
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
                                         onChange={setSelectedTab}
-                                        barColor="#ffffff"
-                                        indicatorColor="#000000"
-                                        activeTextColor="#000000"
-                                        inactiveTextColor="#908c8c"
+                                        barColor={colors.card}
+                                        indicatorColor={colors.text}
+                                        activeTextColor={"red"}
+                                        inactiveTextColor={colors.text}
                                     />
                                     <View style={{ padding: 10, alignItems: "center" }}>
-                                    {selectedTab === 0 ? (
-                                        <DropDownPicker
-                                            items={[
-                                                {label: '7:00-8:00 am', value: "07"},
-                                                {label: '8:00-9:00 am', value: "08"},
-                                                {label: '9:00-10:00 am', value: "09"},
-                                            ]}
-                                            containerStyle={{height: 40, width: 200}}
-                                            style={{backgroundColor: '#fafafa', zIndex: 1}}
-                                            itemStyle={{
-                                                justifyContent: 'flex-start'
-                                            }}
-                                            defaultValue={sundayBreakfast}
-                                            dropDownStyle={{backgroundColor: '#fafafa'}}
-                                            onChangeItem={item => setSundayBreakfast(item.value)}
-                                        />
-                                    ) : selectedTab === 1 ? (
-                                        <DropDownPicker
-                                            items={[
-                                                {label: '11:00-12:00 am', value: "11"},
-                                                {label: '12:00-1:00 pm', value: "12"},
-                                                {label: '1:00-2:00 pm', value: "13"},
-                                            ]}
-                                            containerStyle={{height: 40, width: 200}}
-                                            style={{backgroundColor: '#fafafa'}}
-                                            itemStyle={{
-                                                justifyContent: 'flex-start'
-                                            }}
-                                            defaultValue={sundayLunch}
-                                            dropDownStyle={{backgroundColor: '#fafafa'}}
-                                            onChangeItem={item => setSundayLunch(item.value)}
-                                        />
-                                    ) : (
-                                        <DropDownPicker
-                                            items={[
-                                                {label: '5:00-6:00 pm', value: "17"},
-                                                {label: '6:00-7:00 pm', value: "18"},
-                                                {label: '7:00-8:00 pm', value: "19"},
-                                                {label: '8:00-9:00 pm', value: "20"},
-                                            ]}
-                                            containerStyle={{height: 40, width: 200}}
-                                            style={{backgroundColor: '#fafafa'}}
-                                            itemStyle={{
-                                                justifyContent: 'flex-start'
-                                            }}
-                                            defaultValue={sundayDinner}
-                                            dropDownStyle={{backgroundColor: '#fafafa'}}
-                                            onChangeItem={item => setSundayDinner(item.value)}
-                                        />
-                                    )}
+                                        {selectedTab === 0 ? (
+                                            <DropDownPicker
+                                                items={[
+                                                    {label: '7:00-8:00 am', value: "07"},
+                                                    {label: '8:00-9:00 am', value: "08"},
+                                                    {label: '9:00-10:00 am', value: "09"},
+                                                ]}
+                                                containerStyle={{height: 40, width: 200}}
+                                                style={{backgroundColor: '#fafafa', zIndex: 1}}
+                                                itemStyle={{
+                                                    justifyContent: 'flex-start'
+                                                }}
+                                                defaultValue={sundayBreakfast}
+                                                dropDownStyle={{backgroundColor: '#fafafa'}}
+                                                onChangeItem={item => setSundayBreakfast(item.value)}
+                                            />
+                                        ) : selectedTab === 1 ? (
+                                            <DropDownPicker
+                                                items={[
+                                                    {label: '11:00-12:00 am', value: "11"},
+                                                    {label: '12:00-1:00 pm', value: "12"},
+                                                    {label: '1:00-2:00 pm', value: "13"},
+                                                ]}
+                                                containerStyle={{height: 40, width: 200}}
+                                                style={{backgroundColor: '#fafafa'}}
+                                                itemStyle={{
+                                                    justifyContent: 'flex-start'
+                                                }}
+                                                defaultValue={sundayLunch}
+                                                dropDownStyle={{backgroundColor: '#fafafa'}}
+                                                onChangeItem={item => setSundayLunch(item.value)}
+                                            />
+                                        ) : (
+                                            <DropDownPicker
+                                                items={[
+                                                    {label: '5:00-6:00 pm', value: "17"},
+                                                    {label: '6:00-7:00 pm', value: "18"},
+                                                    {label: '7:00-8:00 pm', value: "19"},
+                                                    {label: '8:00-9:00 pm', value: "20"},
+                                                ]}
+                                                containerStyle={{height: 40, width: 200}}
+                                                style={{backgroundColor: '#fafafa'}}
+                                                itemStyle={{
+                                                    justifyContent: 'flex-start'
+                                                }}
+                                                defaultValue={sundayDinner}
+                                                dropDownStyle={{backgroundColor: '#fafafa'}}
+                                                onChangeItem={item => setSundayDinner(item.value)}
+                                            />
+                                        )}
                                     </View>
                                     <View style={ styles.modalButtonView }>
                                         <Text style={ [styles.modalDirectionsText, {color: colors.text}] }>Tap done to save your changes.</Text>
@@ -279,10 +279,10 @@ function Schedule({route, navigation}) {
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
                                         onChange={setSelectedTab}
-                                        barColor="#ffffff"
-                                        indicatorColor="#000000"
-                                        activeTextColor="#000000"
-                                        inactiveTextColor="#908c8c"
+                                        barColor={colors.card}
+                                        indicatorColor={colors.text}
+                                        activeTextColor={"red"}
+                                        inactiveTextColor={colors.text}
                                     />
                                     <View style={{ padding: 10, alignItems: "center" }}>
                                         {selectedTab === 0 ? (
@@ -353,10 +353,10 @@ function Schedule({route, navigation}) {
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
                                         onChange={setSelectedTab}
-                                        barColor="#ffffff"
-                                        indicatorColor="#000000"
-                                        activeTextColor="#000000"
-                                        inactiveTextColor="#908c8c"
+                                        barColor={colors.card}
+                                        indicatorColor={colors.text}
+                                        activeTextColor={"red"}
+                                        inactiveTextColor={colors.text}
                                     />
                                     <View style={{ padding: 10, alignItems: "center" }}>
                                         {selectedTab === 0 ? (
@@ -427,10 +427,10 @@ function Schedule({route, navigation}) {
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
                                         onChange={setSelectedTab}
-                                        barColor="#ffffff"
-                                        indicatorColor="#000000"
-                                        activeTextColor="#000000"
-                                        inactiveTextColor="#908c8c"
+                                        barColor={colors.card}
+                                        indicatorColor={colors.text}
+                                        activeTextColor={"red"}
+                                        inactiveTextColor={colors.text}
                                     />
                                     <View style={{ padding: 10, alignItems: "center" }}>
                                         {selectedTab === 0 ? (
@@ -501,10 +501,10 @@ function Schedule({route, navigation}) {
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
                                         onChange={setSelectedTab}
-                                        barColor="#ffffff"
-                                        indicatorColor="#000000"
-                                        activeTextColor="#000000"
-                                        inactiveTextColor="#908c8c"
+                                        barColor={colors.card}
+                                        indicatorColor={colors.text}
+                                        activeTextColor={"red"}
+                                        inactiveTextColor={colors.text}
                                     />
                                     <View style={{ padding: 10, alignItems: "center" }}>
                                         {selectedTab === 0 ? (
@@ -575,10 +575,10 @@ function Schedule({route, navigation}) {
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
                                         onChange={setSelectedTab}
-                                        barColor="#ffffff"
-                                        indicatorColor="#000000"
-                                        activeTextColor="#000000"
-                                        inactiveTextColor="#908c8c"
+                                        barColor={colors.card}
+                                        indicatorColor={colors.text}
+                                        activeTextColor={"red"}
+                                        inactiveTextColor={colors.text}
                                     />
                                     <View style={{ padding: 10, alignItems: "center" }}>
                                         {selectedTab === 0 ? (
@@ -649,10 +649,10 @@ function Schedule({route, navigation}) {
                                         items={['Breakfast', 'Lunch', "Dinner"]}
                                         selectedIndex={selectedTab}
                                         onChange={setSelectedTab}
-                                        barColor="#ffffff"
-                                        indicatorColor="#000000"
-                                        activeTextColor="#000000"
-                                        inactiveTextColor="#908c8c"
+                                        barColor={colors.card}
+                                        indicatorColor={colors.text}
+                                        activeTextColor={"red"}
+                                        inactiveTextColor={colors.text}
                                     />
                                     <View style={{ padding: 10, alignItems: "center" }}>
                                         {selectedTab === 0 ? (

@@ -13,7 +13,6 @@ function TrackMeals({route, navigation}) {
     const [currentSelection, setCurrentSelection] = React.useState([]);
     const [removeSelection, setRemoveSelection] = React.useState([]);
     const [label, setLabel] = useState('');
-    const [valueTest, setValueTest] = useState('');
     const [bool, setBool] = useState('a');
     const [sortBool, setSortBool] = useState('0');
 
@@ -34,7 +33,7 @@ function TrackMeals({route, navigation}) {
     },[]);
 
     function handleSort() {
-        if (sortBool == "0") {
+        if (sortBool === "0") {
             sortList();
         }
         else {
@@ -58,7 +57,7 @@ function TrackMeals({route, navigation}) {
                         if (response.status === 200 || response.status === 201) {
                             // Successful GET
                             response.json().then(function(data) {
-                                if (data["schedule"].substring(43, 44) == "1") {
+                                if (data["schedule"].substring(43, 44) === "1") {
                                     setSortBool("1");
                                 }
                             });
@@ -103,12 +102,6 @@ function TrackMeals({route, navigation}) {
                     if (response.status === 200 || response.status === 201) {
                         // Successful GET
                         // Set fields to correct values
-
-                        /* response.json().then(function(data) {                            //currentSelectID.push(item.menu_item_id);
-                            setCurrentSelectID(data.map(menuItem => ({ value: menuItem.menu_item_id, timestamp: menuItem.timestamp })));
-
-                        }); */
-                        //console.log(currentSelectID);
                         return response.json();
                     } else {
                         console.log('Auth like there was a problem with ID fetching. Status Code: ' +
@@ -131,11 +124,8 @@ function TrackMeals({route, navigation}) {
                                 // Set Fields to correct values
                                 response.json().then(function(data) {
                                     currentSelection.push( { label: data.item_name, value: item1.menu_item_id, timestamp: item1.timestamp } );
-                                    //setCurrentSelection( ({ label: data.item_name, value: item.id, timestamp: item.timestamp } ));
                                 });
-
                                 setBool('b');
-                                //sortList();
                                 setBool('a');
                             } else {
                                 console.log('Getting Menu Item` like there was a problem. Status Code: ' +
@@ -174,7 +164,6 @@ function TrackMeals({route, navigation}) {
                             // Set Fields to correct values
                             response.json().then(function(data) {
                                 currentSelection.push( { label: data.item_name, value: item.value, timestamp: item.timestamp } );
-                                //setCurrentSelection( ({ label: data.item_name, value: item.id, timestamp: item.timestamp } ));
                             });
                             console.log(currentSelection)
                         } else {
@@ -205,7 +194,6 @@ function TrackMeals({route, navigation}) {
                         // Set Fields to correct values
                         response.json().then(function(data) {
                             setLabel(data.item_name);
-                            //setCurrentSelection( ({ label: data.item_name, value: item.id, timestamp: item.timestamp } ));
                         });
                     } else {
                         console.log('Getting Menu Items like there was a problem. Status Code: ' +
@@ -279,7 +267,10 @@ const styles = StyleSheet.create({
         marginLeft: "30%",
         marginRight: "30%",
         alignItems: "center",
-        justifyContent: 'center',
+    },
+    button: {
+        marginLeft: "-65%",
+        marginRight: "73%",
     },
     foodText: {
         color: 'white',
