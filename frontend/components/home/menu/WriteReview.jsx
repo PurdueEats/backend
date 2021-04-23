@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView, SafeAreaView} from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import {Button, Item, Toast} from 'native-base';
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     },
     bodyTextInput: {
         width: "100%",
-        height: 200
+
     },
     submitButton: {
         marginLeft: "10%",
