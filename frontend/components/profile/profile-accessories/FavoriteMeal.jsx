@@ -264,6 +264,9 @@ function FavoriteMeals({route, navigation}) {
                           items={currentSelection}
                           selectedItems={removeSelection}
                           onSelectionsChange={onFavSelectionsChange}
+                          labelStyle={{ color: colors.text}}
+                          rowStyle={{ backgroundColor: colors.background}}
+                          checkboxStyle={{ backgroundColor: "#f2f2f2", borderRadius: 10 }}
                           />
                     </View>
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>
@@ -293,6 +296,9 @@ function FavoriteMeals({route, navigation}) {
                       items={meals}
                       selectedItems={selectedFavMeals}
                       onSelectionsChange={onSelectionsChange}
+                      labelStyle={{ color: colors.text}}
+                      rowStyle={{ backgroundColor: colors.background}}
+                      checkboxStyle={{ backgroundColor: "#f2f2f2", borderRadius: 10 }}
                       />
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>
                         <Button style={ styles.favoriteButtonComponent } onPress= { handleFavMeal }>

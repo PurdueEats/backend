@@ -237,6 +237,9 @@ function Notifications({route, navigation}) {
                           items={currentSelection}
                           selectedItems={notiOff}
                           onSelectionsChange={onFavSelectionsChange}
+                          labelStyle={{ color: colors.text}}
+                          rowStyle={{ backgroundColor: colors.background}}
+                          checkboxStyle={{ backgroundColor: "#f2f2f2", borderRadius: 10 }}
                           />
                     </View>
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>
@@ -252,6 +255,9 @@ function Notifications({route, navigation}) {
                           items={currentSelectionOff}
                           selectedItems={notiOn}
                           onSelectionsChange={onSelectionsChange}
+                          labelStyle={{ color: colors.text}}
+                          rowStyle={{ backgroundColor: colors.background}}
+                          checkboxStyle={{ backgroundColor: "#f2f2f2", borderRadius: 10 }}
                           />
                     </View>
                     <View style={ [styles.buttonView, {alignItems:"center"}] }>

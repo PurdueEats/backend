@@ -172,6 +172,9 @@ function RecordMeals({route, navigation}) {
                         items={meals}
                         selectedItems={selectedMeals}
                         onSelectionsChange={onSelectionsChange}
+                        labelStyle={{ color: colors.text}}
+                        rowStyle={{ backgroundColor: colors.background}}
+                        checkboxStyle={{ backgroundColor: "#f2f2f2", borderRadius: 10 }}
                     />
                 </View>
             </View>
