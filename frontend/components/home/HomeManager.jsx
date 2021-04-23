@@ -298,13 +298,13 @@ function HomeManager({route, navigation}) {
                             <TouchableOpacity onPress={ EarhartNavigation }>
                                 <Image source = { Earhart } style = { styles.earhartDiningImage }/>
                                 <Text style={ [styles.earhartTitle, {color: colors.text}] }>{"Earhart"}</Text>
-                                <Text style={ [styles.earhartTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
+                                <Text style={ [styles.earhartTime, {color: colors.text}] }>{"5:00-9:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity onPress={ WileyNavigation }>
                             <Image source = { Wiley } style = { styles.wileyDiningImage }/>
                             <Text style={ [styles.wileyTitle, {color: colors.text}] }>{"Wiley"}</Text>
-                            <Text style={ [styles.wileyTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
+                            <Text style={ [styles.wileyTime, {color: colors.text}] }>{"5:00-9:00 PM"}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={ styles.imageContainer }>
@@ -312,20 +312,20 @@ function HomeManager({route, navigation}) {
                             <TouchableOpacity onPress={ HillenbrandNavigation }>
                                 <Image source = { Hillenbrand } style = { styles.hillenbrandDiningImage }/>
                                 <Text style={ [styles.hillenbrandTitle, {color: colors.text}] }>{"Hillenbrand"}</Text>
-                                <Text style={ [styles.hillenbrandTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
+                                <Text style={ [styles.hillenbrandTime, {color: colors.text}] }>{"4:00-9:00 PM"}</Text>
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity onPress={ WindsorNavigation }>
                             <Image source = { Windsor } style = { styles.windsorDiningImage }/>
                             <Text style={ [styles.windsorTitle, {color: colors.text}] }>{"Windsor"}</Text>
-                            <Text style={ [styles.windsorTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
+                            <Text style={ [styles.windsorTime, {color: colors.text}] }>{"5:00-10:00 PM"}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={ styles.lastDiningCourt }>
                         <TouchableOpacity onPress={ FordNavigation }>
                             <Image source = { Ford } style = { styles.fordDiningImage } />
                             <Text style={ [styles.fordTitle, {color: colors.text}] }>{"Ford"}</Text>
-                            <Text style={ [styles.fordTime, {color: colors.text}] }>{"4:00-10:00 PM"}</Text>
+                            <Text style={ [styles.fordTime, {color: colors.text}] }>{"5:00-9:00 PM"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
