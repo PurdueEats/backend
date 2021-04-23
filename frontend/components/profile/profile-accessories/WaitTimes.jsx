@@ -419,6 +419,7 @@ const styles = StyleSheet.create({
     diningTitle: {
         fontSize: 15,
         fontWeight: "bold",
+        textAlign: 'center',
     },
 });
 
