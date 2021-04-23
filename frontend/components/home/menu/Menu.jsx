@@ -316,10 +316,10 @@ function Menu({route, navigation}) {
                                 <MaterialCommunityIcons name="alpha-n-circle-outline" color="#C16718" size={20}/>
                                 <Text style={styles.modalText}>Nut Free Item</Text>
                             </View>
-                            <View style={{flexDirection: "row"}}>
-                                <MaterialCommunityIcons name="star" color="#FFD133" size={20}/>
-                                <Text style={styles.modalText}>Favorite Item</Text>
-                            </View>
+{/*                             <View style={{flexDirection: "row"}}> */}
+{/*                                 <MaterialCommunityIcons name="star" color="#FFD133" size={20}/> */}
+{/*                                 <Text style={styles.modalText}>Favorite Item</Text> */}
+{/*                             </View> */}
                         </View>
                     </View>
                 </Modal>
@@ -336,7 +336,6 @@ function Menu({route, navigation}) {
                         defaultRating={3}
                         reviewSize={20}
                         size={25}
-                        // onFinishRating={ updateRating }
                     />
                     <Button style={ styles.recordButton } onPress={ handleNavigate }>
                         <Text style={ styles.recordText }>Record Meal</Text>
